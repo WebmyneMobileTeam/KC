@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#fff"
     tools:context="com.webmyne.kidscrown.ui.RefillActivity">
 
     <include layout="@layout/app_bar2"></include>
@@ -21,6 +22,7 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/btnAdd"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
@@ -29,6 +31,7 @@
                 android:text="Add" />
 
             <ScrollView
+                android:scrollbars="none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
@@ -47,7 +50,12 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <include layout="@layout/crown_grid"></include>
+
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:id="@+id/quadUpperLeft"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
 
                     <View
                         android:layout_width="match_parent"
@@ -65,7 +73,11 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <include layout="@layout/crown_grid"></include>
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:id="@+id/quadUpperRight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
+
 
                     <View
                         android:layout_width="match_parent"
@@ -83,7 +95,11 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <include layout="@layout/crown_grid"></include>
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:id="@+id/quadLowerLeft"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
+
 
                     <View
                         android:layout_width="match_parent"
@@ -101,7 +117,11 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <include layout="@layout/crown_grid"></include>
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:id="@+id/quadLowerRight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
+
                 </LinearLayout>
             </ScrollView>
 

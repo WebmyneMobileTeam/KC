@@ -1,0 +1,86 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical"
+    tools:context="com.webmyne.kidscrown.ui.RefillActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/crownSetLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:id="@+id/quadUpperLeft"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
+
+
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:id="@+id/quadUpperRight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:id="@+id/quadLowerLeft"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
+
+
+                    <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:id="@+id/quadLowerRight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
+
+
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -19,21 +19,24 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="D1"
+            android:textColor="#000"
             android:textSize="12sp" />
 
         <EditText
+            android:paddingLeft="2dp"
             android:background="@drawable/left_bottom_border"
             android:cursorVisible="false"
             android:id="@+id/edtQty"
             android:layout_width="23dp"
             android:layout_height="18dp"
             android:digits="1234567890"
-            android:maxLength="2"
+            android:maxLength="3"
             android:hint="Qty"
+            android:textSize="12sp"
             android:layout_margin="3dp"
             android:inputType="number"
             android:singleLine="true"
-            android:textColor="#ffffff"
+            android:textColor="#000"
             android:textColorHint="#d1d1d1" />
 
     </LinearLayout>
@@ -44,5 +47,6 @@
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:text="D-UL-1"
-        android:textSize="10sp" />
+        android:textColor="#000"
+        android:textSize="12sp" />
 </LinearLayout>
