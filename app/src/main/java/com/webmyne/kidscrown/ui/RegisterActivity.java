@@ -34,6 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
     private void init() {
         btnLogin = (TextView) findViewById(R.id.btnLogin);
         TextInputLayout inputName = (TextInputLayout) findViewById(R.id.edtFirstname);
-        inputName.setError("jhsd");
+
     }
 }
