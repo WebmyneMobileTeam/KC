@@ -81,7 +81,6 @@ public class CrownQuadrant extends LinearLayout {
         for (int i = 0; i < row1.getChildCount(); i++) {
             View view = row1.getChildAt(i);
             TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
             EditText edtQty = (EditText) view.findViewById(R.id.edtQty);
 
             if(!edtQty.getText().toString().isEmpty()){
@@ -93,7 +92,6 @@ public class CrownQuadrant extends LinearLayout {
         for (int i = 0; i < row2.getChildCount(); i++) {
             View view = row2.getChildAt(i);
             TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
             EditText edtQty = (EditText) view.findViewById(R.id.edtQty);
 
             if(!edtQty.getText().toString().isEmpty()){
