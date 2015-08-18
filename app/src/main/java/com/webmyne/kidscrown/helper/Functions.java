@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.math.BigInteger;
@@ -133,5 +135,9 @@ public class Functions {
             e.printStackTrace();
         }
         return str;
+    }
+
+    public static void snack(View v, String msg) {
+        Snackbar.make(v, msg, Snackbar.LENGTH_LONG).show();
     }
 }

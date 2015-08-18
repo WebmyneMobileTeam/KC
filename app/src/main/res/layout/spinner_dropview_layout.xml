@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/spID"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:background="@drawable/spinner_background_transperent"
+    android:gravity="center"
+    android:lines="1"
+    android:padding="5dip"
+    android:text="kdnfdfn"
+    android:textColor="#000000" />

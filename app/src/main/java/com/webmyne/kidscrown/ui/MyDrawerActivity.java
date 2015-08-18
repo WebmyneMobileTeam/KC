@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,8 +14,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
@@ -24,13 +30,16 @@ import com.webmyne.kidscrown.fragment.MyAddressFragment;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
 import com.webmyne.kidscrown.fragment.SettingsFragment;
+import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.model.UserProfile;
 
 public class MyDrawerActivity extends AppCompatActivity {
     Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     NavigationView view;
-    Snackbar snack;
+    ProgressBar progress_spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +62,6 @@ public class MyDrawerActivity extends AppCompatActivity {
 
                 setDrawerClick(menuItem.getItemId());
 
-                snack = Snackbar.make(view, menuItem.getTitle(), Snackbar.LENGTH_LONG);
-                snack.getView().setBackgroundColor(Color.RED);
-                snack.show();
-
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
@@ -69,36 +74,48 @@ public class MyDrawerActivity extends AppCompatActivity {
         FragmentTransaction ft = manager.beginTransaction();
         switch (itemId) {
             case R.id.drawer_home:
+                // Home
                 ft.replace(R.id.content, new HomeFragment(), "HOME_PAGE");
-                //ft.addToBackStack(null);
                 ft.commit();
                 break;
 
             case R.id.drawer_profile:
+                // Profile
                 ft.replace(R.id.content, new ProfileFragment(), "PROFILE_PAGE");
-                //ft.addToBackStack(null);
                 ft.commit();
                 break;
 
             case R.id.drawer_orders:
+                // My Orders
                 ft.replace(R.id.content, new MyOrdersFragment(), "MY_ORDERS_PAGE");
-                //ft.addToBackStack(null);
                 ft.commit();
                 break;
 
             case R.id.drawer_address:
+                // My Address
                 ft.replace(R.id.content, new MyAddressFragment(), "MY_ADDRESS_PAGE");
-                //ft.addToBackStack(null);
                 ft.commit();
                 break;
 
             case R.id.drawer_log_out:
+                // Logout
+                ComplexPreferences preferences = ComplexPreferences.getComplexPreferences(MyDrawerActivity.this, "user_pref", 0);
+                UserProfile currentUserObj = new UserProfile();
+                preferences.putObject("current-user", currentUserObj);
+                preferences.commit();
+
+                SharedPreferences pref = getSharedPreferences("login", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.commit();
+
                 Intent i = new Intent(MyDrawerActivity.this, LoginActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 break;
 
             case R.id.drawer_feedback:
+                // Feedback
                 Intent feedbackIntent = new Intent(Intent.ACTION_SEND);
                 feedbackIntent.setType("text/email");
                 feedbackIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"kids@crown.com"});
@@ -107,18 +124,21 @@ public class MyDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_settings:
+                // Settings
                 ft.replace(R.id.content, new SettingsFragment(), "SETTINGS_PAGE");
                 //ft.addToBackStack(null);
                 ft.commit();
                 break;
 
             case R.id.drawer_about:
+                // About Us
                 ft.replace(R.id.content, new AboutUsFragment(), "ABOUT_US_PAGE");
                 //ft.addToBackStack(null);
                 ft.commit();
                 break;
 
             case R.id.drawer_help:
+                // Help and FAQ
                 ft.replace(R.id.content, new HelpFragment(), "HELP_PAGE");
                 //ft.addToBackStack(null);
                 ft.commit();
@@ -161,7 +181,7 @@ public class MyDrawerActivity extends AppCompatActivity {
         view = (NavigationView) findViewById(R.id.navigation_view);
 
         if (toolbar != null) {
-            toolbar.setTitle("KidsCrown");
+            toolbar.setTitle("Kids Crown");
             setSupportActionBar(toolbar);
         }
 
@@ -171,6 +191,11 @@ public class MyDrawerActivity extends AppCompatActivity {
                 finish();
             }
         });
+        progress_spinner = (ProgressBar) toolbar.findViewById(R.id.progress_spinner);
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyDrawerActivity.this, "user_pref", 0);
+        UserProfile currentUserObj = new UserProfile();
+        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
     }
 
     @Override

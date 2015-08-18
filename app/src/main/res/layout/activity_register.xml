@@ -20,16 +20,44 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/edtFirstname"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salutation"
+                    android:textColor="#ffffff" />
+
+                <RadioGroup
+                    android:id="@+id/rGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:orientation="horizontal">
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
 
                 <EditText
+                    android:id="@+id/edtFirstname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="First Name"
@@ -40,10 +68,11 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
 
                 <EditText
-                    android:id="@+id/edtLastname"
+                    android:id="@+id/edtLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Last Name"
@@ -54,7 +83,23 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
+
+                <EditText
+                    android:id="@+id/edtUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:textColor="#ffffff"
+                    android:textColorHint="@color/editText_hint_color" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
 
                 <EditText
                     android:id="@+id/edtMobile"
@@ -63,19 +108,20 @@
                     android:digits="1234567890"
                     android:hint="Mobile"
                     android:inputType="phone"
+                    android:maxLength="10"
                     android:textColor="#ffffff"
                     android:textColorHint="@color/editText_hint_color" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
 
                 <EditText
                     android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:textColor="#ffffff"
@@ -84,13 +130,13 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
 
                 <EditText
                     android:id="@+id/edtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890"
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:textColor="#ffffff"
@@ -99,13 +145,13 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
 
                 <EditText
                     android:id="@+id/edtConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
                     android:textColor="#ffffff"
@@ -114,33 +160,39 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
 
                 <EditText
                     android:id="@+id/edtRegNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890"
                     android:hint="Registration Number"
                     android:inputType="text"
                     android:textColor="#ffffff"
                     android:textColorHint="@color/editText_hint_color" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="vertical">
 
-                <EditText
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select Qualification"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp" />
+
+                <Spinner
                     android:id="@+id/edtQualification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:hint="Qualificcation"
-                    android:inputType="text"
-                    android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="2dp"
+                    android:background="@null"></Spinner>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnRegister"

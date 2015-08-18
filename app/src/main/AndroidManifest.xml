@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.webmyne.kidscrown" >
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
+        android:name=".helper.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,6 +37,11 @@
             android:name=".ui.RefillActivity"
             android:label="@string/title_activity_refill"
             android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ui.DemoCrownActivity"
+            android:screenOrientation="landscape"
+            android:label="@string/title_activity_demo_crown" >
         </activity>
     </application>
 
