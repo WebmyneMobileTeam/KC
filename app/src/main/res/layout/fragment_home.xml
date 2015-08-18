@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#fff"
     tools:context="com.webmyne.kidscrown.fragment.HomeFragment">
 
 
@@ -16,16 +17,12 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtKit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:clickable="false"
-            android:gravity="center"
-            android:padding="6dp"
-            android:text="Kit"
-            android:textSize="50sp" />
+        <ImageView
+            android:src="@drawable/kit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
 
 
     </LinearLayout>

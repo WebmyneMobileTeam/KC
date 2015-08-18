@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#fff"
+    android:orientation="vertical"
     tools:context="com.webmyne.kidscrown.ui.RefillActivity">
 
     <include layout="@layout/app_bar2"></include>
@@ -21,20 +21,22 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <Button
+            <ImageView
                 android:id="@+id/btnAdd"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:background="@drawable/mybutton"
-                android:gravity="center"
-                android:text="Add" />
-
-            <ScrollView
-                android:scrollbars="none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_gravity="right"
+                android:layout_margin="4dp"
+                android:background="@drawable/ic_action_navigation_arrow_forward"
+                android:gravity="center"
+                android:text="Add to cart"
+                android:visibility="gone" />
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -44,16 +46,24 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="4dp"
+                        android:text="Click Crowns to add (D: Premolar E: Molar)"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="4dp"
                         android:text="Upper Left"
+                        android:textColor="@color/quad_blue"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
 
                     <com.webmyne.kidscrown.ui.widgets.CrownQuadrant
                         android:id="@+id/quadUpperLeft"
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrant>
 
@@ -70,6 +80,7 @@
                         android:gravity="center"
                         android:padding="4dp"
                         android:text="Upper Right"
+                        android:textColor="@color/quad_orange"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -92,6 +103,7 @@
                         android:gravity="center"
                         android:padding="4dp"
                         android:text="Lower Left"
+                        android:textColor="@color/quad_green"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -114,6 +126,7 @@
                         android:gravity="center"
                         android:padding="4dp"
                         android:text="Lower Right"
+                        android:textColor="@color/quad_violate"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -140,53 +153,21 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-            <TextView
+
+            <ListView
+                android:id="@+id/listRefill"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.8"
-                android:gravity="center"
-                android:text="Added Products"
-                android:textSize="18sp" />
+                android:layout_weight="1"></ListView>
 
-            <View
+            <Button
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="6dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="0.001"
-                android:background="@color/primaryColorDark" />
+                android:layout_height="wrap_content"
+                android:background="@color/primaryColor"
+                android:text="Proceed Checkout"
+                android:textColor="#fff" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.199"
-                android:orientation="horizontal"
-                android:weightSum="1">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.4"
-                    android:gravity="center"
-                    android:text="Total Price"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:gravity="center"
-                    android:text="--"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.4"
-                    android:gravity="center"
-                    android:text="123$"
-                    android:textSize="18sp" />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -35,11 +35,6 @@
             android:label="@string/title_activity_refill"
             android:screenOrientation="landscape" >
         </activity>
-        <activity
-            android:name=".ui.DemoCrownActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_demo_crown" >
-        </activity>
     </application>
 
 </manifest>

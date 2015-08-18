@@ -6,45 +6,51 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/itemLinear"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:background="@drawable/crown_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="6dp">
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
 
-        <TextView
-            android:id="@+id/txtCrown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:text="D1"
-            android:textColor="#000"
-            android:textSize="12sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
 
-        <EditText
-            android:paddingLeft="2dp"
-            android:background="@drawable/left_bottom_border"
-            android:cursorVisible="false"
-            android:id="@+id/edtQty"
-            android:layout_width="23dp"
-            android:layout_height="18dp"
-            android:digits="1234567890"
-            android:maxLength="3"
-            android:hint="Qty"
-            android:textSize="12sp"
-            android:layout_margin="3dp"
-            android:inputType="number"
-            android:singleLine="true"
-            android:textColor="#000"
-            android:textColorHint="#d1d1d1" />
 
+            <LinearLayout
+
+                android:id="@+id/viewCB"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtCrown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="D1"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
     </LinearLayout>
 
     <TextView
         android:id="@+id/txtDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="false"
         android:padding="4dp"
         android:text="D-UL-1"
         android:textColor="#000"
