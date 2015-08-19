@@ -42,7 +42,6 @@ public class RefillOrderAdapter extends BaseAdapter {
 
     public void setOnDeleteListner(OnDeleteListner listner) {
         this.onDeleteListner = listner;
-
     }
 
 

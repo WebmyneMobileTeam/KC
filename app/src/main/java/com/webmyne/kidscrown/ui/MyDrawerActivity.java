@@ -1,5 +1,8 @@
 package com.webmyne.kidscrown.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -18,10 +21,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.readystatesoftware.viewbadger.BadgeView;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
 import com.webmyne.kidscrown.fragment.HelpFragment;
@@ -30,6 +35,7 @@ import com.webmyne.kidscrown.fragment.MyAddressFragment;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
 import com.webmyne.kidscrown.fragment.SettingsFragment;
+import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.UserProfile;
@@ -39,7 +45,7 @@ public class MyDrawerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     NavigationView view;
-    ProgressBar progress_spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +197,10 @@ public class MyDrawerActivity extends AppCompatActivity {
                 finish();
             }
         });
-        progress_spinner = (ProgressBar) toolbar.findViewById(R.id.progress_spinner);
+
+        BadgeHelper helper = new BadgeHelper(MyDrawerActivity.this,toolbar);
+        helper.displayBadge(2);
+
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyDrawerActivity.this, "user_pref", 0);
         UserProfile currentUserObj = new UserProfile();

@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:padding="4dp"
-                        android:text="Click Crowns to add (D: Premolar E: Molar)"
+                        android:text="(D: Premolar E: Molar)"
                         android:textSize="16sp" />
 
                     <TextView
@@ -153,18 +153,25 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-
             <ListView
                 android:id="@+id/listRefill"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"></ListView>
 
+            <TextView
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="I'm Empty.\nClick crowns to Add" />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primaryColor"
-                android:text="Proceed Checkout"
+                android:text="CONTINUE TO CART"
                 android:textColor="#fff" />
 
 

@@ -52,7 +52,7 @@ public class CrownQuadrant extends LinearLayout implements View.OnClickListener{
         row1 = (TableRow) tableLayout.getChildAt(0);
         row2 = (TableRow) tableLayout.getChildAt(1);
         linearParentQuad = (LinearLayout)findViewById(R.id.linearParentQuad);
-        linearParentQuad.setOnClickListener(this);
+        //linearParentQuad.setOnClickListener(this);
         sheet = new QuadSheet();
         orderMap = new HashMap<>();
         selectedArray = new ArrayList<>();

@@ -123,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void fetchQualification() {
+
         new CallWebService(Constants.QUALIFICATION_URL, CallWebService.TYPE_GET, null) {
             @Override
             public void response(String response) {

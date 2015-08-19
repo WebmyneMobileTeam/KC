@@ -15,13 +15,12 @@ import org.json.JSONObject;
 
 
 /**
- *
  * @author Made by Dhruvil Patel
  *         <p>
  *         </p>
  *         This is a custom class that represents the impmementation of Volly
  *         classes
- *
+ *         <p>
  *         <li>
  *         <h6>JsonObjectRequest</h6></li> <li>
  *         <h6>JsonArrayRequest</h6></li>
@@ -29,65 +28,54 @@ import org.json.JSONObject;
  *         </p>
  *         <li>You have to give two params in this class as mentioned below</li>
  *         <li>And then write obj.call() to call webservice</li>
- *
+ *         <p>
  *         <p>
  *         </p>
  *         <p>
  *         </p>
  *         * <blockquote></blockquote>
- *
+ *         <p>
  *         <code>CallWebService obj = new CallWebService() {
  * @Override public void response(String response) { // TODO Auto-generated
- *           method stub
- *
- *
- *           }
+ * method stub
+ * <p>
+ * <p>
+ * }
  * @Override public void error(VolleyError error) { // TODO Auto-generated
- *           method stub
- *
- *
- *           } }; <p></p>
- *
- *           obj.setJsonObjectRequest(true); <p></p>
- *           obj.setUrl(AppConstants.SERVICE_URL); <p></p> obj.call();</code>
- *
+ * method stub
+ * <p>
+ * <p>
+ * } }; <p></p>
+ * <p>
+ * obj.setJsonObjectRequest(true); <p></p>
+ * obj.setUrl(AppConstants.SERVICE_URL); <p></p> obj.call();</code>
  */
 public abstract class CallWebService implements IService {
 
 
+    public abstract void response(String response);
 
-	public abstract void response(String response);
-	public abstract void error(VolleyError error);
+    public abstract void error(VolleyError error);
 
-	private String url;
-	String response = null;
+    private String url;
+    String response = null;
 
     JSONObject userObject;
 
-	public static int TYPE_GET = 100;
-	public static int TYPE_POST = 200;
+    public static int TYPE_GET = 100;
+    public static int TYPE_POST = 200;
 
-	public static int TYPE_JSONOBJECT = 0;
-	public static int TYPE_JSONARRAY = 1;
-	public static int TYPE_STRING = 2;
-	public int type = 0, methodType = 0;
+    public static int TYPE_JSONOBJECT = 0;
+    public static int TYPE_JSONARRAY = 1;
+    public static int TYPE_STRING = 2;
+    public int type = 0, methodType = 0;
 
 
-	/**
-	 *
-	 * @param url : server Url
-	 * @param type : The request which you want to receive from server
-	 * <p><b>- Types Example</b></p>
-	 * <p><li>CallWebService.TYPE_JSONOBJECT</li></p>
-	 * <p><li>CallWebService.TYPE_JSONARRAY</li></p>
-	 * <p><li>CallWebService.TYPE_STRING</li></p>
-	 *
-	 */
-	public CallWebService(String url, int type) {
-		super();
-		this.url = url;
-		this.type = type;
-	}
+    public CallWebService(String url, int type) {
+        super();
+        this.url = url;
+        this.type = type;
+    }
 
     public CallWebService(String url, int methodType, JSONObject userObject) {
         super();
@@ -96,85 +84,84 @@ public abstract class CallWebService implements IService {
         this.userObject = userObject;
     }
 
-	// Main implementation of calling the webservice.
+    // Main implementation of calling the webservice.
 
-	public synchronized final CallWebService start(){
+    public synchronized final CallWebService start() {
 
-		call();
+        call();
 
-	return this;
+        return this;
 
-	}
+    }
 
-	public void call() {
+    public void call() {
 
-		switch (methodType) {
+        switch (methodType) {
 
-		// case  for requesting json object, GET type
-		case 100:
-			JsonObjectRequest request = new JsonObjectRequest(url, null,
-					new Listener<JSONObject>() {
+            // case  for requesting json object, GET type
+            case 100:
+                JsonObjectRequest request = new JsonObjectRequest(url, null,
+                        new Listener<JSONObject>() {
 
-						@Override
-						public void onResponse(JSONObject jobj) {
-							// TODO Auto-generated method stub
+                            @Override
+                            public void onResponse(JSONObject jobj) {
+                                // TODO Auto-generated method stub
 
-							response(jobj.toString());
+                                response(jobj.toString());
+                            }
+                        }, new ErrorListener() {
 
-						}
-					}, new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError e) {
+                        // TODO Auto-generated method stub
+                        error(e);
+                    }
+                });
+                request.setRetryPolicy(
+                        new DefaultRetryPolicy(
+                                5000,
+                                0,
+                                0));
+                MyApplication.getInstance().addToRequestQueue(request);
 
-						@Override
-						public void onErrorResponse(VolleyError e) {
-							// TODO Auto-generated method stub
-							error(e);
-						}
-					});
-//            request.setRetryPolicy(
-//                    new DefaultRetryPolicy(
-//                            0,
-//                            0,
-//                            0));
-			MyApplication.getInstance().addToRequestQueue(request);
+                break;
 
-			break;
+            // case for requesting json object, POST Type
+            case 200:
 
-		// case for requesting json object, POST Type
-		case 200:
+                JsonObjectRequest request2 = new JsonObjectRequest(Request.Method.POST, url, userObject, new Listener<JSONObject>() {
 
-            JsonObjectRequest request2 = new JsonObjectRequest(Request.Method.POST, url, userObject, new Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject jobj) {
+                        // TODO Auto-generated method stub
 
-                @Override
-                public void onResponse(JSONObject jobj) {
-                    // TODO Auto-generated method stub
+                        response(jobj.toString());
 
-                    response(jobj.toString());
+                    }
+                }, new ErrorListener() {
 
-                }
-            }, new ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    // TODO Auto-generated method stub
-                    error(e);
-                }
-            });
-//            request.setRetryPolicy(
-//                    new DefaultRetryPolicy(
-//                            0,
-//                            0,
-//                            0));
-            MyApplication.getInstance().addToRequestQueue(request2);
+                    @Override
+                    public void onErrorResponse(VolleyError e) {
+                        // TODO Auto-generated method stub
+                        error(e);
+                    }
+                });
+                request2.setRetryPolicy(
+                        new DefaultRetryPolicy(
+                                5000,
+                                0,
+                                0));
+                MyApplication.getInstance().addToRequestQueue(request2);
 
 
-            break;
+                break;
 
-		case 2:
+            case 2:
 
-			break;
+                break;
 
-		}
+        }
 
-	}
+    }
 
 }

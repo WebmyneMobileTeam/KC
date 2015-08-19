@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RefillActivity extends AppCompatActivity implements CrownQuadrant.OnCrownClickListner,RefillOrderAdapter.OnDeleteListner{
+public class RefillActivity extends AppCompatActivity implements CrownQuadrant.OnCrownClickListner, RefillOrderAdapter.OnDeleteListner {
 
     private android.support.v7.widget.Toolbar toolbar;
     LinearLayout crownSetLayout;
@@ -77,9 +77,10 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
         lowerLeft.setLowerLeft();
         lowerRight.setLowerRight();
 
-        listRefill = (ListView)findViewById(R.id.listRefill);
+        listRefill = (ListView) findViewById(R.id.listRefill);
+        listRefill.setEmptyView(findViewById(android.R.id.empty));
         orderArray = new ArrayList<>();
-        adapter = new RefillOrderAdapter(this,orderArray);
+        adapter = new RefillOrderAdapter(this, orderArray);
         adapter.setOnDeleteListner(this);
         listRefill.setAdapter(adapter);
 
