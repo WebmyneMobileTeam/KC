@@ -1,86 +1,179 @@
 package com.webmyne.kidscrown.fragment;
 
 import android.app.Activity;
+
+import java.lang.reflect.Type;
+
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.adapters.ProductAdapter;
+import com.webmyne.kidscrown.helper.CallWebService;
+import com.webmyne.kidscrown.helper.Constants;
+import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.ToolHelper;
+import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.ui.CrownActivity;
+import com.webmyne.kidscrown.ui.MyDrawerActivity;
+import com.webmyne.kidscrown.ui.ProductDetailActivity;
 import com.webmyne.kidscrown.ui.RefillActivity;
 
 import java.sql.Ref;
+import java.util.ArrayList;
+import java.util.List;
 
-public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    LinearLayout refillLayout, kitLayout;
-
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private ListView listProducts;
+    private ProductAdapter adapter;
 
     public HomeFragment() {
-        // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
         init(view);
-
-        kitLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Functions.fireIntent(getActivity(), CrownActivity.class);
-            }
-        });
-
-        refillLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Functions.fireIntent(getActivity(), RefillActivity.class);
-            }
-        });
-
         return view;
     }
 
     private void init(View v) {
-        refillLayout = (LinearLayout) v.findViewById(R.id.refillLayout);
-        kitLayout = (LinearLayout) v.findViewById(R.id.kitLayout);
+
+        listProducts = (ListView) v.findViewById(R.id.listProducts);
+        listProducts.setOnItemClickListener(this);
+        listProducts.setEmptyView(v.findViewById(R.id.txtLoading));
+        ((MyDrawerActivity) getActivity()).setTitle("Products");
 
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayProducts();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        fetchProducts();
+    }
+
+    private void displayProducts() {
+
+
+        String[] columns = new String[]{
+                "name",
+                "description",
+        };
+
+        int[] to = new int[]{
+                R.id.txtProductTitle,
+                R.id.txtProductDescription
+        };
+
+        try {
+            DatabaseHandler handler = new DatabaseHandler(getActivity());
+            handler.openDataBase();
+            Cursor cursor = handler.getProductsCursor();
+            handler.close();
+            adapter = new ProductAdapter(getActivity(), R.layout.item_product, cursor, columns, to, 0);
+            listProducts.setAdapter(adapter);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void fetchProducts() {
+
+
+        View view = ((MyDrawerActivity) getActivity()).getToolbar().getRootView();
+        final ToolHelper helper = new ToolHelper(getActivity(), view);
+        helper.displayProgress();
+
+        new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
+            @Override
+            public void response(String response) {
+                helper.hideProgress();
+                Log.e("Response Products", response);
+                Type listType = new TypeToken<List<Product>>() {
+                }.getType();
+                ArrayList<Product> products = new GsonBuilder().create().fromJson(response, listType);
+                DatabaseHandler handler = new DatabaseHandler(getActivity());
+                handler.saveProducts(products);
+                handler.close();
+                displayProducts();
+
+
+            }
+
+            @Override
+            public void error(String error) {
+                helper.hideProgress();
+                Log.e("Error", error);
+
+            }
+        }.call();
+
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+        processProductClick(cursor);
+
+    }
+
+    private void processProductClick(Cursor cursor) {
+
+        String productName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+        int productId = cursor.getInt(cursor.getColumnIndexOrThrow("product_id"));
+
+        if (productName.equalsIgnoreCase("Crown")) {
+
+            Intent iRefill = new Intent(getActivity(), RefillActivity.class);
+            iRefill.putExtra("product_id", productId);
+            startActivity(iRefill);
+
+
+        } else {
+
+            Intent iDetail = new Intent(getActivity(), ProductDetailActivity.class);
+            iDetail.putExtra("product_id", productId);
+            startActivity(iDetail);
+        }
+
+    }
+
 
 }

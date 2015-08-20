@@ -1,56 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
-    android:background="#fff"
+    android:padding="16dp"
     tools:context="com.webmyne.kidscrown.fragment.HomeFragment">
 
 
-    <LinearLayout
-        android:id="@+id/kitLayout"
+    <ListView
+        android:id="@+id/listProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="8dp"
+        android:scrollbars="none"></ListView>
+
+    <TextView
+        android:id="@+id/txtLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:src="@drawable/kit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:text="Fetching Products.."
+        android:textSize="18sp" />
 
 
-
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/primaryColorDark" />
-
-    <LinearLayout
-        android:id="@+id/refillLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/txtRefill"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:clickable="false"
-            android:gravity="center"
-            android:padding="6dp"
-            android:text="Refill"
-            android:textSize="50sp" />
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

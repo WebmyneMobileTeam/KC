@@ -55,7 +55,7 @@ public abstract class CallWebService implements IService {
 
     public abstract void response(String response);
 
-    public abstract void error(VolleyError error);
+    public abstract void error(String error);
 
     private String url;
     String response = null;
@@ -74,7 +74,7 @@ public abstract class CallWebService implements IService {
     public CallWebService(String url, int type) {
         super();
         this.url = url;
-        this.type = type;
+        this.methodType = type;
     }
 
     public CallWebService(String url, int methodType, JSONObject userObject) {
@@ -107,19 +107,32 @@ public abstract class CallWebService implements IService {
                             public void onResponse(JSONObject jobj) {
                                 // TODO Auto-generated method stub
 
-                                response(jobj.toString());
+                                try{
+                                    String responseCode = String.valueOf(jobj.getInt("ResponseCode"));
+
+                                    if (responseCode.equalsIgnoreCase("1")){
+                                        response(jobj.getJSONArray("Data").toString());
+                                    }else{
+                                        error(jobj.getString("ResponseMessage"));
+                                    }
+
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                    error("Server Error");
+                                }
+
                             }
                         }, new ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError e) {
                         // TODO Auto-generated method stub
-                        error(e);
+                        error(e.getMessage());
                     }
                 });
                 request.setRetryPolicy(
                         new DefaultRetryPolicy(
-                                5000,
+                                0,
                                 0,
                                 0));
                 MyApplication.getInstance().addToRequestQueue(request);
@@ -143,12 +156,12 @@ public abstract class CallWebService implements IService {
                     @Override
                     public void onErrorResponse(VolleyError e) {
                         // TODO Auto-generated method stub
-                        error(e);
+                        error(e.getMessage());
                     }
                 });
                 request2.setRetryPolicy(
                         new DefaultRetryPolicy(
-                                5000,
+                                0,
                                 0,
                                 0));
                 MyApplication.getInstance().addToRequestQueue(request2);

@@ -1,15 +1,10 @@
 package com.webmyne.kidscrown.ui;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -17,16 +12,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.readystatesoftware.viewbadger.BadgeView;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
 import com.webmyne.kidscrown.fragment.HelpFragment;
@@ -35,9 +23,7 @@ import com.webmyne.kidscrown.fragment.MyAddressFragment;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
 import com.webmyne.kidscrown.fragment.SettingsFragment;
-import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
-import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.UserProfile;
 
 public class MyDrawerActivity extends AppCompatActivity {
@@ -73,6 +59,14 @@ public class MyDrawerActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public Toolbar getToolbar(){
+        return toolbar;
+    }
+
+    public void setTitle(String title){
+        toolbar.setTitle(title);
     }
 
     private void setDrawerClick(int itemId) {
@@ -190,18 +184,12 @@ public class MyDrawerActivity extends AppCompatActivity {
             toolbar.setTitle("Kids Crown");
             setSupportActionBar(toolbar);
         }
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
-        BadgeHelper helper = new BadgeHelper(MyDrawerActivity.this,toolbar);
-        helper.displayBadge(2);
-
-
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyDrawerActivity.this, "user_pref", 0);
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);

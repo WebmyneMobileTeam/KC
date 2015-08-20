@@ -135,7 +135,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void error(VolleyError error) {
+            public void error(String error) {
 
             }
         }.call();
@@ -192,7 +192,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void error(VolleyError error) {
+            public void error(String error) {
 
             }
         }.call();

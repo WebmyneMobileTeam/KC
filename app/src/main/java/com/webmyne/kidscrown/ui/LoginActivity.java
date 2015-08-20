@@ -71,37 +71,32 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void response(String response) {
                 pd.dismiss();
-                Log.e("login response", response);
-                JSONArray data;
                 try {
-                    JSONObject obj = new JSONObject(response);
-                    if (obj.getString("ResponseMessage").equals("Success")) {
-                        data = obj.getJSONArray("Data");
-                        JSONObject description = data.getJSONObject(0);
+                    JSONArray obj = new JSONArray(response);
+                    JSONObject description = obj.getJSONObject(0);
+                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
 
-                        UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
+                    complexPreferences.putObject("current-user", profile);
+                    complexPreferences.commit();
 
-                        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
-                        complexPreferences.putObject("current-user", profile);
-                        complexPreferences.commit();
+                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("isUserLogin", true);
+                    editor.commit();
 
-                        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putBoolean("isUserLogin", true);
-                        editor.commit();
+                    Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    finish();
 
-                        Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                        finish();
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void error(VolleyError error) {
+            public void error(String error) {
 
             }
         }.call();

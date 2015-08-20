@@ -38,6 +38,12 @@ public class MyApplication extends Application {
         super.onCreate();
         // initialize the singleton
         sInstance = this;
+        DatabaseHandler handler = new DatabaseHandler(getApplicationContext());
+        try{
+            handler.createDataBase();
+        }catch(Exception e){
+
+        }
 
 
     }

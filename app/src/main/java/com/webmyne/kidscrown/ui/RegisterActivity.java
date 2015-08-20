@@ -154,7 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void error(VolleyError error) {
+            public void error(String error) {
 
             }
         }.call();
@@ -199,7 +199,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void error(VolleyError error) {
+            public void error(String error) {
 
             }
         }.call();
@@ -305,8 +305,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void error(VolleyError error) {
-                Log.e("error", error.getMessage());
+            public void error(String error) {
+                Log.e("error", error);
             }
         }.call();
 
