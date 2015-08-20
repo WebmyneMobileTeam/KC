@@ -1,6 +1,8 @@
 package com.webmyne.kidscrown.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.GsonBuilder;
@@ -23,9 +26,11 @@ import com.webmyne.kidscrown.adapter.QualificationAdapter;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.Qualification;
 import com.webmyne.kidscrown.model.Salutation;
 import com.webmyne.kidscrown.model.UserProfile;
+import com.webmyne.kidscrown.ui.MyDrawerActivity;
 import com.webmyne.kidscrown.ui.RegisterActivity;
 
 import org.json.JSONArray;
@@ -47,15 +52,10 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
 
     EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName;
-    String firstName, lastName, mobile, emailId, password, registartionNo, qualification, username, salutation;
-    Spinner edtQualification;
-    RadioGroup rGroup;
-    int salutationId = 0;
-    ArrayList<Salutation> salutations = new ArrayList<>();
-    ArrayList<Qualification> qualifications = new ArrayList<>();
-    RadioButton rButton;
+    String firstName, lastName, mobile, emailId, password, registartionNo, username, salutation, userId;
     Button btnUpdate;
     ProgressDialog pd;
+    View parentView;
 
     /**
      * Use this factory method to create a new instance of
@@ -92,129 +92,29 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        parentView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        init(view);
+        init(parentView);
 
-        fetchSalutation();
-
-        fetchQualification();
-
-        return view;
-    }
-
-    private void fetchQualification() {
-        new CallWebService(Constants.QUALIFICATION_URL, CallWebService.TYPE_GET, null) {
-            @Override
-            public void response(String response) {
-                try {
-                    JSONObject obj = new JSONObject(response);
-                    JSONArray data = obj.getJSONArray("Data");
-
-                    Type listType = new TypeToken<List<Qualification>>() {
-                    }.getType();
-
-                    qualifications = new GsonBuilder().create().fromJson(data.toString(), listType);
-                    QualificationAdapter adapter = new QualificationAdapter(getActivity(), qualifications);
-                    edtQualification.setAdapter(adapter);
-                    edtQualification.setSelection(getIndex(edtQualification, qualification));
-                    edtQualification.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            qualification = qualifications.get(position).CodeValue;
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void error(String error) {
-
-            }
-        }.call();
-    }
-
-    private int getIndex(Spinner edtQualification, String qualification) {
-        int index = 0;
-        for (int i = 0; i < edtQualification.getCount(); i++) {
-            if (edtQualification.getItemAtPosition(i).equals(qualification)) {
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-
-    private void fetchSalutation() {
-        new CallWebService(Constants.SALUTATION_URL, CallWebService.TYPE_GET, null) {
-            @Override
-            public void response(String response) {
-                try {
-                    JSONObject obj = new JSONObject(response);
-                    JSONArray data = obj.getJSONArray("Data");
-
-                    Type listType = new TypeToken<List<Salutation>>() {
-                    }.getType();
-
-                    salutations = new GsonBuilder().create().fromJson(data.toString(), listType);
-
-                    RadioGroup.LayoutParams rprms;
-                    rprms = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-                    rprms.setMargins(6, 0, 6, 0);
-                    for (int i = 0; i < salutations.size(); i++) {
-                        RadioButton rButton = new RadioButton(getActivity());
-                        rButton.setTextColor(Color.WHITE);
-                        rButton.setPadding(6, 6, 6, 6);
-                        rButton.setButtonDrawable(R.drawable.custom_radio_drawable);
-                        rButton.setId(salutations.get(i).CodeID);
-                        rButton.setText(salutations.get(i).CodeValue);
-                        if (salutations.get(i).CodeID == Integer.parseInt(salutation)) {
-                            rButton.setChecked(true);
-                        }
-                        rGroup.addView(rButton, rprms);
-                        rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                                salutationId = checkedId;
-                            }
-                        });
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void error(String error) {
-
-            }
-        }.call();
+        return parentView;
     }
 
     private void init(View view) {
         edtFirstname = (EditText) view.findViewById(R.id.edtFirstname);
         edtLastName = (EditText) view.findViewById(R.id.edtLastName);
         edtUserName = (EditText) view.findViewById(R.id.edtUserName);
-        rGroup = (RadioGroup) view.findViewById(R.id.rGroup);
         edtMobile = (EditText) view.findViewById(R.id.edtMobile);
         edtEmail = (EditText) view.findViewById(R.id.edtEmail);
         edtPassword = (EditText) view.findViewById(R.id.edtPassword);
         edtConfirmPassword = (EditText) view.findViewById(R.id.edtConfirmPassword);
         edtRegNo = (EditText) view.findViewById(R.id.edtRegNo);
-        edtQualification = (Spinner) view.findViewById(R.id.edtQualification);
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
-        Log.e("ID", currentUserObj.UserID);
+        userId = currentUserObj.UserID;
+        Log.e("userId", userId);
         firstName = currentUserObj.FirstName;
         lastName = currentUserObj.LastName;
         username = currentUserObj.UserName;
@@ -222,7 +122,6 @@ public class ProfileFragment extends Fragment {
         mobile = currentUserObj.MobileNo;
         password = currentUserObj.Password;
         registartionNo = currentUserObj.RegistrationNumber;
-        qualification = currentUserObj.Qualification;
         salutation = currentUserObj.Salutation;
 
         edtFirstname.setText(firstName);
@@ -237,9 +136,98 @@ public class ProfileFragment extends Fragment {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                checkValidation();
             }
         });
+    }
+
+    private void checkValidation() {
+        if (edtFirstname.getText().toString().trim().length() == 0) {
+            Functions.snack(parentView, "First name is required");
+        } else if (edtLastName.getText().toString().trim().length() == 0) {
+            Functions.snack(parentView, "Last name is requird.");
+        } else if (edtMobile.getText().toString().trim().length() == 0) {
+            Functions.snack(parentView, "Mobile number is required");
+        } else if (edtEmail.getText().toString().trim().length() == 0) {
+            Functions.snack(parentView, "Email-id is required");
+        } else if (edtPassword.getText().toString().trim().length() == 0) {
+            Functions.snack(parentView, "Password is required");
+        } else if (edtRegNo.getText().toString().trim().length() == 0) {
+            Functions.snack(parentView, "Registration number is required");
+        } else if (edtUserName.getText().toString().trim().length() == 0) {
+            Functions.snack(parentView, "Username is required");
+        } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
+            Functions.snack(parentView, "Password and confirm password does not match");
+        } else {
+            registerWebService();
+        }
+    }
+
+    private void registerWebService() {
+        username = edtUserName.getText().toString().trim();
+        firstName = edtFirstname.getText().toString().trim();
+        lastName = edtLastName.getText().toString().trim();
+        mobile = edtMobile.getText().toString().trim();
+        emailId = edtEmail.getText().toString().trim();
+        password = edtPassword.getText().toString();
+        registartionNo = edtRegNo.getText().toString().trim();
+
+        JSONObject userObject = null;
+        try {
+            userObject = new JSONObject();
+            userObject.put("EmailID", emailId);
+            userObject.put("FirstName", firstName);
+            userObject.put("IsActive", true);
+            userObject.put("IsDelete", false);
+            userObject.put("LastName", lastName);
+            userObject.put("MobileNo", mobile);
+            userObject.put("MobileOS", "A");
+            userObject.put("Password", password);
+            userObject.put("Qualification", "");
+            userObject.put("RegistrationNumber", registartionNo);
+            userObject.put("Salutation", 0);
+            userObject.put("UserID", userId);
+            userObject.put("UserName", username);
+            userObject.put("UserRoleID", 2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
+        Functions.logE("update request", userObject.toString());
+
+        new CallWebService(Constants.UPDATE_URL, CallWebService.TYPE_POST, userObject) {
+            @Override
+            public void response(String response) {
+                pd.dismiss();
+                JSONArray data;
+                Log.e("update response", response + "");
+                try {
+                    data = new JSONArray(response);
+                    JSONObject description = data.getJSONObject(0);
+
+                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
+
+                    Functions.snack(parentView, "Update Profile Successfully");
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+                    complexPreferences.putObject("current-user", profile);
+                    complexPreferences.commit();
+
+                    Intent i = new Intent(getActivity(), MyDrawerActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(i);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                Log.e("error", error);
+            }
+        }.call();
+
     }
 
 }

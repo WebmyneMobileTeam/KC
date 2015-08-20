@@ -61,11 +61,11 @@ public class MyDrawerActivity extends AppCompatActivity {
         });
     }
 
-    public Toolbar getToolbar(){
+    public Toolbar getToolbar() {
         return toolbar;
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         toolbar.setTitle(title);
     }
 

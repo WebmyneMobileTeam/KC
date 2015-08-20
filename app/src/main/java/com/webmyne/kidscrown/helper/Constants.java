@@ -13,7 +13,8 @@ public class Constants {
     public static final String LOGIN_URL = BASE_URL + "/User.svc/json/UserLogin/";
     public static final String SALUTATION_URL = BASE_URL + "/User.svc/json/FetchAllCodeCommonList/Salutation";
     public static final String QUALIFICATION_URL = BASE_URL + "/User.svc/json/FetchAllCodeCommonList/Qualification";
-    public static final String FETCH_PRODUCTS = BASE_URL+"/Master.svc/json/FetchCurrentPricing";
+    public static final String FETCH_PRODUCTS = BASE_URL + "/Master.svc/json/FetchCurrentPricing";
+    public static final String UPDATE_URL = BASE_URL + "/User.svc/json/UpdateUserProfile";
 
     //Request
     public static final int REQUEST_ERROR_GENERAL = -1;

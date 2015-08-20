@@ -148,7 +148,19 @@ public abstract class CallWebService implements IService {
                     public void onResponse(JSONObject jobj) {
                         // TODO Auto-generated method stub
 
-                        response(jobj.toString());
+                        try{
+                            String responseCode = String.valueOf(jobj.getInt("ResponseCode"));
+
+                            if (responseCode.equalsIgnoreCase("1")){
+                                response(jobj.getJSONArray("Data").toString());
+                            }else{
+                                error(jobj.getString("ResponseMessage"));
+                            }
+
+                        }catch(Exception e){
+                            e.printStackTrace();
+                            error("Server Error");
+                        }
 
                     }
                 }, new ErrorListener() {
