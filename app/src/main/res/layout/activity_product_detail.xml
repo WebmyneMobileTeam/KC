@@ -16,6 +16,7 @@
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cbs="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -104,6 +105,13 @@
                     style="@style/Widget.CardContent2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
+                    <com.webmyne.kidscrown.ui.widgets.ComboSeekBar
+                        android:layout_margin="16dp"
+                        android:id="@+id/combo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        cbs:myColor="@android:color/black"/>
 
                     <TextView
                         android:layout_width="match_parent"

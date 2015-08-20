@@ -23,6 +23,9 @@ import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.model.Product;
+import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
+
+import java.util.ArrayList;
 
 public class ProductDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -30,6 +33,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ImageView imageProduct;
     private int productID;
     private FloatingActionButton fabShop;
+    private ComboSeekBar combo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +64,35 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        combo = (ComboSeekBar)findViewById(R.id.combo);
+        ArrayList<String> arr = new ArrayList<>();
+        arr.add("1");
+        arr.add("2");
+        arr.add("3");
+        arr.add("4");
+        arr.add("5");
+        arr.add("1");
+        arr.add("2");
+        arr.add("3");
+        arr.add("4");
+        arr.add("5");
+        combo.setAdapter(arr);
+        combo.setSelection(0);
+
+
 
     }
 
     private void setWindowAnim() {
 
-
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
+    }
 
     @Override
     protected void onResume() {
@@ -90,7 +115,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         imageProduct.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
         collapsingToolbar.setContentScrimColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
-
+        combo.setColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
 
 
     }

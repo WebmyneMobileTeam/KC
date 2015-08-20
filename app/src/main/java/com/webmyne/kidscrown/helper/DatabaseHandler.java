@@ -13,6 +13,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductImage;
+import com.webmyne.kidscrown.model.ProductPrice;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,6 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCT = "Product";
     private static final String TABLE_PRODUCT_IMAGE = "ProductImage";
     private static final String TABLE_ADDRESS = "Address";
+    private static final String TABLE_PRODUCT_PRICE = "ProductPrice";
 
     private static final String DATABASE_PATH = "/data/data/com.webmyne.kidscrown/databases/";
     private Context context;
@@ -129,6 +131,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase = this.getWritableDatabase();
         myDataBase.delete(TABLE_PRODUCT, null, null);
 
+        myDataBase = this.getWritableDatabase();
+        myDataBase.delete(TABLE_PRODUCT_PRICE, null, null);
+
+        myDataBase = this.getWritableDatabase();
+        myDataBase.delete(TABLE_PRODUCT_IMAGE, null, null);
+
         ArrayList<Integer> colors;
         colors = new ArrayList();
         int pos = 0;
@@ -143,8 +151,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             myDataBase = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("description", product.description);
-           // values.put("max", product.max);
-           // values.put("min", product.min);
+            // values.put("max", product.max);
+            // values.put("min", product.min);
             values.put("price", product.price);
             values.put("product_id", product.productID);
             values.put("name", product.name);
@@ -158,7 +166,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
             saveProductImages(product.images);
 
+            saveProductPrices(product.prices);
+
+
         }
+
+    }
+
+    private void saveProductPrices(ArrayList<ProductPrice> prices) {
+
+
+
+        for (ProductPrice price : prices) {
+            myDataBase = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("product_id", price.product_id);
+            values.put("price_id", price.price_id);
+            values.put("price", price.price);
+            values.put("min", price.min);
+            values.put("max", price.max);
+            myDataBase.insert(TABLE_PRODUCT_PRICE, null, values);
+        }
+
 
     }
 
@@ -203,8 +232,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     private void saveProductImages(ArrayList<ProductImage> images) {
-        myDataBase = this.getWritableDatabase();
-        myDataBase.delete(TABLE_PRODUCT_IMAGE, null, null);
+
 
         for (ProductImage image : images) {
             myDataBase = this.getWritableDatabase();
