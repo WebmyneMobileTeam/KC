@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
 
 public class MyOrdersFragment extends Fragment {
@@ -55,6 +56,7 @@ public class MyOrdersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
+        ((MyDrawerActivity) getActivity()).setTitle("My Orders");
         return view;
     }
 

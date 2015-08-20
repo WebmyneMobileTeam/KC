@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
 public class AboutUsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -54,6 +55,7 @@ public class AboutUsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about, container, false);
+        ((MyDrawerActivity) getActivity()).setTitle("About Us");
         return view;
     }
 

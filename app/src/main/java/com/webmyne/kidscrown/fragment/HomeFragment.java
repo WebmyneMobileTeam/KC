@@ -69,7 +69,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         listProducts.setEmptyView(v.findViewById(R.id.txtLoading));
         ((MyDrawerActivity) getActivity()).setTitle("Products");
 
-
     }
 
     @Override
@@ -85,8 +84,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     private void displayProducts() {
-
-
         String[] columns = new String[]{
                 "name",
                 "description",
@@ -114,7 +111,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void fetchProducts() {
 
-
         View view = ((MyDrawerActivity) getActivity()).getToolbar().getRootView();
         final ToolHelper helper = new ToolHelper(getActivity(), view);
         helper.displayProgress();
@@ -131,7 +127,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 handler.saveProducts(products);
                 handler.close();
                 displayProducts();
-
 
             }
 

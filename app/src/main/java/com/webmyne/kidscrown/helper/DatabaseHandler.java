@@ -10,6 +10,7 @@ import android.util.Log;
 
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductImage;
 
@@ -30,6 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "kidscrown.db";
     private static final String TABLE_PRODUCT = "Product";
     private static final String TABLE_PRODUCT_IMAGE = "ProductImage";
+    private static final String TABLE_ADDRESS = "Address";
 
     private static final String DATABASE_PATH = "/data/data/com.webmyne.kidscrown/databases/";
     private Context context;
@@ -149,19 +151,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("product_number", product.product_number);
             values.put("color", colors.get(pos));
             myDataBase.insert(TABLE_PRODUCT, null, values);
-            if(pos >= colors.size()-1){
+            if (pos >= colors.size() - 1) {
                 pos = 0;
-            }else{
+            } else {
                 pos = pos + 1;
             }
             saveProductImages(product.images);
 
         }
 
+    }
+
+    public void saveAddress(ArrayList<Address> addresses) {
+        myDataBase = this.getWritableDatabase();
+        myDataBase.delete(TABLE_ADDRESS, null, null);
+
+        ArrayList<Integer> colors;
+        colors = new ArrayList();
+        int pos = 0;
+        Resources res = context.getResources();
+        colors.add(res.getColor(R.color.quad_green));
+        colors.add(res.getColor(R.color.quad_violate));
+        colors.add(res.getColor(R.color.quad_orange));
+        colors.add(res.getColor(R.color.quad_blue));
+
+        for (Address address : addresses) {
+
+            myDataBase = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("user_id", address.UserID);
+            values.put("pincode", address.PinCode);
+            values.put("mobile", address.MobileNo);
+            values.put("state_name", "");
+            values.put("state_id", address.StateID);
+            values.put("country_name", "");
+            values.put("country_id", address.CountryID);
+            values.put("city_name", "");
+            values.put("city_id", address.CityID);
+            values.put("address_id", address.AddressID);
+            values.put("address_2", address.Address2);
+            values.put("address_1", address.Address1);
+            values.put("color", colors.get(pos));
+            myDataBase.insert(TABLE_ADDRESS, null, values);
+            if (pos >= colors.size() - 1) {
+                pos = 0;
+            } else {
+                pos = pos + 1;
+            }
+        }
 
     }
 
     private void saveProductImages(ArrayList<ProductImage> images) {
+        myDataBase = this.getWritableDatabase();
+        myDataBase.delete(TABLE_PRODUCT_IMAGE, null, null);
 
         for (ProductImage image : images) {
             myDataBase = this.getWritableDatabase();

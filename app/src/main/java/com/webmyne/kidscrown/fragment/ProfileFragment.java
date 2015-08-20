@@ -139,6 +139,8 @@ public class ProfileFragment extends Fragment {
                 checkValidation();
             }
         });
+
+        ((MyDrawerActivity) getActivity()).setTitle("Profile");
     }
 
     private void checkValidation() {

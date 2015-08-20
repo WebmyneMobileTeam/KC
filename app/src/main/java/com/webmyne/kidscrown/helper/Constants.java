@@ -15,6 +15,7 @@ public class Constants {
     public static final String QUALIFICATION_URL = BASE_URL + "/User.svc/json/FetchAllCodeCommonList/Qualification";
     public static final String FETCH_PRODUCTS = BASE_URL + "/Master.svc/json/FetchCurrentPricing";
     public static final String UPDATE_URL = BASE_URL + "/User.svc/json/UpdateUserProfile";
+    public static final String GET_EXISTING_ADDRESS = BASE_URL + "/Master.svc/json/FetchShippingAddresses";
 
     //Request
     public static final int REQUEST_ERROR_GENERAL = -1;
