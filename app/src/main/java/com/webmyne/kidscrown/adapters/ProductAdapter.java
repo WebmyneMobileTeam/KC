@@ -1,33 +1,45 @@
 package com.webmyne.kidscrown.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class ProductAdapter extends SimpleCursorAdapter {
 
     private Context _ctx;
-    private int colors[] = {R.color.quad_blue,R.color.quad_green,R.color.quad_orange,R.color.quad_violate};
+
+
 
     public ProductAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);
         this._ctx = context;
+
+
+
     }
 
     class ViewHolder {
         TextView txtProductTitle;
         TextView txtDescription;
         ImageView imgProduct;
+        LinearLayout linearParent;
     }
 
 
@@ -38,11 +50,9 @@ public class ProductAdapter extends SimpleCursorAdapter {
         View rowView = layoutInflator1.inflate(R.layout.item_product, parent, false);
         ViewHolder holder = new ViewHolder();
         holder.txtProductTitle = (TextView) rowView.findViewById(R.id.txtProductTitle);
-        holder.txtDescription = (TextView)rowView.findViewById(R.id.txtProductDescription);
-        holder.imgProduct = (ImageView)rowView.findViewById(R.id.imgProduct);
-
-        int position = cursor.getPosition();
-       // rowView.setBackgroundColor(colors[position]);
+        holder.txtDescription = (TextView) rowView.findViewById(R.id.txtProductDescription);
+        holder.imgProduct = (ImageView) rowView.findViewById(R.id.imgProduct);
+        holder.linearParent = (LinearLayout) rowView.findViewById(R.id.linearParent);
 
         displayValues(holder, cursor);
         rowView.setTag(holder);
@@ -60,9 +70,13 @@ public class ProductAdapter extends SimpleCursorAdapter {
 
         holder.txtProductTitle.setText(name);
         holder.txtDescription.setText(Html.fromHtml(description));
-        if(path !=null && !path.isEmpty()){
+        if (path != null && !path.isEmpty()) {
             Glide.with(_ctx).load(path).into(holder.imgProduct);
         }
+
+        int color = cursor.getInt(cursor.getColumnIndexOrThrow("color"));
+        holder.linearParent.setBackgroundColor(color);
+
 
     }
 

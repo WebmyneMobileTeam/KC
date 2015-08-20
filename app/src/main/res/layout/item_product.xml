@@ -7,6 +7,7 @@
     android:layout_marginRight="@dimen/card_margin">
 
     <LinearLayout
+       android:id="@+id/linearParent"
         android:gravity="center_vertical"
         style="@style/Widget.CardContent"
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:textColor="#fff"
                 android:id="@+id/txtProductTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,6 +31,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <TextView
+                android:textColor="#fff"
                 android:id="@+id/txtProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -2,11 +2,14 @@ package com.webmyne.kidscrown.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
+import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductImage;
 
@@ -124,6 +127,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase = this.getWritableDatabase();
         myDataBase.delete(TABLE_PRODUCT, null, null);
 
+        ArrayList<Integer> colors;
+        colors = new ArrayList();
+        int pos = 0;
+        Resources res = context.getResources();
+        colors.add(res.getColor(R.color.quad_green));
+        colors.add(res.getColor(R.color.quad_violate));
+        colors.add(res.getColor(R.color.quad_orange));
+        colors.add(res.getColor(R.color.quad_blue));
+
         for (Product product : products) {
 
             myDataBase = this.getWritableDatabase();
@@ -135,8 +147,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("product_id", product.productID);
             values.put("name", product.name);
             values.put("product_number", product.product_number);
+            values.put("color", colors.get(pos));
             myDataBase.insert(TABLE_PRODUCT, null, values);
-
+            if(pos >= colors.size()-1){
+                pos = 0;
+            }else{
+                pos = pos + 1;
+            }
             saveProductImages(product.images);
 
         }

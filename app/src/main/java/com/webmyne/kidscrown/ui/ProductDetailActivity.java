@@ -49,20 +49,16 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         fabShop = (FloatingActionButton) findViewById(R.id.fabShop);
         fabShop.setRippleColor(getResources().getColor(R.color.quad_green));
-        fabShop.setBackgroundTintMode(PorterDuff.Mode.ADD);
+
         fabShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
             }
         });
 
 
-
-
     }
-
 
 
     @Override
@@ -82,6 +78,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         if (imagePath != null && imagePath.isEmpty() == false) {
             Glide.with(ProductDetailActivity.this).load(imagePath).into(imageProduct);
         }
+
+        //toolbar.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
+        imageProduct.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
+        collapsingToolbar.setContentScrimColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
+        // fabShop.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
 
 
     }
