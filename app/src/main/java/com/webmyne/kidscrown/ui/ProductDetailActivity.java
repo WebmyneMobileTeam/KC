@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
+        setWindowAnim();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,6 +45,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
         productID = getIntent().getIntExtra("product_id", 0);
@@ -56,6 +59,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
+
+
+    }
+
+    private void setWindowAnim() {
 
 
     }
@@ -74,15 +82,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         handler.close();
         collapsingToolbar.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
+
         String imagePath = handler.getImagePath("" + productID);
         if (imagePath != null && imagePath.isEmpty() == false) {
             Glide.with(ProductDetailActivity.this).load(imagePath).into(imageProduct);
         }
 
-        //toolbar.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
         imageProduct.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
         collapsingToolbar.setContentScrimColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
-        // fabShop.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
+
 
 
     }

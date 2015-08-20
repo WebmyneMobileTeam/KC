@@ -15,12 +15,6 @@ public class Product {
     @SerializedName("Description")
     public String description;
 
-    @SerializedName("MinQty")
-    public int min;
-
-    @SerializedName("MaxQty")
-    public int max;
-
     @SerializedName("Price")
     public int price;
 
@@ -32,6 +26,9 @@ public class Product {
 
     @SerializedName("lstProductImg")
     public ArrayList<ProductImage> images;
+
+    @SerializedName("lstProductPrice")
+    public ArrayList<ProductPrice> prices;
 
 
 }

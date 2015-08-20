@@ -118,6 +118,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {
+
                 helper.hideProgress();
                 Log.e("Response Products", response);
                 Type listType = new TypeToken<List<Product>>() {
@@ -166,6 +167,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             Intent iDetail = new Intent(getActivity(), ProductDetailActivity.class);
             iDetail.putExtra("product_id", productId);
             startActivity(iDetail);
+            getActivity().overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
         }
 
     }

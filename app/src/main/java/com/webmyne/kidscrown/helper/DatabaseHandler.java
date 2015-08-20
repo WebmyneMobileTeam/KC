@@ -143,8 +143,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             myDataBase = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("description", product.description);
-            values.put("max", product.max);
-            values.put("min", product.min);
+           // values.put("max", product.max);
+           // values.put("min", product.min);
             values.put("price", product.price);
             values.put("product_id", product.productID);
             values.put("name", product.name);
