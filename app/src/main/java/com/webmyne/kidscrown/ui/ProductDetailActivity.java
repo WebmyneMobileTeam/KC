@@ -12,12 +12,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
@@ -34,12 +37,13 @@ public class ProductDetailActivity extends AppCompatActivity {
     private int productID;
     private FloatingActionButton fabShop;
     private ComboSeekBar combo;
+    Cursor cursor;
+    private TextView txtInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        setWindowAnim();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,28 +68,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        combo = (ComboSeekBar)findViewById(R.id.combo);
-        ArrayList<String> arr = new ArrayList<>();
-        arr.add("1");
-        arr.add("2");
-        arr.add("3");
-        arr.add("4");
-        arr.add("5");
-        arr.add("1");
-        arr.add("2");
-        arr.add("3");
-        arr.add("4");
-        arr.add("5");
-        combo.setAdapter(arr);
-        combo.setSelection(0);
-
-
+        combo = (ComboSeekBar) findViewById(R.id.combo);
+        txtInfo = (TextView)findViewById(R.id.txtInfo);
 
     }
 
-    private void setWindowAnim() {
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -103,19 +90,17 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void fetchDetails() {
 
         DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
-        Cursor cursor = handler.getProductCursor("" + productID);
+        cursor = handler.getProductCursor("" + productID);
         handler.close();
         collapsingToolbar.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("name")));
-
-
         String imagePath = handler.getImagePath("" + productID);
         if (imagePath != null && imagePath.isEmpty() == false) {
             Glide.with(ProductDetailActivity.this).load(imagePath).into(imageProduct);
         }
-
         imageProduct.setBackgroundColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
         collapsingToolbar.setContentScrimColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
         combo.setColor(cursor.getInt(cursor.getColumnIndexOrThrow("color")));
+        txtInfo.setText(Html.fromHtml(cursor.getString(cursor.getColumnIndexOrThrow("description"))));
 
 
     }

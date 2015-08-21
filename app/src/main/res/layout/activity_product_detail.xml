@@ -96,22 +96,53 @@
             android:orientation="vertical"
             android:paddingTop="24dp">
 
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin">
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
 
                 <LinearLayout
                     style="@style/Widget.CardContent2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pricing"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Price" />
+
                     <com.webmyne.kidscrown.ui.widgets.ComboSeekBar
-                        android:layout_margin="16dp"
                         android:id="@+id/combo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        cbs:myColor="@android:color/black"/>
+                        android:layout_margin="16dp"
+                        cbs:myColor="@android:color/black" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <LinearLayout
+                    style="@style/Widget.CardContent2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -120,9 +151,32 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <TextView
+                        android:id="@+id/txtInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/cheese_ipsum" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <LinearLayout
+                    style="@style/Widget.CardContent2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Images"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

@@ -41,6 +41,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Username / Email"
                     android:inputType="text"
+                    android:maxLines="6"
+                    android:singleLine="false"
                     android:textColor="#ffffff"
                     android:textColorHint="#d1d1d1"
                     android:textSize="18sp" />
