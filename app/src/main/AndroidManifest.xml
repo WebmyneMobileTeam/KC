@@ -51,6 +51,10 @@
             android:name=".ui.CartActivity"
             android:label="@string/title_activity_cart" >
         </activity>
+        <activity
+            android:name=".ui.GalleryActivity"
+            android:label="@string/title_activity_gallery" >
+        </activity>
     </application>
 
 </manifest>

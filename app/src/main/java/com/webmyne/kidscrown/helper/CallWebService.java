@@ -127,7 +127,7 @@ public abstract class CallWebService implements IService {
                     @Override
                     public void onErrorResponse(VolleyError e) {
                         // TODO Auto-generated method stub
-                        error(e.getMessage());
+                        error("Server Error");
                     }
                 });
                 request.setRetryPolicy(

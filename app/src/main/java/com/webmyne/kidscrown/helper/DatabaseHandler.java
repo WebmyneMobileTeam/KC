@@ -286,6 +286,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getProductPriceCursor(String productID) {
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_PRICE + " WHERE product_id =" + "\"" + productID.toString().trim() + "\"";
+        cursor = myDataBase.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+        }
+
+        return cursor;
+
+    }
+
+    public Cursor getProductImageCursor(String productID) {
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_IMAGE + " WHERE product_id =" + "\"" + productID.toString().trim() + "\"";
+        cursor = myDataBase.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+        }
+
+        return cursor;
+
+    }
+
 
 //    public String getCurrentDescription(String sportID){
 //        myDataBase = this.getWritableDatabase();

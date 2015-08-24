@@ -100,7 +100,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp">
@@ -116,11 +116,36 @@
                         android:text="Pricing"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-                    <TextView
-
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Price" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txtPriceIndividual"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginTop="4dp"
+                            android:text="Price" />
+
+                        <TextView
+                            android:id="@+id/txtPriceQTY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="Price" />
+
+                        <TextView
+                            android:id="@+id/txtPriceTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_marginTop="4dp"
+                            android:text="Price"
+                            android:textStyle="bold" />
+
+                    </FrameLayout>
 
                     <com.webmyne.kidscrown.ui.widgets.ComboSeekBar
                         android:id="@+id/combo"
@@ -135,7 +160,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
 
@@ -162,7 +187,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
 
@@ -176,6 +201,12 @@
                         android:layout_height="wrap_content"
                         android:text="Images"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                    <com.webmyne.kidscrown.ui.widgets.FlowLayout
+                        android:id="@+id/flowImages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"></com.webmyne.kidscrown.ui.widgets.FlowLayout>
 
 
                 </LinearLayout>

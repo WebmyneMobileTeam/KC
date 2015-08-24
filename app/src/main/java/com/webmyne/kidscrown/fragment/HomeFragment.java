@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private ListView listProducts;
     private ProductAdapter adapter;
-
     public HomeFragment() {
     }
 
@@ -99,7 +98,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             handler.openDataBase();
             Cursor cursor = handler.getProductsCursor();
             handler.close();
-            adapter = new ProductAdapter(getActivity(), R.layout.item_product, cursor, columns, to, 0);
+            adapter = new ProductAdapter(getActivity(), cursor, 0);
             listProducts.setAdapter(adapter);
 
         } catch (Exception e) {
@@ -112,14 +111,14 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     private void fetchProducts() {
 
         View view = ((MyDrawerActivity) getActivity()).getToolbar().getRootView();
-        final ToolHelper helper = new ToolHelper(getActivity(), view);
-        helper.displayProgress();
+        //final ToolHelper helper = new ToolHelper(getActivity(), view);
+       // helper.displayProgress();
 
         new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {
 
-                helper.hideProgress();
+               // helper.hideProgress();
                 Log.e("Response Products", response);
                 Type listType = new TypeToken<List<Product>>() {
                 }.getType();
@@ -133,12 +132,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
             @Override
             public void error(String error) {
-                helper.hideProgress();
+               // helper.hideProgress();
                 Log.e("Error", error);
 
             }
         }.call();
-
 
     }
 

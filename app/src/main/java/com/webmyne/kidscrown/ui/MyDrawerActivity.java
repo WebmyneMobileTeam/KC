@@ -25,6 +25,7 @@ import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
 import com.webmyne.kidscrown.fragment.SettingsFragment;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.UserProfile;
 
 public class MyDrawerActivity extends AppCompatActivity {
@@ -195,6 +196,11 @@ public class MyDrawerActivity extends AppCompatActivity {
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyDrawerActivity.this, "user_pref", 0);
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
+
+
+        ToolHelper helper = new ToolHelper(MyDrawerActivity.this,toolbar);
+        helper.displayBadge(3);
+
     }
 
     @Override

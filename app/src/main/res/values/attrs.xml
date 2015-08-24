@@ -6,4 +6,11 @@
         <attr name="myColor" format="color" />
         <attr name="textSize" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="FlowLayout">
+        <attr name="android:gravity" />
+    </declare-styleable>
+    <declare-styleable name="FlowLayout_Layout">
+        <attr name="android:layout_gravity" />
+    </declare-styleable>
 </resources>
