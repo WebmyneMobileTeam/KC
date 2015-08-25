@@ -7,6 +7,7 @@
     tools:context="com.webmyne.kidscrown.ui.LoginActivity">
 
     <ImageView
+        android:layout_alignParentTop="true"
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -14,10 +15,14 @@
         android:scaleType="centerInside"
         android:src="@drawable/logo" />
 
+    <ScrollView
+        android:layout_below="@+id/logo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/logo"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
@@ -68,7 +73,7 @@
                 android:id="@+id/btnLogin"
                 style="@style/login_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="8dp"
                 android:text="Login"
                 android:textAllCaps="false"
@@ -100,8 +105,7 @@
                     android:layout_weight="1"
                     android:text="New User? Sign Up"
                     android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
 
             </LinearLayout>
@@ -140,32 +144,80 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible">
 
-            <Button
+            <!--<Button
                 android:id="@+id/btnFb"
                 style="@style/login_button_fb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Login with Facebook"
-                android:textAllCaps="false" />
+                android:textAllCaps="false" />-->
 
-            <Button
+           <!-- <com.facebook.login.widget.LoginButton
+                android:id="@+id/btnFb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />-->
+
+            <LinearLayout
+                android:id="@+id/linearFbLogin"
+                android:background="@drawable/com_facebook_button_like_background"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:orientation="horizontal"
+                android:clickable="true" >
+
+                <ImageView
+                    android:src="@drawable/com_facebook_button_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_gravity="center"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="#6b81c0"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tvLogin"
+                    android:text="SignIn With Facebook"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="15dp"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/btnGplus"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"/>
+
+            <!--<Button
                 android:id="@+id/btnGplus"
                 style="@style/login_button_gplus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="Login with Google+"
-                android:textAllCaps="false" />
+                android:textAllCaps="false" />-->
         </LinearLayout>
 
     </LinearLayout>
-
+    </ScrollView>
 
 </RelativeLayout>

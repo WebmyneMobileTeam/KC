@@ -27,4 +27,7 @@
 
     <integer name="duration_animation">500</integer>
     <string name="title_activity_gallery">GalleryActivity</string>
+
+    <string name="facebook_app_id">760890644021470</string>
+
 </resources>

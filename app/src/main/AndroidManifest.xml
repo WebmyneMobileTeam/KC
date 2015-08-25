@@ -3,6 +3,8 @@
     package="com.webmyne.kidscrown" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:name=".helper.MyApplication"
@@ -38,11 +40,11 @@
             android:label="@string/title_activity_refill"
             android:screenOrientation="landscape" >
         </activity>
-        <activity
+        <!--<activity
             android:name=".ui.DemoCrownActivity"
             android:label="@string/title_activity_demo_crown"
             android:screenOrientation="landscape" >
-        </activity>
+        </activity>-->
         <activity
             android:name=".ui.ProductDetailActivity"
             android:label="@string/title_activity_product_detail" >
@@ -55,6 +57,26 @@
             android:name=".ui.GalleryActivity"
             android:label="@string/title_activity_gallery" >
         </activity>
+
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1459806660978042"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
+
     </application>
 
 </manifest>
