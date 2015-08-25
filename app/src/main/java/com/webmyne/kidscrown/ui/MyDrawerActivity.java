@@ -3,6 +3,7 @@ package com.webmyne.kidscrown.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -15,16 +16,19 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
 import com.webmyne.kidscrown.fragment.HelpFragment;
 import com.webmyne.kidscrown.fragment.HomeFragment;
 import com.webmyne.kidscrown.fragment.MyAddressFragment;
+import com.webmyne.kidscrown.fragment.MyAddressFragment2;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
 import com.webmyne.kidscrown.fragment.SettingsFragment;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.UserProfile;
 
@@ -39,7 +43,6 @@ public class MyDrawerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         init();
 
@@ -96,7 +99,7 @@ public class MyDrawerActivity extends AppCompatActivity {
 
             case R.id.drawer_address:
                 // My Address
-                ft.replace(R.id.content, new MyAddressFragment(), "MY_ADDRESS_PAGE");
+                ft.replace(R.id.content, new MyAddressFragment2(), "MY_ADDRESS_PAGE");
                 ft.commit();
                 break;
 
@@ -113,7 +116,7 @@ public class MyDrawerActivity extends AppCompatActivity {
                 editor.commit();
 
                 Intent i = new Intent(MyDrawerActivity.this, LoginActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 break;
 
@@ -187,6 +190,14 @@ public class MyDrawerActivity extends AppCompatActivity {
             toolbar.setTitle("Kids Crown");
             setSupportActionBar(toolbar);
         }
+
+        ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
+        imgCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Functions.fireIntent(MyDrawerActivity.this, CartActivity.class);
+            }
+        });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +209,7 @@ public class MyDrawerActivity extends AppCompatActivity {
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
 
 
-        ToolHelper helper = new ToolHelper(MyDrawerActivity.this,toolbar);
+        ToolHelper helper = new ToolHelper(MyDrawerActivity.this, toolbar);
         helper.displayBadge(3);
 
     }

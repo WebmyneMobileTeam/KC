@@ -4,11 +4,14 @@ import android.app.Activity;
 
 import java.lang.reflect.Type;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -42,12 +45,14 @@ import com.webmyne.kidscrown.ui.RefillActivity;
 
 import java.sql.Ref;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ListView listProducts;
     private ProductAdapter adapter;
+
     public HomeFragment() {
     }
 
@@ -74,6 +79,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onResume() {
         super.onResume();
         displayProducts();
+
     }
 
     @Override
@@ -83,15 +89,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     private void displayProducts() {
-        String[] columns = new String[]{
-                "name",
-                "description",
-        };
-
-        int[] to = new int[]{
-                R.id.txtProductTitle,
-                R.id.txtProductDescription
-        };
 
         try {
             DatabaseHandler handler = new DatabaseHandler(getActivity());
@@ -105,20 +102,19 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             e.printStackTrace();
         }
 
-
     }
 
     private void fetchProducts() {
 
         View view = ((MyDrawerActivity) getActivity()).getToolbar().getRootView();
         //final ToolHelper helper = new ToolHelper(getActivity(), view);
-       // helper.displayProgress();
+        // helper.displayProgress();
 
         new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {
 
-               // helper.hideProgress();
+                // helper.hideProgress();
                 Log.e("Response Products", response);
                 Type listType = new TypeToken<List<Product>>() {
                 }.getType();
@@ -132,7 +128,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
             @Override
             public void error(String error) {
-               // helper.hideProgress();
+                // helper.hideProgress();
                 Log.e("Error", error);
 
             }

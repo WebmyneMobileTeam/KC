@@ -1,20 +1,21 @@
 package com.webmyne.kidscrown.ui;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,11 +24,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ProductDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -46,6 +47,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private int price = 0;
     ArrayList<String> values;
     private FlowLayout flowImages;
+    int qty;
+    boolean added;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
+
+        ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
+        imgCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+            }
+        });
+
         productID = getIntent().getIntExtra("product_id", 0);
 
         fabShop = (FloatingActionButton) findViewById(R.id.fabShop);
@@ -71,7 +84,36 @@ public class ProductDetailActivity extends AppCompatActivity {
         fabShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (added) {
+                    Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
+                    overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                } else {
 
+                    DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
+                    ArrayList<String> productDetails = new ArrayList<String>();
+                    productDetails.add(productID + "");
+                    productDetails.add(cursorProduct.getString(cursorProduct.getColumnIndexOrThrow("name")));
+                    productDetails.add(qty + "");
+                    productDetails.add(price + "");
+                    productDetails.add((price * qty) + "");
+
+                    Log.e("productDetails", productDetails.toString());
+
+                    handler.addCartProduct(productDetails);
+
+                    Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_order);
+                    Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
+                    willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
+                    fabShop.setImageDrawable(willBeWhite);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Window window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
+                    }
+                    fabShop.setImageResource(R.drawable.ic_action_order);
+
+                    added = true;
+                }
             }
         });
 
@@ -82,9 +124,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         txtPriceTotal = (TextView) findViewById(R.id.txtPriceTotal);
         flowImages = (FlowLayout) findViewById(R.id.flowImages);
 
-
     }
-
 
     @Override
     public void onBackPressed() {
@@ -121,16 +161,15 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-
         displayDetails(cursorProduct, cursorProductPrice, cursorProductImage);
 
-
+        checkCart(productID);
     }
 
     private void processDisplayGallery(int position) {
 
         Intent iGallery = new Intent(ProductDetailActivity.this, GalleryActivity.class);
-        iGallery.putExtra("pos",position);
+        iGallery.putExtra("pos", position);
         iGallery.putExtra("id", productID);
         startActivity(iGallery);
         overridePendingTransition(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom);
@@ -214,8 +253,38 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void displayQTYandTotal(int position) {
         txtPriceQTY.setText(String.format("x %s QTY", values.get(position)));
-        int qty = Integer.parseInt(values.get(position));
+        qty = Integer.parseInt(values.get(position));
         int total = price * qty;
         txtPriceTotal.setText(String.format("= Rs. %d", total));
+    }
+
+    private void checkCart(int productID) {
+        DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
+        boolean available = handler.ifExists(productID);
+
+        Log.e("available in cart", available + "");
+
+        if (available) {
+            Log.e("qty", handler.getQty(productID) + "");
+            added = true;
+            Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_order);
+            Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
+            willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
+            fabShop.setImageDrawable(willBeWhite);
+
+            displayQTYandTotal(handler.getQty(productID) - 1);
+            combo.setSelection(handler.getQty(productID) - 1);
+
+        } else {
+            added = false;
+
+            displayQTYandTotal(0);
+            combo.setSelection(handler.getQty(productID));
+
+            Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_action_add_shopping_cart);
+            Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
+            willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
+            fabShop.setImageDrawable(willBeWhite);
+        }
     }
 }

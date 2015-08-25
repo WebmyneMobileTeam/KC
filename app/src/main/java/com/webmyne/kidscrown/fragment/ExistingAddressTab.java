@@ -1,24 +1,24 @@
 package com.webmyne.kidscrown.fragment;
 
-import android.app.Activity;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.adapters.AddressAdapter;
+import com.webmyne.kidscrown.adapters.ProductAdapter;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.Address;
-import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.UserProfile;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
@@ -26,14 +26,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ExistingAddressTab.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ExistingAddressTab#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ExistingAddressTab extends android.support.v4.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +37,8 @@ public class ExistingAddressTab extends android.support.v4.app.Fragment {
     private String mParam1;
     private String mParam2;
     String userId;
+    private AddressAdapter adapter;
+    private ListView listAddress;
     View parentView;
 
     public static ExistingAddressTab newInstance(String param1, String param2) {
@@ -80,6 +75,7 @@ public class ExistingAddressTab extends android.support.v4.app.Fragment {
     }
 
     private void init(View parentView) {
+        listAddress = (ListView) parentView.findViewById(R.id.listAddress);
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
@@ -124,6 +120,33 @@ public class ExistingAddressTab extends android.support.v4.app.Fragment {
     }
 
     private void displayAddress() {
+        String[] columns = new String[]{
+                "address_1",
+                "address_2",
+        };
 
+        int[] to = new int[]{
+                R.id.txtAddress1,
+                R.id.txtAddress2
+        };
+
+        try {
+            DatabaseHandler handler = new DatabaseHandler(getActivity());
+            handler.openDataBase();
+            Cursor cursor = handler.getAddressCursor();
+            handler.close();
+            adapter = new AddressAdapter(getActivity(), R.layout.address_row, cursor, columns, to, 0);
+            listAddress.setAdapter(adapter);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayAddress();
     }
 }

@@ -43,18 +43,6 @@ public class ProductAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-       /* LayoutInflater layoutInflator1 = LayoutInflater.from(context);
-        View rowView = layoutInflator1.inflate(R.layout.item_product, parent, false);
-        ViewHolder holder = new ViewHolder();
-        holder.txtProductTitle = (TextView) rowView.findViewById(R.id.txtProductTitle);
-        holder.txtDescription = (TextView) rowView.findViewById(R.id.txtProductDescription);
-        holder.imgProduct = (ImageView) rowView.findViewById(R.id.imgProduct);
-        holder.linearParent = (LinearLayout) rowView.findViewById(R.id.linearParent);
-
-        displayValues(holder, cursor);
-        rowView.setTag(holder);
-        return rowView;*/
-
         return LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
 
     }

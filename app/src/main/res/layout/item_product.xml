@@ -7,48 +7,46 @@
     android:layout_marginRight="@dimen/card_margin">
 
     <LinearLayout
-       android:id="@+id/linearParent"
-        android:gravity="center_vertical"
+        android:id="@+id/linearParent"
         style="@style/Widget.CardContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
         <LinearLayout
-            android:layout_marginRight="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
-                android:textColor="#fff"
                 android:id="@+id/txtProductTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Product"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#fff" />
 
             <TextView
-                android:textColor="#fff"
                 android:id="@+id/txtProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxLines="2"
-                android:text="@string/cheese_ipsum" />
+                android:text="@string/cheese_ipsum"
+                android:textColor="#fff" />
 
 
         </LinearLayout>
 
         <ImageView
-            android:src="@mipmap/ic_launcher"
-            android:scaleType="centerInside"
             android:id="@+id/imgProduct"
             android:layout_width="@dimen/product_image"
             android:layout_height="@dimen/product_image"
-             />
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_launcher" />
 
     </LinearLayout>
 

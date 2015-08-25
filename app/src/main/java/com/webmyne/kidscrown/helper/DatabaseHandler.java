@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.TextView;
 
 
 import com.webmyne.kidscrown.R;
@@ -34,6 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCT_IMAGE = "ProductImage";
     private static final String TABLE_ADDRESS = "Address";
     private static final String TABLE_PRODUCT_PRICE = "ProductPrice";
+    private static final String TABLE_CART_ITEM = "CartItem";
 
     private static final String DATABASE_PATH = "/data/data/com.webmyne.kidscrown/databases/";
     private Context context;
@@ -175,8 +177,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private void saveProductPrices(ArrayList<ProductPrice> prices) {
 
-
-
         for (ProductPrice price : prices) {
             myDataBase = this.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -189,6 +189,69 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
 
+    }
+
+    public boolean ifExists(int productID) {
+        boolean available = false;
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + " WHERE product_id =" + productID;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            available = true;
+            cursor.moveToFirst();
+        }
+        return available;
+    }
+
+    public int getQty(int productID) {
+        int qty = 0;
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT qty FROM " + TABLE_CART_ITEM + " WHERE product_id =" + productID;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            qty = cursor.getInt(cursor.getColumnIndexOrThrow("qty"));
+        }
+        return qty;
+    }
+
+    public void deleteCartProduct(int productID) {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_id ='" + productID + "'";
+        myDataBase.execSQL(selectQuery);
+    }
+
+    public void addCartProduct(ArrayList<String> productDetails) {
+
+        myDataBase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("product_id", Integer.parseInt(productDetails.get(0)));
+        values.put("product_name", productDetails.get(1));
+        values.put("qty", Integer.parseInt(productDetails.get(2)));
+        values.put("unit_price", productDetails.get(3));
+        values.put("total_price", productDetails.get(4));
+        myDataBase.insert(TABLE_CART_ITEM, null, values);
+
+    }
+
+    public void updateCart(int qty, int totalPrice, int productID) {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty=" + qty + ", total_price=" + totalPrice + " WHERE product_id ='" + productID + "'";
+        myDataBase.execSQL(selectQuery);
+    }
+
+    public Cursor getCartProduct() {
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price";
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        return cursor;
     }
 
     public void saveAddress(ArrayList<Address> addresses) {
@@ -231,6 +294,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void deleteAddress(int addressID) {
+
+    }
+
     private void saveProductImages(ArrayList<ProductImage> images) {
 
 
@@ -249,7 +316,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Cursor getProductsCursor() {
         myDataBase = this.getWritableDatabase();
         Cursor cursor = null;
-        String selectQuery = "SELECT  * FROM " + TABLE_PRODUCT;
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        return cursor;
+    }
+
+    public Cursor getAddressCursor() {
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT  * FROM " + TABLE_ADDRESS;
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
 
@@ -346,6 +423,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
 
 }
