@@ -11,6 +11,8 @@ public class Constants {
     public static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
     public static final String REGISTRATION_URL = BASE_URL + "/User.svc/json/UserRegistration";
     public static final String LOGIN_URL = BASE_URL + "/User.svc/json/UserLogin/";
+    public static final String SOCIAL_MEDIA_LOGIN_URL = BASE_URL + "/User.svc/json/LoginWithSocialMedia/";
+
     public static final String SALUTATION_URL = BASE_URL + "/User.svc/json/FetchAllCodeCommonList/Salutation";
     public static final String QUALIFICATION_URL = BASE_URL + "/User.svc/json/FetchAllCodeCommonList/Qualification";
     public static final String FETCH_PRODUCTS = BASE_URL + "/Master.svc/json/FetchCurrentPricing";

@@ -14,10 +14,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
 import com.webmyne.kidscrown.fragment.HelpFragment;
@@ -38,15 +42,19 @@ public class MyDrawerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     NavigationView view;
-
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_home);
+
 
         init();
 
+        callbackManager = CallbackManager.Factory.create();
         initDrawer();
 
         FragmentManager manager = getSupportFragmentManager();
@@ -132,6 +140,15 @@ public class MyDrawerActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = pref.edit();
                 editor.clear();
                 editor.commit();
+
+                try {
+                    // Facebook logout
+                    LoginManager.getInstance().logOut();
+                    //GooglePlus Logout
+                    LoginActivity.signOutFromGplus();
+                } catch(Exception e) {
+                    Log.e("EXP LOGOUT", e.toString());
+                }
 
                 Intent i = new Intent(MyDrawerActivity.this, LoginActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

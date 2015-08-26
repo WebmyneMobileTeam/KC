@@ -62,7 +62,7 @@ public class LoginActivity extends ActionBarActivity implements
     private static final int PROFILE_PIC_SIZE = 400;
 
     // Google client to interact with Google API
-    private GoogleApiClient mGoogleApiClient;
+    private static GoogleApiClient mGoogleApiClient;
 
     /**
      * A flag indicating that a PendingIntent is in progress and prevents us
@@ -85,6 +85,7 @@ public class LoginActivity extends ActionBarActivity implements
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
         callbackManager = CallbackManager.Factory.create();
 
         init();
@@ -121,19 +122,7 @@ public class LoginActivity extends ActionBarActivity implements
         btnGplus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < btnGplus.getChildCount(); i++) {
-                    View view = btnGplus.getChildAt(i);
-
-                    if (view instanceof TextView) {
-                        if(((TextView) view).getText().toString().contains("SignIn")) {
-                            signInWithGplus();
-                        } else {
-                            signOutFromGplus();
-                        }
-                        break;
-                    }
-                }
-
+                signInWithGplus();
             }
     });
 
@@ -145,12 +134,11 @@ public class LoginActivity extends ActionBarActivity implements
             }
         });
 
+
+
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.e("USER_ID", loginResult.getAccessToken().getUserId());
-
-                // App code
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -159,11 +147,14 @@ public class LoginActivity extends ActionBarActivity implements
                                     JSONObject object,
                                     GraphResponse response) {
                                 // Application code
-                                Log.e("LoginActivity", response.toString());
+                                Log.e("Login_from_Fb Resp", response.toString());
                                 JSONObject profile = response.getJSONObject();
                                 try {
-                                    Log.e("User_Name", profile.get("name").toString());
-                                    Log.e("User_Email", profile.get("email").toString());
+                                    String email = profile.getString("email").toString();
+                                    String fName = profile.getString("name").toString().split(" ")[0];
+                                    String lName = profile.getString("name").toString().split(" ")[1];
+                                    socialMediaLoginProcess(email, fName, lName, "F");
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -181,12 +172,12 @@ public class LoginActivity extends ActionBarActivity implements
 
             @Override
             public void onCancel() {
-
+                Log.e("CANCEL_FB", "CANCELLED");
             }
 
             @Override
             public void onError(FacebookException e) {
-
+                Log.e("ERROR_FB", e.toString());
             }
         });
     }
@@ -235,6 +226,52 @@ public class LoginActivity extends ActionBarActivity implements
         }.call();
     }
 
+    private void socialMediaLoginProcess(String email, String fName, String lName, String loginType){
+        url = Constants.SOCIAL_MEDIA_LOGIN_URL + email + "/" + fName + "/" + lName + "/" + loginType;
+
+        pd = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait..", true);
+        Functions.logE("login request url", url);
+
+        new CallWebService(url, CallWebService.TYPE_GET, null) {
+            @Override
+            public void response(String response) {
+                pd.dismiss();
+                try {
+                    JSONArray obj = new JSONArray(response);
+                    JSONObject description = obj.getJSONObject(0);
+                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
+                    Functions.logE("social_media login resp", obj.toString());
+
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
+                    complexPreferences.putObject("current-user", profile);
+                    complexPreferences.commit();
+
+                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("isUserLogin", true);
+                    editor.putBoolean("isFirstTimeLogin", true);
+                    editor.commit();
+
+                    Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    finish();
+
+                } catch (Exception e) {
+                    pd.dismiss();
+                    Functions.logE("Exp", e.toString());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                pd.dismiss();
+                Functions.logE("social_media error", error);
+            }
+        }.call();
+    }
+
     private void init() {
         txtForgot = (TextView) findViewById(R.id.txtForgot);
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -246,11 +283,12 @@ public class LoginActivity extends ActionBarActivity implements
         btnGplus = (SignInButton) findViewById(R.id.btnGplus);
         setGooglePlusButtonText(btnGplus, "SignIn With Google Plus");
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
+                .addConnectionCallbacks(LoginActivity.this)
+                .addOnConnectionFailedListener(LoginActivity.this)
                 .addApi(Plus.API, Plus.PlusOptions.builder().build())
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+
     }
 
     protected void onStart() {
@@ -324,11 +362,9 @@ public class LoginActivity extends ActionBarActivity implements
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
         //Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-        View view = findViewById(android.R.id.content);
-        Functions.snack(view, "User is connected via Google Plus!");
         // Get user's information
         getGPlusProfileInformation();
-        setGooglePlusButtonText(btnGplus, "Logout From Google Plus");
+        //setGooglePlusButtonText(btnGplus, "Logout From Google Plus");
         // Update the UI after signin
         //updateUI(true);
 
@@ -343,25 +379,14 @@ public class LoginActivity extends ActionBarActivity implements
                 Person currentPerson = Plus.PeopleApi
                         .getCurrentPerson(mGoogleApiClient);
                 String personName = currentPerson.getDisplayName();
-                String personPhotoUrl = currentPerson.getImage().getUrl();
-                String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-                Log.e("GPLUS USER_NAME", personName);
-                Log.e("GPLUS USER_Email", email);
-                Log.e("GPLUS USER_PROFILE", personGooglePlusProfile);
-
-
-                // by default the profile url gives 50x50 px image only
-                // we can replace the value with whatever dimension we want by
-                // replacing sz=X
-                personPhotoUrl = personPhotoUrl.substring(0,
-                        personPhotoUrl.length() - 2)
-                        + PROFILE_PIC_SIZE;
+                String fName = personName.split(" ")[0];
+                String lName = personName.split(" ")[1];
+                socialMediaLoginProcess(email, fName, lName, "G");
 
             } else {
-                Toast.makeText(getApplicationContext(),
-                        "Person information is null", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Person information is null", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -371,7 +396,6 @@ public class LoginActivity extends ActionBarActivity implements
     @Override
     public void onConnectionSuspended(int arg0) {
         mGoogleApiClient.connect();
-        //updateUI(false);
     }
 
     /**
@@ -384,16 +408,17 @@ public class LoginActivity extends ActionBarActivity implements
         }
     }
 
-    /**
-     * Sign-out from google
-     * */
-    private void signOutFromGplus() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-            setGooglePlusButtonText(btnGplus, "SignIn With GooglePlus");
-            //updateUI(false);
+
+
+    static public void signOutFromGplus() {
+        try {
+            if (mGoogleApiClient.isConnected()) {
+                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                mGoogleApiClient.disconnect();
+                mGoogleApiClient.connect();
+            }
+        } catch (Exception e) {
+            Log.e("GMail Logout EXP",e.toString());
         }
     }
 
