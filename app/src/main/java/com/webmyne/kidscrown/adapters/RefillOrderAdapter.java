@@ -2,7 +2,8 @@ package com.webmyne.kidscrown.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,12 @@ public class RefillOrderAdapter extends BaseAdapter {
     private Context _ctx;
     private ArrayList<String> crowns;
     private OnDeleteListner onDeleteListner;
+    private onCartSelectListener onCartSelectListener;
+
+
+    public void setOnCartSelectListener(RefillOrderAdapter.onCartSelectListener onCartSelectListener) {
+        this.onCartSelectListener = onCartSelectListener;
+    }
 
     public RefillOrderAdapter(Context _ctx, ArrayList<String> crowns) {
         this._ctx = _ctx;
@@ -64,12 +71,29 @@ public class RefillOrderAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.item_cart, parent, false);
             holder = new ViewHolder();
             holder.txtName = (TextView) convertView.findViewById(R.id.txtItemName);
+            holder.edQty = (EditText)convertView.findViewById(R.id.edItemQty);
             holder.imgDelete = (ImageView) convertView.findViewById(R.id.imgDeleteCart);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.txtName.setText(crowns.get(position));
+        holder.edQty.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                notifyDataSetChanged();
+            }
+        });
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,5 +106,9 @@ public class RefillOrderAdapter extends BaseAdapter {
 
     public interface OnDeleteListner {
         public void onDelete(int position);
+    }
+
+    public interface onCartSelectListener{
+        public void addCart();
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
+import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductImage;
 import com.webmyne.kidscrown.model.ProductPrice;
@@ -21,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -74,7 +76,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myOutput.close();
         myInput.close();
     }
-
 
     private boolean checkDataBase() {
 
@@ -252,6 +253,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         return cursor;
+    }
+
+    public ArrayList<CrownPricing> getCrownPricing(int productID) {
+        ArrayList<CrownPricing> crownPricing = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_PRICE + " WHERE product_id ='" + productID + "'";
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                CrownPricing pricing = new CrownPricing();
+                pricing.setMin(cursor.getInt(cursor.getColumnIndexOrThrow("min")));
+                pricing.setMax(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+                pricing.setPrice(cursor.getInt(cursor.getColumnIndexOrThrow("price")));
+                crownPricing.add(pricing);
+            } while (cursor.moveToNext());
+        }
+
+        return crownPricing;
+
     }
 
     public void saveAddress(ArrayList<Address> addresses) {

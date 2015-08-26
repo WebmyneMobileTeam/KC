@@ -1,29 +1,33 @@
 package com.webmyne.kidscrown.ui;
 
+import android.database.Cursor;
 import android.graphics.Color;
-import android.media.Image;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.RefillOrderAdapter;
+import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.model.CrownPricing;
+import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.ui.widgets.CrownQuadrant;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class RefillActivity extends AppCompatActivity implements CrownQuadrant.OnCrownClickListner, RefillOrderAdapter.OnDeleteListner {
+public class RefillActivity extends AppCompatActivity implements CrownQuadrant.OnCrownClickListner, RefillOrderAdapter.OnDeleteListner, RefillOrderAdapter.onCartSelectListener {
 
     private android.support.v7.widget.Toolbar toolbar;
     LinearLayout crownSetLayout;
@@ -35,6 +39,13 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
     private ArrayList<String> orderArray;
     private ListView listRefill;
     RefillOrderAdapter adapter;
+    private int productID;
+    ImageView imgCart;
+    Button btnContinue;
+    ArrayList<String> upperLeftArray = new ArrayList<>();
+    private RefillOrderAdapter.onCartSelectListener onCartSelectListener;
+    ArrayList<CrownProductItem> crownProducts = new ArrayList<>();
+    ArrayList<CrownPricing> crownPricing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +54,39 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
 
         init();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        productID = getIntent().getIntExtra("product_id", 0);
+        fetchDetails();
+
+        fetchCrownPricing();
+    }
+
+    private void fetchCrownPricing() {
+        DatabaseHandler handler = new DatabaseHandler(RefillActivity.this);
+        crownPricing = new ArrayList<>();
+        crownPricing = handler.getCrownPricing(productID);
+    }
+
+    private void fetchDetails() {
+        DatabaseHandler handler = new DatabaseHandler(RefillActivity.this);
+        Cursor cursorProduct = handler.getProductCursor("" + productID);
+        int color = cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color"));
+        btnContinue.setBackgroundColor(color);
+        toolbar.setBackgroundColor(color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            float[] hsv = new float[3];
+            Color.colorToHSV(color, hsv);
+            hsv[2] *= 0.7f; // value component
+            color = Color.HSVToColor(hsv);
+            window.setStatusBarColor(color);
+        }
+        handler.close();
     }
 
     private void init() {
@@ -58,6 +102,14 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        imgCart = (ImageView) findViewById(R.id.imgCartMenu);
+        imgCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Functions.fireIntent(RefillActivity.this, CartActivity.class);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
             }
         });
 
@@ -84,8 +136,32 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
         adapter.setOnDeleteListner(this);
         listRefill.setAdapter(adapter);
 
+
+        btnContinue = (Button) findViewById(R.id.btnContinue);
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processContinue();
+
+            }
+        });
     }
 
+    private void processContinue() {
+        int totalCrowns = 0;
+
+        for (int i = 0; i < adapter.getCount(); i++) {
+
+            LinearLayout view = (LinearLayout)listRefill.getChildAt(i);
+//            int q = view.get
+            TextView txtItemName = (TextView) view.findViewById(R.id.txtItemName);
+            EditText txtQty = (EditText) view.findViewById(R.id.edItemQty);
+
+            Log.e("qty", txtQty.getText().toString());
+
+        }
+
+    }
 
     @Override
     public void add(String value) {
@@ -110,5 +186,10 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
 
         orderArray.remove(position);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addCart() {
+        Toast.makeText(RefillActivity.this, "click on ccontinue cart", Toast.LENGTH_SHORT).show();
     }
 }

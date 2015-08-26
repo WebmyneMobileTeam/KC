@@ -168,12 +168,12 @@
                 android:text="I'm Empty.\nClick crowns to Add" />
 
             <Button
+                android:id="@+id/btnContinue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primaryColor"
                 android:text="CONTINUE TO CART"
                 android:textColor="#fff" />
-
 
         </LinearLayout>
     </LinearLayout>
