@@ -26,8 +26,9 @@ import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.ui.widgets.CrownQuadrant;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class RefillActivity extends AppCompatActivity implements CrownQuadrant.OnCrownClickListner, RefillOrderAdapter.OnDeleteListner, RefillOrderAdapter.onCartSelectListener {
+public class RefillActivity extends AppCompatActivity implements CrownQuadrant.OnCrownClickListner, RefillOrderAdapter.OnDeleteListner, RefillOrderAdapter.onCartSelectListener,RefillOrderAdapter.onTextChange{
 
     private android.support.v7.widget.Toolbar toolbar;
     LinearLayout crownSetLayout;
@@ -36,7 +37,7 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
     private CrownQuadrant lowerLeft;
     private CrownQuadrant lowerRight;
     // private ImageView imgAdd;
-    private ArrayList<String> orderArray;
+    private ArrayList<CrownProductItem> orderArray;
     private ListView listRefill;
     RefillOrderAdapter adapter;
     private int productID;
@@ -134,6 +135,7 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
         orderArray = new ArrayList<>();
         adapter = new RefillOrderAdapter(this, orderArray);
         adapter.setOnDeleteListner(this);
+        adapter.setOnTextChange(this);
         listRefill.setAdapter(adapter);
 
 
@@ -148,37 +150,42 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
     }
 
     private void processContinue() {
-        int totalCrowns = 0;
 
-        for (int i = 0; i < adapter.getCount(); i++) {
 
-            LinearLayout view = (LinearLayout)listRefill.getChildAt(i);
-//            int q = view.get
-            TextView txtItemName = (TextView) view.findViewById(R.id.txtItemName);
-            EditText txtQty = (EditText) view.findViewById(R.id.edItemQty);
-
-            Log.e("qty", txtQty.getText().toString());
-
+        for(CrownProductItem item : orderArray) {
+            Log.e("----",String.format("%s - %d",item.itemName,item.itemQty));
         }
 
     }
 
     @Override
     public void add(String value) {
-        orderArray.add(value);
+
+        CrownProductItem item = new CrownProductItem();
+        item.itemName = value;
+        item.itemQty = 100;
+        orderArray.add(item);
+
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void delete(String value) {
-        orderArray.remove(value);
+
+
+        for(CrownProductItem item : orderArray){
+            if(item.itemName.equalsIgnoreCase(value)){
+                orderArray.remove(item);
+                break;
+            }
+        }
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onDelete(int position) {
 
-        String toDelete = orderArray.get(position);
+        String toDelete = orderArray.get(position).itemName;//todo
         upperLeft.removeSelected(toDelete);
         upperRight.removeSelected(toDelete);
         lowerLeft.removeSelected(toDelete);
@@ -191,5 +198,20 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
     @Override
     public void addCart() {
         Toast.makeText(RefillActivity.this, "click on ccontinue cart", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTextChange(String crownName, int qty) {
+
+        for(CrownProductItem item : orderArray){
+            if(item.itemName.equalsIgnoreCase(crownName)){
+                item.itemQty = qty;
+                break;
+            }
+        }
+       // adapter.notifyDataSetChanged();
+
+
+
     }
 }

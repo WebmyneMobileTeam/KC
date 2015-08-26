@@ -189,8 +189,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             myDataBase.insert(TABLE_PRODUCT_PRICE, null, values);
         }
 
-
     }
+
+
 
     public boolean ifExists(int productID) {
         boolean available = false;
@@ -410,6 +411,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return cursor;
+
+    }
+
+    public void insertCrownItem(int productID,String crownName,int qty){
+
+        myDataBase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("product_name",crownName);
+        values.put("qty",qty);
+        values.put("unit_price",0);
+        int totalPrice = 0;
+        values.put("total_price",totalPrice);
+        values.put("product_id",productID);
+        myDataBase.insert(TABLE_CART_ITEM,null,values);
+
+    }
+
+    public void updateCrownItem(String productName,int qty){
 
     }
 

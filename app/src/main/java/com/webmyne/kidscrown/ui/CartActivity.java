@@ -68,7 +68,7 @@ public class CartActivity extends AppCompatActivity {
                     ProductCart cart = new ProductCart();
                     cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
                     cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
-                    cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")) - 1);
+                    cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
                     cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
                     cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
                     cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));

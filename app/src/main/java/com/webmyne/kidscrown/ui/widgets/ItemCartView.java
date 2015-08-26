@@ -102,7 +102,7 @@ public class ItemCartView extends LinearLayout {
         combo.setAdapter(values);
         combo.setColor(R.color.quad_green);
         combo.setBackgroundResource(0);
-        combo.setSelection(cart.getProductQty());
+        combo.setSelection(cart.getProductQty()-1);
         displayQTYandTotal(cart.getProductQty());
         combo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -115,7 +115,7 @@ public class ItemCartView extends LinearLayout {
 
     private void displayQTYandTotal(int position) {
         unitQty.setText(String.format("x %s QTY", values.get(position)));
-        int qty = Integer.parseInt(values.get(position));
+        int qty = Integer.parseInt(values.get(position-1));
         int total = Integer.parseInt(cart.getProductUnitPrice()) * qty;
         totalPrice.setText(String.format("= Rs. %d", total));
 

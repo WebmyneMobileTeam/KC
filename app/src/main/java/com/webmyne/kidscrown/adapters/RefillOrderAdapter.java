@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.model.CrownProductItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by dhruvil on 17-08-2015.
@@ -22,18 +24,23 @@ import java.util.ArrayList;
 public class RefillOrderAdapter extends BaseAdapter {
 
     private Context _ctx;
-    private ArrayList<String> crowns;
+    private ArrayList<CrownProductItem> crowns;
     private OnDeleteListner onDeleteListner;
     private onCartSelectListener onCartSelectListener;
+    private onTextChange onTextChange;
 
 
     public void setOnCartSelectListener(RefillOrderAdapter.onCartSelectListener onCartSelectListener) {
         this.onCartSelectListener = onCartSelectListener;
     }
 
-    public RefillOrderAdapter(Context _ctx, ArrayList<String> crowns) {
+    public RefillOrderAdapter(Context _ctx, ArrayList<CrownProductItem> crowns) {
         this._ctx = _ctx;
         this.crowns = crowns;
+    }
+
+    public void setOnTextChange(RefillOrderAdapter.onTextChange onTextChange) {
+        this.onTextChange = onTextChange;
     }
 
     @Override
@@ -63,7 +70,7 @@ public class RefillOrderAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView( final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         LayoutInflater mInflater = (LayoutInflater) _ctx.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -77,7 +84,10 @@ public class RefillOrderAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.txtName.setText(crowns.get(position));
+
+        holder.txtName.setText(crowns.get(position).itemName);
+        holder.edQty.setText("" + crowns.get(position).itemQty);
+
         holder.edQty.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -91,7 +101,15 @@ public class RefillOrderAdapter extends BaseAdapter {
 
             @Override
             public void afterTextChanged(Editable s) {
-                notifyDataSetChanged();
+
+                if(s.toString().length()>0){
+                    onTextChange.onTextChange(holder.txtName.getText().toString(),Integer.parseInt(s.toString()));
+                }else if(s.toString().length() == 0){
+                    onTextChange.onTextChange(holder.txtName.getText().toString(),0);
+                }
+
+
+
             }
         });
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -111,4 +129,11 @@ public class RefillOrderAdapter extends BaseAdapter {
     public interface onCartSelectListener{
         public void addCart();
     }
+
+    public interface onTextChange{
+
+        public void onTextChange(String crownName,int qty);
+
+    }
+
 }

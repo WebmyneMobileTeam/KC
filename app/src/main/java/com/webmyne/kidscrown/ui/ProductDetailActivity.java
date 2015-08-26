@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -84,36 +85,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         fabShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (added) {
-                    Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
-                    overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-                } else {
 
-                    DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
-                    ArrayList<String> productDetails = new ArrayList<String>();
-                    productDetails.add(productID + "");
-                    productDetails.add(cursorProduct.getString(cursorProduct.getColumnIndexOrThrow("name")));
-                    productDetails.add(qty + "");
-                    productDetails.add(price + "");
-                    productDetails.add((price * qty) + "");
+                processAddingCart();
 
-                    Log.e("productDetails", productDetails.toString());
 
-                    handler.addCartProduct(productDetails);
-
-                    Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_order);
-                    Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
-                    willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
-                    fabShop.setImageDrawable(willBeWhite);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Window window = getWindow();
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        window.setStatusBarColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
-                    }
-                    fabShop.setImageResource(R.drawable.ic_action_order);
-
-                    added = true;
-                }
             }
         });
 
@@ -124,6 +99,41 @@ public class ProductDetailActivity extends AppCompatActivity {
         txtPriceTotal = (TextView) findViewById(R.id.txtPriceTotal);
         flowImages = (FlowLayout) findViewById(R.id.flowImages);
 
+    }
+
+    private void processAddingCart() {
+        if (added) {
+            Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
+            overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+        } else {
+
+            DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
+            ArrayList<String> productDetails = new ArrayList<String>();
+            productDetails.add(productID + "");
+            productDetails.add(cursorProduct.getString(cursorProduct.getColumnIndexOrThrow("name")));
+            productDetails.add(qty + "");
+            productDetails.add(price + "");
+            productDetails.add((price * qty) + "");
+
+            Log.e("productDetails", productDetails.toString());
+
+            handler.addCartProduct(productDetails);
+
+            Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_order);
+            Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
+            willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
+            fabShop.setImageDrawable(willBeWhite);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
+            }
+            fabShop.setImageResource(R.drawable.ic_action_order);
+            added = true;
+
+            Snackbar.make(fabShop,"Added to Cart",Snackbar.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override

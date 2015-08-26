@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< Updated upstream
       <module fileurl="file://$PROJECT_DIR$/KC.iml" filepath="$PROJECT_DIR$/KC.iml" />
       <module fileurl="file://$PROJECT_DIR$/KC-26-8-2015.iml" filepath="$PROJECT_DIR$/KC-26-8-2015.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/KC-25082015.iml" filepath="$PROJECT_DIR$/KC-25082015.iml" />
+>>>>>>> Stashed changes
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
