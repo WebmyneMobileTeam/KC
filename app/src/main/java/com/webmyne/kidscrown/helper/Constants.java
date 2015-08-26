@@ -17,6 +17,8 @@ public class Constants {
     public static final String UPDATE_URL = BASE_URL + "/User.svc/json/UpdateUserProfile";
     public static final String GET_EXISTING_ADDRESS = BASE_URL + "/Master.svc/json/FetchShippingAddresses";
 
+    public static final String FORGOT_PASSWORD_URL = BASE_URL + "/User.svc/json/ForgotPassword/";
+
     //Request
     public static final int REQUEST_ERROR_GENERAL = -1;
     public static final int REQUEST_OK = 0;

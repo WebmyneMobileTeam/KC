@@ -26,10 +26,10 @@ public class SplashActivity extends ActionBarActivity {
             public void onFinish() {
                 SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
                 if (preferences.contains("isUserLogin")) {
-                    Intent i = new Intent(SplashActivity.this, MyDrawerActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                    finish();
+                        Intent i = new Intent(SplashActivity.this, MyDrawerActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        finish();
                 } else {
                     Functions.fireIntent(SplashActivity.this, LoginActivity.class);
                 }

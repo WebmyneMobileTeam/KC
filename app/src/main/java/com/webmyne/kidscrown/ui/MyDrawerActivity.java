@@ -22,6 +22,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
 import com.webmyne.kidscrown.fragment.HelpFragment;
 import com.webmyne.kidscrown.fragment.HomeFragment;
+import com.webmyne.kidscrown.fragment.HomeInfoFragment;
 import com.webmyne.kidscrown.fragment.MyAddressFragment;
 import com.webmyne.kidscrown.fragment.MyAddressFragment2;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
@@ -53,6 +54,23 @@ public class MyDrawerActivity extends AppCompatActivity {
         ft.replace(R.id.content, new HomeFragment());
         // ft.addToBackStack(null);
         ft.commit();
+//        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+//        if(preferences.contains("isFirstTimeLogin")) {
+//            preferences.edit().remove("isFirstTimeLogin");
+//            preferences.edit().commit();
+//            FragmentManager manager = getSupportFragmentManager();
+//            FragmentTransaction ft = manager.beginTransaction();
+//            ft.replace(R.id.content, new HomeInfoFragment());
+//            // ft.addToBackStack(null);
+//            ft.commit();
+//        } else {
+//
+//            FragmentManager manager = getSupportFragmentManager();
+//            FragmentTransaction ft = manager.beginTransaction();
+//            ft.replace(R.id.content, new HomeFragment());
+//            // ft.addToBackStack(null);
+//            ft.commit();
+//        }
 
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

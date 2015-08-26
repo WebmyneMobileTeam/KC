@@ -187,6 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
                     SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("isUserLogin", true);
+                    editor.putBoolean("isFirstTimeLogin", true);
                     editor.commit();
 
                     Intent i = new Intent(RegisterActivity.this, MyDrawerActivity.class);
@@ -195,12 +196,14 @@ public class RegisterActivity extends AppCompatActivity {
                     finish();
 
                 } catch (Exception e) {
+                    pd.dismiss();
                     e.printStackTrace();
                 }
             }
 
             @Override
             public void error(String error) {
+                pd.dismiss();
                 Log.e("error", error);
             }
         }.call();

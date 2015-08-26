@@ -4,10 +4,12 @@ import android.app.Activity;
 
 import java.lang.reflect.Type;
 
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,6 +81,28 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onResume() {
         super.onResume();
         displayProducts();
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
+        if(preferences.getBoolean("isFirstTimeLogin",true) == true){
+
+            displayDialogForFirstTime();
+
+        }
+
+    }
+
+    private void displayDialogForFirstTime() {
+
+        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(getActivity().getLayoutInflater().inflate(R.layout.fragment_home_info,null));
+        dialog.setCancelable(true);
+        dialog.show();
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isFirstTimeLogin", false);
+        editor.commit();
+
 
     }
 

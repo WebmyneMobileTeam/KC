@@ -7,6 +7,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home_info">HomeInfoActivity</string>
 
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
@@ -27,6 +28,7 @@
 
     <integer name="duration_animation">500</integer>
     <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
 
     <string name="facebook_app_id">760890644021470</string>
 
