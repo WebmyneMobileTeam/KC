@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class ItemCartView extends LinearLayout {
     TextView txtName, unitPrice, unitQty, totalPrice;
     LinearLayout remove;
     ComboSeekBar combo;
+    FrameLayout cartProductFrame;
+
     ArrayList<String> values;
     OnValueChangeListener onValueChangeListener;
 
@@ -67,6 +70,9 @@ public class ItemCartView extends LinearLayout {
         unitQty = (TextView) view.findViewById(R.id.unitQty);
         totalPrice = (TextView) view.findViewById(R.id.totalPrice);
         combo = (ComboSeekBar) view.findViewById(R.id.combo);
+
+
+        cartProductFrame = (FrameLayout) view.findViewById(R.id.cartProductFrame);
 
         setDetails(cart);
 
@@ -131,5 +137,11 @@ public class ItemCartView extends LinearLayout {
 
     public interface OnValueChangeListener{
         public void onChange();
+    }
+
+    public void hideControls() {
+        remove.setVisibility(GONE);
+        combo.setVisibility(GONE);
+        cartProductFrame.setPadding(0,0,0,20);
     }
 }

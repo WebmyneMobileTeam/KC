@@ -125,7 +125,7 @@ public class MyDrawerActivity extends AppCompatActivity {
 
             case R.id.drawer_address:
                 // My Address
-                ft.replace(R.id.content, new MyAddressFragment2(), "MY_ADDRESS_PAGE");
+                ft.replace(R.id.content, new MyAddressFragment(), "MY_ADDRESS_PAGE");
                 ft.commit();
                 break;
 

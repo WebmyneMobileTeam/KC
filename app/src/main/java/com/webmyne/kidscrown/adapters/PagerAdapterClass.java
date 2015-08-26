@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.webmyne.kidscrown.fragment.ExistingAddressTab;
-import com.webmyne.kidscrown.fragment.NewAddressTab;
+import com.webmyne.kidscrown.fragment.BillingAddressTab;
+import com.webmyne.kidscrown.fragment.ShippingAddressTab;
 
 /**
  * Created by sagartahelyani on 20-08-2015.
@@ -23,10 +23,10 @@ public class PagerAdapterClass extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                ExistingAddressTab tab1 = new ExistingAddressTab();
+                BillingAddressTab tab1 = new BillingAddressTab();
                 return tab1;
             case 1:
-                NewAddressTab tab2 = new NewAddressTab();
+                ShippingAddressTab tab2 = new ShippingAddressTab();
                 return tab2;
             default:
                 return null;

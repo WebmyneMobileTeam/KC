@@ -6,13 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.AddressAdapter;
-import com.webmyne.kidscrown.adapters.ProductAdapter;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ExistingAddressTab extends android.support.v4.app.Fragment {
+public class BillingAddressTab extends android.support.v4.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,11 +38,12 @@ public class ExistingAddressTab extends android.support.v4.app.Fragment {
     private String mParam2;
     String userId;
     private AddressAdapter adapter;
-    private ListView listAddress;
+    //private ListView listAddress;
     View parentView;
+    private EditText edtAddress1, edtAddress2, edtCity, edtState, edtCountry, edtPincode ;
 
-    public static ExistingAddressTab newInstance(String param1, String param2) {
-        ExistingAddressTab fragment = new ExistingAddressTab();
+    public static BillingAddressTab newInstance(String param1, String param2) {
+        BillingAddressTab fragment = new BillingAddressTab();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -50,7 +51,7 @@ public class ExistingAddressTab extends android.support.v4.app.Fragment {
         return fragment;
     }
 
-    public ExistingAddressTab() {
+    public BillingAddressTab() {
         // Required empty public constructor
     }
 
@@ -75,11 +76,18 @@ public class ExistingAddressTab extends android.support.v4.app.Fragment {
     }
 
     private void init(View parentView) {
-        listAddress = (ListView) parentView.findViewById(R.id.listAddress);
+       // listAddress = (ListView) parentView.findViewById(R.id.listAddress);
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
         userId = currentUserObj.UserID;
+
+        edtAddress1 = (EditText) parentView.findViewById(R.id.edtBillingAddress1);
+        edtAddress2 = (EditText) parentView.findViewById(R.id.edtBillingAddress2);
+        edtCity = (EditText) parentView.findViewById(R.id.edtBillingCity);
+        edtState = (EditText) parentView.findViewById(R.id.edtBillingState);
+        edtCountry = (EditText) parentView.findViewById(R.id.edtBillingCountry);
+        edtPincode = (EditText) parentView.findViewById(R.id.edtBillingPincode);
     }
 
     @Override
@@ -135,8 +143,16 @@ public class ExistingAddressTab extends android.support.v4.app.Fragment {
             handler.openDataBase();
             Cursor cursor = handler.getAddressCursor();
             handler.close();
-            adapter = new AddressAdapter(getActivity(), R.layout.address_row, cursor, columns, to, 0);
-            listAddress.setAdapter(adapter);
+            /*adapter = new AddressAdapter(getActivity(), R.layout.address_row, cursor, columns, to, 0);
+            listAddress.setAdapter(adapter);*/
+
+            edtAddress1.setText(cursor.getString(cursor.getColumnIndexOrThrow("address_1")));
+            edtAddress2.setText(cursor.getString(cursor.getColumnIndexOrThrow("address_2")));
+            edtCity.setText(cursor.getString(cursor.getColumnIndexOrThrow("city_name")));
+            edtCountry.setText(cursor.getString(cursor.getColumnIndexOrThrow("country_name")));
+            edtState.setText(cursor.getString(cursor.getColumnIndexOrThrow("state_name")));
+            edtPincode.setText(cursor.getString(cursor.getColumnIndexOrThrow("pincode")));
+
 
         } catch (Exception e) {
             e.printStackTrace();

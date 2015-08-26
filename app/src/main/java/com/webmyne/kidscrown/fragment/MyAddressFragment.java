@@ -1,5 +1,7 @@
 package com.webmyne.kidscrown.fragment;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,10 +10,17 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.PagerAdapterClass;
+import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.DatabaseHandler;
+import com.webmyne.kidscrown.model.UserProfile;
+import com.webmyne.kidscrown.ui.ConfirmOrderActivity;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
+
+import java.sql.SQLException;
 
 
 public class MyAddressFragment extends Fragment {
@@ -37,6 +46,9 @@ public class MyAddressFragment extends Fragment {
 
     ViewPager pager;
     View parentView;
+    Button btnUpdate;
+    String userId;
+    String billingAddress1, billingAddress2;
 
     public static MyAddressFragment newInstance(String param1, String param2) {
         MyAddressFragment fragment = new MyAddressFragment();
@@ -66,7 +78,22 @@ public class MyAddressFragment extends Fragment {
         // Inflate the layout for this fragment
         parentView = inflater.inflate(R.layout.fragment_address, container, false);
 
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+        UserProfile currentUserObj = new UserProfile();
+        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
+        userId = currentUserObj.UserID;
+
+
         init(parentView);
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent i = new Intent(getActivity(), ConfirmOrderActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);*/
+            }
+        });
 
         return parentView;
     }
@@ -74,9 +101,11 @@ public class MyAddressFragment extends Fragment {
     private void init(View view) {
         ((MyDrawerActivity) getActivity()).setTitle("My Address");
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Existing Adress"));
-        tabLayout.addTab(tabLayout.newTab().setText("New Address"));
+        tabLayout.addTab(tabLayout.newTab().setText("Billing Address"));
+        tabLayout.addTab(tabLayout.newTab().setText("Shipping Address"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
         pager = (ViewPager) view.findViewById(R.id.pager);
         final PagerAdapterClass adapter = new PagerAdapterClass(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());

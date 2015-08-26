@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_back"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     tools:context="com.webmyne.kidscrown.fragment.BillingAddressTab">
 
     <!--<ListView
@@ -27,11 +28,30 @@
             android:gravity="center"
             android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
+
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/editLastName"
+                app:met_textColorHint="@color/primaryColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Last Name"
+                app:met_baseColor="@color/primaryColor"
+                app:met_floatingLabel="highlight"
+                app:met_helperTextColor="@color/primaryColor"
+
+                app:met_floatingLabelTextColor="@color/primaryColor"
+                app:met_primaryColor="@color/gplus_color_4"
+                android:inputType="text"/>
+
+
+            <android.support.design.widget.TextInputLayout
+        style="@style/MyAppTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
+            style="@style/MyAppTheme"
             android:id="@+id/edtBillingAddress1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +59,7 @@
             android:inputType="text"
             android:maxLines="6"
             android:singleLine="false"
-            android:textColor="#ffffff"
+            android:textColor="#d1d1d1"
             android:textColorHint="#d1d1d1"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>

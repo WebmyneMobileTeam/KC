@@ -1,10 +1,133 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.webmyne.kidscrown.fragment.NewAddressTab">
+    android:background="@drawable/login_back"
+    tools:context="com.webmyne.kidscrown.fragment.ShippingAddressTab">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_gravity="left"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#ffffff"
+            android:text="Same as Billing Address?"/>
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edtShippingAddress1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Shipping Address 1"
+                android:inputType="text"
+                android:maxLines="6"
+                android:singleLine="false"
+                android:textColor="#ffffff"
+                android:textColorHint="#d1d1d1"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/edtShippingAddress2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Shipping Address 2"
+                android:inputType="textPassword"
+                android:textColor="#ffffff"
+                android:textColorHint="#d1d1d1"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/edtShippingCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="City"
+                android:inputType="textPassword"
+                android:textColor="#ffffff"
+                android:textColorHint="#d1d1d1"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/edtShippingState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="State"
+                android:inputType="textPassword"
+                android:textColor="#ffffff"
+                android:textColorHint="#d1d1d1"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/edtShippingCountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Country"
+                android:inputType="textPassword"
+                android:textColor="#ffffff"
+                android:textColorHint="#d1d1d1"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/edtShippingPincode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Pincode"
+                android:inputType="textPassword"
+                android:textColor="#ffffff"
+                android:textColorHint="#d1d1d1"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
