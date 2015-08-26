@@ -88,7 +88,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 processAddingCart();
 
-
             }
         });
 
@@ -203,6 +202,18 @@ public class ProductDetailActivity extends AppCompatActivity {
         willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
         //set it to your fab button initialized before
         fabShop.setImageDrawable(willBeWhite);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            int color = cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color"));
+            float[] hsv = new float[3];
+            Color.colorToHSV(color, hsv);
+            hsv[2] *= 0.7f; // value component
+            color = Color.HSVToColor(hsv);
+            window.setStatusBarColor(color);
+        }
+
 
         int max = cursorProductPrice.getInt(cursorProductPrice.getColumnIndexOrThrow("max"));
         values = new ArrayList<>();
