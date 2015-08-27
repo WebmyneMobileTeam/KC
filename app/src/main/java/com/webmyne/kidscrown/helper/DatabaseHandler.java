@@ -14,6 +14,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.Product;
+import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.ProductImage;
 import com.webmyne.kidscrown.model.ProductPrice;
 
@@ -192,7 +193,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-
     public boolean ifExists(int productID) {
         boolean available = false;
         myDataBase = this.getWritableDatabase();
@@ -246,14 +246,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
-    public Cursor getCartProduct() {
+    public ArrayList<ProductCart> getCartProduct() {
+        ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();
         Cursor cursor = null;
         String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price";
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
+        do {
+            ProductCart cart = new ProductCart();
+            cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+            cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
+            cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
+            cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
+            cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+            cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+            products.add(cart);
+        } while (cursor.moveToNext());
 
-        return cursor;
+        return products;
     }
 
     public ArrayList<CrownPricing> getCrownPricing(int productID) {
@@ -414,21 +425,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public void insertCrownItem(int productID,String crownName,int qty){
+    public void insertCrownItem(int productID, String crownName, int qty) {
 
         myDataBase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("product_name",crownName);
-        values.put("qty",qty);
-        values.put("unit_price",0);
+        values.put("product_name", crownName);
+        values.put("qty", qty);
+        values.put("unit_price", 0);
         int totalPrice = 0;
-        values.put("total_price",totalPrice);
-        values.put("product_id",productID);
-        myDataBase.insert(TABLE_CART_ITEM,null,values);
+        values.put("total_price", totalPrice);
+        values.put("product_id", productID);
+        myDataBase.insert(TABLE_CART_ITEM, null, values);
 
     }
 
-    public void updateCrownItem(String productName,int qty){
+    public void updateCrownItem(String productName, int qty) {
 
     }
 

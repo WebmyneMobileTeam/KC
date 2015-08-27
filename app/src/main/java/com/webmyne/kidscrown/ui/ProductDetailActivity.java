@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
 
@@ -67,6 +68,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
+
+        ToolHelper helper = new ToolHelper(ProductDetailActivity.this, toolbar);
+        helper.displayBadge();
 
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         imgCart.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +134,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             fabShop.setImageResource(R.drawable.ic_action_order);
             added = true;
 
-            Snackbar.make(fabShop,"Added to Cart",Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(fabShop, "Added to Cart", Snackbar.LENGTH_SHORT).show();
+
+            ToolHelper helper = new ToolHelper(ProductDetailActivity.this, toolbar);
+            helper.displayBadge();
 
         }
     }
@@ -209,7 +216,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             int color = cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color"));
             float[] hsv = new float[3];
             Color.colorToHSV(color, hsv);
-            hsv[2] *= 0.7f; // value component
+            hsv[2] *= 0.7f;
             color = Color.HSVToColor(hsv);
             window.setStatusBarColor(color);
         }

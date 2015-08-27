@@ -245,7 +245,7 @@ public class MyDrawerActivity extends AppCompatActivity {
 
 
         ToolHelper helper = new ToolHelper(MyDrawerActivity.this, toolbar);
-        helper.displayBadge(3);
+        helper.displayBadge();
 
     }
 

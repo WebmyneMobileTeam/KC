@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.RefillOrderAdapter;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.ui.widgets.CrownQuadrant;
@@ -100,6 +102,10 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
             toolbar.setTitle("Refill");
             setSupportActionBar(toolbar);
         }
+
+        ToolHelper helper = new ToolHelper(RefillActivity.this, toolbar);
+        helper.displayBadge();
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +174,6 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
                     unitPrice = crownPricing.get(k).getPrice();
                 }
             }
-            Log.e("unit", unitPrice + "--");
         }
 
         DatabaseHandler handler = new DatabaseHandler(RefillActivity.this);
@@ -182,11 +187,14 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
             productDetails.add(unitPrice + "");
             productDetails.add((unitPrice * item.itemQty) + "");
 
-            Log.e("productDetails", productDetails.toString());
+            Log.e("product added", productDetails.toString());
 
             handler.addCartProduct(productDetails);
         }
+        Snackbar.make(btnContinue, "Added to Cart", Snackbar.LENGTH_SHORT).show();
 
+        ToolHelper helper = new ToolHelper(RefillActivity.this, toolbar);
+        helper.displayBadge();
     }
 
     @Override

@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         displayProducts();
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
-        if(preferences.getBoolean("isFirstTimeLogin",true) == true){
+        if (preferences.getBoolean("isFirstTimeLogin", true) == true) {
 
             displayDialogForFirstTime();
 
@@ -93,8 +93,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void displayDialogForFirstTime() {
 
-        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar);
-        dialog.setContentView(getActivity().getLayoutInflater().inflate(R.layout.fragment_home_info,null));
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(getActivity().getLayoutInflater().inflate(R.layout.fragment_home_info, null));
         dialog.setCancelable(true);
         dialog.show();
 
@@ -143,6 +143,14 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 Type listType = new TypeToken<List<Product>>() {
                 }.getType();
                 ArrayList<Product> products = new GsonBuilder().create().fromJson(response, listType);
+                for (Product p : products) {
+                    if (p.name.equals(Constants.CROWN_PRODUCT_NAME)) {
+                        SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putInt("crownProductId", p.productID);
+                        editor.commit();
+                    }
+                }
                 DatabaseHandler handler = new DatabaseHandler(getActivity());
                 handler.saveProducts(products);
                 handler.close();

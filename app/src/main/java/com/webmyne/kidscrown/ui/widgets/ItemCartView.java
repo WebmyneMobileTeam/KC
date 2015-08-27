@@ -97,7 +97,7 @@ public class ItemCartView extends LinearLayout {
     private void setDetails(ProductCart cart) {
         txtName.setText(cart.getProductName());
         unitPrice.setText("Rs. " + cart.getProductUnitPrice());
-        unitQty.setText("x " + cart.getProductQty() + " QTY");
+        unitQty.setText("x " + (cart.getProductQty()-1) + " QTY");
         totalPrice.setText("= Rs. " + cart.getProductTotalPrice());
 
         int max = cart.getMaxQty();

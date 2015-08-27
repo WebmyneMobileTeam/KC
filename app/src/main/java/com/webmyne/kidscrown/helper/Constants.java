@@ -21,6 +21,8 @@ public class Constants {
 
     public static final String FORGOT_PASSWORD_URL = BASE_URL + "/User.svc/json/ForgotPassword/";
 
+    public static final String CROWN_PRODUCT_NAME = "Crown";
+
     //Request
     public static final int REQUEST_ERROR_GENERAL = -1;
     public static final int REQUEST_OK = 0;
@@ -30,7 +32,6 @@ public class Constants {
     public static final int REQUEST_FORGOT_PASSWORD = 4;
 
     public static String IMAGE_PREFIX = "http://srijanapp.com/files/profile/";
-
 
 
 }

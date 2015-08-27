@@ -68,23 +68,12 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         try {
             DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
             handler.openDataBase();
-            Cursor cursor = handler.getCartProduct();
+            products = handler.getCartProduct();
             handler.close();
-
-            if (cursor.getCount() == 0) {
+            if (products.size() == 0) {
                 totalLayout.setVisibility(View.GONE);
             } else {
                 totalLayout.setVisibility(View.VISIBLE);
-                do {
-                    ProductCart cart = new ProductCart();
-                    cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
-                    cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
-                    cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")) - 1);
-                    cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
-                    cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                    cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
-                    products.add(cart);
-                } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,20 +121,18 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     }
 
 
-
-
     ItemCartView.OnValueChangeListener onValueChangeListener = new ItemCartView.OnValueChangeListener() {
         @Override
         public void onChange() {
             try {
                 DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
                 handler.openDataBase();
-                Cursor cursor = handler.getCartProduct();
+                products = handler.getCartProduct();
                 handler.close();
                 price = 0;
-                do {
-                    price = price + Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                } while (cursor.moveToNext());
+                for (int k = 0; k < products.size(); k++) {
+                    price += Integer.parseInt(products.get(k).getProductTotalPrice());
+                }
                 totalPrice.setText("Rs. " + price);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -160,8 +147,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         totalPrice = (TextView) findViewById(R.id.totalPrice);
 
 
-
-       toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("Confirm Order");
             setSupportActionBar(toolbar);

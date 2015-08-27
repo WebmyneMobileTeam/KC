@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.ui;
 
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.adapters.CustomGridAdapter;
 import com.webmyne.kidscrown.adapters.ProductAdapter;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
@@ -41,13 +43,17 @@ public class CartActivity extends AppCompatActivity {
     TextView totalPrice, emptyCart;
     LinearLayout linearParent, totalLayout;
     ArrayList<String> values;
-    int price;
-    RelativeLayout rLayoutCheckout;
+    int price, crownProductId;
+    SharedPreferences preferences;
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        crownProductId = preferences.getInt("crownProductId", 0);
 
         init();
 
@@ -58,25 +64,14 @@ public class CartActivity extends AppCompatActivity {
         try {
             DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
             handler.openDataBase();
-            Cursor cursor = handler.getCartProduct();
+            products = handler.getCartProduct();
             handler.close();
-
-            if (cursor.getCount() == 0) {
+            if (products.size() == 0) {
                 emptyCart.setVisibility(View.VISIBLE);
                 totalLayout.setVisibility(View.GONE);
             } else {
                 emptyCart.setVisibility(View.GONE);
                 totalLayout.setVisibility(View.VISIBLE);
-                do {
-                    ProductCart cart = new ProductCart();
-                    cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
-                    cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
-                    cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
-                    cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
-                    cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                    cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
-                    products.add(cart);
-                } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,9 +79,17 @@ public class CartActivity extends AppCompatActivity {
 
         for (int i = 0; i < products.size(); i++) {
             price = price + Integer.parseInt(products.get(i).getProductTotalPrice());
-            ItemCartView itemView = new ItemCartView(CartActivity.this, products.get(i));
-            itemView.setOnValueChangeListener(onValueChangeListener);
-            linearParent.addView(itemView);
+
+            if (products.get(i).getProductId() == crownProductId) {
+                Log.e("View", "GridView");
+                CustomGridAdapter adapter = new CustomGridAdapter(CartActivity.this, products);
+                gridView.setAdapter(adapter);
+            } else {
+                Log.e("View", "ItemView");
+                ItemCartView itemView = new ItemCartView(CartActivity.this, products.get(i));
+                itemView.setOnValueChangeListener(onValueChangeListener);
+                linearParent.addView(itemView);
+            }
         }
         totalPrice.setText("Rs. " + price);
     }
@@ -97,12 +100,12 @@ public class CartActivity extends AppCompatActivity {
             try {
                 DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
                 handler.openDataBase();
-                Cursor cursor = handler.getCartProduct();
+                products = handler.getCartProduct();
                 handler.close();
                 price = 0;
-                do {
-                    price = price + Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                } while (cursor.moveToNext());
+                for (int k = 0; k < products.size(); k++) {
+                    price += Integer.parseInt(products.get(k).getProductTotalPrice());
+                }
                 totalPrice.setText("Rs. " + price);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -113,13 +116,12 @@ public class CartActivity extends AppCompatActivity {
     private void init() {
 
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
+        gridView = (GridView) findViewById(R.id.gridView);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         totalPrice = (TextView) findViewById(R.id.totalPrice);
         emptyCart = (TextView) findViewById(R.id.emptyCart);
         imgCart.setVisibility(View.GONE);
-
-        rLayoutCheckout = (RelativeLayout) findViewById(R.id.rLayoutCheckout);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -133,15 +135,6 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
-            }
-        });
-
-        rLayoutCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(CartActivity.this, ShippingDetailsActivity.class);
-
-                startActivity(i);
             }
         });
     }
