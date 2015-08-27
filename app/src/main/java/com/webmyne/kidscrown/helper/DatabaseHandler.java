@@ -253,7 +253,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price";
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
-        if(cursor.getCount()>0) {
+        if (cursor.getCount() > 0) {
             do {
                 ProductCart cart = new ProductCart();
                 cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));

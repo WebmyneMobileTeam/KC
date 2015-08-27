@@ -36,6 +36,12 @@ public class ItemCartView extends LinearLayout {
     ArrayList<String> values;
     OnValueChangeListener onValueChangeListener;
 
+    onRemoveProductListener onRemoveProductListener;
+
+    public void setOnRemoveProductListener(ItemCartView.onRemoveProductListener onRemoveProductListener) {
+        this.onRemoveProductListener = onRemoveProductListener;
+    }
+
     public ItemCartView(Context context) {
         super(context);
         this.context = context;
@@ -79,7 +85,10 @@ public class ItemCartView extends LinearLayout {
         remove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+                if (onRemoveProductListener != null) {
+                    onRemoveProductListener.removeProduct(cart.getProductId());
+                }
+                /*try {
                     DatabaseHandler handler = new DatabaseHandler(context);
                     handler.openDataBase();
                     handler.deleteCartProduct(cart.getProductId());
@@ -89,7 +98,7 @@ public class ItemCartView extends LinearLayout {
                     handler.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
     }
@@ -135,13 +144,17 @@ public class ItemCartView extends LinearLayout {
         }
     }
 
-    public interface OnValueChangeListener{
+    public interface OnValueChangeListener {
         public void onChange();
     }
 
     public void hideControls() {
         remove.setVisibility(GONE);
         combo.setVisibility(GONE);
-        cartProductFrame.setPadding(0,0,0,20);
+        cartProductFrame.setPadding(0, 0, 0, 20);
+    }
+
+    public interface onRemoveProductListener {
+        public void removeProduct(int productId);
     }
 }

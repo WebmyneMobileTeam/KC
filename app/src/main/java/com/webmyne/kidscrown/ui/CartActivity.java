@@ -3,6 +3,7 @@ package com.webmyne.kidscrown.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
@@ -22,6 +23,7 @@ import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
@@ -62,6 +64,9 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void fetchCartDetails() {
+
+        linearParent.removeAllViews();
+        linearParent.invalidate();
         try {
             DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
             handler.openDataBase();
@@ -85,8 +90,8 @@ public class CartActivity extends AppCompatActivity {
                 Log.e("View", "GridView");
 
                 text = new TextView[9];
-                for(int z=0;z<text.length;z++){
-                    text[i]=new TextView(CartActivity.this);
+                for (int z = 0; z < text.length; z++) {
+                    text[i] = new TextView(CartActivity.this);
                     text[i].setLayoutParams(new ViewGroup.LayoutParams
                             (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     text[i].setText(String.valueOf(i));
@@ -101,6 +106,7 @@ public class CartActivity extends AppCompatActivity {
                 Log.e("View", "ItemView");
                 ItemCartView itemView = new ItemCartView(CartActivity.this, products.get(i));
                 itemView.setOnValueChangeListener(onValueChangeListener);
+                itemView.setOnRemoveProductListener(onRemoveProductListener);
                 linearParent.addView(itemView);
             }
         }
@@ -121,6 +127,21 @@ public class CartActivity extends AppCompatActivity {
                 }
                 totalPrice.setText("Rs. " + price);
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    ItemCartView.onRemoveProductListener onRemoveProductListener = new ItemCartView.onRemoveProductListener() {
+        @Override
+        public void removeProduct(int productId) {
+            try {
+                DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
+                handler.openDataBase();
+                handler.deleteCartProduct(productId);
+                handler.close();
+                refreshActivity();
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -164,4 +185,7 @@ public class CartActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
     }
 
+    private void refreshActivity() {
+        fetchCartDetails();
+    }
 }
