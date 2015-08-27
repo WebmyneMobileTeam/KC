@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:orientation="vertical"
-                    android:visibility="gone"></LinearLayout>
+                    android:visibility="visible"></LinearLayout>
 
                 <GridView
                     android:id="@+id/gridView"

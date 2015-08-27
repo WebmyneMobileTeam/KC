@@ -97,7 +97,7 @@ public class ItemCartView extends LinearLayout {
     private void setDetails(ProductCart cart) {
         txtName.setText(cart.getProductName());
         unitPrice.setText("Rs. " + cart.getProductUnitPrice());
-        unitQty.setText("x " + (cart.getProductQty()-1) + " QTY");
+        unitQty.setText("x " + (cart.getProductQty()) + " QTY");
         totalPrice.setText("= Rs. " + cart.getProductTotalPrice());
 
         int max = cart.getMaxQty();
@@ -113,15 +113,15 @@ public class ItemCartView extends LinearLayout {
         combo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                displayQTYandTotal(position);
+                displayQTYandTotal(position+1);
                 onValueChangeListener.onChange();
             }
         });
     }
 
     private void displayQTYandTotal(int position) {
-        unitQty.setText(String.format("x %s QTY", values.get(position)));
-        int qty = Integer.parseInt(values.get(position));
+        unitQty.setText(String.format("x %s QTY",position));
+        int qty = position;
         int total = Integer.parseInt(cart.getProductUnitPrice()) * qty;
         totalPrice.setText(String.format("= Rs. %d", total));
 

@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
@@ -34,6 +36,7 @@ public class CartActivity extends AppCompatActivity {
     SharedPreferences preferences;
     GridView gridView;
     TextView[] text;
+    RelativeLayout rLayoutCheckout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,16 @@ public class CartActivity extends AppCompatActivity {
         init();
 
         fetchCartDetails();
+        rLayoutCheckout = (RelativeLayout) findViewById(R.id.rLayoutCheckout);
+        rLayoutCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CartActivity.this, ShippingDetailsActivity.class);
+
+                startActivity(i);
+            }
+        });
+
     }
 
     private void fetchCartDetails() {

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -128,6 +129,9 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
 
 
     private void init() {
+
+        ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
+        imgCart.setVisibility(View.GONE);
 
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
@@ -393,6 +397,7 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        pd.dismiss();
                         try {
                             VolleyLog.v("Response:%n %s", response.toString(4));
                         } catch (JSONException e) {
@@ -403,6 +408,7 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
+                pd.dismiss();
             }
         });
 

@@ -66,6 +66,7 @@ public class ToolHelper {
         Log.e("sagar", "value " + value);
 
         if (value > 0) {
+
             Log.e("sagar", "badge set " + value);
             imgCartMenu.setPadding(0, 0, 32, 0);
             badge.setText(String.valueOf(value));
@@ -76,6 +77,7 @@ public class ToolHelper {
             animator.start();
         } else {
             imgCartMenu.setPadding(0, 0, 0, 0);
+            badge.hide();
         }
 
     }

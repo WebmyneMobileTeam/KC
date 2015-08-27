@@ -145,6 +145,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
         totalPrice = (TextView) findViewById(R.id.totalPrice);
+        ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
+        imgCart.setVisibility(View.GONE);
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
