@@ -253,17 +253,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price";
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
-        do {
-            ProductCart cart = new ProductCart();
-            cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
-            cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
-            cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
-            cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
-            cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-            cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
-            products.add(cart);
-        } while (cursor.moveToNext());
-
+        if(cursor.getCount()>0) {
+            do {
+                ProductCart cart = new ProductCart();
+                cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+                cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
+                cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
+                cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
+                cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+                cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+                products.add(cart);
+            } while (cursor.moveToNext());
+        }
         return products;
     }
 

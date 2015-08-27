@@ -3,7 +3,10 @@ package com.webmyne.kidscrown.helper;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.readystatesoftware.viewbadger.BadgeView;
@@ -24,10 +27,15 @@ public class ToolHelper {
 
     Context _ctx;
     View view;
+    ImageView imgCartMenu;
+    BadgeView badge;
 
     public ToolHelper(Context _ctx, View view) {
         this._ctx = _ctx;
         this.view = view;
+        imgCartMenu = (ImageView) view.findViewById(R.id.imgCartMenu);
+        badge = new BadgeView(_ctx, imgCartMenu);
+
     }
 
     public void displayBadge() {
@@ -51,13 +59,15 @@ public class ToolHelper {
             value = count.size();
         } catch (SQLException e) {
             e.printStackTrace();
+            Log.e("sagar", "exception");
         }
 
-        ImageView imgCartMenu = (ImageView) view.findViewById(R.id.imgCartMenu);
+
+        Log.e("sagar", "value " + value);
 
         if (value > 0) {
+            Log.e("sagar", "badge set " + value);
             imgCartMenu.setPadding(0, 0, 32, 0);
-            BadgeView badge = new BadgeView(_ctx, imgCartMenu);
             badge.setText(String.valueOf(value));
             badge.setBadgeBackgroundColor(_ctx.getResources().getColor(R.color.quad_orange));
             badge.show();

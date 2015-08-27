@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 public class ProductDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
+    ToolHelper helper;
     CollapsingToolbarLayout collapsingToolbar;
     private ImageView imageProduct;
     private int productID;
@@ -68,10 +69,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
-
-        ToolHelper helper = new ToolHelper(ProductDetailActivity.this, toolbar);
-        helper.displayBadge();
-
+        helper = new ToolHelper(ProductDetailActivity.this, toolbar);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +107,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
             overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
         } else {
-
             DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
             ArrayList<String> productDetails = new ArrayList<String>();
             productDetails.add(productID + "");
@@ -135,11 +132,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             added = true;
 
             Snackbar.make(fabShop, "Added to Cart", Snackbar.LENGTH_SHORT).show();
-
-            ToolHelper helper = new ToolHelper(ProductDetailActivity.this, toolbar);
             helper.displayBadge();
 
         }
+
     }
 
     @Override
@@ -153,6 +149,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         fetchDetails();
+
+        helper.displayBadge();
     }
 
     private void fetchDetails() {

@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -39,6 +40,7 @@ import com.webmyne.kidscrown.model.UserProfile;
 
 public class MyDrawerActivity extends AppCompatActivity {
     Toolbar toolbar;
+    ToolHelper helper;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     NavigationView view;
@@ -62,23 +64,6 @@ public class MyDrawerActivity extends AppCompatActivity {
         ft.replace(R.id.content, new HomeFragment());
         // ft.addToBackStack(null);
         ft.commit();
-//        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-//        if(preferences.contains("isFirstTimeLogin")) {
-//            preferences.edit().remove("isFirstTimeLogin");
-//            preferences.edit().commit();
-//            FragmentManager manager = getSupportFragmentManager();
-//            FragmentTransaction ft = manager.beginTransaction();
-//            ft.replace(R.id.content, new HomeInfoFragment());
-//            // ft.addToBackStack(null);
-//            ft.commit();
-//        } else {
-//
-//            FragmentManager manager = getSupportFragmentManager();
-//            FragmentTransaction ft = manager.beginTransaction();
-//            ft.replace(R.id.content, new HomeFragment());
-//            // ft.addToBackStack(null);
-//            ft.commit();
-//        }
 
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -146,7 +131,7 @@ public class MyDrawerActivity extends AppCompatActivity {
                     LoginManager.getInstance().logOut();
                     //GooglePlus Logout
                     LoginActivity.signOutFromGplus();
-                } catch(Exception e) {
+                } catch (Exception e) {
                     Log.e("EXP LOGOUT", e.toString());
                 }
 
@@ -225,7 +210,7 @@ public class MyDrawerActivity extends AppCompatActivity {
             toolbar.setTitle("Kids Crown");
             setSupportActionBar(toolbar);
         }
-
+        helper = new ToolHelper(MyDrawerActivity.this, toolbar);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,8 +228,12 @@ public class MyDrawerActivity extends AppCompatActivity {
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
 
+    }
 
-        ToolHelper helper = new ToolHelper(MyDrawerActivity.this, toolbar);
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         helper.displayBadge();
 
     }

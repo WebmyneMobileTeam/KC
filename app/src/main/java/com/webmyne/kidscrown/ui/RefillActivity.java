@@ -34,6 +34,7 @@ import java.util.HashMap;
 public class RefillActivity extends AppCompatActivity implements CrownQuadrant.OnCrownClickListner, RefillOrderAdapter.OnDeleteListner, RefillOrderAdapter.onCartSelectListener, RefillOrderAdapter.onTextChange {
 
     private android.support.v7.widget.Toolbar toolbar;
+    ToolHelper helper;
     LinearLayout crownSetLayout;
     private CrownQuadrant upperLeft;
     private CrownQuadrant upperRight;
@@ -67,6 +68,8 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
         fetchDetails();
 
         fetchCrownPricing();
+
+        helper.displayBadge();
     }
 
     private void fetchCrownPricing() {
@@ -103,8 +106,7 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
             setSupportActionBar(toolbar);
         }
 
-        ToolHelper helper = new ToolHelper(RefillActivity.this, toolbar);
-        helper.displayBadge();
+        helper = new ToolHelper(RefillActivity.this, toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,38 +181,29 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
         DatabaseHandler handler = new DatabaseHandler(RefillActivity.this);
         for (CrownProductItem item : orderArray) {
             ArrayList<String> productDetails = new ArrayList<String>();
-            Log.e("----", String.format("%s - %d", item.itemName, item.itemQty));
             productDetails.add(productID + "");
             productDetails.add(item.itemName);
             productDetails.add(item.itemQty + "");
-
             productDetails.add(unitPrice + "");
             productDetails.add((unitPrice * item.itemQty) + "");
-
-            Log.e("product added", productDetails.toString());
-
             handler.addCartProduct(productDetails);
         }
-        Snackbar.make(btnContinue, "Added to Cart", Snackbar.LENGTH_SHORT).show();
 
-        ToolHelper helper = new ToolHelper(RefillActivity.this, toolbar);
+        Snackbar.make(btnContinue, "Added to Cart", Snackbar.LENGTH_SHORT).show();
         helper.displayBadge();
     }
 
     @Override
     public void add(String value) {
-
         CrownProductItem item = new CrownProductItem();
         item.itemName = value;
         item.itemQty = 100;
         orderArray.add(item);
-
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void delete(String value) {
-
 
         for (CrownProductItem item : orderArray) {
             if (item.itemName.equalsIgnoreCase(value)) {
