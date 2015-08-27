@@ -22,6 +22,12 @@ public class Address {
     @SerializedName("CountryID")
     public int CountryID;
 
+    @SerializedName("IsDefault")
+    public int IsDefault;
+
+    @SerializedName("IsShipping")
+    public int IsShipping;
+
     @SerializedName("MobileNo")
     public String MobileNo;
 

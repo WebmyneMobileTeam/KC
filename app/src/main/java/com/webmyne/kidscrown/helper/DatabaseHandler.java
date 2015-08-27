@@ -317,7 +317,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("address_id", address.AddressID);
             values.put("address_2", address.Address2);
             values.put("address_1", address.Address1);
+            values.put("is_shipping", address.IsShipping);
             values.put("color", colors.get(pos));
+
+
             myDataBase.insert(TABLE_ADDRESS, null, values);
             if (pos >= colors.size() - 1) {
                 pos = 0;

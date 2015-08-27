@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context="com.webmyne.kidscrown.fragment.BillingAddressTab">
+    tools:context="com.webmyne.kidscrown.fragment.ShippingAddressTab">
 
     <!--<ListView
         android:visibility="gone"
@@ -32,11 +32,11 @@
 
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/edtBillingAddress1"
+                android:id="@+id/edtShippingAddress1"
                 app:met_textColorHint="@color/colorTextSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Billing Address 1"
+                android:hint="Shipping Address 1"
                 app:met_baseColor="@color/colorTextSecondary"
                 app:met_floatingLabel="highlight"
                 app:met_helperTextColor="@color/colorTextSecondary"
@@ -46,11 +46,11 @@
                 android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/edtBillingAddress2"
+                android:id="@+id/edtShippingAddress2"
                 app:met_textColorHint="@color/colorTextSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Billing Address 2"
+                android:hint="Shipping Address 2"
                 app:met_baseColor="@color/colorTextSecondary"
                 app:met_floatingLabel="highlight"
                 app:met_helperTextColor="@color/colorTextSecondary"
@@ -60,7 +60,7 @@
                 android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/edtBillingCity"
+                android:id="@+id/edtShippingCity"
                 app:met_textColorHint="@color/colorTextSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/edtBillingState"
+                android:id="@+id/edtShippingState"
                 app:met_textColorHint="@color/colorTextSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
 
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/edtBillingCountry"
+                android:id="@+id/edtShippingCountry"
                 app:met_textColorHint="@color/colorTextSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/edtBillingPincode"
+                android:id="@+id/edtShippingPincode"
                 app:met_textColorHint="@color/colorTextSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

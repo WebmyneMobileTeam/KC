@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.PagerAdapterClass;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
+import com.webmyne.kidscrown.model.AddressesList;
+import com.webmyne.kidscrown.model.BillingAndShippingAddress;
 import com.webmyne.kidscrown.model.UserProfile;
 import com.webmyne.kidscrown.ui.ConfirmOrderActivity;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
@@ -23,7 +26,7 @@ import com.webmyne.kidscrown.ui.MyDrawerActivity;
 import java.sql.SQLException;
 
 
-public class MyAddressFragment extends Fragment {
+public class MyAddressFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +51,7 @@ public class MyAddressFragment extends Fragment {
     View parentView;
     Button btnUpdate;
     String userId;
-    String billingAddress1, billingAddress2;
+    BillingAndShippingAddress addresses;
 
     public static MyAddressFragment newInstance(String param1, String param2) {
         MyAddressFragment fragment = new MyAddressFragment();
@@ -82,18 +85,9 @@ public class MyAddressFragment extends Fragment {
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
         userId = currentUserObj.UserID;
-
-
         init(parentView);
 
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*Intent i = new Intent(getActivity(), ConfirmOrderActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);*/
-            }
-        });
+
 
         return parentView;
     }
@@ -130,7 +124,31 @@ public class MyAddressFragment extends Fragment {
             }
         });
 
+
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                BillingAddressTab billingAddressTab = new BillingAddressTab();
+                billingAddressTab.setListener(new AddressesList() {
+                    @Override
+                    public void setAddress(BillingAndShippingAddress address) {
+                        Log.e("Billing Address", address.getBillingAddress1());
+                    }
+
+                    @Override
+                    public BillingAndShippingAddress getAddress() {
+                        return null;
+                    }
+                });
+
+            }
+        });
+
     }
+
+
 
 
 }

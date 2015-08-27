@@ -113,7 +113,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:layout_weight="1"
-                            android:text="Billing Order"
+                            android:text="Billing Address"
                             style="@style/RadioButton" />
 
                         <RadioButton
@@ -123,7 +123,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:layout_weight="1"
-                            android:text="Shipping Order"
+                            android:text="Shipping Address"
                             style="@style/RadioButton" />
                     </info.hoang8f.android.segmented.SegmentedGroup>
 

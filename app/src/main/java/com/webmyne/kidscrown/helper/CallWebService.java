@@ -84,6 +84,7 @@ public abstract class CallWebService implements IService {
         this.userObject = userObject;
     }
 
+
     // Main implementation of calling the webservice.
 
     public synchronized final CallWebService start() {
@@ -188,5 +189,7 @@ public abstract class CallWebService implements IService {
         }
 
     }
+
+
 
 }

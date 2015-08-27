@@ -2,18 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_back"
+    android:background="@color/white"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context="com.webmyne.kidscrown.fragment.ShippingAddressTab">
 
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -21,14 +27,11 @@
         <CheckBox
             android:id="@+id/checkbox"
             android:layout_gravity="left"
-            android:layout_marginBottom="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="#ffffff"
+            android:textColor="@color/primaryColor"
             android:text="Same as Billing Address?"/>
-
-
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -42,8 +45,8 @@
                 android:inputType="text"
                 android:maxLines="6"
                 android:singleLine="false"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -57,9 +60,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Shipping Address 2"
-                android:inputType="textPassword"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:inputType="text"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -73,9 +76,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="City"
-                android:inputType="textPassword"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:inputType="text"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -89,9 +92,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="State"
-                android:inputType="textPassword"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:inputType="text"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -106,9 +109,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Country"
-                android:inputType="textPassword"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:inputType="text"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -122,9 +125,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Pincode"
-                android:inputType="textPassword"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:inputType="text"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
+                android:layout_marginBottom="50dp"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>

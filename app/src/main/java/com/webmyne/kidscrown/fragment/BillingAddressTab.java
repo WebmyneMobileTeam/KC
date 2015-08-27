@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -19,6 +20,8 @@ import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.Address;
+import com.webmyne.kidscrown.model.AddressesList;
+import com.webmyne.kidscrown.model.BillingAndShippingAddress;
 import com.webmyne.kidscrown.model.UserProfile;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
@@ -41,6 +44,10 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
     //private ListView listAddress;
     View parentView;
     private EditText edtAddress1, edtAddress2, edtCity, edtState, edtCountry, edtPincode ;
+    private Button saveDetails;
+    AddressesList list;
+    BillingAndShippingAddress billingAndShippingAddress;
+
 
     public static BillingAddressTab newInstance(String param1, String param2) {
         BillingAddressTab fragment = new BillingAddressTab();
@@ -88,7 +95,28 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
         edtState = (EditText) parentView.findViewById(R.id.edtBillingState);
         edtCountry = (EditText) parentView.findViewById(R.id.edtBillingCountry);
         edtPincode = (EditText) parentView.findViewById(R.id.edtBillingPincode);
+        saveDetails = (Button) parentView.findViewById(R.id.saveDetails);
+
+        saveDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                billingAndShippingAddress = new BillingAndShippingAddress();
+                billingAndShippingAddress.setBillingAddress1(edtAddress1.getText().toString());
+                billingAndShippingAddress.setBillingAddress2(edtAddress2.getText().toString());
+                billingAndShippingAddress.setBillingCity(edtCity.getText().toString());
+                billingAndShippingAddress.setBillingState(edtState.getText().toString());
+                billingAndShippingAddress.setBillingCountry(edtCountry.getText().toString());
+                billingAndShippingAddress.setBillingPincode(edtPincode.getText().toString());
+
+                list.setAddress(billingAndShippingAddress);
+            }
+        });
+
     }
+    public void setListener(AddressesList _list){
+        this.list = _list;
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -146,12 +174,14 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
             /*adapter = new AddressAdapter(getActivity(), R.layout.address_row, cursor, columns, to, 0);
             listAddress.setAdapter(adapter);*/
 
-            edtAddress1.setText(cursor.getString(cursor.getColumnIndexOrThrow("address_1")));
-            edtAddress2.setText(cursor.getString(cursor.getColumnIndexOrThrow("address_2")));
-            edtCity.setText(cursor.getString(cursor.getColumnIndexOrThrow("city_name")));
-            edtCountry.setText(cursor.getString(cursor.getColumnIndexOrThrow("country_name")));
-            edtState.setText(cursor.getString(cursor.getColumnIndexOrThrow("state_name")));
-            edtPincode.setText(cursor.getString(cursor.getColumnIndexOrThrow("pincode")));
+            if(cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")).equals("true")) {
+                edtAddress1.setText(cursor.getString(cursor.getColumnIndexOrThrow("address_1")));
+                edtAddress2.setText(cursor.getString(cursor.getColumnIndexOrThrow("address_2")));
+                edtCity.setText(cursor.getString(cursor.getColumnIndexOrThrow("city_name")));
+                edtCountry.setText(cursor.getString(cursor.getColumnIndexOrThrow("country_name")));
+                edtState.setText(cursor.getString(cursor.getColumnIndexOrThrow("state_name")));
+                edtPincode.setText(cursor.getString(cursor.getColumnIndexOrThrow("pincode")));
+            }
 
 
         } catch (Exception e) {

@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_back"
+    android:background="@color/white"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context="com.webmyne.kidscrown.fragment.BillingAddressTab">
 
     <!--<ListView
@@ -23,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -39,8 +41,8 @@
             android:inputType="text"
             android:maxLines="6"
             android:singleLine="false"
-            android:textColor="#ffffff"
-            android:textColorHint="#d1d1d1"
+            android:textColor="@color/colorTextSecondary"
+            android:textColorHint="@color/colorTextSecondary"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -55,8 +57,8 @@
             android:layout_height="wrap_content"
             android:hint="Billing Address 2"
             android:inputType="text"
-            android:textColor="#ffffff"
-            android:textColorHint="#d1d1d1"
+            android:textColor="@color/colorTextSecondary"
+            android:textColorHint="@color/colorTextSecondary"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -71,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:hint="City"
                 android:inputType="text"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -86,9 +88,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="State"
-                android:inputType="textPassword"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:inputType="text"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -104,8 +106,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Country"
                 android:inputType="text"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -119,11 +121,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Pincode"
+                android:layout_marginBottom="50dp"
                 android:inputType="text"
-                android:textColor="#ffffff"
-                android:textColorHint="#d1d1d1"
+                android:textColor="@color/colorTextSecondary"
+                android:textColorHint="@color/colorTextSecondary"
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:visibility="gone"
+                android:layout_gravity="right"
+                android:id="@+id/saveDetails"
+                style="@style/login_button"
+                android:layout_marginBottom="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"/>
     </LinearLayout>
+
+
+
+
     </ScrollView>
+
+
+
+
 </RelativeLayout>

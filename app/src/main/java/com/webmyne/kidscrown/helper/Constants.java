@@ -19,6 +19,8 @@ public class Constants {
     public static final String UPDATE_URL = BASE_URL + "/User.svc/json/UpdateUserProfile";
     public static final String GET_EXISTING_ADDRESS = BASE_URL + "/Master.svc/json/FetchShippingAddresses";
 
+    public static final String SAVE_ADDRESS_URL = BASE_URL + "/Master.svc/json/AddNewShippingAddress";
+
     public static final String FORGOT_PASSWORD_URL = BASE_URL + "/User.svc/json/ForgotPassword/";
 
     public static final String CROWN_PRODUCT_NAME = "Crown";

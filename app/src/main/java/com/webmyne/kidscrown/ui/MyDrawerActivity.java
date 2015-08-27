@@ -123,11 +123,11 @@ public class MyDrawerActivity extends AppCompatActivity {
                 ft.commit();
                 break;
 
-            case R.id.drawer_address:
+          /*  case R.id.drawer_address:
                 // My Address
                 ft.replace(R.id.content, new MyAddressFragment(), "MY_ADDRESS_PAGE");
                 ft.commit();
-                break;
+                break;*/
 
             case R.id.drawer_log_out:
                 // Logout
