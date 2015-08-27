@@ -61,7 +61,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         init();
 
         fetchCartDetails();
-        fetchAddress();
+        //fetchAddress();
     }
 
     private void fetchCartDetails() {
@@ -87,37 +87,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             linearParent.addView(itemView);
         }
         totalPrice.setText("Rs. " + price);
-    }
-
-
-    private void fetchAddress() {
-        String user = "?UserId=" + userId;
-        Log.e("Address URL", Constants.GET_EXISTING_ADDRESS + user);
-
-        pd = ProgressDialog.show(ConfirmOrderActivity.this, "Loading", "Please wait..", true);
-
-
-        new CallWebService(Constants.GET_EXISTING_ADDRESS + user, CallWebService.TYPE_GET) {
-            @Override
-            public void response(String response) {
-                pd.dismiss();
-                Log.e("Response Address", response);
-                Type listType = new TypeToken<List<Address>>() {
-                }.getType();
-                addresses = new GsonBuilder().create().fromJson(response, listType);
-                DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
-                handler.saveAddress(addresses);
-                handler.close();
-
-            }
-
-            @Override
-            public void error(String error) {
-                pd.dismiss();
-                Log.e("Error", error);
-
-            }
-        }.call();
     }
 
 

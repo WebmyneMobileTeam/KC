@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -63,13 +64,9 @@ import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class ShippingDetailsActivity extends AppCompatActivity  {
 
-    //Toolbar toolbar;
-    ArrayList<ProductCart> products = new ArrayList<>();
     ArrayList<Address> addresses = new ArrayList<>();
-    TextView totalPrice, emptyCart;
     LinearLayout linearParent, totalLayout;
-    ArrayList<String> values;
-    int price;
+    UserProfile currentUserObj = new UserProfile();
     String userId;
     ProgressDialog pd;
     Toolbar toolbar;
@@ -86,7 +83,6 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_shipping_details);
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ShippingDetailsActivity.this, "user_pref", 0);
-        UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
         userId = currentUserObj.UserID;
 
@@ -349,73 +345,50 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
     }
 
     private void saveAddresses(){
-        List<HashMap<String, String>> list = new ArrayList<>();
-        HashMap<String, String> billingAddress = null;
+        JSONObject billingAddress = null;
         JSONObject shippingAddress = null;
-        JSONArray addressArray = new JSONArray();
+        JSONArray addressJsonArray = new JSONArray();
+        JSONObject mainAddress = new JSONObject();
 
         try {
-            billingAddress = new HashMap<>();
+            billingAddress = new JSONObject();
             billingAddress.put("Address1", billingAndShippingAddress.getBillingAddress1());
             billingAddress.put("Address2", billingAndShippingAddress.getBillingAddress2());
-            billingAddress.put("AddressID", "");
-            billingAddress.put("CityID", "");
-            billingAddress.put("CountryID", "");
+            billingAddress.put("City", billingAndShippingAddress.getBillingCity());
+            billingAddress.put("Country", billingAndShippingAddress.getBillingCountry());
             billingAddress.put("IsDefault", "true");
             billingAddress.put("IsShipping", "false");
-            billingAddress.put("MobileNo", "");
+            billingAddress.put("MobileNo", currentUserObj.MobileNo);
             billingAddress.put("PinCode", billingAndShippingAddress.getBillingPincode());
             billingAddress.put("StateID", "");
             billingAddress.put("UserID", userId);
 
-            list.add(billingAddress);
-
-           /* shippingAddress = new JSONObject();
+            shippingAddress = new JSONObject();
             shippingAddress.put("Address1", billingAndShippingAddress.getShippingAddress1());
             shippingAddress.put("Address2", billingAndShippingAddress.getShippingAddress2());
-            shippingAddress.put("AddressID", "");
-            shippingAddress.put("CityID", "");
-            shippingAddress.put("CountryID", "");
-            shippingAddress.put("IsDefault", true);
-            shippingAddress.put("IsShipping", false);
-            shippingAddress.put("MobileNo", "");
+            shippingAddress.put("City", billingAndShippingAddress.getShippingCity());
+            shippingAddress.put("Country", billingAndShippingAddress.getShippingCountry());
+            shippingAddress.put("IsDefault", "true");
+            shippingAddress.put("IsShipping", "false");
+            shippingAddress.put("MobileNo", currentUserObj.MobileNo);
             shippingAddress.put("PinCode", billingAndShippingAddress.getShippingPincode());
             shippingAddress.put("StateID", "");
-            shippingAddress.put("UserID", userId);*/
+            shippingAddress.put("UserID", userId);
 
-            addressArray.put(billingAddress);
-            addressArray.put(shippingAddress);
+            addressJsonArray.put(billingAddress);
+            addressJsonArray.put(shippingAddress);
+
+            mainAddress.put("Addresses", addressJsonArray);
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         pd = ProgressDialog.show(ShippingDetailsActivity.this, "Loading", "Please wait..", true);
-        Functions.logE("SAVE_ADDRESS request", addressArray.toString());
+        Functions.logE("SAVE_ADDRESS request", mainAddress.toString());
 
-        JsonObjectRequest req = new JsonObjectRequest(Constants.SAVE_ADDRESS_URL, new JSONObject(billingAddress),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        pd.dismiss();
-                        try {
-                            VolleyLog.v("Response:%n %s", response.toString(4));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-                pd.dismiss();
-            }
-        });
-
-        MyApplication.getInstance().getRequestQueue().add(req);
-
-
-       /* new CallWebService(Constants.SAVE_ADDRESS_URL, CallWebService.TYPE_POST, billingAddress) {
+        new CallWebService(Constants.SAVE_ADDRESS_URL, CallWebService.TYPE_POST, mainAddress) {
             @Override
             public void response(String response) {
                 pd.dismiss();
@@ -436,45 +409,7 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
                 pd.dismiss();
                 Log.e("error", error);
             }
-        }.call();*/
+        }.call();
 
     }
-
-    public class PostJsonArrayRequest extends JsonRequest<JSONArray> {
-
-        /**
-         * Creates a new request.
-         * @param url URL to fetch the JSON from
-         * @param listener Listener to receive the JSON response
-         * @param errorListener Error listener, or null to ignore errors.
-         */
-        public PostJsonArrayRequest(int method, String url, JSONObject jsonRequest,
-                                Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
-            super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(),
-                    listener, errorListener);
-
-        }
-
-        @Override
-        protected Map<String, String> getParams() throws AuthFailureError {
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("name", "value");
-            return params;
-        }
-
-        @Override
-        protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
-            try {
-                String jsonString =
-                        new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                return Response.success(new JSONArray(jsonString),
-                        HttpHeaderParser.parseCacheHeaders(response));
-            } catch (UnsupportedEncodingException e) {
-                return Response.error(new ParseError(e));
-            } catch (JSONException je) {
-                return Response.error(new ParseError(je));
-            }
-        }
-    }
-
 }
