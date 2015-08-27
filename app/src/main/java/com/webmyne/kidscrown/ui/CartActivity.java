@@ -2,43 +2,30 @@ package com.webmyne.kidscrown.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.CustomGridAdapter;
-import com.webmyne.kidscrown.adapters.ProductAdapter;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
-import com.webmyne.kidscrown.helper.Functions;
-import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
-import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
 
     Toolbar toolbar;
+    GridLayout gridLayout;
     ArrayList<ProductCart> products = new ArrayList<>();
     TextView totalPrice, emptyCart;
     LinearLayout linearParent, totalLayout;
@@ -46,6 +33,7 @@ public class CartActivity extends AppCompatActivity {
     int price, crownProductId;
     SharedPreferences preferences;
     GridView gridView;
+    TextView[] text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +70,18 @@ public class CartActivity extends AppCompatActivity {
 
             if (products.get(i).getProductId() == crownProductId) {
                 Log.e("View", "GridView");
+
+                text = new TextView[9];
+                for(int z=0;z<text.length;z++){
+                    text[i]=new TextView(CartActivity.this);
+                    text[i].setLayoutParams(new ViewGroup.LayoutParams
+                            (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    text[i].setText(String.valueOf(i));
+                    text[i].setTextSize(25);
+                    text[i].setPadding(50, 25, 10, 25);
+                    gridLayout.addView(text[i]);
+                }
+
                 CustomGridAdapter adapter = new CustomGridAdapter(CartActivity.this, products);
                 gridView.setAdapter(adapter);
             } else {
@@ -114,6 +114,11 @@ public class CartActivity extends AppCompatActivity {
     };
 
     private void init() {
+
+        gridLayout = (GridLayout) findViewById(R.id.gridLayout);
+        gridLayout.setOrientation(0);
+        gridLayout.setColumnCount(2);
+        gridLayout.setRowCount(3);
 
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
         gridView = (GridView) findViewById(R.id.gridView);

@@ -121,7 +121,7 @@ public class ItemCartView extends LinearLayout {
 
     private void displayQTYandTotal(int position) {
         unitQty.setText(String.format("x %s QTY", values.get(position)));
-        int qty = Integer.parseInt(values.get(position-1));
+        int qty = Integer.parseInt(values.get(position));
         int total = Integer.parseInt(cart.getProductUnitPrice()) * qty;
         totalPrice.setText(String.format("= Rs. %d", total));
 
