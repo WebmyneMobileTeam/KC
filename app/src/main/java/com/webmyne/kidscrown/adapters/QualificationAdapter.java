@@ -1,4 +1,4 @@
-package com.webmyne.kidscrown.adapter;
+package com.webmyne.kidscrown.adapters;
 
 import android.content.Context;
 import android.view.Gravity;

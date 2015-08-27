@@ -5,7 +5,7 @@
 
     <color name="primaryColor">#2196F3</color>
     <color name="primaryColorDark">#1976D2</color>
-    <color name="colorAccent">#ffffff</color>
+    <color name="colorAccent">#494949</color>
     <color name="colorTextPrimary">#212121</color>
     <color name="colorTextSecondary">#727272</color>
     <color name="editText_hint_color">#d1d1d1</color>
