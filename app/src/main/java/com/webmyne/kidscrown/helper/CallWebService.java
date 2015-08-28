@@ -85,14 +85,9 @@ public abstract class CallWebService implements IService {
     }
 
 
-    // Main implementation of calling the webservice.
-
     public synchronized final CallWebService start() {
-
         call();
-
         return this;
-
     }
 
     public void call() {
@@ -106,11 +101,9 @@ public abstract class CallWebService implements IService {
 
                             @Override
                             public void onResponse(JSONObject jobj) {
-                                // TODO Auto-generated method stub
 
                                 try{
                                     String responseCode = String.valueOf(jobj.getInt("ResponseCode"));
-
                                     if (responseCode.equalsIgnoreCase("1")){
                                         response(jobj.getJSONArray("Data").toString());
                                     }else{
@@ -147,7 +140,7 @@ public abstract class CallWebService implements IService {
 
                     @Override
                     public void onResponse(JSONObject jobj) {
-                        // TODO Auto-generated method stub
+
 
                         try{
                             String responseCode = String.valueOf(jobj.getInt("ResponseCode"));
@@ -168,7 +161,7 @@ public abstract class CallWebService implements IService {
 
                     @Override
                     public void onErrorResponse(VolleyError e) {
-                        // TODO Auto-generated method stub
+
                         error("Server Error");
                     }
                 });

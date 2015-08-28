@@ -145,6 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
             userObject.put("Salutation", 0);
             userObject.put("UserID", 0);
             userObject.put("UserName", username);
+            userObject.put("LoginVia","N");
             userObject.put("UserRoleID", 2);
         } catch (Exception e) {
             e.printStackTrace();

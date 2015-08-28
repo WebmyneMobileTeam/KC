@@ -163,6 +163,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 // helper.hideProgress();
                 Log.e("Error", error);
 
+
             }
         }.call();
 
