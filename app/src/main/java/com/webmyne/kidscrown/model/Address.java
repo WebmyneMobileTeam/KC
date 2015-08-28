@@ -16,17 +16,17 @@ public class Address {
     @SerializedName("AddressID")
     public int AddressID;
 
-    @SerializedName("CityID")
-    public int CityID;
+    @SerializedName("City")
+    public String City;
 
-    @SerializedName("CountryID")
-    public int CountryID;
+    @SerializedName("Country")
+    public String Country;
 
     @SerializedName("IsDefault")
-    public int IsDefault;
+    public String IsDefault;
 
     @SerializedName("IsShipping")
-    public int IsShipping;
+    public String IsShipping;
 
     @SerializedName("MobileNo")
     public String MobileNo;

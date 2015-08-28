@@ -23,6 +23,11 @@ import android.widget.ImageView;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.People;
+import com.google.android.gms.plus.Plus;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
 import com.webmyne.kidscrown.fragment.HelpFragment;
@@ -38,13 +43,17 @@ import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.UserProfile;
 
-public class MyDrawerActivity extends AppCompatActivity {
+public class MyDrawerActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
     Toolbar toolbar;
     ToolHelper helper;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     NavigationView view;
     private CallbackManager callbackManager;
+
+    GoogleApiClient mGoogleApiClient;
+    boolean mSignInClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +85,12 @@ public class MyDrawerActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
     }
 
     public Toolbar getToolbar() {
@@ -130,7 +145,11 @@ public class MyDrawerActivity extends AppCompatActivity {
                     // Facebook logout
                     LoginManager.getInstance().logOut();
                     //GooglePlus Logout
-                    LoginActivity.signOutFromGplus();
+                    if (mGoogleApiClient.isConnected()) {
+                        Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                        mGoogleApiClient.disconnect();
+                        mGoogleApiClient.connect();
+                    }
                 } catch (Exception e) {
                     Log.e("EXP LOGOUT", e.toString());
                 }
@@ -230,6 +249,18 @@ public class MyDrawerActivity extends AppCompatActivity {
 
     }
 
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -247,5 +278,28 @@ public class MyDrawerActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mSignInClicked = false;
+        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
+                this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onResult(People.LoadPeopleResult loadPeopleResult) {
+
     }
 }

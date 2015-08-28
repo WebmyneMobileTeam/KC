@@ -7,13 +7,23 @@
     android:padding="16dp"
     tools:context="com.webmyne.kidscrown.fragment.HomeFragment">
 
+    <ImageView
+        android:id="@+id/FDAicon"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/fdalogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <ListView
+        android:layout_marginLeft="@dimen/card_margin"
+        android:layout_marginRight="@dimen/card_margin"
+        android:layout_above="@id/FDAicon"
         android:id="@+id/listProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="#00000000"
-        android:dividerHeight="8dp"
+        android:dividerHeight="@dimen/CARD_DIVIDER_HEIGHT"
         android:scrollbars="none"></ListView>
 
     <TextView
@@ -22,14 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="Fetching Products.."
-        android:textSize="18sp" />
+        android:textSize="@dimen/M_TEXT_SIZE" />
 
-    <ImageView
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/fdalogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
 
 
 </RelativeLayout>

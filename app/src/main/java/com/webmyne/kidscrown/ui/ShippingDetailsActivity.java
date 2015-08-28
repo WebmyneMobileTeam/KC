@@ -13,6 +13,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -75,7 +77,7 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
     RelativeLayout rLContPayment;
     BillingAndShippingAddress billingAndShippingAddress = new BillingAndShippingAddress();
     private EditText edtBillingAddress1, edtBillingAddress2, edtBillingCity, edtBillingState, edtBillingCountry, edtBillingPincode, edtShippingAddress1, edtShippingAddress2, edtShippingCity, edtShippingState, edtShippingCountry, edtShippingPincode;
-
+    private CheckBox isSameAsShipping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
         init();
 
         fetchAddress();
-        displayAddress();
+
     }
 
 
@@ -111,6 +113,8 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
                 DatabaseHandler handler = new DatabaseHandler(ShippingDetailsActivity.this);
                 handler.saveAddress(addresses);
                 handler.close();
+
+                displayAddress();
 
             }
 
@@ -163,6 +167,8 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
         edtShippingCountry.addTextChangedListener(new CustomTextWatcher(edtShippingCountry));
         edtShippingPincode.addTextChangedListener(new CustomTextWatcher(edtShippingPincode));
 
+        isSameAsShipping = (CheckBox) findViewById(R.id.checkbox);
+
 
         segmented2 = (SegmentedGroup) findViewById(R.id.segmented2);
         segmented2.setTintColor(Color.parseColor("#727272"));
@@ -207,9 +213,35 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
 
                 saveAddresses();
 
+            }
+        });
 
-                Intent i = new Intent(ShippingDetailsActivity.this, ConfirmOrderActivity.class);
-                startActivity(i);
+        isSameAsShipping.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    edtShippingAddress1.setEnabled(false);
+                    edtShippingAddress2.setEnabled(false);
+                    edtShippingCity.setEnabled(false);
+                    edtShippingState.setEnabled(false);
+                    edtShippingCountry.setEnabled(false);
+                    edtShippingPincode.setEnabled(false);
+
+                    billingAndShippingAddress.setShippingAddress1(edtBillingAddress1.getText().toString());
+                    billingAndShippingAddress.setShippingAddress2(edtBillingAddress2.getText().toString());
+                    billingAndShippingAddress.setShippingCity(edtBillingCity.getText().toString());
+                    billingAndShippingAddress.setShippingState(edtBillingState.getText().toString());
+                    billingAndShippingAddress.setShippingCountry(edtBillingCountry.getText().toString());
+                    billingAndShippingAddress.setShippingPincode(edtBillingPincode.getText().toString());
+
+                } else {
+                    edtShippingAddress1.setEnabled(true);
+                    edtShippingAddress2.setEnabled(true);
+                    edtShippingCity.setEnabled(true);
+                    edtShippingState.setEnabled(true);
+                    edtShippingCountry.setEnabled(true);
+                    edtShippingPincode.setEnabled(true);
+                }
             }
         });
 
@@ -245,6 +277,7 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
 
                 do {
                     // check if address is billing or not
+                    Log.e("CURSON_UITEM", cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")));
                     if (cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")).equals("false")) {
                         billingAndShippingAddress.setBillingAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address_1")));
                         billingAndShippingAddress.setBillingAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address_2")));
@@ -304,21 +337,49 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
             switch (mEditText.getId()) {
                 case R.id.edtBillingAddress1:
                     billingAndShippingAddress.setBillingAddress1(s.toString());
+
+                    //set in shipping address too if same as billing
+                    if(isSameAsShipping.isChecked()) {
+                        billingAndShippingAddress.setShippingAddress1(s.toString());
+                    }
                     break;
                 case R.id.edtBillingAddress2:
                     billingAndShippingAddress.setBillingAddress2(s.toString());
+                    //set in shipping address too if same as billing
+                    if(isSameAsShipping.isChecked()) {
+                        billingAndShippingAddress.setShippingAddress2(s.toString());
+                    }
                     break;
                 case R.id.edtBillingCity:
                     billingAndShippingAddress.setBillingCity(s.toString());
+
+                    //set in shipping address too if same as billing
+                    if(isSameAsShipping.isChecked()) {
+                        billingAndShippingAddress.setShippingCity(s.toString());
+                    }
                     break;
                 case R.id.edtBillingCountry:
                     billingAndShippingAddress.setBillingCountry(s.toString());
+
+                    //set in shipping address too if same as billing
+                    if(isSameAsShipping.isChecked()) {
+                        billingAndShippingAddress.setShippingCountry(s.toString());
+                    }
                     break;
                 case R.id.edtBillingState:
                     billingAndShippingAddress.setBillingState(s.toString());
+                    //set in shipping address too if same as billing
+                    if(isSameAsShipping.isChecked()) {
+                        billingAndShippingAddress.setShippingState(s.toString());
+                    }
                     break;
                 case R.id.edtBillingPincode:
                     billingAndShippingAddress.setBillingPincode(s.toString());
+
+                    //set in shipping address too if same as billing
+                    if(isSameAsShipping.isChecked()) {
+                        billingAndShippingAddress.setShippingPincode(s.toString());
+                    }
                     break;
 
                 case R.id.edtShippingAddress1:
@@ -356,24 +417,24 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
             billingAddress.put("Address2", billingAndShippingAddress.getBillingAddress2());
             billingAddress.put("City", billingAndShippingAddress.getBillingCity());
             billingAddress.put("Country", billingAndShippingAddress.getBillingCountry());
-            billingAddress.put("IsDefault", "true");
-            billingAddress.put("IsShipping", "false");
+            billingAddress.put("IsDefault", true);
+            billingAddress.put("IsShipping", false);
             billingAddress.put("MobileNo", currentUserObj.MobileNo);
             billingAddress.put("PinCode", billingAndShippingAddress.getBillingPincode());
-            billingAddress.put("StateID", "");
-            billingAddress.put("UserID", userId);
+            billingAddress.put("StateID", 1279);
+            billingAddress.put("UserID", Integer.parseInt(userId));
 
             shippingAddress = new JSONObject();
             shippingAddress.put("Address1", billingAndShippingAddress.getShippingAddress1());
             shippingAddress.put("Address2", billingAndShippingAddress.getShippingAddress2());
             shippingAddress.put("City", billingAndShippingAddress.getShippingCity());
             shippingAddress.put("Country", billingAndShippingAddress.getShippingCountry());
-            shippingAddress.put("IsDefault", "true");
-            shippingAddress.put("IsShipping", "false");
+            shippingAddress.put("IsDefault", true);
+            shippingAddress.put("IsShipping", true);
             shippingAddress.put("MobileNo", currentUserObj.MobileNo);
             shippingAddress.put("PinCode", billingAndShippingAddress.getShippingPincode());
-            shippingAddress.put("StateID", "");
-            shippingAddress.put("UserID", userId);
+            shippingAddress.put("StateID", 1279);
+            shippingAddress.put("UserID", Integer.parseInt(userId));
 
             addressJsonArray.put(billingAddress);
             addressJsonArray.put(shippingAddress);
@@ -392,11 +453,14 @@ public class ShippingDetailsActivity extends AppCompatActivity  {
             @Override
             public void response(String response) {
                 pd.dismiss();
-                JSONArray data;
-                Log.e("register response", response + "");
+                //JSONArray data;
+                Log.e("SAVE_ADDRESS response", response + "");
                 try {
-                    data = new JSONArray(response);
-                    JSONObject description = data.getJSONObject(0);
+                   /* data = new JSONArray(response);
+                    JSONObject description = data.getJSONObject(0);*/
+
+                    Intent i = new Intent(ShippingDetailsActivity.this, ConfirmOrderActivity.class);
+                    startActivity(i);
 
                 } catch (Exception e) {
                     pd.dismiss();

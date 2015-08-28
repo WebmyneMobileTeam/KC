@@ -27,8 +27,8 @@ import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
 
     TextView btnLogin;
-    EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName;
-    String firstName, lastName, mobile, emailId, password, registartionNo, username, salutation;
+    EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName, edtClinicName;
+    String firstName, lastName, mobile, emailId, password, registartionNo, username, clinicName;
     Button btnRegister;
     ProgressDialog pd;
     View parentView;
@@ -128,6 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailId = edtEmail.getText().toString().trim();
         password = edtPassword.getText().toString();
         registartionNo = edtRegNo.getText().toString().trim();
+        clinicName = edtClinicName.getText().toString().trim();
 
         JSONObject userObject = null;
         try {
@@ -143,6 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
             userObject.put("Qualification", "");
             userObject.put("RegistrationNumber", registartionNo);
             userObject.put("Salutation", 0);
+            userObject.put("ClinicName", clinicName);
             userObject.put("UserID", 0);
             userObject.put("UserName", username);
             userObject.put("LoginVia","N");
@@ -208,6 +210,7 @@ public class RegisterActivity extends AppCompatActivity {
         edtPassword = (EditText) findViewById(R.id.edtPassword);
         edtConfirmPassword = (EditText) findViewById(R.id.edtConfirmPassword);
         edtRegNo = (EditText) findViewById(R.id.edtRegNo);
+        edtClinicName = (EditText) findViewById(R.id.edtClinicName);
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
 

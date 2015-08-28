@@ -312,9 +312,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("state_name", "");
             values.put("state_id", address.StateID);
             values.put("country_name", "");
-            values.put("country_id", address.CountryID);
+            values.put("country_id", address.Country);
             values.put("city_name", "");
-            values.put("city_id", address.CityID);
+            values.put("city_id", address.City);
             values.put("address_id", address.AddressID);
             values.put("address_2", address.Address2);
             values.put("address_1", address.Address1);

@@ -25,6 +25,7 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
+        android:theme="@style/list_item_appearance"
         android:background="#ffffff"
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"

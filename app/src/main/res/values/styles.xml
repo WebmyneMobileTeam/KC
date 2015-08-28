@@ -67,10 +67,10 @@
     </style>
 
     <style name="Widget.CardContent" parent="android:Widget">
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">24dp</item>
-        <item name="android:paddingBottom">24dp</item>
+        <item name="android:paddingLeft">@dimen/card_margin</item>
+        <item name="android:paddingRight">@dimen/card_margin</item>
+        <item name="android:paddingTop">@dimen/L_TEXT_SIZE</item>
+        <item name="android:paddingBottom">@dimen/L_TEXT_SIZE</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
@@ -86,6 +86,33 @@
         <item name="android:textSize">40sp</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="FloatingLabelStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/S_TEXT_SIZE</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="list_item_appearance">
+        <item name="android:textSize">@dimen/M_TEXT_SIZE</item>
+    </style>
+
+    <style name="ToolBarStyle" parent="ToolBarStyle.Base"/>
+
+    <style name="ToolBarStyle.Base" parent="">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="ToolBarStyle.Event" parent="ToolBarStyle">
+        <item name="titleTextAppearance">@style/TextAppearance.Widget.Event.Toolbar.Title</item>
+    </style>
+
+    <style name="TextAppearance.Widget.Event.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <!--Any text styling can be done here-->
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/M_TEXT_SIZE</item>
     </style>
 
 </resources>

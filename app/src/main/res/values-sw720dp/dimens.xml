@@ -1,0 +1,25 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="card_margin">70dp</dimen>
+    <dimen name="detail_backdrop_height">400dp</dimen>
+    <dimen name="product_image">90dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
+
+    <dimen name="CARD_DIVIDER_HEIGHT">24dp</dimen>
+    <dimen name="S_TEXT_SIZE">23dp</dimen>
+    <dimen name="M_TEXT_SIZE">26dp</dimen>
+    <dimen name="L_TEXT_SIZE">30dp</dimen>
+    <dimen name="STD_HEIGHT_SIZE">60dp</dimen>
+    <dimen name="STD_HEIGHT_SIZE1">62dp</dimen>
+    <dimen name="S_MARGIN_SIZE">8dp</dimen>
+    <dimen name="L_MARGIN_SIZE">14dp</dimen>
+    <dimen name="STD_MARGIN_SIZE">150dp</dimen>
+    <dimen name="STD_TXT_PADDING_SIZE">12dp</dimen>
+
+    <dimen name="LOGO_HEIGHT">200dp</dimen>
+
+    <dimen name="EXPANDABLE_MARGIN_END">74dp</dimen>
+    <dimen name="EXPANDABLE_MARGIN_START">58dp</dimen>
+</resources>

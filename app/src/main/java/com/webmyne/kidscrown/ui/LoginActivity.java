@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.GsonBuilder;
@@ -55,26 +58,16 @@ public class LoginActivity extends ActionBarActivity implements
     ProgressDialog pd;
 
     private static final int RC_SIGN_IN = 0;
-    // Logcat tag
     private static final String TAG = "MainActivity";
 
-    // Profile pic image size in pixels
-    private static final int PROFILE_PIC_SIZE = 400;
+    private GoogleApiClient mGoogleApiClient;
 
-    // Google client to interact with Google API
-    private static GoogleApiClient mGoogleApiClient;
-
-    /**
-     * A flag indicating that a PendingIntent is in progress and prevents us
-     * from starting further intents.
-     */
     private boolean mIntentInProgress;
 
     private boolean mSignInClicked;
 
     private ConnectionResult mConnectionResult;
 
-    // private LoginButton btnFb;
     private LinearLayout linearFbLogin;
     private CallbackManager callbackManager;
 
@@ -221,7 +214,7 @@ public class LoginActivity extends ActionBarActivity implements
 
             @Override
             public void error(String error) {
-
+                pd.dismiss();
             }
         }.call();
     }
@@ -278,7 +271,6 @@ public class LoginActivity extends ActionBarActivity implements
         txtRegister = (TextView) findViewById(R.id.txtRegister);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
-        //btnFb = (LoginButton) findViewById(R.id.btnFb);
         linearFbLogin = (LinearLayout) findViewById(R.id.linearFbLogin);
         btnGplus = (SignInButton) findViewById(R.id.btnGplus);
         setGooglePlusButtonText(btnGplus, "SignIn With Google Plus");
@@ -303,9 +295,6 @@ public class LoginActivity extends ActionBarActivity implements
         }
     }
 
-    /**
-     * Method to resolve any signin errors
-     * */
     private void resolveSignInError() {
         if (mConnectionResult.hasResolution()) {
             try {
@@ -327,13 +316,9 @@ public class LoginActivity extends ActionBarActivity implements
         }
 
         if (!mIntentInProgress) {
-            // Store the ConnectionResult for later usage
             mConnectionResult = result;
 
             if (mSignInClicked) {
-                // The user has already clicked 'sign-in' so we attempt to
-                // resolve all
-                // errors until the user is signed in, or they cancel.
                 resolveSignInError();
             }
         }
@@ -361,18 +346,9 @@ public class LoginActivity extends ActionBarActivity implements
     @Override
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
-        //Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-        // Get user's information
         getGPlusProfileInformation();
-        //setGooglePlusButtonText(btnGplus, "Logout From Google Plus");
-        // Update the UI after signin
-        //updateUI(true);
-
     }
 
-    /**
-     * Fetching user's information name, email, profile pic
-     * */
     private void getGPlusProfileInformation() {
         try {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
@@ -386,7 +362,6 @@ public class LoginActivity extends ActionBarActivity implements
                 socialMediaLoginProcess(email, fName, lName, "G");
 
             } else {
-                //Toast.makeText(getApplicationContext(), "Person information is null", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -398,30 +373,12 @@ public class LoginActivity extends ActionBarActivity implements
         mGoogleApiClient.connect();
     }
 
-    /**
-     * Sign-in into google
-     * */
     private void signInWithGplus() {
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
             resolveSignInError();
         }
     }
-
-
-
-    static public void signOutFromGplus() {
-        try {
-            if (mGoogleApiClient.isConnected()) {
-                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-                mGoogleApiClient.disconnect();
-                mGoogleApiClient.connect();
-            }
-        } catch (Exception e) {
-            Log.e("GMail Logout EXP",e.toString());
-        }
-    }
-
 
     protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
         for (int i = 0; i < signInButton.getChildCount(); i++) {
@@ -430,11 +387,11 @@ public class LoginActivity extends ActionBarActivity implements
 
             if (v instanceof TextView) {
                 TextView tv = (TextView) v;
-                tv.setTextSize(15);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.S_TEXT_SIZE));
                 tv.setTypeface(null, Typeface.BOLD);
                 tv.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 tv.setText(buttonText);
-                tv.setPadding(0,0,0,0);
+                tv.setPadding(0, 0, 0, 0);
                 return;
             }
         }

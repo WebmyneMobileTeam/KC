@@ -27,6 +27,9 @@ public class UserProfile {
     @SerializedName("RegistrationNumber")
     public String RegistrationNumber;
 
+    @SerializedName("ClinicName")
+    public String ClinicName;
+
     @SerializedName("Salutation")
     public String Salutation;
 

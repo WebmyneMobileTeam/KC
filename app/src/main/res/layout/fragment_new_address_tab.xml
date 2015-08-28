@@ -109,6 +109,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Country"
+                android:text="India"
+                android:enabled="true"
                 android:inputType="text"
                 android:textColor="@color/colorTextSecondary"
                 android:textColorHint="@color/colorTextSecondary"

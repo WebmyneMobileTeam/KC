@@ -34,8 +34,8 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName;
-    String firstName, lastName, mobile, emailId, password, registartionNo, username, salutation, userId;
+    EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName, edtClinicName;
+    String firstName, lastName, mobile, emailId, password, registartionNo, username, salutation, userId, clinicName;
     Button btnUpdate;
     ProgressDialog pd;
     View parentView;
@@ -91,6 +91,7 @@ public class ProfileFragment extends Fragment {
         edtPassword = (EditText) view.findViewById(R.id.edtPassword);
         edtConfirmPassword = (EditText) view.findViewById(R.id.edtConfirmPassword);
         edtRegNo = (EditText) view.findViewById(R.id.edtRegNo);
+        edtClinicName = (EditText) view.findViewById(R.id.edtClinicName);
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
@@ -106,6 +107,7 @@ public class ProfileFragment extends Fragment {
         password = currentUserObj.Password;
         registartionNo = currentUserObj.RegistrationNumber;
         salutation = currentUserObj.Salutation;
+        clinicName = currentUserObj.ClinicName;
 
         edtFirstname.setText(firstName);
         edtLastName.setText(lastName);
@@ -115,6 +117,7 @@ public class ProfileFragment extends Fragment {
         edtPassword.setText(password);
         edtConfirmPassword.setText(password);
         edtRegNo.setText(registartionNo);
+        edtClinicName.setText(clinicName);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +159,7 @@ public class ProfileFragment extends Fragment {
         emailId = edtEmail.getText().toString().trim();
         password = edtPassword.getText().toString();
         registartionNo = edtRegNo.getText().toString().trim();
+        clinicName = edtClinicName.getText().toString().trim();
 
         JSONObject userObject = null;
         try {
@@ -170,6 +174,7 @@ public class ProfileFragment extends Fragment {
             userObject.put("Password", password);
             userObject.put("Qualification", "");
             userObject.put("RegistrationNumber", registartionNo);
+            userObject.put("ClinicName", clinicName);
             userObject.put("Salutation", 0);
             userObject.put("UserID", userId);
             userObject.put("UserName", username);
