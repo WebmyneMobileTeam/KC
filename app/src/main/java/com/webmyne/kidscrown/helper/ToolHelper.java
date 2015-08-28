@@ -2,6 +2,7 @@ package com.webmyne.kidscrown.helper;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,12 +30,16 @@ public class ToolHelper {
     View view;
     ImageView imgCartMenu;
     BadgeView badge;
+    int crownProductId;
+    SharedPreferences preferences;
 
     public ToolHelper(Context _ctx, View view) {
         this._ctx = _ctx;
         this.view = view;
         imgCartMenu = (ImageView) view.findViewById(R.id.imgCartMenu);
         badge = new BadgeView(_ctx, imgCartMenu);
+        preferences = _ctx.getSharedPreferences("login", Context.MODE_PRIVATE);
+        crownProductId = preferences.getInt("crownProductId", 0);
 
     }
 
@@ -42,13 +47,20 @@ public class ToolHelper {
         int value = 0;
         ArrayList<Integer> count = new ArrayList<>();
         ArrayList<ProductCart> products = new ArrayList<>();
+        ArrayList<ProductCart> crowns = new ArrayList<>();
         try {
             DatabaseHandler handler = new DatabaseHandler(_ctx);
             handler.openDataBase();
-            products = handler.getCartProduct();
+            products = handler.getCartProduct(crownProductId);
+            crowns = handler.getCartProduct(crownProductId);
             if (products.size() != 0) {
                 for (int i = 0; i < products.size(); i++) {
                     count.add(products.get(i).getProductId());
+                }
+            }
+            if (crowns.size() != 0) {
+                for (int i = 0; i < crowns.size(); i++) {
+                    count.add(crowns.get(i).getProductId());
                 }
             }
             HashSet hs = new HashSet();

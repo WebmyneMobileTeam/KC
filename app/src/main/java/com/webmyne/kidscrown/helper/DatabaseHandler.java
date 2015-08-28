@@ -246,11 +246,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
-    public ArrayList<ProductCart> getCartProduct() {
+    public ArrayList<ProductCart> getCartProduct(int productID) {
         ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();
         Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price";
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price AND CartItem.product_id!=" + productID;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                ProductCart cart = new ProductCart();
+                cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+                cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
+                cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
+                cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
+                cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+                cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+                products.add(cart);
+            } while (cursor.moveToNext());
+        }
+        return products;
+    }
+
+    public ArrayList<ProductCart> getCrownCartProduct(int productID) {
+        ArrayList<ProductCart> products = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price AND CartItem.product_id=" + productID;
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {

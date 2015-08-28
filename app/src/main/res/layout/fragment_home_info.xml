@@ -2,9 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_bg"
     android:gravity="bottom|center_horizontal"
     tools:context="com.webmyne.kidscrown.ui.SplashActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/home_bg">
 
+        <ImageView
+            android:id="@+id/closeInfo"
+            android:layout_width="wrap_content"
+            android:layout_margin="6dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_close" />
+    </RelativeLayout>
 </RelativeLayout>

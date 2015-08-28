@@ -1,6 +1,8 @@
 package com.webmyne.kidscrown.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -42,6 +44,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     TextView totalPrice, emptyCart;
     LinearLayout linearParent, totalLayout;
     ArrayList<String> values;
+    int crownProductId;
+    SharedPreferences preferences;
     int price;
     String userId;
     ProgressDialog pd;
@@ -60,6 +64,9 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         init();
 
+        preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        crownProductId = preferences.getInt("crownProductId", 0);
+
         fetchCartDetails();
         //fetchAddress();
     }
@@ -68,7 +75,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         try {
             DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
             handler.openDataBase();
-            products = handler.getCartProduct();
+            products = handler.getCartProduct(crownProductId);
             handler.close();
             if (products.size() == 0) {
                 totalLayout.setVisibility(View.GONE);
@@ -96,7 +103,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             try {
                 DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
                 handler.openDataBase();
-                products = handler.getCartProduct();
+                products = handler.getCartProduct(crownProductId);
                 handler.close();
                 price = 0;
                 for (int k = 0; k < products.size(); k++) {

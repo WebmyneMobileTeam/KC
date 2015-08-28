@@ -54,6 +54,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private ListView listProducts;
     private ProductAdapter adapter;
+    ImageView closeInfo;
+    Dialog dialog;
 
     public HomeFragment() {
     }
@@ -65,16 +67,15 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init(view);
+
         return view;
     }
 
     private void init(View v) {
-
         listProducts = (ListView) v.findViewById(R.id.listProducts);
         listProducts.setOnItemClickListener(this);
         listProducts.setEmptyView(v.findViewById(R.id.txtLoading));
         ((MyDrawerActivity) getActivity()).setTitle("Products");
-
     }
 
     @Override
@@ -86,6 +87,12 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (preferences.getBoolean("isFirstTimeLogin", true) == true) {
 
             displayDialogForFirstTime();
+            closeInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
         }
 
@@ -93,8 +100,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void displayDialogForFirstTime() {
 
-        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
-        dialog.setContentView(getActivity().getLayoutInflater().inflate(R.layout.fragment_home_info, null));
+        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.fragment_home_info, null);
+        dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+        closeInfo = (ImageView) dialogView.findViewById(R.id.closeInfo);
+        dialog.setContentView(dialogView);
         dialog.setCancelable(true);
         dialog.show();
 
@@ -102,7 +111,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isFirstTimeLogin", false);
         editor.commit();
-
 
     }
 

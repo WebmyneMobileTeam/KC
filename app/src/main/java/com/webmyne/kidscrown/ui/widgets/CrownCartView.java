@@ -1,7 +1,6 @@
 package com.webmyne.kidscrown.ui.widgets;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,7 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
-import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.ProductCart;
-import com.webmyne.kidscrown.ui.CartActivity;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by sagartahelyani on 24-08-2015.
  */
-public class ItemCartView extends LinearLayout {
+public class CrownCartView extends LinearLayout {
 
     LayoutInflater inflater;
     View view;
@@ -30,25 +27,25 @@ public class ItemCartView extends LinearLayout {
     ProductCart cart;
     TextView txtName, unitPrice, unitQty, totalPrice;
     LinearLayout remove;
-    ComboSeekBar combo;
-    FrameLayout cartProductFrame;
+//    ComboSeekBar combo;
+    LinearLayout cartProductFrame;
 
     ArrayList<String> values;
     OnValueChangeListener onValueChangeListener;
 
     onRemoveProductListener onRemoveProductListener;
 
-    public void setOnRemoveProductListener(ItemCartView.onRemoveProductListener onRemoveProductListener) {
+    public void setOnRemoveProductListener(CrownCartView.onRemoveProductListener onRemoveProductListener) {
         this.onRemoveProductListener = onRemoveProductListener;
     }
 
-    public ItemCartView(Context context) {
+    public CrownCartView(Context context) {
         super(context);
         this.context = context;
         init();
     }
 
-    public ItemCartView(Context context, ProductCart cart) {
+    public CrownCartView(Context context, ProductCart cart) {
         super(context);
         this.context = context;
         this.cart = cart;
@@ -59,7 +56,7 @@ public class ItemCartView extends LinearLayout {
         this.onValueChangeListener = onValueChangeListener;
     }
 
-    public ItemCartView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CrownCartView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         init();
@@ -67,7 +64,7 @@ public class ItemCartView extends LinearLayout {
 
     private void init() {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(R.layout.cart_product, this);
+        view = inflater.inflate(R.layout.crown_cart_product, this);
         setOrientation(VERTICAL);
 
         txtName = (TextView) view.findViewById(R.id.txtName);
@@ -75,10 +72,10 @@ public class ItemCartView extends LinearLayout {
         unitPrice = (TextView) view.findViewById(R.id.unitPrice);
         unitQty = (TextView) view.findViewById(R.id.unitQty);
         totalPrice = (TextView) view.findViewById(R.id.totalPrice);
-        combo = (ComboSeekBar) view.findViewById(R.id.combo);
+//        combo = (ComboSeekBar) view.findViewById(R.id.combo);
 
 
-        cartProductFrame = (FrameLayout) view.findViewById(R.id.cartProductFrame);
+        cartProductFrame = (LinearLayout) view.findViewById(R.id.cartProductFrame);
 
         setDetails(cart);
 
@@ -114,18 +111,19 @@ public class ItemCartView extends LinearLayout {
         for (int i = 1; i <= max; i++) {
             values.add("" + i);
         }
-        combo.setAdapter(values);
+        displayQTYandTotal(cart.getProductQty());
+       /* combo.setAdapter(values);
         combo.setColor(R.color.quad_green);
         combo.setBackgroundResource(0);
         combo.setSelection(cart.getProductQty() - 1);
-        displayQTYandTotal(cart.getProductQty());
+
         combo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 displayQTYandTotal(position + 1);
                 onValueChangeListener.onChange();
             }
-        });
+        });*/
     }
 
     private void displayQTYandTotal(int position) {
@@ -150,7 +148,7 @@ public class ItemCartView extends LinearLayout {
 
     public void hideControls() {
         remove.setVisibility(GONE);
-        combo.setVisibility(GONE);
+       // combo.setVisibility(GONE);
         cartProductFrame.setPadding(0, 0, 0, 20);
     }
 

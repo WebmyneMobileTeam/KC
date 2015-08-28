@@ -3,7 +3,6 @@ package com.webmyne.kidscrown.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
@@ -21,6 +20,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.CustomGridAdapter;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.model.ProductCart;
+import com.webmyne.kidscrown.ui.widgets.CrownCartView;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 
 import java.sql.SQLException;
@@ -31,12 +31,12 @@ public class CartActivity extends AppCompatActivity {
     Toolbar toolbar;
     GridLayout gridLayout;
     ArrayList<ProductCart> products = new ArrayList<>();
+    ArrayList<ProductCart> crowns = new ArrayList<>();
     TextView totalPrice, emptyCart;
     LinearLayout linearParent, totalLayout;
     ArrayList<String> values;
     int price, crownProductId;
     SharedPreferences preferences;
-    GridView gridView;
     TextView[] text;
     RelativeLayout rLayoutCheckout;
 
@@ -51,6 +51,7 @@ public class CartActivity extends AppCompatActivity {
         init();
 
         fetchCartDetails();
+
         rLayoutCheckout = (RelativeLayout) findViewById(R.id.rLayoutCheckout);
         rLayoutCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +71,8 @@ public class CartActivity extends AppCompatActivity {
         try {
             DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
             handler.openDataBase();
-            products = handler.getCartProduct();
+            products = handler.getCartProduct(crownProductId);
+            crowns = handler.getCrownCartProduct(crownProductId);
             handler.close();
             if (products.size() == 0) {
                 emptyCart.setVisibility(View.VISIBLE);
@@ -85,31 +87,32 @@ public class CartActivity extends AppCompatActivity {
 
         for (int i = 0; i < products.size(); i++) {
             price = price + Integer.parseInt(products.get(i).getProductTotalPrice());
-
-            if (products.get(i).getProductId() == crownProductId) {
-                Log.e("View", "GridView");
-
-                text = new TextView[9];
-                for (int z = 0; z < text.length; z++) {
-                    text[i] = new TextView(CartActivity.this);
-                    text[i].setLayoutParams(new ViewGroup.LayoutParams
-                            (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    text[i].setText(String.valueOf(i));
-                    text[i].setTextSize(25);
-                    text[i].setPadding(50, 25, 10, 25);
-                    gridLayout.addView(text[i]);
-                }
-
-                CustomGridAdapter adapter = new CustomGridAdapter(CartActivity.this, products);
-                gridView.setAdapter(adapter);
-            } else {
-                Log.e("View", "ItemView");
-                ItemCartView itemView = new ItemCartView(CartActivity.this, products.get(i));
-                itemView.setOnValueChangeListener(onValueChangeListener);
-                itemView.setOnRemoveProductListener(onRemoveProductListener);
-                linearParent.addView(itemView);
-            }
+            ItemCartView itemView = new ItemCartView(CartActivity.this, products.get(i));
+            itemView.setOnValueChangeListener(onValueChangeListener);
+            itemView.setOnRemoveProductListener(onRemoveProductListener);
+            linearParent.addView(itemView);
         }
+
+        /*CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
+        gridLayout.addView(crownView);*/
+
+        for (int i = 0; i < crowns.size(); i++) {
+            price = price + Integer.parseInt(crowns.get(i).getProductTotalPrice());
+            CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
+            gridLayout.addView(crownView);
+
+          /*  text = new TextView[9];
+            for (int z = 0; z < text.length; z++) {
+                text[i] = new TextView(CartActivity.this);
+                text[i].setLayoutParams(new ViewGroup.LayoutParams
+                        (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                text[i].setText("Item" + String.valueOf(i));
+                text[i].setTextSize(25);
+                text[i].setPadding(50, 25, 10, 25);
+                gridLayout.addView(text[i]);
+            }*/
+        }
+
         totalPrice.setText("Rs. " + price);
     }
 
@@ -119,11 +122,15 @@ public class CartActivity extends AppCompatActivity {
             try {
                 DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
                 handler.openDataBase();
-                products = handler.getCartProduct();
+                products = handler.getCartProduct(crownProductId);
+                crowns = handler.getCrownCartProduct(crownProductId);
                 handler.close();
                 price = 0;
                 for (int k = 0; k < products.size(); k++) {
                     price += Integer.parseInt(products.get(k).getProductTotalPrice());
+                }
+                for (int k = 0; k < crowns.size(); k++) {
+                    price += Integer.parseInt(crowns.get(k).getProductTotalPrice());
                 }
                 totalPrice.setText("Rs. " + price);
             } catch (Exception e) {
@@ -155,7 +162,6 @@ public class CartActivity extends AppCompatActivity {
         gridLayout.setRowCount(3);
 
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
-        gridView = (GridView) findViewById(R.id.gridView);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         totalPrice = (TextView) findViewById(R.id.totalPrice);
