@@ -91,6 +91,7 @@
                     style="@style/match_wrap_parent"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:gravity="center"
                     android:text="Forgot Password?"
                     android:textColor="#ffffff"
@@ -103,6 +104,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="New User? Sign Up"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/M_TEXT_SIZE" />

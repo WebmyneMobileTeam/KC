@@ -12,11 +12,12 @@
         android:layout_marginBottom="10dp">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
             android:layout_marginRight="@dimen/STD_MARGIN_SIZE"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
             android:orientation="vertical"
             android:paddingBottom="@dimen/STD_MARGIN_SIZE">
 

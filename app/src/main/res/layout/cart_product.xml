@@ -3,10 +3,10 @@
     xmlns:cbs="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginTop="12dp">
+    android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"
+    android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+    android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+    android:layout_marginTop="@dimen/VS_TEXT_SIZE">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,15 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
-            android:paddingTop="14dp">
+            android:paddingLeft="@dimen/S_TEXT_SIZE"
+            android:paddingRight="@dimen/S_TEXT_SIZE"
+            android:paddingTop="@dimen/S_TEXT_SIZE">
 
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pricing"
+                android:textSize="@dimen/S_TEXT_SIZE"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <FrameLayout
@@ -38,7 +39,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/M_MARGIN_SIZE"
+                    android:textSize="@dimen/S_TEXT_SIZE"
                     android:text="Price" />
 
                 <TextView
@@ -46,7 +48,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/M_MARGIN_SIZE"
+                    android:textSize="@dimen/S_TEXT_SIZE"
                     android:text="Price" />
 
                 <TextView
@@ -54,7 +57,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/M_MARGIN_SIZE"
+                    android:textSize="@dimen/S_TEXT_SIZE"
                     android:text="Price"
                     android:textStyle="bold" />
 
@@ -64,7 +68,7 @@
                 android:id="@+id/combo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/card_margin"
                 cbs:myColor="@android:color/black" />
         </LinearLayout>
 
@@ -84,27 +88,27 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
+                android:padding="@dimen/STD_TXT_PADDING_SIZE"
                 android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/STD_TXT_PADDING_SIZE"
                     android:src="@drawable/ic_update" />
 
                 <TextView
                     android:id="@+id/update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/STD_TXT_PADDING_SIZE"
                     android:text="Update"
                     android:textAllCaps="false" />
             </LinearLayout>
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="24dp"
+                android:layout_height="@dimen/VL_TEXT_SIZE"
                 android:layout_weight="0.005"
                 android:background="#c0c0c0"
                 android:visibility="gone" />
@@ -115,18 +119,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp">
+                android:padding="@dimen/STD_TXT_PADDING_SIZE">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/STD_TXT_PADDING_SIZE"
                     android:src="@drawable/ic_action_delete" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Remove"
+                    android:padding="@dimen/S_MARGIN_SIZE"
+                    android:textSize="@dimen/S_TEXT_SIZE"
                     android:textAllCaps="false" />
             </LinearLayout>
 

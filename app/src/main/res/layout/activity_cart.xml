@@ -9,6 +9,8 @@
     <include layout="@layout/app_bar2"></include>
 
     <RelativeLayout
+        android:layout_marginLeft="@dimen/card_margin"
+        android:layout_marginRight="@dimen/card_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,7 +21,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Your cart is empty"
-            android:textSize="18sp"
+            android:textSize="@dimen/S_TEXT_SIZE"
             android:visibility="gone" />
 
         <ScrollView
@@ -70,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="Grand Total"
+                    android:textSize="@dimen/S_TEXT_SIZE"
                     android:textStyle="bold" />
 
                 <TextView
@@ -77,6 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:textSize="@dimen/S_TEXT_SIZE"
                     android:text="Subtotal" />
             </RelativeLayout>
 
@@ -104,9 +108,9 @@
                     android:layout_centerInParent="true"
                     android:clickable="false"
                     android:text="Check Out"
+                    android:textSize="@dimen/S_TEXT_SIZE"
                     android:textAllCaps="false"
                     android:textColor="#f1f1f1"
-                    android:textSize="18sp"
                     android:textStyle="bold" />
             </RelativeLayout>
         </LinearLayout>

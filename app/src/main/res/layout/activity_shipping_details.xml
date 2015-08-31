@@ -11,42 +11,6 @@
         android:layout_height="wrap_content"
         layout="@layout/app_bar2"></include>
 
-
-    <!--<ScrollView
-        android:layout_below="@+id/logo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="vertical">-->
-
-<!--
-
-
-            <ScrollView
-                android:id="@+id/scrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/totalLayout"
-                android:layout_alignParentTop="true">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">-->
     <LinearLayout
         android:id="@+id/totalLayout"
         android:layout_width="match_parent"
@@ -60,17 +24,17 @@
             android:id="@+id/rLContPayment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginBottom="@dimen/M_MARGIN_SIZE"
+            android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+            android:layout_marginRight="@dimen/VS_TEXT_SIZE"
             android:background="@drawable/mybutton"
-            android:padding="12dp">
+            android:padding="@dimen/VS_TEXT_SIZE">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
                 android:src="@drawable/ic_checkout" />
 
             <TextView
@@ -80,7 +44,7 @@
                 android:text="Continue To Payment"
                 android:textAllCaps="false"
                 android:textColor="#f1f1f1"
-                android:textSize="18sp"
+                android:textSize="@dimen/M_TEXT_SIZE"
                 android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
@@ -100,11 +64,11 @@
                         android:id="@+id/segmented2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="@dimen/VS_TEXT_SIZE"
                         android:checkedButton="@+id/tabBilling"
                         android:orientation="horizontal"
                         segmentedgroup:border_width="2dp"
-                        segmentedgroup:corner_radius="10dp">
+                        segmentedgroup:corner_radius="@dimen/VS_TEXT_SIZE">
 
                         <RadioButton
                             android:id="@+id/tabBilling"
@@ -113,6 +77,8 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:layout_weight="1"
+                            android:textSize="@dimen/S_TEXT_SIZE"
+                            android:padding="@dimen/STD_TXT_PADDING_SIZE"
                             android:text="Billing Address"
                             style="@style/RadioButton" />
 
@@ -123,6 +89,8 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:layout_weight="1"
+                            android:textSize="@dimen/S_TEXT_SIZE"
+                            android:padding="@dimen/STD_TXT_PADDING_SIZE"
                             android:text="Shipping Address"
                             style="@style/RadioButton" />
                     </info.hoang8f.android.segmented.SegmentedGroup>
@@ -139,19 +107,5 @@
                             layout="@layout/fragment_existing_address"></include>
 
                     </FrameLayout>
-
-
                 </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
 </RelativeLayout>

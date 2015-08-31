@@ -3,6 +3,7 @@ package com.webmyne.kidscrown.ui.widgets;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;

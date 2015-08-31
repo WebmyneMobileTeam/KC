@@ -72,12 +72,14 @@
 
         <activity
             android:name=".ui.ShippingDetailsActivity"
-            android:label="@string/title_activity_shipping_details" >
+            android:label="@string/title_activity_shipping_details"
+            android:screenOrientation="sensorPortrait">
         </activity>
 
         <activity
             android:name=".ui.ConfirmOrderActivity"
-            android:label="@string/title_activity_confirm_activty" >
+            android:label="@string/title_activity_confirm_activty"
+            android:screenOrientation="sensorPortrait">
         </activity>
 
 

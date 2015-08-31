@@ -17,11 +17,13 @@
         android:src="@drawable/logo" />
 
     <ScrollView
+        android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
         android:layout_below="@+id/logo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
     <LinearLayout
+        android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
@@ -30,10 +32,8 @@
         android:orientation="vertical">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -94,6 +94,7 @@
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:singleLine="true"
                     android:text="Forgot Password?"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/M_TEXT_SIZE" />
@@ -105,6 +106,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="New User? Sign Up"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/M_TEXT_SIZE" />

@@ -3,29 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="@dimen/card_margin"
+    android:paddingRight="@dimen/card_margin"
     tools:context="com.webmyne.kidscrown.fragment.BillingAddressTab">
 
-    <!--<ListView
-        android:visibility="gone"
-        android:id="@+id/listAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="4dp"></ListView>-->
-
     <ScrollView
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="@dimen/STD_MARGIN_SIZE"
+        android:layout_marginBottom="@dimen/STD_MARGIN_SIZE"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="@dimen/card_margin"
+            android:layout_marginRight="@dimen/card_margin"
+            android:layout_marginBottom="@dimen/LAYOUT_MARGIN_SIZE"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -43,13 +36,13 @@
             android:singleLine="false"
             android:textColor="@color/colorTextSecondary"
             android:textColorHint="@color/colorTextSecondary"
-            android:textSize="18sp" />
+            android:textSize="@dimen/S_TEXT_SIZE" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
         <EditText
             android:id="@+id/edtBillingAddress2"
@@ -59,13 +52,13 @@
             android:inputType="text"
             android:textColor="@color/colorTextSecondary"
             android:textColorHint="@color/colorTextSecondary"
-            android:textSize="18sp" />
+            android:textSize="@dimen/S_TEXT_SIZE" />
     </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
             <EditText
                 android:id="@+id/edtBillingCity"
@@ -73,15 +66,15 @@
                 android:layout_height="wrap_content"
                 android:hint="City"
                 android:inputType="text"
+                android:textSize="@dimen/S_TEXT_SIZE"
                 android:textColor="@color/colorTextSecondary"
-                android:textColorHint="@color/colorTextSecondary"
-                android:textSize="18sp" />
+                android:textColorHint="@color/colorTextSecondary" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
             <EditText
                 android:id="@+id/edtBillingState"
@@ -91,14 +84,14 @@
                 android:inputType="text"
                 android:textColor="@color/colorTextSecondary"
                 android:textColorHint="@color/colorTextSecondary"
-                android:textSize="18sp" />
+                android:textSize="@dimen/S_TEXT_SIZE" />
         </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
             <EditText
                 android:id="@+id/edtBillingCountry"
@@ -110,13 +103,13 @@
                 android:inputType="text"
                 android:textColor="@color/colorTextSecondary"
                 android:textColorHint="@color/colorTextSecondary"
-                android:textSize="18sp" />
+                android:textSize="@dimen/S_TEXT_SIZE" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
             <EditText
                 android:id="@+id/edtBillingPincode"
@@ -127,7 +120,7 @@
                 android:inputType="text"
                 android:textColor="@color/colorTextSecondary"
                 android:textColorHint="@color/colorTextSecondary"
-                android:textSize="18sp" />
+                android:textSize="@dimen/S_TEXT_SIZE" />
         </android.support.design.widget.TextInputLayout>
 
             <Button
@@ -135,7 +128,7 @@
                 android:layout_gravity="right"
                 android:id="@+id/saveDetails"
                 style="@style/login_button"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="@dimen/STD_HEIGHT_SIZE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Save"/>
