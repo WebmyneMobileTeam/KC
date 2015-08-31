@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
@@ -182,6 +183,19 @@ public class CartActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
+
+        emptyCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v,"Clicked",Snackbar.LENGTH_SHORT).show();
+                Intent a = new Intent(CartActivity.this,MyDrawerActivity.class);
+                a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(a);
+
+            }
+        });
+
+
     }
 
     @Override
