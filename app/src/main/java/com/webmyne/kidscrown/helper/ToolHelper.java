@@ -71,15 +71,11 @@ public class ToolHelper {
             value = count.size();
         } catch (SQLException e) {
             e.printStackTrace();
-            Log.e("sagar", "exception");
+            Log.e("exception", e.toString());
         }
-
-
-        Log.e("sagar", "value " + value);
 
         if (value > 0) {
 
-            Log.e("sagar", "badge set " + value);
             imgCartMenu.setPadding(0, 0, 32, 0);
             badge.setText(String.valueOf(value));
             badge.setBadgeBackgroundColor(_ctx.getResources().getColor(R.color.quad_orange));
