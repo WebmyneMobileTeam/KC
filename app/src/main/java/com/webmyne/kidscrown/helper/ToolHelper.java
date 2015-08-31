@@ -45,35 +45,36 @@ public class ToolHelper {
 
     public void displayBadge() {
         int value = 0;
-        ArrayList<Integer> count = new ArrayList<>();
+        ArrayList<Integer> counts = new ArrayList<>();
         ArrayList<ProductCart> products = new ArrayList<>();
         ArrayList<ProductCart> crowns = new ArrayList<>();
         try {
             DatabaseHandler handler = new DatabaseHandler(_ctx);
             handler.openDataBase();
             products = handler.getCartProduct(crownProductId);
-            crowns = handler.getCartProduct(crownProductId);
+            crowns = handler.getCrownCartProduct(crownProductId);
+            handler.close();
             if (products.size() != 0) {
                 for (int i = 0; i < products.size(); i++) {
-                    count.add(products.get(i).getProductId());
+                    counts.add(products.get(i).getProductId());
                 }
             }
             if (crowns.size() != 0) {
                 for (int i = 0; i < crowns.size(); i++) {
-                    count.add(crowns.get(i).getProductId());
+                    counts.add(crowns.get(i).getProductId());
                 }
             }
             HashSet hs = new HashSet();
-            hs.addAll(count);
-            count.clear();
-            count.addAll(hs);
-            handler.close();
-            value = count.size();
+            hs.addAll(counts);
+            counts.clear();
+            counts.addAll(hs);
+            value = counts.size();
         } catch (SQLException e) {
             e.printStackTrace();
             Log.e("exception", e.toString());
         }
 
+        Log.e("counts", value + "--");
         if (value > 0) {
 
             imgCartMenu.setPadding(0, 0, 32, 0);

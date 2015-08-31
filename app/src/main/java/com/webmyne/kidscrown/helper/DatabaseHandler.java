@@ -248,6 +248,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
+    public void updateCrownCart(int qty, int totalPrice, String productName) {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty=" + qty + ", total_price=" + totalPrice + " WHERE product_name ='" + productName + "'";
+        myDataBase.execSQL(selectQuery);
+    }
+
     public ArrayList<ProductCart> getCartProduct(int productID) {
         ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();

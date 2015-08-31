@@ -152,8 +152,7 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //processContinue();
-
+                processContinue();
             }
         });
     }

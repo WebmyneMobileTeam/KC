@@ -57,6 +57,7 @@
         </activity>
         <activity
             android:name=".ui.CartActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_cart"
             android:screenOrientation="sensorPortrait">
         </activity>

@@ -62,7 +62,6 @@ public class MyDrawerActivity extends AppCompatActivity implements
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_home);
 
-
         init();
 
         callbackManager = CallbackManager.Factory.create();

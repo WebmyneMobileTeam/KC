@@ -67,6 +67,8 @@ public class CartActivity extends AppCompatActivity {
 
     private void fetchCartDetails() {
 
+        gridLayout.removeAllViews();
+        gridLayout.invalidate();
         linearParent.removeAllViews();
         linearParent.invalidate();
         try {
@@ -75,7 +77,7 @@ public class CartActivity extends AppCompatActivity {
             products = handler.getCartProduct(crownProductId);
             crowns = handler.getCrownCartProduct(crownProductId);
             handler.close();
-            if (products.size() == 0) {
+            if (products.size() == 0 && crowns.size() == 0) {
                 emptyCart.setVisibility(View.VISIBLE);
                 totalLayout.setVisibility(View.GONE);
             } else {
@@ -94,24 +96,11 @@ public class CartActivity extends AppCompatActivity {
             linearParent.addView(itemView);
         }
 
-        /*CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
-        gridLayout.addView(crownView);*/
-
         for (int i = 0; i < crowns.size(); i++) {
             price = price + Integer.parseInt(crowns.get(i).getProductTotalPrice());
             CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
             gridLayout.addView(crownView);
 
-          /*  text = new TextView[9];
-            for (int z = 0; z < text.length; z++) {
-                text[i] = new TextView(CartActivity.this);
-                text[i].setLayoutParams(new ViewGroup.LayoutParams
-                        (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                text[i].setText("Item" + String.valueOf(i));
-                text[i].setTextSize(25);
-                text[i].setPadding(50, 25, 10, 25);
-                gridLayout.addView(text[i]);
-            }*/
         }
 
         totalPrice.setText("Rs. " + price);
@@ -187,8 +176,8 @@ public class CartActivity extends AppCompatActivity {
         emptyCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v,"Clicked",Snackbar.LENGTH_SHORT).show();
-                Intent a = new Intent(CartActivity.this,MyDrawerActivity.class);
+                Snackbar.make(v, "Clicked", Snackbar.LENGTH_SHORT).show();
+                Intent a = new Intent(CartActivity.this, MyDrawerActivity.class);
                 a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(a);
 
