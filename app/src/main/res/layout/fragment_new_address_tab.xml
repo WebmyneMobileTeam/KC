@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,129 +12,136 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/STD_MARGIN_SIZE"
-        android:layout_marginBottom="@dimen/STD_MARGIN_SIZE">
+        android:layout_marginBottom="@dimen/STD_MARGIN_SIZE"
+        android:layout_marginTop="@dimen/STD_MARGIN_SIZE">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/card_margin"
-        android:layout_marginRight="@dimen/card_margin"
-        android:layout_marginBottom="@dimen/LAYOUT_MARGIN_SIZE"
-        android:gravity="center"
-        android:orientation="vertical">
-
-
-        <CheckBox
-            android:id="@+id/checkbox"
-            android:layout_gravity="left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/S_TEXT_SIZE"
-            android:textColor="@color/primaryColor"
-            android:text="Same as Billing Address?"/>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/edtShippingAddress1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Shipping Address 1"
-                android:inputType="text"
-                android:maxLines="6"
-                android:singleLine="false"
-                android:textColor="@color/colorTextSecondary"
-                android:textColorHint="@color/colorTextSecondary"
-                android:textSize="@dimen/S_TEXT_SIZE" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+            android:layout_marginBottom="@dimen/LAYOUT_MARGIN_SIZE"
+            android:layout_marginLeft="@dimen/card_margin"
+            android:layout_marginRight="@dimen/card_margin"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edtShippingAddress2"
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Same as Billing Address?"
+                android:textColor="@color/primaryColor"
+                android:textSize="@dimen/S_TEXT_SIZE"
+                android:theme="@style/CheckBoxCustom" />
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Shipping Address 2"
-                android:inputType="text"
-                android:textColor="@color/colorTextSecondary"
-                android:textColorHint="@color/colorTextSecondary"
-                android:textSize="@dimen/S_TEXT_SIZE" />
-        </android.support.design.widget.TextInputLayout>
+                app:hintTextAppearance="@style/TextInputLayout">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                <EditText
+                    android:id="@+id/edtShippingAddress1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bottom_line"
+                    android:hint="Address 1"
+                    android:inputType="text"
+                    android:maxLines="6"
+                    android:singleLine="false"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="#c0c0c0"
+                    android:textSize="@dimen/S_TEXT_SIZE" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtShippingCity"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="City"
-                android:inputType="text"
-                android:textColor="@color/colorTextSecondary"
-                android:textColorHint="@color/colorTextSecondary"
-                android:textSize="@dimen/S_TEXT_SIZE" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                app:hintTextAppearance="@style/TextInputLayout">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                <EditText
+                    android:id="@+id/edtShippingAddress2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bottom_line"
+                    android:hint="Address 2"
+                    android:inputType="text"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="#c0c0c0"
+                    android:textSize="@dimen/S_TEXT_SIZE" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtShippingState"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="State"
-                android:inputType="text"
-                android:textColor="@color/colorTextSecondary"
-                android:textColorHint="@color/colorTextSecondary"
-                android:textSize="@dimen/S_TEXT_SIZE" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                app:hintTextAppearance="@style/TextInputLayout">
 
+                <EditText
+                    android:id="@+id/edtShippingCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bottom_line"
+                    android:hint="City"
+                    android:inputType="text"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="#c0c0c0"
+                    android:textSize="@dimen/S_TEXT_SIZE" />
+            </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
-
-            <EditText
-                android:id="@+id/edtShippingCountry"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Country"
-                android:text="India"
-                android:enabled="true"
-                android:inputType="text"
-                android:textColor="@color/colorTextSecondary"
-                android:textColorHint="@color/colorTextSecondary"
-                android:textSize="@dimen/S_TEXT_SIZE" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android:text="State"
+                android:textColor="#c0c0c0"
+                android:textSize="@dimen/VS_TEXT_SIZE" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
-
-            <EditText
-                android:id="@+id/edtShippingPincode"
+            <Spinner
+                android:id="@+id/edtShipingStateSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Pincode"
-                android:inputType="text"
-                android:textColor="@color/colorTextSecondary"
-                android:textColorHint="@color/colorTextSecondary"
-                android:layout_marginBottom="50dp"
-                android:textSize="@dimen/S_TEXT_SIZE" />
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
+                android:background="@drawable/bottom_line"></Spinner>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                app:hintTextAppearance="@style/TextInputLayout">
+
+                <EditText
+                    android:id="@+id/edtShippingCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bottom_line"
+                    android:enabled="true"
+                    android:hint="Country"
+                    android:inputType="text"
+                    android:text="India"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="#c0c0c0"
+                    android:textSize="@dimen/S_TEXT_SIZE" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                app:hintTextAppearance="@style/TextInputLayout">
+
+                <EditText
+                    android:id="@+id/edtShippingPincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/bottom_line"
+                    android:hint="Pincode"
+                    android:inputType="text"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="#c0c0c0"
+                    android:textSize="@dimen/S_TEXT_SIZE" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

@@ -7,21 +7,21 @@ public class BillingAndShippingAddress {
     private String BillingAddress1;
     private String BillingAddress2;
     private String BillingCity;
-    private String BillingState;
+    private int BillingState;
     private String BillingCountry;
     private String BillingPincode;
 
     private String ShippingAddress1;
     private String ShippingAddress2;
     private String ShippingCity;
-    private String ShippingState;
+    private int ShippingState;
     private String ShippingCountry;
     private String ShippingPincode;
 
     public BillingAndShippingAddress() {
     }
 
-    public BillingAndShippingAddress(String billingAddress1, String billingAddress2, String billingCity, String billingState, String billingCountry, String billingPincode, String shippingAddress1, String shippingAddress2, String shippingCity, String shippingState, String shippingCountry, String shippingPincode) {
+    public BillingAndShippingAddress(String billingAddress1, String billingAddress2, String billingCity, int billingState, String billingCountry, String billingPincode, String shippingAddress1, String shippingAddress2, String shippingCity, int shippingState, String shippingCountry, String shippingPincode) {
         BillingAddress1 = billingAddress1;
         BillingAddress2 = billingAddress2;
         BillingCity = billingCity;
@@ -61,11 +61,11 @@ public class BillingAndShippingAddress {
         BillingCity = billingCity;
     }
 
-    public String getBillingState() {
+    public int getBillingState() {
         return BillingState;
     }
 
-    public void setBillingState(String billingState) {
+    public void setBillingState(int billingState) {
         BillingState = billingState;
     }
 
@@ -109,11 +109,11 @@ public class BillingAndShippingAddress {
         ShippingCity = shippingCity;
     }
 
-    public String getShippingState() {
+    public int getShippingState() {
         return ShippingState;
     }
 
-    public void setShippingState(String shippingState) {
+    public void setShippingState(int shippingState) {
         ShippingState = shippingState;
     }
 

@@ -8,6 +8,7 @@
     android:drawableRight="@drawable/dropdown_arrow"
     android:gravity="center"
     android:lines="1"
-    android:padding="5dp"
+    android:padding="5dip"
+    android:paddingRight="16dp"
     android:text="kdnfdfn"
-    android:textColor="#ffffff" />
+    android:textColor="@color/primaryColor" />

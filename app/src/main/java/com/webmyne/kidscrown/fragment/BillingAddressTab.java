@@ -97,7 +97,7 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
         edtPincode = (EditText) parentView.findViewById(R.id.edtBillingPincode);
         saveDetails = (Button) parentView.findViewById(R.id.saveDetails);
 
-        saveDetails.setOnClickListener(new View.OnClickListener() {
+     /*   saveDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 billingAndShippingAddress = new BillingAndShippingAddress();
@@ -110,7 +110,7 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
 
                 list.setAddress(billingAndShippingAddress);
             }
-        });
+        });*/
 
     }
     public void setListener(AddressesList _list){

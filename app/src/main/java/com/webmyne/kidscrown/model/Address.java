@@ -23,16 +23,16 @@ public class Address {
     public String Country;
 
     @SerializedName("IsDefault")
-    public String IsDefault;
+    public boolean IsDefault;
 
     @SerializedName("IsShipping")
-    public String IsShipping;
+    public boolean IsShipping;
 
     @SerializedName("MobileNo")
     public String MobileNo;
 
     @SerializedName("PinCode")
-    public int PinCode;
+    public String PinCode;
 
     @SerializedName("StateID")
     public int StateID;

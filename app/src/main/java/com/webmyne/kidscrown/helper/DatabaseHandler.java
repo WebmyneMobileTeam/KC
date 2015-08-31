@@ -17,6 +17,7 @@ import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.ProductImage;
 import com.webmyne.kidscrown.model.ProductPrice;
+import com.webmyne.kidscrown.model.StateModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,6 +39,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCT_IMAGE = "ProductImage";
     private static final String TABLE_ADDRESS = "Address";
     private static final String TABLE_PRODUCT_PRICE = "ProductPrice";
+    private static final String TABLE_STATES = "State";
     private static final String TABLE_CART_ITEM = "CartItem";
 
     private static final String DATABASE_PATH = "/data/data/com.webmyne.kidscrown/databases/";
@@ -308,6 +310,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return crownPricing;
+
+    }
+
+    public ArrayList<StateModel> getStates() {
+        ArrayList<StateModel> states = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_STATES;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                StateModel state = new StateModel();
+                state.state_id = cursor.getInt(cursor.getColumnIndexOrThrow("state_id"));
+                state.state_name = cursor.getString(cursor.getColumnIndexOrThrow("state_name"));
+                states.add(state);
+            } while (cursor.moveToNext());
+        }
+        return states;
 
     }
 

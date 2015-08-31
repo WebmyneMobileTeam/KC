@@ -7,6 +7,8 @@
     <dimen name="product_image">90dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
 
+    <dimen name="SPINNER_TEXT">12dp</dimen>
+
     <dimen name="CARD_DIVIDER_HEIGHT">24dp</dimen>
     <dimen name="VS_TEXT_SIZE">20dp</dimen>
     <dimen name="S_TEXT_SIZE">26dp</dimen>
@@ -17,7 +19,7 @@
     <dimen name="STD_HEIGHT_SIZE1">62dp</dimen>
     <dimen name="S_MARGIN_SIZE">8dp</dimen>
     <dimen name="M_MARGIN_SIZE">10dp</dimen>
-    <dimen name="L_MARGIN_SIZE">14dp</dimen>
+    <dimen name="L_MARGIN_SIZE">16dp</dimen>
     <dimen name="STD_MARGIN_SIZE">130dp</dimen>
     <dimen name="STD_TXT_PADDING_SIZE">12dp</dimen>
     <dimen name="LAYOUT_MARGIN_SIZE">50dp</dimen>

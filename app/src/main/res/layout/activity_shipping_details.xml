@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.webmyne.kidscrown.ui.ConfirmOrderActivity">
+
     <include
         android:id="@+id/tool"
-        android:layout_alignParentTop="true"
+        layout="@layout/app_bar2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/app_bar2"></include>
+        android:layout_alignParentTop="true"></include>
 
     <LinearLayout
         android:id="@+id/totalLayout"
@@ -17,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
-
 
 
         <RelativeLayout
@@ -33,15 +33,17 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/conti"
                 android:src="@drawable/ic_checkout" />
 
             <TextView
+                android:id="@+id/conti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:text="Continue To Payment"
+                android:layout_centerInParent="true"
                 android:textAllCaps="false"
                 android:textColor="#f1f1f1"
                 android:textSize="@dimen/M_TEXT_SIZE"
@@ -49,63 +51,60 @@
         </RelativeLayout>
     </LinearLayout>
 
-                <LinearLayout
-                    android:background="@color/white"
-                    android:layout_above="@id/totalLayout"
-                    android:id="@+id/segmentToolBar"
-                    android:layout_below="@id/tool"
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/segmentToolBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/totalLayout"
+        android:layout_below="@id/tool"
+        android:background="@color/white"
+        android:orientation="vertical">
 
 
-                    <info.hoang8f.android.segmented.SegmentedGroup
-                        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/segmented2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/VS_TEXT_SIZE"
-                        android:checkedButton="@+id/tabBilling"
-                        android:orientation="horizontal"
-                        segmentedgroup:border_width="2dp"
-                        segmentedgroup:corner_radius="@dimen/VS_TEXT_SIZE">
+        <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/segmented2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/VS_TEXT_SIZE"
+            android:checkedButton="@+id/tabBilling"
+            android:orientation="horizontal"
+            segmentedgroup:border_width="2dp"
+            segmentedgroup:corner_radius="@dimen/VS_TEXT_SIZE">
 
-                        <RadioButton
-                            android:id="@+id/tabBilling"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/S_TEXT_SIZE"
-                            android:padding="@dimen/STD_TXT_PADDING_SIZE"
-                            android:text="Billing Address"
-                            style="@style/RadioButton" />
+            <RadioButton
+                android:id="@+id/tabBilling"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/STD_TXT_PADDING_SIZE"
+                android:text="Billing Address"
+                android:textSize="@dimen/S_TEXT_SIZE" />
 
-                        <RadioButton
-                            android:id="@+id/tabShipping"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/S_TEXT_SIZE"
-                            android:padding="@dimen/STD_TXT_PADDING_SIZE"
-                            android:text="Shipping Address"
-                            style="@style/RadioButton" />
-                    </info.hoang8f.android.segmented.SegmentedGroup>
+            <RadioButton
+                android:id="@+id/tabShipping"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/STD_TXT_PADDING_SIZE"
+                android:text="Shipping Address"
+                android:textSize="@dimen/S_TEXT_SIZE" />
+        </info.hoang8f.android.segmented.SegmentedGroup>
 
-                    <FrameLayout
-                        android:id="@+id/frame"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-                        <include
-                            layout="@layout/fragment_new_address_tab"></include>
+            <include layout="@layout/fragment_new_address_tab"></include>
 
-                        <include
-                            layout="@layout/fragment_existing_address"></include>
+            <include layout="@layout/fragment_existing_address"></include>
 
-                    </FrameLayout>
-                </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
 </RelativeLayout>

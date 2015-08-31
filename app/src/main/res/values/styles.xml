@@ -10,17 +10,14 @@
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
     </style>
 
-    <style name="TextAppearence.App.TextInputLayout" parent="TextAppearance.AppCompat">
-        <item name="android:textColorHint">#c0c0c0</item>
-        <item name="colorAccent">#c0c0c0</item>
-        <item name="android:textSize">@dimen/M_TEXT_SIZE</item>
+    <style name="TextInputLayout" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/L_MARGIN_SIZE</item>
+        <item name="android:textColor">#c0c0c0</item>
     </style>
 
     <style name="CheckBoxCustom" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:textColorHint">#606060</item>
         <item name="colorAccent">@color/primaryColor</item>
         <item name="android:textColor">@color/colorTextSecondary</item>
-        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="MyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
