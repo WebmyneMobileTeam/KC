@@ -131,7 +131,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             fabShop.setImageResource(R.drawable.ic_action_order);
             added = true;
 
-            Snackbar.make(fabShop, "Added to Cart", Snackbar.LENGTH_SHORT).show();
+            Snackbar snack = Snackbar.make(fabShop, "Added to Cart", Snackbar.LENGTH_LONG);
+            View view = snack.getView();
+            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), ProductDetailActivity.this));
+            snack.show();
             helper.displayBadge();
 
         }

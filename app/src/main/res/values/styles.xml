@@ -128,4 +128,8 @@
         <item name="android:textSize">@dimen/M_TEXT_SIZE</item>
     </style>
 
+    <style name="NavigationItemStyle" parent="@android:style/Widget.TextView">
+        <item name="android:paddingBottom">@dimen/CARD_DIVIDER_HEIGHT</item>
+    </style>
+
 </resources>

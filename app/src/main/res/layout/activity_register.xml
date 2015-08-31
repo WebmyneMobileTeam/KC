@@ -21,22 +21,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
         android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
-        android:layout_marginRight="@dimen/STD_MARGIN_SIZE">
+        android:layout_marginRight="@dimen/STD_MARGIN_SIZE"
+        android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT">
 
         <Button
             android:id="@+id/btnRegister"
             style="@style/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
             android:text="Register"
             android:textSize="@dimen/M_TEXT_SIZE"
+            android:padding="@dimen/STD_TXT_PADDING_SIZE"
             android:textAllCaps="false" />
 
         <TextView
             android:id="@id/btnLogin"
             style="@style/match_wrap_parent"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="@dimen/L_MARGIN_SIZE"
             android:gravity="center"
             android:textSize="@dimen/M_TEXT_SIZE"
             android:text="Already Have an account? Login"
@@ -54,9 +56,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
-            android:layout_marginRight="@dimen/STD_MARGIN_SIZE"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/card_margin"
+            android:layout_marginRight="@dimen/card_margin"
             android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
             android:layout_marginBottom="@dimen/STD_MARGIN_SIZE"
             android:orientation="vertical">
@@ -203,7 +205,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android:layout_marginBottom="@dimen/L_MARGIN_SIZE">
 
                 <EditText
                     android:id="@+id/edtRegNo"
@@ -217,6 +220,4 @@
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
-
-
 </RelativeLayout>

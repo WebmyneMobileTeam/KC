@@ -40,7 +40,7 @@
                     android:id="@+id/linearParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_margin="@dimen/M_MARGIN_SIZE"
                     android:orientation="vertical"></LinearLayout>
 
                 <android.support.v7.widget.GridLayout
@@ -63,9 +63,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:padding="4dp">
+                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+                android:padding="@dimen/M_MARGIN_SIZE">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,19 +88,19 @@
                 android:id="@+id/rLayoutCheckout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginBottom="@dimen/STD_TXT_PADDING_SIZE"
+                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
                 android:background="@drawable/mybutton"
-                android:padding="12dp">
+                android:padding="@dimen/VS_TEXT_SIZE">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/ic_checkout" />
+                    android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
+                    android:src="@mipmap/ic_checkout" />
 
                 <TextView
                     android:layout_width="wrap_content"

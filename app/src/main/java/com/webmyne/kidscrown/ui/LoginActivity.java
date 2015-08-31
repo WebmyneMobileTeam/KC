@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -87,9 +88,20 @@ public class LoginActivity extends ActionBarActivity implements
             @Override
             public void onClick(View v) {
                 if (edtUsername.getText().toString().trim().length() == 0) {
-                    Functions.snack(v, "Username or Email is required");
+                    //Functions.snack(v, "Username or Email is required");
+                    Snackbar snack = Snackbar.make(btnLogin, "Username or Email is required", Snackbar.LENGTH_LONG);
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
+                    snack.show();
                 } else if (edtPassword.getText().toString().trim().length() == 0) {
-                    Functions.snack(v, "Password is required");
+                    //Functions.snack(v, "Password is required");
+                    Snackbar snack = Snackbar.make(btnLogin, "Password is required", Snackbar.LENGTH_LONG);
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
+                    snack.show();
+
                 } else {
                     loginProcess();
                 }
@@ -208,6 +220,11 @@ public class LoginActivity extends ActionBarActivity implements
                     finish();
 
                 } catch (Exception e) {
+                    Snackbar snack = Snackbar.make(btnLogin, "Unable To Login", Snackbar.LENGTH_LONG);
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
+                    snack.show();
                     e.printStackTrace();
                 }
             }
@@ -252,6 +269,11 @@ public class LoginActivity extends ActionBarActivity implements
 
                 } catch (Exception e) {
                     pd.dismiss();
+                    Snackbar snack = Snackbar.make(btnLogin, "Unable To Login", Snackbar.LENGTH_LONG);
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
+                    snack.show();
                     Functions.logE("Exp", e.toString());
                     e.printStackTrace();
                 }
@@ -260,6 +282,11 @@ public class LoginActivity extends ActionBarActivity implements
             @Override
             public void error(String error) {
                 pd.dismiss();
+                Snackbar snack = Snackbar.make(btnLogin, "Unable To Login", Snackbar.LENGTH_LONG);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
+                snack.show();
                 Functions.logE("social_media error", error);
             }
         }.call();

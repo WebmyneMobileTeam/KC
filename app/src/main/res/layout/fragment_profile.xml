@@ -15,8 +15,8 @@
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
-            android:layout_marginRight="@dimen/STD_MARGIN_SIZE"
+            android:layout_marginLeft="@dimen/card_margin"
+            android:layout_marginRight="@dimen/card_margin"
             android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
             android:orientation="vertical"
             android:paddingBottom="@dimen/STD_MARGIN_SIZE">
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/card_margin">
 
                 <EditText
                     android:id="@+id/edtFirstname"
@@ -163,7 +163,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android:layout_marginBottom="@dimen/L_MARGIN_SIZE">
 
                 <EditText
                     android:id="@+id/edtRegNo"
@@ -176,16 +177,20 @@
                     android:textColorHint="@color/editText_hint_color" />
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/btnUpdate"
-                style="@style/login_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Update Profile"
-                android:textSize="@dimen/M_TEXT_SIZE"
-                android:textAllCaps="false" />
-
         </LinearLayout>
     </ScrollView>
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/btnUpdate"
+        style="@style/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
+        android:layout_marginRight="@dimen/STD_MARGIN_SIZE"
+        android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
+        android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"
+        android:text="Update Profile"
+        android:textSize="@dimen/M_TEXT_SIZE"
+        android:padding="@dimen/STD_TXT_PADDING_SIZE"
+        android:textAllCaps="false" />
 </RelativeLayout>

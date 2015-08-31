@@ -22,9 +22,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:padding="4dp">
+            android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+            android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+            android:padding="@dimen/M_MARGIN_SIZE">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,17 +44,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginBottom="@dimen/M_MARGIN_SIZE"
+            android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+            android:layout_marginRight="@dimen/VS_TEXT_SIZE"
             android:background="@drawable/mybutton"
-            android:padding="12dp">
+            android:padding="@dimen/VS_TEXT_SIZE">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
                 android:src="@drawable/ic_checkout" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:text="Make Payment"
                 android:textAllCaps="false"
                 android:textColor="#f1f1f1"
-                android:textSize="18sp"
+                android:textSize="@dimen/M_TEXT_SIZE"
                 android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
@@ -85,7 +85,7 @@
                     android:id="@+id/linearParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_margin="@dimen/M_MARGIN_SIZE"
                     android:background="#f1f1f1"
                     android:orientation="vertical">
 

@@ -3,6 +3,7 @@ package com.webmyne.kidscrown.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.GsonBuilder;
 import com.webmyne.kidscrown.R;
@@ -130,22 +132,36 @@ public class ProfileFragment extends Fragment {
     }
 
     private void checkValidation() {
+        Snackbar snack = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG);
+        View view = snack.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setSingleLine(false);
+        tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
+
         if (edtFirstname.getText().toString().trim().length() == 0) {
-            Functions.snack(parentView, "First name is required");
+            snack.setText("First name is required");
+            snack.show();
         } else if (edtLastName.getText().toString().trim().length() == 0) {
-            Functions.snack(parentView, "Last name is requird.");
+            snack.setText("Last name is required");
+            snack.show();
         } else if (edtMobile.getText().toString().trim().length() == 0) {
-            Functions.snack(parentView, "Mobile number is required");
+            snack.setText("Mobile number is required");
+            snack.show();
         } else if (edtEmail.getText().toString().trim().length() == 0) {
-            Functions.snack(parentView, "Email-id is required");
+            snack.setText("Email-id is required");
+            snack.show();
         } else if (edtPassword.getText().toString().trim().length() == 0) {
-            Functions.snack(parentView, "Password is required");
+            snack.setText("Password is required");
+            snack.show();
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
-            Functions.snack(parentView, "Registration number is required");
+            snack.setText("Registration number is required");
+            snack.show();
         } else if (edtUserName.getText().toString().trim().length() == 0) {
-            Functions.snack(parentView, "Username is required");
+            snack.setText("Username is required");
+            snack.show();
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
-            Functions.snack(parentView, "Password and confirm password does not match");
+            snack.setText("Password and confirm password does not match");
+            snack.show();
         } else {
             registerWebService();
         }
@@ -198,7 +214,12 @@ public class ProfileFragment extends Fragment {
 
                     UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
 
-                    Functions.snack(parentView, "Update Profile Successfully");
+                    Snackbar snack = Snackbar.make(parentView, "Update Profile Successfully", Snackbar.LENGTH_LONG);
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
+                    snack.show();
+
                     ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
                     complexPreferences.putObject("current-user", profile);
                     complexPreferences.commit();
@@ -208,12 +229,22 @@ public class ProfileFragment extends Fragment {
                     getActivity().startActivity(i);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile", Snackbar.LENGTH_LONG);
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
+                    snack.show();
                 }
             }
 
             @Override
             public void error(String error) {
+                Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile", Snackbar.LENGTH_LONG);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
+                snack.show();
+
                 Log.e("error", error);
             }
         }.call();
