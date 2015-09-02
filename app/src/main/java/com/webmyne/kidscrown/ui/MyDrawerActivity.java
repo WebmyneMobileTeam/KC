@@ -233,7 +233,9 @@ public class MyDrawerActivity extends AppCompatActivity implements
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Functions.fireIntent(MyDrawerActivity.this, CartActivity.class);
+                Intent i = new Intent(MyDrawerActivity.this, CartActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
             }
         });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

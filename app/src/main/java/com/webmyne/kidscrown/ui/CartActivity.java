@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.CustomGridAdapter;
@@ -58,15 +59,15 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(CartActivity.this, ShippingDetailsActivity.class);
-
                 startActivity(i);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
             }
         });
 
     }
 
     private void fetchCartDetails() {
-
+        price = 0;
         gridLayout.removeAllViews();
         gridLayout.invalidate();
         linearParent.removeAllViews();
@@ -99,6 +100,7 @@ public class CartActivity extends AppCompatActivity {
         for (int i = 0; i < crowns.size(); i++) {
             price = price + Integer.parseInt(crowns.get(i).getProductTotalPrice());
             CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
+            crownView.setOnRemoveCrownListener(onRemoveCrownListener);
             gridLayout.addView(crownView);
 
         }
@@ -144,12 +146,34 @@ public class CartActivity extends AppCompatActivity {
         }
     };
 
+    CrownCartView.onRemoveCrownListener onRemoveCrownListener = new CrownCartView.onRemoveCrownListener() {
+        @Override
+        public void removeCrown(String productName) {
+            try {
+                DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
+                handler.openDataBase();
+                handler.deleteCrownProduct(productName);
+                handler.close();
+                refreshActivity();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     private void init() {
 
         gridLayout = (GridLayout) findViewById(R.id.gridLayout);
-        gridLayout.setOrientation(0);
         gridLayout.setColumnCount(2);
-        gridLayout.setRowCount(3);
+
+       /* String screenType = getResources().getString(R.string.screen_type);
+        if (screenType.equals("phone")) {
+            gridLayout.setColumnCount(2);
+        } else if (screenType.equals("7-inch")) {
+            gridLayout.setColumnCount(2);
+        } else {
+            gridLayout.setColumnCount(3);
+        }*/
 
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="@dimen/L_MARGIN_SIZE">
+
+    <TextView
+        android:id="@+id/pdName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:text="Intro Kit"
+        android:textSize="@dimen/S_TEXT_SIZE" />
+
+    <TextView
+        android:id="@+id/pdQty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="4"
+        android:textSize="@dimen/S_TEXT_SIZE" />
+
+    <TextView
+        android:id="@+id/pdPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:gravity="right"
+        android:paddingRight="@dimen/M_MARGIN_SIZE"
+        android:text="26000"
+        android:textSize="@dimen/S_TEXT_SIZE"
+        android:textStyle="bold" />
+</LinearLayout>

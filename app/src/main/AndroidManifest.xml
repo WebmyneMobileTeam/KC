@@ -74,6 +74,7 @@
 
         <activity
             android:name=".ui.ShippingDetailsActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_shipping_details"
             android:screenOrientation="sensorPortrait">
         </activity>

@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
+import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.CrownPricing;
+import com.webmyne.kidscrown.model.OrderModel;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.ProductImage;
@@ -194,7 +196,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-
     public boolean ifExists(int productID) {
         boolean available = false;
         myDataBase = this.getWritableDatabase();
@@ -229,6 +230,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
+    public void deleteCrownProduct(String productName) {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_name ='" + productName + "'";
+        myDataBase.execSQL(selectQuery);
+    }
+
     public void addCartProduct(ArrayList<String> productDetails) {
 
         myDataBase = this.getWritableDatabase();
@@ -254,6 +261,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
+    // Kit Products
     public ArrayList<ProductCart> getCartProduct(int productID) {
         ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();
@@ -276,6 +284,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return products;
     }
 
+    // Total Products
+    public ArrayList<OrderModel> getProducts() {
+        ArrayList<OrderModel> orders = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price";
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                OrderModel cart = new OrderModel();
+                cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+                cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
+                cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
+                cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
+                cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+                cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+                orders.add(cart);
+            } while (cursor.moveToNext());
+        }
+        return orders;
+    }
+
+    // Crowns Products
     public ArrayList<ProductCart> getCrownCartProduct(int productID) {
         ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();
@@ -336,7 +368,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return states;
-
     }
 
     public void saveAddress(ArrayList<Address> addresses) {
@@ -497,7 +528,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-
 //    public String getCurrentDescription(String sportID){
 //        myDataBase = this.getWritableDatabase();
 //        String selectQuery = "SELECT * FROM player_sports WHERE sport_id ="+"\""+sportID.toString().trim()+"\"";
@@ -519,7 +549,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //        myDataBase.close();
 //    }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -530,4 +559,63 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void saveAddressDetails(ArrayList<AddressModel> addressModels) {
+        myDataBase = this.getWritableDatabase();
+        myDataBase.delete(TABLE_ADDRESS, null, null);
+
+        ArrayList<Integer> colors;
+        colors = new ArrayList();
+        int pos = 0;
+        Resources res = context.getResources();
+        colors.add(res.getColor(R.color.quad_green));
+        colors.add(res.getColor(R.color.quad_violate));
+        colors.add(res.getColor(R.color.quad_orange));
+        colors.add(res.getColor(R.color.quad_blue));
+
+        for (AddressModel model : addressModels) {
+
+            myDataBase = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("is_shipping", model.getShipping());
+            values.put("pincode", model.getPincode());
+            values.put("state_name", model.getState());
+            values.put("country_name", model.getCountry());
+            values.put("city_name", model.getCity());
+            values.put("address_2", model.getAddress2());
+            values.put("address_1", model.getAddress1());
+            values.put("color", colors.get(pos));
+
+            myDataBase.insert(TABLE_ADDRESS, null, values);
+            if (pos >= colors.size() - 1) {
+                pos = 0;
+            } else {
+                pos = pos + 1;
+            }
+        }
+
+    }
+
+    public ArrayList<AddressModel> getAddressDetails() {
+        ArrayList<AddressModel> addressModels = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_ADDRESS;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                AddressModel model = new AddressModel();
+                model.setShipping(cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")));
+                model.setPincode(cursor.getString(cursor.getColumnIndexOrThrow("pincode")));
+                model.setState(cursor.getString(cursor.getColumnIndexOrThrow("state_name")));
+                model.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country_name")));
+                model.setCity(cursor.getString(cursor.getColumnIndexOrThrow("city_name")));
+                model.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address_2")));
+                model.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address_1")));
+                addressModels.add(model);
+            } while (cursor.moveToNext());
+        }
+        return addressModels;
+    }
 }

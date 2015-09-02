@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cbs="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginTop="12dp">
+    android:layout_marginRight="6dp"
+    android:layout_marginTop="6dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -25,8 +22,10 @@
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:text="D-UL-7"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/S_TEXT_SIZE" />
 
             <LinearLayout
                 android:id="@+id/cartProductFrame"
@@ -42,7 +41,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Qty: " />
+                        android:text="Qty: "
+                        android:textSize="@dimen/S_TEXT_SIZE" />
 
                     <EditText
                         android:id="@+id/unitQty"
@@ -62,7 +62,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
-                    android:text="Price" />
+                    android:text="Price"
+                    android:textSize="@dimen/S_TEXT_SIZE" />
 
             </LinearLayout>
 
@@ -71,8 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="4dp"
                 android:text="Price"
+                android:textSize="@dimen/S_TEXT_SIZE"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -135,9 +136,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Remove"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/S_TEXT_SIZE" />
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

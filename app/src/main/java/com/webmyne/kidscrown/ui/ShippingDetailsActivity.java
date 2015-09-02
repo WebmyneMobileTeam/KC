@@ -32,6 +32,7 @@ import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.Address;
+import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.BillingAndShippingAddress;
 import com.webmyne.kidscrown.model.StateModel;
 import com.webmyne.kidscrown.model.UserProfile;
@@ -48,6 +49,7 @@ import info.hoang8f.android.segmented.SegmentedGroup;
 public class ShippingDetailsActivity extends AppCompatActivity {
 
     ArrayList<Address> addresses = new ArrayList<>();
+    ArrayList<AddressModel> addressModels = new ArrayList<>();
     LinearLayout linearParent, totalLayout;
     UserProfile currentUserObj = new UserProfile();
     String userId;
@@ -57,6 +59,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     SegmentedGroup segmented2;
     RelativeLayout rLContPayment;
     int shippingStateId, billingStateId;
+    String shippingStateName, billingStateName;
     BillingAndShippingAddress billingAndShippingAddress = new BillingAndShippingAddress();
     private EditText edtBillingAddress1, edtBillingAddress2, edtBillingCity, edtBillingCountry, edtBillingPincode, edtShippingAddress1, edtShippingAddress2, edtShippingCity, edtShippingCountry, edtShippingPincode;
     private CheckBox isSameAsBilling;
@@ -81,6 +84,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 shippingStateId = states.get(position).state_id;
+                shippingStateName = states.get(position).state_name;
             }
 
             @Override
@@ -93,6 +97,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 billingStateId = states.get(position).state_id;
+                billingStateName = states.get(position).state_name;
             }
 
             @Override
@@ -140,9 +145,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     }
 
     private void displayAddress(ArrayList<Address> addresses) {
-
         for (int k = 0; k < addresses.size(); k++) {
-
             boolean isShipping = addresses.get(k).IsShipping;
             if (isShipping) {
                 edtShippingAddress1.setText(addresses.get(k).Address1);
@@ -254,12 +257,9 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         rLContPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 saveAddressDetails();
 
-                Log.e("Addressses", billingAndShippingAddress.toString());
-
-                saveAddresses();
+                sendAddressDetails();
 
             }
         });
@@ -290,6 +290,12 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     }
 
     private void saveAddressDetails() {
+        addresses.clear();
+        addressModels = new ArrayList<>();
+        addressModels.clear();
+        AddressModel billingAddress = new AddressModel();
+        AddressModel shippingAddress = new AddressModel();
+
         // Set Billing Address Details
         billingAndShippingAddress.setBillingAddress1(edtBillingAddress1.getText().toString().trim());
         billingAndShippingAddress.setBillingAddress2(edtBillingAddress2.getText().toString().trim());
@@ -297,6 +303,16 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         billingAndShippingAddress.setBillingCountry(edtBillingCountry.getText().toString().trim());
         billingAndShippingAddress.setBillingPincode(edtBillingPincode.getText().toString().trim());
         billingAndShippingAddress.setBillingState(billingStateId);
+
+       // Save Billing Address
+        billingAddress.setAddress1(edtBillingAddress1.getText().toString().trim());
+        billingAddress.setAddress2(edtBillingAddress2.getText().toString().trim());
+        billingAddress.setCity(edtBillingCity.getText().toString().trim());
+        billingAddress.setCountry(edtBillingCountry.getText().toString().trim());
+        billingAddress.setState(billingStateName);
+        billingAddress.setPincode(edtBillingPincode.getText().toString().trim());
+        billingAddress.setShipping("false");
+        addressModels.add(billingAddress);
 
         // Set Shipping Address Details
         if (sameAsBilling) {
@@ -306,6 +322,10 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             billingAndShippingAddress.setShippingCountry(edtBillingCountry.getText().toString().trim());
             billingAndShippingAddress.setShippingPincode(edtBillingPincode.getText().toString().trim());
             billingAndShippingAddress.setShippingState(billingStateId);
+
+            shippingAddress = billingAddress;
+            shippingAddress.setShipping("true");
+            addressModels.add(shippingAddress);
         } else {
             billingAndShippingAddress.setShippingAddress1(edtShippingAddress1.getText().toString().trim());
             billingAndShippingAddress.setShippingAddress2(edtShippingAddress2.getText().toString().trim());
@@ -313,8 +333,22 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             billingAndShippingAddress.setShippingCountry(edtShippingCountry.getText().toString().trim());
             billingAndShippingAddress.setShippingPincode(edtShippingPincode.getText().toString().trim());
             billingAndShippingAddress.setShippingState(shippingStateId);
+
+            shippingAddress.setAddress1(edtShippingAddress1.getText().toString().trim());
+            shippingAddress.setAddress2(edtShippingAddress2.getText().toString().trim());
+            shippingAddress.setCity(edtShippingCity.getText().toString().trim());
+            shippingAddress.setCountry(edtShippingCountry.getText().toString().trim());
+            shippingAddress.setState(shippingStateName);
+            shippingAddress.setPincode(edtShippingPincode.getText().toString().trim());
+            shippingAddress.setShipping("true");
+            addressModels.add(shippingAddress);
         }
 
+        // Save in database
+        DatabaseHandler handler = new DatabaseHandler(ShippingDetailsActivity.this);
+        handler.saveAddressDetails(addressModels);
+        handler.close();
+        displayAddress();
     }
 
     private void loadStateSpinner() {
@@ -473,7 +507,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void saveAddresses() {
+    private void sendAddressDetails() {
         JSONObject billingAddress = null;
         JSONObject shippingAddress = null;
         JSONArray addressJsonArray = new JSONArray();
@@ -483,7 +517,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             billingAddress = new JSONObject();
             billingAddress.put("Address1", billingAndShippingAddress.getBillingAddress1());
             billingAddress.put("Address2", billingAndShippingAddress.getBillingAddress2());
-            billingAddress.put("AddressID",0);
+            billingAddress.put("AddressID", 0);
             billingAddress.put("City", billingAndShippingAddress.getBillingCity());
             billingAddress.put("Country", billingAndShippingAddress.getBillingCountry());
             billingAddress.put("IsDefault", true);
@@ -496,7 +530,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             shippingAddress = new JSONObject();
             shippingAddress.put("Address1", billingAndShippingAddress.getShippingAddress1());
             shippingAddress.put("Address2", billingAndShippingAddress.getShippingAddress2());
-            shippingAddress.put("AddressID",0);
+            shippingAddress.put("AddressID", 0);
             shippingAddress.put("City", billingAndShippingAddress.getShippingCity());
             shippingAddress.put("Country", billingAndShippingAddress.getShippingCountry());
             shippingAddress.put("IsDefault", true);
@@ -525,11 +559,9 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                 //JSONArray data;
                 Log.e("SAVE_ADDRESS response", response + "");
                 try {
-                   /* data = new JSONArray(response);
-                    JSONObject description = data.getJSONObject(0);*/
-
                     Intent i = new Intent(ShippingDetailsActivity.this, ConfirmOrderActivity.class);
                     startActivity(i);
+                    overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
 
                 } catch (Exception e) {
                     pd.dismiss();

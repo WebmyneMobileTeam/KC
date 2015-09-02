@@ -3,127 +3,99 @@ package com.webmyne.kidscrown.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.helper.CallWebService;
+import com.webmyne.kidscrown.adapters.OrderListAdapter;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
-import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
-import com.webmyne.kidscrown.helper.ToolHelper;
-import com.webmyne.kidscrown.model.Address;
+import com.webmyne.kidscrown.model.AddressModel;
+import com.webmyne.kidscrown.model.OrderModel;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.UserProfile;
+import com.webmyne.kidscrown.ui.widgets.CrownCartView;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
-
-import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class ConfirmOrderActivity extends AppCompatActivity {
 
-    //Toolbar toolbar;
-    ArrayList<ProductCart> products = new ArrayList<>();
-    ArrayList<Address> addresses = new ArrayList<>();
-    TextView totalPrice, emptyCart;
-    LinearLayout linearParent, totalLayout;
-    ArrayList<String> values;
-    int crownProductId;
-    SharedPreferences preferences;
-    int price;
-    String userId;
-    ProgressDialog pd;
-
     Toolbar toolbar;
+    ArrayList<OrderModel> orders = new ArrayList<>();
+    TextView totalPrice, txtBilling, txtShipping;
+    LinearLayout totalLayout;
+    int price;
+    ListView orderListview;
+    OrderListAdapter adapter;
+    ArrayList<AddressModel> addressModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ConfirmOrderActivity.this, "user_pref", 0);
-        UserProfile currentUserObj = new UserProfile();
-        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
-        userId = currentUserObj.UserID;
-
         init();
 
-        preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-        crownProductId = preferences.getInt("crownProductId", 0);
-
         fetchCartDetails();
-        //fetchAddress();
     }
 
     private void fetchCartDetails() {
+
+        // Fetch Address Details
+        addressModels = new ArrayList<>();
+        addressModels.clear();
         try {
             DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
             handler.openDataBase();
-            products = handler.getCartProduct(crownProductId);
+            addressModels = handler.getAddressDetails();
             handler.close();
-            if (products.size() == 0) {
-                totalLayout.setVisibility(View.GONE);
-            } else {
-                totalLayout.setVisibility(View.VISIBLE);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < products.size(); i++) {
-            price = price + Integer.parseInt(products.get(i).getProductTotalPrice());
-            ItemCartView itemView = new ItemCartView(ConfirmOrderActivity.this, products.get(i));
-            itemView.hideControls();
-            itemView.setOnValueChangeListener(onValueChangeListener);
-            linearParent.addView(itemView);
+        if (addressModels.get(0).getShipping().equals("true")) {
+            txtShipping.setText(addressModels.get(0).getAddress1() + ", " + addressModels.get(0).getAddress2() + ",\n" + addressModels.get(0).getCity() + " - " + addressModels.get(0).getPincode() + ",\n" + addressModels.get(0).getState() + ", " + addressModels.get(0).getCountry());
+            txtBilling.setText(addressModels.get(1).getAddress1() + ", " + addressModels.get(1).getAddress2() + ",\n" + addressModels.get(1).getCity() + " - " + addressModels.get(1).getPincode() + ",\n" + addressModels.get(1).getState() + ", " + addressModels.get(1).getCountry());
+        } else {
+            txtBilling.setText(addressModels.get(0).getAddress1() + ", " + addressModels.get(0).getAddress2() + ",\n" + addressModels.get(0).getCity() + " - " + addressModels.get(0).getPincode() + ",\n" + addressModels.get(0).getState() + ", " + addressModels.get(0).getCountry());
+            txtShipping.setText(addressModels.get(1).getAddress1() + ", " + addressModels.get(1).getAddress2() + ",\n" + addressModels.get(1).getCity() + " - " + addressModels.get(1).getPincode() + ",\n" + addressModels.get(1).getState() + ", " + addressModels.get(1).getCountry());
         }
-        totalPrice.setText("Rs. " + price);
+
+        // Total Products from Cart
+        try {
+            DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
+            handler.openDataBase();
+            orders = handler.getProducts();
+            handler.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < orders.size(); i++) {
+            price += Integer.parseInt(orders.get(i).getProductTotalPrice());
+        }
+        adapter = new OrderListAdapter(ConfirmOrderActivity.this, orders);
+        orderListview.setAdapter(adapter);
+
+        totalPrice.setText(getResources().getString(R.string.Rs) + " " + price);
     }
 
-
-    ItemCartView.OnValueChangeListener onValueChangeListener = new ItemCartView.OnValueChangeListener() {
-        @Override
-        public void onChange() {
-            try {
-                DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
-                handler.openDataBase();
-                products = handler.getCartProduct(crownProductId);
-                handler.close();
-                price = 0;
-                for (int k = 0; k < products.size(); k++) {
-                    price += Integer.parseInt(products.get(k).getProductTotalPrice());
-                }
-                totalPrice.setText("Rs. " + price);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
     private void init() {
-
-        linearParent = (LinearLayout) findViewById(R.id.linearParent);
+        orderListview = (ListView) findViewById(R.id.orderListview);
+        txtBilling = (TextView) findViewById(R.id.txtBilling);
+        txtShipping = (TextView) findViewById(R.id.txtShipping);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
-        totalPrice = (TextView) findViewById(R.id.totalPrice);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
+        totalPrice = (TextView) findViewById(R.id.totalPrice);
         imgCart.setVisibility(View.GONE);
-
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -147,5 +119,4 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
     }
-
 }

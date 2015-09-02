@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/STD_MARGIN_SIZE"
-        android:layout_marginTop="@dimen/STD_MARGIN_SIZE">
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,6 +37,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
                 app:hintTextAppearance="@style/TextInputLayout">
 
                 <EditText

@@ -36,13 +36,8 @@ public class CrownCartView extends LinearLayout {
     LinearLayout cartProductFrame;
 
     ArrayList<String> values;
-    OnValueChangeListener onValueChangeListener;
 
-    onRemoveProductListener onRemoveProductListener;
-
-    public void setOnRemoveProductListener(CrownCartView.onRemoveProductListener onRemoveProductListener) {
-        this.onRemoveProductListener = onRemoveProductListener;
-    }
+    onRemoveCrownListener onRemoveCrownListener;
 
     public CrownCartView(Context context) {
         super(context);
@@ -57,8 +52,8 @@ public class CrownCartView extends LinearLayout {
         init();
     }
 
-    public void setOnValueChangeListener(OnValueChangeListener onValueChangeListener) {
-        this.onValueChangeListener = onValueChangeListener;
+    public void setOnRemoveCrownListener(CrownCartView.onRemoveCrownListener onRemoveCrownListener) {
+        this.onRemoveCrownListener = onRemoveCrownListener;
     }
 
     public CrownCartView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -85,8 +80,8 @@ public class CrownCartView extends LinearLayout {
         remove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onRemoveProductListener != null) {
-                    onRemoveProductListener.removeProduct(cart.getProductId());
+                if(onRemoveCrownListener!=null){
+                    onRemoveCrownListener.removeCrown(cart.getProductName());
                 }
             }
         });
@@ -134,34 +129,14 @@ public class CrownCartView extends LinearLayout {
 
     }
 
-    private void displayQTYandTotal(int position) {
-        unitQty.setText(position + "");
-        int qty = position;
-        int total = Integer.parseInt(cart.getProductUnitPrice()) * qty;
-        totalPrice.setText(String.format("= Rs. %d", total));
-
-        // update database values
-        try {
-            DatabaseHandler handler = new DatabaseHandler(context);
-            handler.openDataBase();
-            // handler.updateCart(qty, total, cart.getProductId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public interface OnValueChangeListener {
-        public void onChange();
+    public interface onRemoveCrownListener {
+        public void removeCrown(String productName);
     }
 
     public void hideControls() {
         remove.setVisibility(GONE);
-        // combo.setVisibility(GONE);
-        cartProductFrame.setPadding(0, 0, 0, 20);
-    }
-
-    public interface onRemoveProductListener {
-        public void removeProduct(int productId);
+        unitQty.setEnabled(false);
+        unitQty.setBackgroundResource(0);
     }
 
     public class InputFilterMinMax implements InputFilter {
