@@ -1,13 +1,9 @@
 package com.webmyne.kidscrown.ui.widgets;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -22,7 +18,7 @@ import java.util.HashMap;
 /**
  * Created by dhruvil on 14-08-2015.
  */
-public class CrownQuadrant extends LinearLayout implements View.OnClickListener {
+public class CrownQuadrantAnother extends LinearLayout implements View.OnClickListener {
 
     private TableLayout tableLayout;
     private TableRow row1;
@@ -35,19 +31,19 @@ public class CrownQuadrant extends LinearLayout implements View.OnClickListener 
     private boolean isAllAdded = false;
 
 
-    public CrownQuadrant(Context context) {
+    public CrownQuadrantAnother(Context context) {
         super(context);
         init(context);
     }
 
-    public CrownQuadrant(Context context, AttributeSet attrs) {
+    public CrownQuadrantAnother(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
 
     }
 
     private void init(Context context) {
-        View.inflate(context, R.layout.crown_grid, this);
+        View.inflate(context, R.layout.crown_grid_another, this);
         tableLayout = (TableLayout) findViewById(R.id.tableLayout);
         row1 = (TableRow) tableLayout.getChildAt(0);
         row2 = (TableRow) tableLayout.getChildAt(1);
@@ -87,18 +83,20 @@ public class CrownQuadrant extends LinearLayout implements View.OnClickListener 
                 public void onClick(View v) {
 
                     if (selectedArray.contains(name)) {
-                        itemLinear.setBackgroundResource(R.drawable.crown_bg);
-                        selectedArray.remove(name);
-                        onCrownClickListner.delete(name);
+                        onCrownClickListner.display(name);
+                        highlightSelected(name);
 
                     } else {
                         itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
                         selectedArray.add(name);
                         onCrownClickListner.add(name);
+                        onCrownClickListner.display(name);
+                        highlightSelected(name);
                     }
 
                 }
             });
+
 
         }
 
@@ -121,20 +119,66 @@ public class CrownQuadrant extends LinearLayout implements View.OnClickListener 
                 @Override
                 public void onClick(View v) {
                     if (selectedArray.contains(name)) {
-                        itemLinear.setBackgroundResource(R.drawable.crown_bg);
-                        selectedArray.remove(name);
-                        onCrownClickListner.delete(name);
+                        onCrownClickListner.display(name);
+                        highlightSelected(name);
                     } else {
                         itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
                         selectedArray.add(name);
-
                         onCrownClickListner.add(name);
+                        onCrownClickListner.display(name);
+                        highlightSelected(name);
+
                     }
 
                 }
             });
 
+
         }
+
+    }
+
+    public void highlightSelected(String value) {
+
+
+            for (int i = 0; i < row1.getChildCount(); i++) {
+
+                final View view = row1.getChildAt(i);
+                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+                if (txtDetails.getText().toString().equalsIgnoreCase(value)) {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected_colored);
+                }else{
+
+                }
+                if (selectedArray.contains(value)) {
+
+                }else{
+
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg);
+                }
+
+            }
+
+            for (int i = 0; i < row2.getChildCount(); i++) {
+                final View view = row2.getChildAt(i);
+                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+                if (txtDetails.getText().toString().equalsIgnoreCase(value)) {
+
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected_colored);
+                }else{
+
+
+
+                }
+                if (selectedArray.contains(value)) {
+
+                }else{
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg);
+                }
+            }
+
 
     }
 
@@ -166,9 +210,6 @@ public class CrownQuadrant extends LinearLayout implements View.OnClickListener 
 
 
     }
-
-
-
 
 
 /*
@@ -259,6 +300,10 @@ public class CrownQuadrant extends LinearLayout implements View.OnClickListener 
         public void add(String value);
 
         public void delete(String value);
+
+        public void display(String value);
+
+
     }
 
 

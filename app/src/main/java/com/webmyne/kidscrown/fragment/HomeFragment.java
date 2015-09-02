@@ -44,6 +44,7 @@ import com.webmyne.kidscrown.ui.CrownActivity;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 import com.webmyne.kidscrown.ui.ProductDetailActivity;
 import com.webmyne.kidscrown.ui.RefillActivity;
+import com.webmyne.kidscrown.ui.RefillActivityAnother;
 
 import java.sql.Ref;
 import java.util.ArrayList;
@@ -192,7 +193,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
         if (productName.equalsIgnoreCase("Crown")) {
 
-            Intent iRefill = new Intent(getActivity(), RefillActivity.class);
+            Intent iRefill = new Intent(getActivity(), RefillActivityAnother.class);
             iRefill.putExtra("product_id", productId);
             startActivity(iRefill);
 
