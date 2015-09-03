@@ -77,8 +77,9 @@ public class ToolHelper {
         Log.e("counts", value + "--");
         if (value > 0) {
 
-            imgCartMenu.setPadding(0, 0, 32, 0);
+            imgCartMenu.setPadding(0, 18, 20, 0);
             badge.setText(String.valueOf(value));
+            badge.setTextSize(_ctx.getResources().getDimension(R.dimen.BADGE_TEXT_SIZE));
             badge.setBadgeBackgroundColor(_ctx.getResources().getColor(R.color.quad_orange));
             badge.show();
             ObjectAnimator animator = ObjectAnimator.ofFloat(badge, "rotationY", 0f, 360f);

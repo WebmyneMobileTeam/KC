@@ -50,7 +50,7 @@ public class RefillOrderAdapterAnother extends BaseAdapter {
 
     class ViewHolder {
         TextView txtName;
-        EditText edQty;
+        TextView edQty;
         ImageView imgDelete;
     }
 
@@ -78,7 +78,7 @@ public class RefillOrderAdapterAnother extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.item_cart_another, parent, false);
             holder = new ViewHolder();
             holder.txtName = (TextView) convertView.findViewById(R.id.txtItemName);
-            holder.edQty = (EditText) convertView.findViewById(R.id.edItemQty);
+            holder.edQty = (TextView) convertView.findViewById(R.id.edItemQty);
             holder.edQty.setEnabled(false);
             holder.edQty.setBackgroundColor(Color.TRANSPARENT);
             holder.imgDelete = (ImageView) convertView.findViewById(R.id.imgDeleteCart);

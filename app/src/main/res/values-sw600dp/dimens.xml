@@ -9,6 +9,8 @@
 
     <dimen name="SPINNER_TEXT">10dp</dimen>
 
+    <dimen name="BADGE_TEXT_SIZE">10dp</dimen>
+
     <dimen name="CARD_DIVIDER_HEIGHT">20dp</dimen>
     <dimen name="VS_TEXT_SIZE">15dp</dimen>
     <dimen name="S_TEXT_SIZE">20dp</dimen>

@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerVertical="true"
-        android:padding="16dp"
+        android:padding="@dimen/S_TEXT_SIZE"
         android:text="dafdafda"
         android:textColor="#222"
-        android:textSize="18sp" />
+        android:textSize="@dimen/M_TEXT_SIZE" />
 
 </RelativeLayout>

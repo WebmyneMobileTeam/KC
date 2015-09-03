@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.helper.Functions;
 
 import java.util.List;
 
@@ -22,6 +23,12 @@ import java.util.List;
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.CustomViewHolder> {
     private List<String> feedItemList;
     private Context mContext;
+
+    public void setAddQtyListener(MyRecyclerAdapter.addQtyListener addQtyListener) {
+        this.addQtyListener = addQtyListener;
+    }
+
+    private addQtyListener addQtyListener;
 
     public MyRecyclerAdapter(Context context, List<String> feedItemList) {
         this.feedItemList = feedItemList;
@@ -69,7 +76,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
             CustomViewHolder holder = (CustomViewHolder) view.getTag();
             int position = holder.getPosition();
             String feedItem = feedItemList.get(position);
-
+            addQtyListener.addQty(feedItem);
         }
     };
 
@@ -82,5 +89,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
 
     }
 
+    public interface addQtyListener {
+        public void addQty(String value);
+    }
 
 }

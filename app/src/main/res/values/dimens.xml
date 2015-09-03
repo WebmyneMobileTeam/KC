@@ -9,6 +9,8 @@
 
     <dimen name="SPINNER_TEXT">8dp</dimen>
 
+    <dimen name="BADGE_TEXT_SIZE">6dp</dimen>
+
     <dimen name="CARD_DIVIDER_HEIGHT">8dp</dimen>
     <dimen name="VS_TEXT_SIZE">12dp</dimen>
     <dimen name="S_TEXT_SIZE">15dp</dimen>
@@ -21,7 +23,7 @@
     <dimen name="M_MARGIN_SIZE">4dp</dimen>
     <dimen name="L_MARGIN_SIZE">12dp</dimen>
     <dimen name="STD_MARGIN_SIZE">20dp</dimen>
-    <dimen name="STD_TXT_PADDING_SIZE">5dp</dimen>
+    <dimen name="STD_TXT_PADDING_SIZE">4dp</dimen>
 
     <dimen name="LAYOUT_MARGIN_SIZE">30dp</dimen>
 

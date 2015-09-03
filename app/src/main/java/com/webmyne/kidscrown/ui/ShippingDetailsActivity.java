@@ -58,7 +58,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
 
     SegmentedGroup segmented2;
     RelativeLayout rLContPayment;
-    int shippingStateId, billingStateId;
+    int shippingStateId = 0, billingStateId = 0;
     String shippingStateName, billingStateName;
     BillingAndShippingAddress billingAndShippingAddress = new BillingAndShippingAddress();
     private EditText edtBillingAddress1, edtBillingAddress2, edtBillingCity, edtBillingCountry, edtBillingPincode, edtShippingAddress1, edtShippingAddress2, edtShippingCity, edtShippingCountry, edtShippingPincode;
@@ -257,10 +257,10 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         rLContPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveAddressDetails();
-
-                sendAddressDetails();
-
+                if (validationDone(v)) {
+                    saveAddressDetails();
+                    sendAddressDetails();
+                }
             }
         });
 
@@ -289,6 +289,51 @@ public class ShippingDetailsActivity extends AppCompatActivity {
 
     }
 
+    private boolean validationDone(View v) {
+        boolean isValid = true;
+
+        if (edtBillingAddress1.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtBillingAddress2.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtBillingCity.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtBillingCountry.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtBillingPincode.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (billingStateId == 0) {
+            isValid = false;
+        }
+        if (edtShippingAddress1.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtShippingAddress2.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtShippingCity.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtShippingCountry.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (edtShippingPincode.getText().toString().length() == 0) {
+            isValid = false;
+        }
+        if (shippingStateId == 0) {
+            isValid = false;
+        }
+        if (!isValid) {
+            Functions.snack(v, "All shipping and biling details are required.");
+        }
+        return isValid;
+    }
+
     private void saveAddressDetails() {
         addresses.clear();
         addressModels = new ArrayList<>();
@@ -304,7 +349,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         billingAndShippingAddress.setBillingPincode(edtBillingPincode.getText().toString().trim());
         billingAndShippingAddress.setBillingState(billingStateId);
 
-       // Save Billing Address
+        // Save Billing Address
         billingAddress.setAddress1(edtBillingAddress1.getText().toString().trim());
         billingAddress.setAddress2(edtBillingAddress2.getText().toString().trim());
         billingAddress.setCity(edtBillingCity.getText().toString().trim());
