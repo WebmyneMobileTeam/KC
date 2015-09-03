@@ -147,10 +147,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
             crowns = handler.getCrownCartProduct(crownProductId);
 
             if (crowns.size() != 0) {
-                upperLeft.addCrown();
-                upperRight.addCrown();
-                lowerLeft.addCrown();
-                lowerRight.addCrown();
 
                 for (ProductCart cart : crowns) {
 
@@ -166,10 +162,16 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                     orderArray.add(item);
                 }
 
+
                 adapter = new RefillOrderAdapterAnother(RefillActivityAnother.this, orderArray);
                 adapter.setOnDeleteListner(RefillActivityAnother.this);
                 adapter.setOnTextChange(RefillActivityAnother.this);
                 listRefill.setAdapter(adapter);
+            }else{
+                upperLeft.clearSelected();
+                upperRight.clearSelected();
+                lowerLeft.clearSelected();
+                lowerRight.clearSelected();
             }
 
         } catch (SQLException e) {

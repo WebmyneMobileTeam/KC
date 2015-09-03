@@ -40,9 +40,7 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
     public CrownQuadrantAnother(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
-
     }
-
     private void init(Context context) {
         View.inflate(context, R.layout.crown_grid_another, this);
         tableLayout = (TableLayout) findViewById(R.id.tableLayout);
@@ -118,6 +116,7 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     if (selectedArray.contains(name)) {
                         onCrownClickListner.display(name);
                         highlightSelected(name);
@@ -176,9 +175,16 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
     }
 
+    public void clearSelected(){
+        selectedArray.clear();
+    }
+
     public void setQuanity(final String crown, String value) {
 
+        selectedArray.add(crown);
+
         for (int i = 0; i < row1.getChildCount(); i++) {
+
             final View view = row1.getChildAt(i);
             TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
             TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
@@ -204,21 +210,21 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
     }
 
-    public void addCrown() {
+    public void addCrown(String value) {
 
-        for (int i = 0; i < row1.getChildCount(); i++) {
-            final View view = row1.getChildAt(i);
-            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            final String name = txtDetails.getText().toString();
-            selectedArray.add(name);
+                 for (int i = 0; i < row1.getChildCount(); i++) {
+                final View view = row1.getChildAt(i);
+                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+                final String name = txtDetails.getText().toString();
+                selectedArray.add(name);
 
-        }
+            }
 
-        for (int i = 0; i < row2.getChildCount(); i++) {
-            final View view = row2.getChildAt(i);
-            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            final String name = txtDetails.getText().toString();
-            selectedArray.add(name);
+            for (int i = 0; i < row2.getChildCount(); i++) {
+                final View view = row2.getChildAt(i);
+                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+                final String name = txtDetails.getText().toString();
+                selectedArray.add(name);
 
         }
 
