@@ -106,6 +106,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         if (added) {
             Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
             overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+
         } else {
             DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
             ArrayList<String> productDetails = new ArrayList<String>();
@@ -114,8 +115,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             productDetails.add(qty + "");
             productDetails.add(price + "");
             productDetails.add((price * qty) + "");
-
-            Log.e("productDetails", productDetails.toString());
 
             handler.addCartProduct(productDetails);
 
@@ -128,7 +127,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
             }
-            fabShop.setImageResource(R.drawable.ic_action_order);
             added = true;
 
             Snackbar snack = Snackbar.make(fabShop, "Added to Cart", Snackbar.LENGTH_LONG);
@@ -137,7 +135,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), ProductDetailActivity.this));
             snack.show();
             helper.displayBadge();
-
         }
 
     }

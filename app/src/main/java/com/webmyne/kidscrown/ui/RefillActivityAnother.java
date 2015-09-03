@@ -83,7 +83,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 String crownName = txtDisplayCrownName.getText().toString();
                 String crownQty = txtDisplayCrownQTY.getText().toString();
 
-                if (crownQty.length() == 0 || Integer.parseInt(crownQty) == 0 || Integer.parseInt(crownQty) == 00) {
+                if (crownQty.length() == 0 || crownQty.equals("0") || crownQty.equals("00")) {
                     Functions.snack(v, "Enter Valid Quantity");
                 } else {
                     CrownProductItem item = new CrownProductItem();
@@ -150,15 +150,14 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
                 for (ProductCart cart : crowns) {
 
-                    CrownProductItem item = new CrownProductItem();
-                    item.itemName = cart.getProductName();
-                    item.itemQty = cart.getProductQty();
-
                     upperLeft.setQuanity(cart.getProductName(), cart.getProductQty() + "");
                     upperRight.setQuanity(cart.getProductName(), cart.getProductQty() + "");
                     lowerLeft.setQuanity(cart.getProductName(), cart.getProductQty() + "");
                     lowerRight.setQuanity(cart.getProductName(), cart.getProductQty() + "");
 
+                    CrownProductItem item = new CrownProductItem();
+                    item.itemName = cart.getProductName();
+                    item.itemQty = cart.getProductQty();
                     orderArray.add(item);
                 }
 

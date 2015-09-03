@@ -80,7 +80,6 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (selectedArray.contains(name)) {
                         onCrownClickListner.display(name);
                         highlightSelected(name);
