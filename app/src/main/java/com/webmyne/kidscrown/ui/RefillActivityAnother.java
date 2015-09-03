@@ -1,13 +1,11 @@
 package com.webmyne.kidscrown.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.MyRecyclerAdapter;
-import com.webmyne.kidscrown.adapters.RefillOrderAdapter;
 import com.webmyne.kidscrown.adapters.RefillOrderAdapterAnother;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
@@ -32,7 +29,6 @@ import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.model.ProductCart;
-import com.webmyne.kidscrown.ui.widgets.CrownQuadrant;
 import com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother;
 
 import java.sql.SQLException;
@@ -54,7 +50,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     RefillOrderAdapterAnother adapter;
     private int productID;
     ImageView imgCart;
-    Button btnContinue, btnOK, btnRemove;
+    Button btnContinue, btnOK, btnCancel;
     ArrayList<CrownPricing> crownPricing;
     RecyclerView numberPad;
     private LinearLayout linearNumberPad;
@@ -110,9 +106,11 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
             }
         });
 
-        btnRemove.setOnClickListener(new View.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sb = new StringBuilder();
+                txtDisplayCrownQTY.setText("0");
                 String toDelete = txtDisplayCrownName.getText().toString();
                 upperLeft.removeSelected(toDelete);
                 upperRight.removeSelected(toDelete);
@@ -141,37 +139,29 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
         orderArray = new ArrayList<>();
         orderArray.clear();
+
         try {
             DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
             handler.openDataBase();
             crowns = handler.getCrownCartProduct(crownProductId);
 
-            if (crowns.size() != 0) {
+            for (ProductCart cart : crowns) {
 
-                for (ProductCart cart : crowns) {
+                upperLeft.setQuanity(cart.getProductName(), cart.getProductQty() + "");
+                upperRight.setQuanity(cart.getProductName(), cart.getProductQty() + "");
+                lowerLeft.setQuanity(cart.getProductName(), cart.getProductQty() + "");
+                lowerRight.setQuanity(cart.getProductName(), cart.getProductQty() + "");
 
-                    upperLeft.setQuanity(cart.getProductName(), cart.getProductQty() + "");
-                    upperRight.setQuanity(cart.getProductName(), cart.getProductQty() + "");
-                    lowerLeft.setQuanity(cart.getProductName(), cart.getProductQty() + "");
-                    lowerRight.setQuanity(cart.getProductName(), cart.getProductQty() + "");
-
-                    CrownProductItem item = new CrownProductItem();
-                    item.itemName = cart.getProductName();
-                    item.itemQty = cart.getProductQty();
-                    orderArray.add(item);
-                }
-
-
-                adapter = new RefillOrderAdapterAnother(RefillActivityAnother.this, orderArray);
-                adapter.setOnDeleteListner(RefillActivityAnother.this);
-                adapter.setOnTextChange(RefillActivityAnother.this);
-                listRefill.setAdapter(adapter);
-            }else{
-                upperLeft.clearSelected();
-                upperRight.clearSelected();
-                lowerLeft.clearSelected();
-                lowerRight.clearSelected();
+                CrownProductItem item = new CrownProductItem();
+                item.itemName = cart.getProductName();
+                item.itemQty = cart.getProductQty();
+                orderArray.add(item);
             }
+
+            adapter = new RefillOrderAdapterAnother(RefillActivityAnother.this, orderArray);
+            adapter.setOnDeleteListner(RefillActivityAnother.this);
+            adapter.setOnTextChange(RefillActivityAnother.this);
+            listRefill.setAdapter(adapter);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -208,7 +198,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     private void init() {
 
         btnOK = (Button) findViewById(R.id.btnOK);
-        btnRemove = (Button) findViewById(R.id.btnRemove);
+        btnCancel = (Button) findViewById(R.id.btnRemove);
 
         txtDisplayCrownName = (TextView) findViewById(R.id.txtDisplayCrownName);
         txtDisplayCrownQTY = (TextView) findViewById(R.id.txtDisplayCrownQTY);
@@ -401,15 +391,30 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     public void onDelete(int position) {
 
         String toDelete = orderArray.get(position).itemName;//todo
+
+        orderArray.remove(position);
+        adapter.notifyDataSetChanged();
+
         upperLeft.removeSelected(toDelete);
         upperRight.removeSelected(toDelete);
         lowerLeft.removeSelected(toDelete);
         lowerRight.removeSelected(toDelete);
 
-        orderArray.remove(position);
-        adapter.notifyDataSetChanged();
+        upperLeft.clearSelected(toDelete);
+        upperRight.clearSelected(toDelete);
+        lowerLeft.clearSelected(toDelete);
+        lowerRight.clearSelected(toDelete);
 
+        try {
+            DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
+            handler.openDataBase();
+            handler.deleteCrownProduct(toDelete);
+            handler.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        helper.displayBadge();
     }
 
     @Override

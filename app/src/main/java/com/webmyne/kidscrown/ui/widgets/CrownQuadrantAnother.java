@@ -174,8 +174,8 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
     }
 
-    public void clearSelected(){
-        selectedArray.clear();
+    public void clearSelected(String value){
+        selectedArray.remove(value);
     }
 
     public void setQuanity(final String crown, String value) {
@@ -233,7 +233,6 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
         if (selectedArray.contains(value)) {
             selectedArray.remove(value);
-
             for (int i = 0; i < row1.getChildCount(); i++) {
 
                 final View view = row1.getChildAt(i);

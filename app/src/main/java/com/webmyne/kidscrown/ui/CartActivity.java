@@ -23,6 +23,7 @@ import com.webmyne.kidscrown.adapters.CustomGridAdapter;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.ui.widgets.CrownCartView;
+import com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 
 import java.sql.SQLException;
@@ -41,6 +42,11 @@ public class CartActivity extends AppCompatActivity {
     SharedPreferences preferences;
     TextView[] text;
     RelativeLayout rLayoutCheckout;
+
+    private CrownQuadrantAnother upperLeft;
+    private CrownQuadrantAnother upperRight;
+    private CrownQuadrantAnother lowerLeft;
+    private CrownQuadrantAnother lowerRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +160,7 @@ public class CartActivity extends AppCompatActivity {
                 handler.openDataBase();
                 handler.deleteCrownProduct(productName);
                 handler.close();
+
                 refreshActivity();
             } catch (SQLException e) {
                 e.printStackTrace();
