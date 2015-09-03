@@ -39,6 +39,7 @@ import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
 import com.webmyne.kidscrown.fragment.SettingsFragment;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.UserProfile;
@@ -153,6 +154,9 @@ public class MyDrawerActivity extends AppCompatActivity implements
                     Log.e("EXP LOGOUT", e.toString());
                 }
 
+                DatabaseHandler handler = new DatabaseHandler(MyDrawerActivity.this);
+                handler.deleteCart();
+
                 Intent i = new Intent(MyDrawerActivity.this, LoginActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
@@ -261,7 +265,6 @@ public class MyDrawerActivity extends AppCompatActivity implements
             mGoogleApiClient.disconnect();
         }
     }
-
 
     @Override
     protected void onResume() {

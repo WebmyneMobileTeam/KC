@@ -98,7 +98,6 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
                 }
             });
 
-
         }
 
         for (int i = 0; i < row2.getChildCount(); i++) {
@@ -167,7 +166,6 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
                 itemLinear.setBackgroundResource(R.drawable.crown_bg_selected_colored);
             } else {
 
-
             }
             if (selectedArray.contains(value)) {
 
@@ -178,38 +176,29 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
     }
 
-    public void setQuanity(String crown, String value) {
+    public void setQuanity(final String crown, String value) {
 
-        if (selectedArray.contains(crown)) {
-
-            for (int i = 0; i < row1.getChildCount(); i++) {
-
-                final View view = row1.getChildAt(i);
-                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-                TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
-                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-                String name = txtDetails.getText().toString();
-
-                if (name.equalsIgnoreCase(crown)) {
-                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
-                    txtCrown.setText(value);
-                }
-
+        for (int i = 0; i < row1.getChildCount(); i++) {
+            final View view = row1.getChildAt(i);
+            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
+            final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+            final String name = txtDetails.getText().toString();
+            if (name.equals(crown)) {
+                itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
+                txtCrown.setText(value);
             }
+        }
 
-            for (int i = 0; i < row2.getChildCount(); i++) {
-                final View view = row2.getChildAt(i);
-                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-                TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
-                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-                String name = txtDetails.getText().toString();
-
-                if (name.equalsIgnoreCase(crown)) {
-                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
-                    txtCrown.setText(value);
-
-                }
-
+        for (int i = 0; i < row2.getChildCount(); i++) {
+            final View view = row2.getChildAt(i);
+            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
+            final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+            final String name = txtDetails.getText().toString();
+            if (name.equals(crown)) {
+                itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
+                txtCrown.setText(value);
             }
         }
 
@@ -220,18 +209,16 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
         for (int i = 0; i < row1.getChildCount(); i++) {
             final View view = row1.getChildAt(i);
             TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            String name = txtDetails.getText().toString();
+            final String name = txtDetails.getText().toString();
             selectedArray.add(name);
-//            onCrownClickListner.add(name);
 
         }
 
         for (int i = 0; i < row2.getChildCount(); i++) {
             final View view = row2.getChildAt(i);
             TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            String name = txtDetails.getText().toString();
+            final String name = txtDetails.getText().toString();
             selectedArray.add(name);
-//            onCrownClickListner.add(name);
 
         }
 

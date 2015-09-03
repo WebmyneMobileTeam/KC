@@ -152,11 +152,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 lowerLeft.addCrown();
                 lowerRight.addCrown();
 
-                upperLeft.setOnCrownClickListner(this);
-                upperRight.setOnCrownClickListner(this);
-                lowerLeft.setOnCrownClickListner(this);
-                lowerRight.setOnCrownClickListner(this);
-
                 for (ProductCart cart : crowns) {
 
                     CrownProductItem item = new CrownProductItem();

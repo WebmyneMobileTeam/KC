@@ -559,6 +559,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void deleteCart() {
+        myDataBase = this.getWritableDatabase();
+        myDataBase.delete(TABLE_CART_ITEM, null, null);
+    }
+
     public void saveAddressDetails(ArrayList<AddressModel> addressModels) {
         myDataBase = this.getWritableDatabase();
         myDataBase.delete(TABLE_ADDRESS, null, null);
