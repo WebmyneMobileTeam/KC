@@ -76,16 +76,61 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String crownName = txtDisplayCrownName.getText().toString();
                 String crownQty = txtDisplayCrownQTY.getText().toString();
 
                 if (crownQty.length() == 0 || crownQty.equals("0") || crownQty.equals("00")) {
                     Functions.snack(v, "Enter Valid Quantity");
                 } else {
-                    CrownProductItem item = new CrownProductItem();
-                    item.itemName = crownName;
-                    item.itemQty = Integer.parseInt(crownQty);
-                    orderArray.add(item);
+
+                    boolean shouldAdd = false;
+                    int pos = 0;
+                    for (int i = 0; i < orderArray.size(); i++) {
+                        CrownProductItem item = orderArray.get(i);
+                        if (item.itemName.equalsIgnoreCase(crownName)) {
+                            pos = i;
+                            shouldAdd = false;
+
+                        } else {
+                            shouldAdd = true;
+                            pos = i;
+                        }
+                    }
+
+
+                    //todo continue 4-9-2015
+
+
+/*                    if (orderArray.isEmpty()) {
+
+                        CrownProductItem item2 = new CrownProductItem();
+                        item2.itemName = crownName;
+                        item2.itemQty = Integer.parseInt(crownQty);
+                        orderArray.add(item2);
+
+                    } else {
+
+                        for(int i=0;i<orderArray.size();i++){
+
+                            CrownProductItem item = orderArray.get(i);
+
+                            if (item.itemName.equalsIgnoreCase(crownName)) {
+                                item.itemQty = Integer.parseInt(crownQty);
+                                break;
+
+                            } else {
+                                CrownProductItem item2 = new CrownProductItem();
+                                item2.itemName = crownName;
+                                item2.itemQty = Integer.parseInt(crownQty);
+                                orderArray.add(item2);
+                                break;
+                            }
+                        }
+
+                    }*/
+
+
                     adapter = new RefillOrderAdapterAnother(RefillActivityAnother.this, orderArray);
                     adapter.setOnDeleteListner(RefillActivityAnother.this);
                     adapter.setOnTextChange(RefillActivityAnother.this);
@@ -96,6 +141,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                     upperRight.setQuanity(crownName, crownQty);
                     lowerLeft.setQuanity(crownName, crownQty);
                     lowerRight.setQuanity(crownName, crownQty);
+
 
                     sb = new StringBuilder();
                     txtDisplayCrownQTY.setText("0");
@@ -116,6 +162,12 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 upperRight.removeSelected(toDelete);
                 lowerLeft.removeSelected(toDelete);
                 lowerRight.removeSelected(toDelete);
+
+                upperLeft.clearSelection();
+                upperRight.clearSelection();
+                lowerLeft.clearSelection();
+                lowerRight.clearSelection();
+
 
                 if (linearNumberPad.isShown()) {
                     linearNumberPad.setVisibility(View.GONE);
@@ -294,7 +346,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         numberPad.setLayoutManager(layoutManager);
         adapter.notifyDataSetChanged();
 
-
     }
 
     private void processContinue(View v) {
@@ -337,53 +388,36 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
     }
 
-    @Override
-    public void add(String value) {
-
-        /*CrownProductItem item = new CrownProductItem();
-        item.itemName = value;
-        item.itemQty = 100;
-        orderArray.add(item);
-        adapter.notifyDataSetChanged();*/
-        Log.e("click", "add");
-        if (!linearNumberPad.isShown()) {
-            linearNumberPad.setVisibility(View.VISIBLE);
-            linearProducts.setVisibility(View.GONE);
-        }
-
-        displayCrown(value);
-
-    }
-
     private void displayCrown(String value) {
         selectedValue = value;
         txtDisplayCrownName.setText(value);
     }
 
+
     @Override
-    public void delete(String value) {
-
-        // come from qaud delete listner
-        Log.e("click", "delete");
-        for (CrownProductItem item : orderArray) {
-            if (item.itemName.equalsIgnoreCase(value)) {
-                orderArray.remove(item);
-                break;
-            }
+    public void displayNumberpad(String value) {
+        if (!linearNumberPad.isShown()) {
+            linearNumberPad.setVisibility(View.VISIBLE);
+            linearProducts.setVisibility(View.GONE);
         }
-        adapter.notifyDataSetChanged();
-
-      /*  if(!linearProducts.isShown()){
-            linearNumberPad.setVisibility(View.GONE);
-            linearProducts.setVisibility(View.VISIBLE);
-        }*/
-
+        displayCrown(value);
     }
 
     @Override
     public void display(String value) {
         Log.e("click", "display");
         displayCrown(value);
+
+    }
+
+    @Override
+    public void setSelection(String value) {
+
+        upperLeft.setSelection(value);
+        upperRight.setSelection(value);
+        lowerLeft.setSelection(value);
+        lowerRight.setSelection(value);
+
 
     }
 

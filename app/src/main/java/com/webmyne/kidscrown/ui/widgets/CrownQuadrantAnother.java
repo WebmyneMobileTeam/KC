@@ -19,7 +19,7 @@ import java.util.HashMap;
 /**
  * Created by dhruvil on 14-08-2015.
  */
-public class CrownQuadrantAnother extends LinearLayout implements View.OnClickListener {
+public class CrownQuadrantAnother extends LinearLayout {
 
     private TableLayout tableLayout;
     private TableRow row1;
@@ -30,6 +30,7 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
     private OnCrownClickListner onCrownClickListner;
     private LinearLayout linearParentQuad;
     private boolean isAllAdded = false;
+    private ArrayList<String> addedValues;
 
 
     public CrownQuadrantAnother(Context context) {
@@ -41,6 +42,7 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
         super(context, attrs);
         init(context);
     }
+
     private void init(Context context) {
         View.inflate(context, R.layout.crown_grid_another, this);
         tableLayout = (TableLayout) findViewById(R.id.tableLayout);
@@ -51,6 +53,7 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
         sheet = new QuadSheet();
         orderMap = new HashMap<>();
         selectedArray = new ArrayList<>();
+        addedValues = new ArrayList<>();
 
     }
 
@@ -80,18 +83,20 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedArray.contains(name)) {
+
+
+                    onCrownClickListner.setSelection(name);
+                    onCrownClickListner.displayNumberpad(name);
+                /*    if (selectedArray.contains(name)) {
                         onCrownClickListner.display(name);
-                        highlightSelected(name);
 
                     } else {
                         itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
                         selectedArray.add(name);
                         onCrownClickListner.add(name);
                         onCrownClickListner.display(name);
-                        highlightSelected(name);
                     }
-
+*/
                 }
             });
 
@@ -116,17 +121,20 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
                 @Override
                 public void onClick(View v) {
 
-                    if (selectedArray.contains(name)) {
+                    onCrownClickListner.setSelection(name);
+                    onCrownClickListner.displayNumberpad(name);
+
+                 /*   if (selectedArray.contains(name)) {
                         onCrownClickListner.display(name);
-                        highlightSelected(name);
+
                     } else {
                         itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
                         selectedArray.add(name);
                         onCrownClickListner.add(name);
                         onCrownClickListner.display(name);
-                        highlightSelected(name);
 
-                    }
+
+                    }*/
                 }
             });
 
@@ -134,53 +142,104 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
     }
 
-    public void highlightSelected(String value) {
+    public void insertAddedValue(String name) {
+        addedValues.add(name);
+    }
+
+
+    public void setSelection(String crownName) {
 
         for (int i = 0; i < row1.getChildCount(); i++) {
 
             final View view = row1.getChildAt(i);
             TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
             final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-            if (txtDetails.getText().toString().equalsIgnoreCase(value)) {
+            final String name = txtDetails.getText().toString();
+
+            if (name.equals(crownName)) {
                 itemLinear.setBackgroundResource(R.drawable.crown_bg_selected_colored);
             } else {
 
-            }
-            if (selectedArray.contains(value)) {
+                if (!addedValues.contains(name)) {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg);
+                } else {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
+                }
 
+            }
+        }
+
+        for (int i = 0; i < row2.getChildCount(); i++) {
+            final View view = row2.getChildAt(i);
+            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
+            final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+            final String name = txtDetails.getText().toString();
+            if (name.equals(crownName)) {
+                itemLinear.setBackgroundResource(R.drawable.crown_bg_selected_colored);
             } else {
 
-                itemLinear.setBackgroundResource(R.drawable.crown_bg);
+                if (!addedValues.contains(name)) {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg);
+                } else {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
+                }
+
             }
+        }
+
+
+    }
+
+    public void clearSelection() {
+
+        for (int i = 0; i < row1.getChildCount(); i++) {
+
+            final View view = row1.getChildAt(i);
+            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
+            final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+            final String name = txtDetails.getText().toString();
+
+
+                if (!addedValues.contains(name)) {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg);
+                } else {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
+                }
+
 
         }
 
         for (int i = 0; i < row2.getChildCount(); i++) {
             final View view = row2.getChildAt(i);
             TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
             final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-            if (txtDetails.getText().toString().equalsIgnoreCase(value)) {
+            final String name = txtDetails.getText().toString();
 
-                itemLinear.setBackgroundResource(R.drawable.crown_bg_selected_colored);
-            } else {
+                if (!addedValues.contains(name)) {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg);
+                } else {
+                    itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
+                }
 
-            }
-            if (selectedArray.contains(value)) {
-
-            } else {
-                itemLinear.setBackgroundResource(R.drawable.crown_bg);
-            }
         }
+
 
     }
 
-    public void clearSelected(String value){
+
+
+
+    public void clearSelected(String value) {
         selectedArray.remove(value);
     }
 
     public void setQuanity(final String crown, String value) {
 
-        selectedArray.add(crown);
+        addedValues.add(crown);
 
         for (int i = 0; i < row1.getChildCount(); i++) {
 
@@ -209,30 +268,11 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
     }
 
-    public void addCrown(String value) {
-
-                 for (int i = 0; i < row1.getChildCount(); i++) {
-                final View view = row1.getChildAt(i);
-                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-                final String name = txtDetails.getText().toString();
-                selectedArray.add(name);
-
-            }
-
-            for (int i = 0; i < row2.getChildCount(); i++) {
-                final View view = row2.getChildAt(i);
-                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-                final String name = txtDetails.getText().toString();
-                selectedArray.add(name);
-
-        }
-
-    }
 
     public void removeSelected(String value) {
 
-        if (selectedArray.contains(value)) {
-            selectedArray.remove(value);
+        if (addedValues.contains(value)) {
+            addedValues.remove(value);
             for (int i = 0; i < row1.getChildCount(); i++) {
 
                 final View view = row1.getChildAt(i);
@@ -267,36 +307,6 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
 
     }
 
-
-/*
-    public HashMap<String, String> getValues() {
-
-        for (int i = 0; i < row1.getChildCount(); i++) {
-            View view = row1.getChildAt(i);
-            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            EditText edtQty = (EditText) view.findViewById(R.id.edtQty);
-
-            if (!edtQty.getText().toString().isEmpty()) {
-                orderMap.put(txtDetails.getText().toString(), edtQty.getText().toString());
-            }
-
-        }
-
-        for (int i = 0; i < row2.getChildCount(); i++) {
-            View view = row2.getChildAt(i);
-            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            EditText edtQty = (EditText) view.findViewById(R.id.edtQty);
-
-            if (!edtQty.getText().toString().isEmpty()) {
-                orderMap.put(txtDetails.getText().toString(), edtQty.getText().toString());
-            }
-
-        }
-
-        return orderMap;
-
-    }
-*/
 
     public void setOnCrownClickListner(OnCrownClickListner listner) {
         this.onCrownClickListner = listner;
@@ -318,46 +328,13 @@ public class CrownQuadrantAnother extends LinearLayout implements View.OnClickLi
         setupRows(R.drawable.lr, getResources().getColor(R.color.quad_violate), sheet.getLr1(), sheet.getLr2());
     }
 
-    @Override
-    public void onClick(View v) {
-
-        if (isAllAdded == false) {
-
-            for (int i = 0; i < row1.getChildCount(); i++) {
-
-                final View view = row1.getChildAt(i);
-                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-                String name = txtDetails.getText().toString();
-                itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
-                selectedArray.add(name);
-                onCrownClickListner.add(name);
-
-            }
-
-            for (int i = 0; i < row2.getChildCount(); i++) {
-                final View view = row2.getChildAt(i);
-                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-                String name = txtDetails.getText().toString();
-                itemLinear.setBackgroundResource(R.drawable.crown_bg_selected);
-                selectedArray.add(name);
-                onCrownClickListner.add(name);
-            }
-
-            isAllAdded = true;
-
-        }
-
-    }
-
     public interface OnCrownClickListner {
 
-        public void add(String value);
+        void displayNumberpad(String value);
 
-        public void delete(String value);
+        void display(String value);
 
-        public void display(String value);
+        void setSelection(String value);
 
 
     }
