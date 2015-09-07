@@ -110,7 +110,6 @@ public class RefillOrderAdapterAnother extends BaseAdapter {
                     onTextChange.onTextChange(holder.txtName.getText().toString(), 0);
                 }
 
-
             }
         });
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {

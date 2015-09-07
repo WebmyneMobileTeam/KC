@@ -148,23 +148,22 @@ public class RegisterActivity extends AppCompatActivity {
         JSONObject userObject = null;
         try {
             userObject = new JSONObject();
+            userObject.put("ClinicName", clinicName);
             userObject.put("EmailID", emailId);
             userObject.put("FirstName", firstName);
             userObject.put("IsActive", true);
-            userObject.put("IsDelete", false);
+            userObject.put("IsDelete", true);
             userObject.put("LastName", lastName);
+            userObject.put("LoginVia", "N");
             userObject.put("MobileNo", mobile);
             userObject.put("MobileOS", "A");
             userObject.put("Password", password);
-            userObject.put("Qualification", "");
+            userObject.put("PriorityID", 5);
             userObject.put("RegistrationNumber", registartionNo);
             userObject.put("Salutation", 0);
-            userObject.put("ClinicName", clinicName);
             userObject.put("UserID", 0);
             userObject.put("UserName", username);
-            userObject.put("LoginVia","N");
             userObject.put("UserRoleID", 2);
-            userObject.put("LoginVia", "N");
         } catch (Exception e) {
             e.printStackTrace();
         }

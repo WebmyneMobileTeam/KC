@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.CustomGridAdapter;
+import com.webmyne.kidscrown.adapters.RefillOrderAdapterAnother;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.ui.widgets.CrownCartView;
@@ -37,16 +38,9 @@ public class CartActivity extends AppCompatActivity {
     ArrayList<ProductCart> crowns = new ArrayList<>();
     TextView totalPrice, emptyCart;
     LinearLayout linearParent, totalLayout;
-    ArrayList<String> values;
     int price, crownProductId;
     SharedPreferences preferences;
-    TextView[] text;
     RelativeLayout rLayoutCheckout;
-
-    private CrownQuadrantAnother upperLeft;
-    private CrownQuadrantAnother upperRight;
-    private CrownQuadrantAnother lowerLeft;
-    private CrownQuadrantAnother lowerRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +156,7 @@ public class CartActivity extends AppCompatActivity {
                 handler.close();
 
                 refreshActivity();
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -214,7 +209,6 @@ public class CartActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 

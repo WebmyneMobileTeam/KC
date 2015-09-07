@@ -176,7 +176,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             saveProductPrices(product.prices);
 
-
         }
 
     }
@@ -239,6 +238,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void addCartProduct(ArrayList<String> productDetails) {
 
         myDataBase = this.getWritableDatabase();
+
         ContentValues values = new ContentValues();
         values.put("product_id", Integer.parseInt(productDetails.get(0)));
         values.put("product_name", productDetails.get(1));

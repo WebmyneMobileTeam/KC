@@ -100,7 +100,9 @@ public class ProfileFragment extends Fragment {
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
         userId = currentUserObj.UserID;
+
         Log.e("userId", userId);
+
         firstName = currentUserObj.FirstName;
         lastName = currentUserObj.LastName;
         username = currentUserObj.UserName;
@@ -180,21 +182,21 @@ public class ProfileFragment extends Fragment {
         JSONObject userObject = null;
         try {
             userObject = new JSONObject();
+            userObject.put("ClinicName", clinicName);
             userObject.put("EmailID", emailId);
             userObject.put("FirstName", firstName);
             userObject.put("IsActive", true);
-            userObject.put("IsDelete", false);
+            userObject.put("IsDelete", true);
             userObject.put("LastName", lastName);
             userObject.put("MobileNo", mobile);
             userObject.put("MobileOS", "A");
             userObject.put("Password", password);
-            userObject.put("Qualification", "");
             userObject.put("RegistrationNumber", registartionNo);
-            userObject.put("ClinicName", clinicName);
             userObject.put("Salutation", 0);
-            userObject.put("UserID", userId);
+            userObject.put("UserID", Integer.parseInt(userId));
             userObject.put("UserName", username);
             userObject.put("UserRoleID", 2);
+            userObject.put("PriorityID", 5);
         } catch (Exception e) {
             e.printStackTrace();
         }

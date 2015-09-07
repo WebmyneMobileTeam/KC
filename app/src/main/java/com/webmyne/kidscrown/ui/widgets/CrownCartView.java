@@ -133,12 +133,6 @@ public class CrownCartView extends LinearLayout {
         public void removeCrown(String productName);
     }
 
-    public void hideControls() {
-        remove.setVisibility(GONE);
-        unitQty.setEnabled(false);
-        unitQty.setBackgroundResource(0);
-    }
-
     public class InputFilterMinMax implements InputFilter {
 
         private int min, max;

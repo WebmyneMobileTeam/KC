@@ -172,7 +172,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 // helper.hideProgress();
                 Log.e("Error", error);
 
-
             }
         }.call();
 
@@ -197,7 +196,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             iRefill.putExtra("product_id", productId);
             startActivity(iRefill);
 
-
         } else {
 
             Intent iDetail = new Intent(getActivity(), ProductDetailActivity.class);
@@ -207,6 +205,5 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         }
 
     }
-
 
 }

@@ -1,18 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/login_back"
     tools:context="com.webmyne.kidscrown.ui.RegisterActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_above="@+id/btnUpdate">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/card_margin"
@@ -24,59 +23,59 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/card_margin">
+                android:layout_marginTop="@dimen/card_margin"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtFirstname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="First Name"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="text"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Last Name"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="text"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Username"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="text"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtMobile"
@@ -84,113 +83,114 @@
                     android:layout_height="wrap_content"
                     android:digits="1234567890"
                     android:hint="Mobile"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="phone"
                     android:maxLength="10"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="textEmailAddress"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="textPassword"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="textPassword"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
-            android:layout_marginTop="@dimen/L_MARGIN_SIZE">
-
-            <EditText
-                android:id="@+id/edtClinicName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Clinic Name"
-                android:textSize="@dimen/M_TEXT_SIZE"
-                android:inputType="text"
-                android:textColor="#ffffff"
-                android:textColorHint="@color/editText_hint_color" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
+
+                <EditText
+                    android:id="@+id/edtClinicName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Clinic Name"
+                    android:inputType="text"
+                    android:textColor="#ffffff"
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android.support.design:hintTextAppearance="@style/FloatingLabelStyle"
+                android:layout_marginBottom="@dimen/L_MARGIN_SIZE"
                 android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                android:layout_marginBottom="@dimen/L_MARGIN_SIZE">
+                android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText
                     android:id="@+id/edtRegNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Registration Number"
-                    android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="text"
                     android:textColor="#ffffff"
-                    android:textColorHint="@color/editText_hint_color" />
+                    android:textColorHint="@color/editText_hint_color"
+                    android:textSize="@dimen/M_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
     </ScrollView>
+
     <Button
-        android:layout_alignParentBottom="true"
         android:id="@+id/btnUpdate"
         style="@style/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"
         android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
         android:layout_marginRight="@dimen/STD_MARGIN_SIZE"
         android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
-        android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"
-        android:text="Update Profile"
-        android:textSize="@dimen/M_TEXT_SIZE"
         android:padding="@dimen/STD_TXT_PADDING_SIZE"
-        android:textAllCaps="false" />
+        android:text="Update Profile"
+        android:textAllCaps="false"
+        android:textSize="@dimen/M_TEXT_SIZE" />
 </RelativeLayout>
