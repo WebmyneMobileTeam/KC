@@ -26,12 +26,12 @@ public class ProductPrice {
     public String fromDate;
 
     @SerializedName("FromDateInt")
-    public String fromDateInt;
+    public int fromDateInt;
 
     @SerializedName("Todate")
     public String toDate;
 
     @SerializedName("TodateInt")
-    public String toDateInt;
+    public int toDateInt;
 
 }

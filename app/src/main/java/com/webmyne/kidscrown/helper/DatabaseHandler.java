@@ -192,6 +192,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("price", price.price);
             values.put("min", price.min);
             values.put("max", price.max);
+            values.put("", price.fromDateInt);
             myDataBase.insert(TABLE_PRODUCT_PRICE, null, values);
         }
 
