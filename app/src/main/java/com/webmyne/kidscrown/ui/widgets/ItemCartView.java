@@ -1,9 +1,9 @@
 package com.webmyne.kidscrown.ui.widgets;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,9 +13,7 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
-import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.ProductCart;
-import com.webmyne.kidscrown.ui.CartActivity;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -86,22 +84,35 @@ public class ItemCartView extends LinearLayout {
         remove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onRemoveProductListener != null) {
-                    onRemoveProductListener.removeProduct(cart.getProductId());
-                }
-                /*try {
-                    DatabaseHandler handler = new DatabaseHandler(context);
-                    handler.openDataBase();
-                    handler.deleteCartProduct(cart.getProductId());
-                    Intent cartIntent = new Intent(context, CartActivity.class);
-                    cartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(cartIntent);
-                    handler.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }*/
+
+                promptDialog(cart.getProductId());
+
             }
         });
+    }
+
+    private void promptDialog(final int productId) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+        alertDialogBuilder.setTitle("Remove product");
+        alertDialogBuilder
+                .setMessage("Want to remove this product from cart?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (onRemoveProductListener != null) {
+                            onRemoveProductListener.removeProduct(productId);
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
     private void setDetails(ProductCart cart) {

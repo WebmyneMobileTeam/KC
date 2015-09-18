@@ -310,24 +310,30 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         if (billingStateId == 0) {
             isValid = false;
         }
-        if (edtShippingAddress1.getText().toString().length() == 0) {
-            isValid = false;
+
+        if (sameAsBilling) {
+            isValid = true;
+        } else {
+            if (edtShippingAddress1.getText().toString().length() == 0) {
+                isValid = false;
+            }
+            if (edtShippingAddress2.getText().toString().length() == 0) {
+                isValid = false;
+            }
+            if (edtShippingCity.getText().toString().length() == 0) {
+                isValid = false;
+            }
+            if (edtShippingCountry.getText().toString().length() == 0) {
+                isValid = false;
+            }
+            if (edtShippingPincode.getText().toString().length() == 0) {
+                isValid = false;
+            }
+            if (shippingStateId == 0) {
+                isValid = false;
+            }
         }
-        if (edtShippingAddress2.getText().toString().length() == 0) {
-            isValid = false;
-        }
-        if (edtShippingCity.getText().toString().length() == 0) {
-            isValid = false;
-        }
-        if (edtShippingCountry.getText().toString().length() == 0) {
-            isValid = false;
-        }
-        if (edtShippingPincode.getText().toString().length() == 0) {
-            isValid = false;
-        }
-        if (shippingStateId == 0) {
-            isValid = false;
-        }
+
         if (!isValid) {
             Functions.snack(v, "All shipping and biling details are required.");
         }

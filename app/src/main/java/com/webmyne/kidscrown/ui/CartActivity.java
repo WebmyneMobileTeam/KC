@@ -89,6 +89,7 @@ public class CartActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        Log.e("products", products.size() + "-");
         for (int i = 0; i < products.size(); i++) {
             price = price + Integer.parseInt(products.get(i).getProductTotalPrice());
             ItemCartView itemView = new ItemCartView(CartActivity.this, products.get(i));

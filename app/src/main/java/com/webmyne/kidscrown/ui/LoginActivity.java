@@ -8,9 +8,11 @@ import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,9 +51,10 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 public class LoginActivity extends ActionBarActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     Button btnLogin;
+    String regNo;
     SignInButton btnGplus;
     TextView txtRegister, txtForgot;
     EditText edtUsername, edtPassword;
@@ -127,19 +130,19 @@ public class LoginActivity extends ActionBarActivity implements
         btnGplus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signInWithGplus();
+                askRegistrationNo2();
+
             }
-    });
+        });
 
 
         linearFbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
+
+                askRegistrationNo();
             }
         });
-
-
 
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -187,6 +190,34 @@ public class LoginActivity extends ActionBarActivity implements
         });
     }
 
+    private void askRegistrationNo() {
+        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+        View promptView = li.inflate(R.layout.social_registration, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setView(promptView);
+
+        final EditText edtRegNo = (EditText) promptView.findViewById(R.id.edtRegNo);
+        final Button btnNext = (Button) promptView.findViewById(R.id.btnNext);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtRegNo.length() == 0) {
+                    Functions.snack(v, "Registration Number must be entered to proceed ahead..");
+                } else {
+                    regNo = edtRegNo.getText().toString().trim();
+                    dialog.dismiss();
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
+                }
+
+            }
+        });
+    }
+
     private void loginProcess() {
         name = edtUsername.getText().toString().trim();
         password = edtPassword.getText().toString().trim();
@@ -199,6 +230,7 @@ public class LoginActivity extends ActionBarActivity implements
             @Override
             public void response(String response) {
                 pd.dismiss();
+                Log.e("login_response", response);
                 try {
                     JSONArray obj = new JSONArray(response);
                     JSONObject description = obj.getJSONObject(0);
@@ -232,12 +264,13 @@ public class LoginActivity extends ActionBarActivity implements
             @Override
             public void error(String error) {
                 pd.dismiss();
+                Functions.snack(btnLogin, "Invalid Login Credentials");
             }
         }.call();
     }
 
-    private void socialMediaLoginProcess(String email, String fName, String lName, String loginType){
-        url = Constants.SOCIAL_MEDIA_LOGIN_URL + email + "/" + fName + "/" + lName + "/" + loginType;
+    private void socialMediaLoginProcess(String email, String fName, String lName, String loginType) {
+        url = Constants.SOCIAL_MEDIA_LOGIN_URL + email + "/" + fName + "/" + lName + "/" + loginType + "/" + regNo;
 
         pd = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait..", true);
         Functions.logE("login request url", url);
@@ -405,6 +438,36 @@ public class LoginActivity extends ActionBarActivity implements
             mSignInClicked = true;
             resolveSignInError();
         }
+    }
+
+    private void askRegistrationNo2() {
+        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+        View promptView = li.inflate(R.layout.social_registration, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setView(promptView);
+
+        final EditText edtRegNo = (EditText) promptView.findViewById(R.id.edtRegNo);
+        final Button btnNext = (Button) promptView.findViewById(R.id.btnNext);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (edtRegNo.length() == 0) {
+                    Functions.snack(v, "Registration Number must be entered to proceed ahead..");
+                } else {
+                    regNo = edtRegNo.getText().toString().trim();
+                    dialog.dismiss();
+                    signInWithGplus();
+
+                }
+
+            }
+        });
     }
 
     protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {

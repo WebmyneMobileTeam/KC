@@ -14,6 +14,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.CrownPricing;
+import com.webmyne.kidscrown.model.FinalOrders;
 import com.webmyne.kidscrown.model.OrderModel;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
@@ -43,6 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCT_PRICE = "ProductPrice";
     private static final String TABLE_STATES = "State";
     private static final String TABLE_CART_ITEM = "CartItem";
+    private static final String TABLE_ORDERS = "Orders";
 
     private static final String DATABASE_PATH = "/data/data/com.webmyne.kidscrown/databases/";
     private Context context;
@@ -249,6 +251,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void addOrderItem(ArrayList<OrderModel> orderDetails, String randomOrderId, String dateTime) {
+        myDataBase = this.getWritableDatabase();
+        String shippingAddress = "";
+        Cursor cursor = null;
+        String selectQuery = "SELECT  * FROM " + TABLE_ADDRESS;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                if (cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")).equals("true")) {
+                    shippingAddress = cursor.getString(cursor.getColumnIndexOrThrow("address_1")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("address_2")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("city_name")) + " - " + cursor.getString(cursor.getColumnIndexOrThrow("pincode")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("state_name")) + ", " + cursor.getString((cursor.getColumnIndexOrThrow("country_name")));
+                    break;
+                }
+
+            } while (cursor.moveToNext());
+        }
+
+        for (int i = 0; i < orderDetails.size(); i++) {
+            Log.e("orders", orderDetails.get(i).getProductName());
+            ContentValues values = new ContentValues();
+            values.put("order_id", randomOrderId);
+            values.put("product_id", orderDetails.get(i).getProductId());
+            values.put("product_name", orderDetails.get(i).getProductName());
+            values.put("qty", orderDetails.get(i).getProductQty());
+            values.put("unit_price", orderDetails.get(i).getProductUnitPrice());
+            values.put("total_price", orderDetails.get(i).getProductTotalPrice());
+            values.put("address", shippingAddress);
+            values.put("date", dateTime);
+            myDataBase.insert(TABLE_ORDERS, null, values);
+        }
+
+    }
+
     public void updateCart(int qty, int totalPrice, int productID) {
         myDataBase = this.getWritableDatabase();
         String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty=" + qty + ", total_price=" + totalPrice + " WHERE product_id ='" + productID + "'";
@@ -305,6 +341,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return orders;
+    }
+
+    public ArrayList<FinalOrders> getOrders() {
+        ArrayList<FinalOrders> myOrders = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_ORDERS;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                FinalOrders order = new FinalOrders();
+                order.address = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+                order.orderId = cursor.getString(cursor.getColumnIndexOrThrow("order_id"));
+                order.productId = cursor.getInt(cursor.getColumnIndexOrThrow("product_id")) + "";
+                order.productName = cursor.getString(cursor.getColumnIndexOrThrow("product_name"));
+                order.qty = cursor.getInt(cursor.getColumnIndexOrThrow("qty")) + "";
+                order.unitPrice = cursor.getString(cursor.getColumnIndexOrThrow("unit_price"));
+                order.totalPrice = cursor.getString(cursor.getColumnIndexOrThrow("total_price"));
+                order.dateTime = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                myOrders.add(order);
+            } while (cursor.moveToNext());
+        }
+
+        return myOrders;
+    }
+
+    public ArrayList<OrderModel> getOrdersForOrderId(String orderId) {
+        ArrayList<OrderModel> myOrders = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_ORDERS + " WHERE order_id = '" + orderId + "'";
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                OrderModel order = new OrderModel();
+                order.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+                order.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
+                order.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
+                order.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
+                order.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+                myOrders.add(order);
+            } while (cursor.moveToNext());
+        }
+
+        return myOrders;
     }
 
     // Crowns Products
@@ -402,7 +487,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("is_shipping", address.IsShipping);
             values.put("color", colors.get(pos));
 
-
             myDataBase.insert(TABLE_ADDRESS, null, values);
             if (pos >= colors.size() - 1) {
                 pos = 0;
@@ -419,7 +503,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private void saveProductImages(ArrayList<ProductImage> images) {
 
-
         for (ProductImage image : images) {
             myDataBase = this.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -428,7 +511,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("product_image_id", image.productImageid);
             myDataBase.insert(TABLE_PRODUCT_IMAGE, null, values);
         }
-
 
     }
 
@@ -527,27 +609,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void updateCrownItem(String productName, int qty) {
 
     }
-
-//    public String getCurrentDescription(String sportID){
-//        myDataBase = this.getWritableDatabase();
-//        String selectQuery = "SELECT * FROM player_sports WHERE sport_id ="+"\""+sportID.toString().trim()+"\"";
-//        Cursor cursor = myDataBase.rawQuery(selectQuery, null);
-//        cursor.moveToFirst();
-//        String des = new String();
-//        if(cursor!= null){
-//
-//            des = cursor.getString(cursor.getColumnIndex("description"));
-//        }
-//        return des;
-//    }
-
-//
-//    public void deleteUserSport(String sportId) {
-//
-//        myDataBase = this.getWritableDatabase();
-//        myDataBase.delete(TABLE_USER_SPORTS, "sport_id = ?", new String[]{sportId});
-//        myDataBase.close();
-//    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {

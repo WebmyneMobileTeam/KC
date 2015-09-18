@@ -1,6 +1,8 @@
 package com.webmyne.kidscrown.ui.widgets;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -80,11 +82,35 @@ public class CrownCartView extends LinearLayout {
         remove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(onRemoveCrownListener!=null){
-                    onRemoveCrownListener.removeCrown(cart.getProductName());
-                }
+
+                promptDialog(cart.getProductName());
+
             }
         });
+    }
+
+    private void promptDialog(final String productName) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+        alertDialogBuilder.setTitle("Remove product");
+        alertDialogBuilder
+                .setMessage("Want to remove this product from cart?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (onRemoveCrownListener != null) {
+                            onRemoveCrownListener.removeCrown(productName);
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
     private void setDetails(ProductCart cart) {

@@ -38,7 +38,7 @@ public class ForgotPasswordActivity extends ActionBarActivity {
         btnForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edtEmail.getText().length() == 0) {
+                if (edtEmail.getText().length() == 0) {
                     View view = findViewById(android.R.id.content);
                     Functions.snack(view, "Please Enter Your Email Id");
                 } else {
@@ -60,8 +60,7 @@ public class ForgotPasswordActivity extends ActionBarActivity {
     private void callForgotPassword() {
         //JSONObject emailObject = null;
 
-
-        String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim();
+        String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim() + "/kc";
 
         pd = ProgressDialog.show(ForgotPasswordActivity.this, "Loading", "Please wait..", true);
         Functions.logE("login request url", url);
@@ -69,6 +68,7 @@ public class ForgotPasswordActivity extends ActionBarActivity {
         new CallWebService(url, CallWebService.TYPE_GET, null) {
             @Override
             public void response(String response) {
+                Log.e("response", response);
                 pd.dismiss();
                 try {
                     JSONArray obj = new JSONArray(response);
@@ -88,6 +88,7 @@ public class ForgotPasswordActivity extends ActionBarActivity {
 
             @Override
             public void error(String error) {
+                Log.e("error", error);
 
             }
         }.call();

@@ -8,9 +8,8 @@
     android:paddingRight="@dimen/card_margin"
     tools:context="com.webmyne.kidscrown.fragment.ShippingAddressTab">
 
-
     <ScrollView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/STD_MARGIN_SIZE"
         android:layout_marginTop="10dp">
@@ -84,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line"
                     android:hint="City"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:inputType="text"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="#c0c0c0"
@@ -116,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line"
                     android:enabled="true"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:hint="Country"
                     android:inputType="text"
                     android:text="India"
@@ -138,6 +139,8 @@
                     android:background="@drawable/bottom_line"
                     android:hint="Pincode"
                     android:inputType="text"
+                    android:digits="1234567890"
+                    android:maxLength="6"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="#c0c0c0"
                     android:textSize="@dimen/S_TEXT_SIZE" />

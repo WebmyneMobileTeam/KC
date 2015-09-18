@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     ProgressDialog pd;
     View parentView;
+    String regNoPattern = "^[A-Z][0-9]{6}$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,13 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*if(edtRegNo.getText().toString().trim().matches(regNoPattern)){
+                    Log.e("match", "yes");
+                }else{
+                    Log.e("match", "false");
+                }*/
+
                 checkValidation();
             }
         });
@@ -115,11 +123,11 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (edtMobile.getText().toString().trim().length() == 0) {
             snack.setText("Mobile number is required");
             snack.show();
-        } else if (edtEmail.getText().toString().trim().length() == 0) {
-            snack.setText("Email-id is required");
+        } else if (edtEmail.getText().toString().trim().length() == 0 || !(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
+            snack.setText("Email-id is not valid");
             snack.show();
-        } else if (edtPassword.getText().toString().trim().length() == 0) {
-            snack.setText("Password is required");
+        } else if (edtPassword.getText().toString().trim().length() < 6) {
+            snack.setText("Password must be of minimum 6 characters");
             snack.show();
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
             snack.setText("Registration number is required");
@@ -129,6 +137,9 @@ public class RegisterActivity extends AppCompatActivity {
             snack.show();
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             snack.setText("Password and confirm password does not match");
+            snack.show();
+        } else if (!edtRegNo.getText().toString().trim().matches(regNoPattern)) {
+            snack.setText("Registraion Number contains first character is from A-Z, remaining must be digits 0-9");
             snack.show();
         } else {
             registerWebService();
@@ -217,7 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void error(String error) {
                 pd.dismiss();
-                Snackbar snack = Snackbar.make(parentView, "Unable To Register", Snackbar.LENGTH_LONG);
+                Snackbar snack = Snackbar.make(parentView, error, Snackbar.LENGTH_LONG);
                 View view = snack.getView();
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));

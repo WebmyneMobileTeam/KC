@@ -30,7 +30,10 @@ import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ProductDetailActivity extends AppCompatActivity {
     Toolbar toolbar;

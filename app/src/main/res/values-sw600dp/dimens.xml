@@ -30,4 +30,9 @@
 
     <dimen name="EXPANDABLE_MARGIN_END">70dp</dimen>
     <dimen name="EXPANDABLE_MARGIN_START">54dp</dimen>
+
+    <dimen name="QUADRANT_TOP_PADDING">2dp</dimen>
+    <dimen name="QUADRANT_BOTTOM_PADDING">2dp</dimen>
+    <dimen name="QUADRANT_LEFT_PADDING">36dp</dimen>
+    <dimen name="QUADRANT_RIGHT_PADDING">36dp</dimen>
 </resources>

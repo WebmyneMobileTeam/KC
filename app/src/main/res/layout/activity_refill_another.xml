@@ -33,13 +33,13 @@
                 android:visibility="gone" />
 
             <ScrollView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:scrollbars="none">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -49,23 +49,28 @@
                         android:gravity="left"
                         android:padding="4dp"
                         android:text="(D: Premolar E: Molar)"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/S_TEXT_SIZE" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/quad_title_bg"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:paddingBottom="@dimen/QUADRANT_BOTTOM_PADDING"
+                        android:paddingLeft="@dimen/QUADRANT_LEFT_PADDING"
+                        android:paddingRight="@dimen/QUADRANT_RIGHT_PADDING"
+                        android:paddingTop="@dimen/QUADRANT_TOP_PADDING"
                         android:text="Upper Left"
-                        android:textColor="@color/quad_blue"
-                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
-
 
                     <com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother
                         android:id="@+id/quadUpperLeft"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
 
                     <View
                         android:layout_width="match_parent"
@@ -75,19 +80,25 @@
                         android:background="@color/primaryColorDark" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/quad_title_bg"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:paddingBottom="@dimen/QUADRANT_BOTTOM_PADDING"
+                        android:paddingLeft="@dimen/QUADRANT_LEFT_PADDING"
+                        android:paddingRight="@dimen/QUADRANT_RIGHT_PADDING"
+                        android:paddingTop="@dimen/QUADRANT_TOP_PADDING"
                         android:text="Upper Right"
-                        android:textColor="@color/quad_orange"
-                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
 
                     <com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother
                         android:id="@+id/quadUpperRight"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
 
                     <View
                         android:layout_width="match_parent"
@@ -97,19 +108,25 @@
                         android:background="@color/primaryColorDark" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/quad_title_bg"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:paddingBottom="@dimen/QUADRANT_BOTTOM_PADDING"
+                        android:paddingLeft="@dimen/QUADRANT_LEFT_PADDING"
+                        android:paddingRight="@dimen/QUADRANT_RIGHT_PADDING"
+                        android:paddingTop="@dimen/QUADRANT_TOP_PADDING"
                         android:text="Lower Left"
-                        android:textColor="@color/quad_green"
-                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
 
                     <com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother
                         android:id="@+id/quadLowerLeft"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
 
                     <View
                         android:layout_width="match_parent"
@@ -119,19 +136,25 @@
                         android:background="@color/primaryColorDark" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/quad_title_bg"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:paddingBottom="@dimen/QUADRANT_BOTTOM_PADDING"
+                        android:paddingLeft="@dimen/QUADRANT_LEFT_PADDING"
+                        android:paddingRight="@dimen/QUADRANT_RIGHT_PADDING"
+                        android:paddingTop="@dimen/QUADRANT_TOP_PADDING"
                         android:text="Lower Right"
-                        android:textColor="@color/quad_violate"
-                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
 
                     <com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother
                         android:id="@+id/quadLowerRight"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"></com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother>
 
                 </LinearLayout>
             </ScrollView>
@@ -144,12 +167,10 @@
             android:layout_weight="0.006"
             android:background="@color/primaryColorDark" />
 
-
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
-
 
             <LinearLayout
                 android:id="@+id/linearNumberPad"
@@ -238,7 +259,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/linearProducts"

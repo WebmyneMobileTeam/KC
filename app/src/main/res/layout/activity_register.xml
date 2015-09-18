@@ -44,7 +44,6 @@
             android:text="Already Have an account? Login"
             android:textColor="#ffffff" />
 
-
     </LinearLayout>
 
     <ScrollView
@@ -74,6 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="First Name"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="text"
                     android:textColor="#ffffff"
@@ -91,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Last Name"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:textSize="@dimen/M_TEXT_SIZE"
                     android:inputType="text"
                     android:textColor="#ffffff"
@@ -213,6 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Registration Number"
+                    android:maxLength="7"
                     android:inputType="text"
                     android:textSize="@dimen/M_TEXT_SIZE"
                     android:textColor="#ffffff"

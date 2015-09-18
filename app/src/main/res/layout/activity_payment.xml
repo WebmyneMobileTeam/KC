@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.webmyne.kidscrown.ui.PaymentActivity">
+
+    <include layout="@layout/app_bar2"></include>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="We have received your payment successfully. We placed your order and will notify you further details related to your order via email. Check your order status on orders page. Thank you"
+            android:textSize="@dimen/L_TEXT_SIZE"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/viewOrders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/mybutton"
+        android:text="View Orders"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/M_TEXT_SIZE"
+        android:textStyle="bold" />
+</RelativeLayout>

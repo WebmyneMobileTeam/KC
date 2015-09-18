@@ -4,11 +4,30 @@
     android:layout_height="match_parent"
     tools:context="com.webmyne.kidscrown.fragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/emptyOrder"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="My Orders Fragment" />
+        android:layout_centerInParent="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/add_buy_plus_shopping_cart_512"
+        android:gravity="center"
+        android:text="No Orders"
+        android:textSize="@dimen/S_TEXT_SIZE"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:id="@+id/linearParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/card_margin"
+            android:layout_marginRight="@dimen/card_margin"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

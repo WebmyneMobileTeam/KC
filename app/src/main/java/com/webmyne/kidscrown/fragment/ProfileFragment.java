@@ -149,11 +149,11 @@ public class ProfileFragment extends Fragment {
         } else if (edtMobile.getText().toString().trim().length() == 0) {
             snack.setText("Mobile number is required");
             snack.show();
-        } else if (edtEmail.getText().toString().trim().length() == 0) {
-            snack.setText("Email-id is required");
+        } else if (edtEmail.getText().toString().trim().length() == 0 || !(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
+            snack.setText("Email-id is not valid");
             snack.show();
-        } else if (edtPassword.getText().toString().trim().length() == 0) {
-            snack.setText("Password is required");
+        } else if (edtPassword.getText().toString().trim().length() <= 6) {
+            snack.setText("Password must be of minimum 6 characters");
             snack.show();
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
             snack.setText("Registration number is required");

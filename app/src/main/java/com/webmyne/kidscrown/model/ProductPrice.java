@@ -9,14 +9,29 @@ public class ProductPrice {
 
     @SerializedName("ProductID")
     public int product_id;
+
     @SerializedName("PriceID")
     public int price_id;
+
     @SerializedName("Price")
     public float price;
+
     @SerializedName("MinQty")
     public int min;
+
     @SerializedName("MaxQty")
     public int max;
 
+    @SerializedName("FromDate")
+    public String fromDate;
+
+    @SerializedName("FromDateInt")
+    public String fromDateInt;
+
+    @SerializedName("Todate")
+    public String toDate;
+
+    @SerializedName("TodateInt")
+    public String toDateInt;
 
 }
