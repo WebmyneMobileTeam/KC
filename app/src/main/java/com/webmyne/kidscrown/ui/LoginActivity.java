@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -32,8 +31,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.GsonBuilder;
@@ -50,7 +47,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class LoginActivity extends ActionBarActivity implements
+public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     Button btnLogin;
@@ -130,7 +127,8 @@ public class LoginActivity extends ActionBarActivity implements
         btnGplus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askRegistrationNo2();
+                signInWithGplus();
+//                askRegistrationNo2();
 
             }
         });
@@ -139,8 +137,8 @@ public class LoginActivity extends ActionBarActivity implements
         linearFbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                askRegistrationNo();
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
+                //  askRegistrationNo();
             }
         });
 
@@ -161,7 +159,7 @@ public class LoginActivity extends ActionBarActivity implements
                                     String email = profile.getString("email").toString();
                                     String fName = profile.getString("name").toString().split(" ")[0];
                                     String lName = profile.getString("name").toString().split(" ")[1];
-                                    socialMediaLoginProcess(email, fName, lName, "F");
+                                    socialMediaLoginProcess(email, "F");
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -269,8 +267,8 @@ public class LoginActivity extends ActionBarActivity implements
         }.call();
     }
 
-    private void socialMediaLoginProcess(String email, String fName, String lName, String loginType) {
-        url = Constants.SOCIAL_MEDIA_LOGIN_URL + email + "/" + fName + "/" + lName + "/" + loginType + "/" + regNo;
+    private void socialMediaLoginProcess(String email, String loginType) {
+        url = Constants.SOCIAL_MEDIA_LOGIN_URL + email + "/" + loginType;
 
         pd = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait..", true);
         Functions.logE("login request url", url);
@@ -419,7 +417,7 @@ public class LoginActivity extends ActionBarActivity implements
 
                 String fName = personName.split(" ")[0];
                 String lName = personName.split(" ")[1];
-                socialMediaLoginProcess(email, fName, lName, "G");
+                socialMediaLoginProcess(email, "G");
 
             } else {
             }
@@ -462,7 +460,7 @@ public class LoginActivity extends ActionBarActivity implements
                 } else {
                     regNo = edtRegNo.getText().toString().trim();
                     dialog.dismiss();
-                    signInWithGplus();
+                    //signInWithGplus();
 
                 }
 

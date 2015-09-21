@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         SharedPreferences preferences = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
 
         if (preferences.getBoolean("isFirstTimeLogin", true) == true) {
-            
+
             displayDialogForFirstTime();
             closeInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,14 +124,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     private void fetchProducts() {
 
         View view = ((MyDrawerActivity) getActivity()).getToolbar().getRootView();
-        //final ToolHelper helper = new ToolHelper(getActivity(), view);
-        // helper.displayProgress();
 
         new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {
 
-                // helper.hideProgress();
                 Log.e("Response Products", response);
                 Type listType = new TypeToken<List<Product>>() {
                 }.getType();

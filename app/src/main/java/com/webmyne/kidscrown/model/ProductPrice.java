@@ -22,16 +22,4 @@ public class ProductPrice {
     @SerializedName("MaxQty")
     public int max;
 
-    @SerializedName("FromDate")
-    public String fromDate;
-
-    @SerializedName("FromDateInt")
-    public int fromDateInt;
-
-    @SerializedName("Todate")
-    public String toDate;
-
-    @SerializedName("TodateInt")
-    public int toDateInt;
-
 }

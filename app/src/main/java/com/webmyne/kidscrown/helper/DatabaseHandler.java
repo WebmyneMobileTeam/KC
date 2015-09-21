@@ -133,7 +133,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         myDataBase.close();
 
-
         return isExists;
     }
 
@@ -192,7 +191,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("price", price.price);
             values.put("min", price.min);
             values.put("max", price.max);
-            values.put("", price.fromDateInt);
             myDataBase.insert(TABLE_PRODUCT_PRICE, null, values);
         }
 
@@ -306,6 +304,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price AND CartItem.product_id!=" + productID;
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
+        Log.e("cursor", cursor.getCount() + "----");
         if (cursor.getCount() > 0) {
             do {
                 ProductCart cart = new ProductCart();

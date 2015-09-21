@@ -152,21 +152,6 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <!--<Button
-                android:id="@+id/btnFb"
-                style="@style/login_button_fb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Login with Facebook"
-                android:textAllCaps="false" />-->
-
-           <!-- <com.facebook.login.widget.LoginButton
-                android:id="@+id/btnFb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />-->
-
             <LinearLayout
                 android:id="@+id/linearFbLogin"
                 android:background="@drawable/com_facebook_button_like_background"
@@ -212,14 +197,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"/>
 
-            <!--<Button
-                android:id="@+id/btnGplus"
-                style="@style/login_button_gplus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Login with Google+"
-                android:textAllCaps="false" />-->
         </LinearLayout>
 
     </LinearLayout>

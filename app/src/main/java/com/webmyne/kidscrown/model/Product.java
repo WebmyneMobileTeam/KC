@@ -27,7 +27,7 @@ public class Product {
     @SerializedName("lstProductImg")
     public ArrayList<ProductImage> images;
 
-    @SerializedName("lstProductPrice")
+    @SerializedName("lstProductPriceForMobile")
     public ArrayList<ProductPrice> prices;
 
 
