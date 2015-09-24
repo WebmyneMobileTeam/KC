@@ -74,7 +74,6 @@ public class ToolHelper {
             Log.e("exception", e.toString());
         }
 
-        Log.e("counts", value + "--");
         if (value > 0) {
 
             imgCartMenu.setPadding(0, 18, 20, 0);

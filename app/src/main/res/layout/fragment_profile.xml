@@ -171,6 +171,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Registration Number"
                     android:inputType="text"
+                    android:maxLength="7"
                     android:textColor="#ffffff"
                     android:textColorHint="@color/editText_hint_color"
                     android:textSize="@dimen/M_TEXT_SIZE" />

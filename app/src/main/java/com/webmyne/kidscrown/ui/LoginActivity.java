@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity implements
                                     JSONObject object,
                                     GraphResponse response) {
                                 // Application code
-                                Log.e("Login_from_Fb Resp", response.toString());
+                                Log.e("fb_reponse", response.getJSONObject().toString());
                                 JSONObject profile = response.getJSONObject();
                                 try {
                                     String email = profile.getString("email").toString();
@@ -164,9 +164,6 @@ public class LoginActivity extends AppCompatActivity implements
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
-                                Log.e("reponse", response.getJSONObject().toString());
-
 
                             }
                         });

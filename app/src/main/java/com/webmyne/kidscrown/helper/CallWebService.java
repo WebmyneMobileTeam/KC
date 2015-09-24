@@ -102,15 +102,20 @@ public abstract class CallWebService implements IService {
                             @Override
                             public void onResponse(JSONObject jobj) {
 
-                                try{
+                                try {
                                     String responseCode = String.valueOf(jobj.getInt("ResponseCode"));
-                                    if (responseCode.equalsIgnoreCase("1")){
-                                        response(jobj.getJSONArray("Data").toString());
-                                    }else{
+                                    if (responseCode.equalsIgnoreCase("1")) {
+                                        try {
+                                            response(jobj.getJSONArray("Data").toString());
+                                        } catch (Exception e) {
+                                            response(jobj.getString("ResponseMessage"));
+                                        }
+
+                                    } else {
                                         error(jobj.getString("ResponseMessage"));
                                     }
 
-                                }catch(Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                     error("Server Error");
                                 }
@@ -142,16 +147,16 @@ public abstract class CallWebService implements IService {
                     public void onResponse(JSONObject jobj) {
 
 
-                        try{
+                        try {
                             String responseCode = String.valueOf(jobj.getInt("ResponseCode"));
 
-                            if (responseCode.equalsIgnoreCase("1")){
+                            if (responseCode.equalsIgnoreCase("1")) {
                                 response(jobj.getJSONArray("Data").toString());
-                            }else{
+                            } else {
                                 error(jobj.getString("ResponseMessage"));
                             }
 
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                             error("Server Error");
                         }
@@ -182,7 +187,6 @@ public abstract class CallWebService implements IService {
         }
 
     }
-
 
 
 }

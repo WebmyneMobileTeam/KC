@@ -63,32 +63,27 @@ public class ForgotPasswordActivity extends ActionBarActivity {
         String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim() + "/kc";
 
         pd = ProgressDialog.show(ForgotPasswordActivity.this, "Loading", "Please wait..", true);
-        Functions.logE("login request url", url);
+        Functions.logE("forget request url", url);
 
         new CallWebService(url, CallWebService.TYPE_GET, null) {
             @Override
             public void response(String response) {
-                Log.e("response", response);
+                View view = findViewById(android.R.id.content);
                 pd.dismiss();
-                try {
-                    JSONArray obj = new JSONArray(response);
-                    //JSONObject description = obj.getJSONObject(0);
 
-                    View view = findViewById(android.R.id.content);
+                if (response.equals("Success")) {
                     Functions.snack(view, "Reset Password Link sent to your Email Id");
-
-                    Intent i = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    Functions.snack(view, response);
                 }
+
             }
 
             @Override
             public void error(String error) {
-                Log.e("error", error);
+                pd.dismiss();
+                View view = findViewById(android.R.id.content);
+                Functions.snack(view, error);
 
             }
         }.call();

@@ -1,5 +1,9 @@
 package com.webmyne.kidscrown.ui;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,13 +17,22 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.OrderListAdapter;
+import com.webmyne.kidscrown.helper.CallWebService;
+import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.OrderModel;
+import com.webmyne.kidscrown.model.UserProfile;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,8 +49,13 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     OrderListAdapter adapter;
     ArrayList<AddressModel> addressModels;
     RelativeLayout continueLayout;
-    String randomOrderId;
+    String randomOrderId, userId;
     String dateTime;
+    String shippingAddress;
+    DatabaseHandler handler;
+    int crownProductId;
+    ProgressDialog pd1;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +63,14 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_confirm_order);
 
         init();
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ConfirmOrderActivity.this, "user_pref", 0);
+        UserProfile currentUserObj = new UserProfile();
+        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
+        userId = currentUserObj.UserID;
+
+        preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        crownProductId = preferences.getInt("crownProductId", 0);
 
         // Generate Random Order Id
         char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
@@ -135,8 +161,9 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 dateTime = df.format(c.getTime());
 
                 try {
-                    DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
+                    handler = new DatabaseHandler(ConfirmOrderActivity.this);
                     handler.openDataBase();
+                    shippingAddress = handler.getShippingAddress();
                     handler.addOrderItem(orders, randomOrderId, dateTime);
 
                     handler.deleteCart();
@@ -146,10 +173,120 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Functions.fireIntent(ConfirmOrderActivity.this, PaymentActivity.class);
-                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                pd1 = ProgressDialog.show(ConfirmOrderActivity.this, "Loading", "Please wait..", true);
+                createAnotherOrder(orders);
             }
         });
+    }
+
+    private void createAnotherOrder(ArrayList<OrderModel> orders) {
+
+        JSONObject mainObect = new JSONObject();
+        JSONObject kitObject = new JSONObject();
+        JSONObject crownMainObject = new JSONObject();
+        JSONObject crownSubObject = new JSONObject();
+
+        int grandTotal = 0, crownTotal = 0, crownQty = 0, crownSpecificId = 0;
+        JSONArray ordersArray = new JSONArray();
+        JSONArray crownArray = new JSONArray();
+
+        try {
+            handler = new DatabaseHandler(ConfirmOrderActivity.this);
+            handler.openDataBase();
+
+            for (int i = 0; i < orders.size(); i++) {
+                if (orders.get(i).getProductId() == crownProductId) {
+                    crownQty += orders.get(i).getProductQty();
+                    crownMainObject = new JSONObject();
+                    crownMainObject.put("product_id", orders.get(i).getProductId());
+                    crownMainObject.put("price_id", orders.get(i).getPriceId());
+
+                    crownSubObject = new JSONObject();
+                    crownSubObject.put("product_name", orders.get(i).getProductName());
+                    crownSubObject.put("qty", orders.get(i).getProductQty());
+
+                    try {
+                        crownSpecificId = handler.getSpecificId(orders.get(i).getProductName());
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    crownSubObject.put("crown_specific_id", crownSpecificId);
+                    crownSubObject.put("unit_price", orders.get(i).getProductUnitPrice());
+                    crownSubObject.put("total_price", orders.get(i).getProductTotalPrice());
+                    grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+                    crownTotal = crownTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+                    crownArray.put(crownSubObject);
+
+                } else {
+                    kitObject = new JSONObject();
+                    kitObject.put("product_id", orders.get(i).getProductId());
+                    kitObject.put("product_name", orders.get(i).getProductName());
+                    kitObject.put("qty", orders.get(i).getProductQty());
+                    kitObject.put("price_id", orders.get(i).getPriceId());
+                    kitObject.put("unit_price", orders.get(i).getProductUnitPrice());
+                    kitObject.put("total_price", orders.get(i).getProductTotalPrice());
+                    grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+                    ordersArray.put(kitObject);
+                }
+            }
+
+            handler.close();
+            if (crownQty != 0) {
+                crownMainObject.put("crownQty", crownQty);
+                crownMainObject.put("crownTotal", crownTotal);
+                crownMainObject.put("Crowns", crownArray);
+                ordersArray.put(crownMainObject);
+            }
+
+            // Main JSON Object
+            mainObect = new JSONObject();
+            mainObect.put("date", dateTime);
+            mainObect.put("user_id", userId);
+
+            if (grandTotal < 3000) {
+                grandTotal += 100;
+                mainObect.put("grand_total", grandTotal);
+                mainObect.put("shipping_cost", 100);
+            } else {
+                mainObect.put("grand_total", grandTotal);
+                mainObect.put("shipping_cost", 0);
+            }
+
+            mainObect.put("shipping_address", shippingAddress);
+            mainObect.put("OrdersArray", ordersArray);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.e("API", Constants.PLACE_ORDER);
+        Log.e("order_request", mainObect.toString());
+
+        new CallWebService(Constants.PLACE_ORDER, CallWebService.TYPE_POST, mainObect) {
+            @Override
+            public void response(String response) {
+                pd1.dismiss();
+                Log.e("order_response", response);
+                try {
+                    Functions.fireIntent(ConfirmOrderActivity.this, PaymentActivity.class);
+                    overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+
+                } catch (Exception e) {
+                    pd1.dismiss();
+                    Log.e("error", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                pd1.dismiss();
+                Log.e("error", error);
+            }
+        }.call();
+
     }
 
     @Override

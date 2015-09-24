@@ -9,7 +9,16 @@ import java.util.ArrayList;
 public class OrderModel {
 
     String productName, productUnitPrice, productTotalPrice;
-    int productId, productQty, maxQty;
+    int productId, productQty, priceId, maxQty;
+
+    public int getPriceId() {
+        return priceId;
+    }
+
+    public void setPriceId(int priceId) {
+        this.priceId = priceId;
+    }
+
 
     public int getProductId() {
         return productId;

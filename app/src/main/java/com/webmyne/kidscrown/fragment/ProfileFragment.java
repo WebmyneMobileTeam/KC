@@ -27,14 +27,6 @@ import org.json.JSONObject;
 
 
 public class ProfileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName, edtClinicName;
     String firstName, lastName, mobile, emailId, password, registartionNo, username, salutation, userId, clinicName;
@@ -42,21 +34,8 @@ public class ProfileFragment extends Fragment {
     ProgressDialog pd;
     View parentView;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -67,10 +46,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -146,13 +121,13 @@ public class ProfileFragment extends Fragment {
         } else if (edtLastName.getText().toString().trim().length() == 0) {
             snack.setText("Last name is required");
             snack.show();
-        } else if (edtMobile.getText().toString().trim().length() == 0) {
-            snack.setText("Mobile number is required");
+        } else if (edtMobile.getText().toString().trim().length() != 10) {
+            snack.setText("Mobile number should contains 10 digits");
             snack.show();
         } else if (edtEmail.getText().toString().trim().length() == 0 || !(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
             snack.setText("Email-id is not valid");
             snack.show();
-        } else if (edtPassword.getText().toString().trim().length() <= 6) {
+        } else if (edtPassword.getText().toString().trim().length() < 6) {
             snack.setText("Password must be of minimum 6 characters");
             snack.show();
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
@@ -163,6 +138,9 @@ public class ProfileFragment extends Fragment {
             snack.show();
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             snack.setText("Password and confirm password does not match");
+            snack.show();
+        } else if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
+            snack.setText("Registraion Number contains total of 7 characters. First character is from Uppercase A-Z, remaining must be digits 0-9");
             snack.show();
         } else {
             registerWebService();
@@ -241,7 +219,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void error(String error) {
-                Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile", Snackbar.LENGTH_LONG);
+                pd.dismiss();
+                Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile. " + error, Snackbar.LENGTH_LONG);
                 View view = snack.getView();
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));

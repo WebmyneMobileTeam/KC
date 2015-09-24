@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -58,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity implements
     Button btnRegister;
     ProgressDialog pd;
     View parentView;
-    String regNoPattern = "^[A-Z][0-9]{6}$";
     SignInButton btnGplus;
     private static final int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
@@ -226,8 +226,8 @@ public class RegisterActivity extends AppCompatActivity implements
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!edtRegNo.getText().toString().trim().matches(regNoPattern)) {
-                    Functions.snack(v, "Registraion Number contains first character is from A-Z, remaining must be digits 0-9");
+                if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
+                    Toast.makeText(RegisterActivity.this, "Registraion Number contains total of 7 characters. First character is from A-Z, remaining must be digits 0-9", Toast.LENGTH_LONG).show();
 
                 } else {
                     regNo = edtRegNo.getText().toString().trim();
@@ -256,8 +256,8 @@ public class RegisterActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                if (!edtRegNo.getText().toString().trim().matches(regNoPattern)) {
-                    Functions.snack(v, "Registraion Number contains first character is from A-Z, remaining must be digits 0-9");
+                if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
+                    Toast.makeText(RegisterActivity.this, "Registraion Number contains total of 7 characters. First character is from A-Z, remaining must be digits 0-9", Toast.LENGTH_LONG).show();
                 } else {
                     regNo = edtRegNo.getText().toString().trim();
                     dialog.dismiss();
@@ -435,8 +435,8 @@ public class RegisterActivity extends AppCompatActivity implements
         } else if (edtLastName.getText().toString().trim().length() == 0) {
             snack.setText("Last name is required");
             snack.show();
-        } else if (edtMobile.getText().toString().trim().length() == 0) {
-            snack.setText("Mobile number is required");
+        } else if (edtMobile.getText().toString().trim().length() != 10) {
+            snack.setText("Mobile number should contains 10 digits");
             snack.show();
         } else if (edtEmail.getText().toString().trim().length() == 0 || !(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
             snack.setText("Email-id is not valid");
@@ -453,8 +453,8 @@ public class RegisterActivity extends AppCompatActivity implements
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             snack.setText("Password and confirm password does not match");
             snack.show();
-        } else if (!edtRegNo.getText().toString().trim().matches(regNoPattern)) {
-            snack.setText("Registraion Number contains first character is from A-Z, remaining must be digits 0-9");
+        } else if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
+            snack.setText("Registraion Number contains total of 7 characters. First character is from Uppercase A-Z, remaining must be digits 0-9");
             snack.show();
         } else {
             registerWebService();
