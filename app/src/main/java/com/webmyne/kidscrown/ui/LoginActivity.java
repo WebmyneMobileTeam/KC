@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -52,21 +53,19 @@ public class LoginActivity extends AppCompatActivity implements
 
     Button btnLogin;
     String regNo;
-    SignInButton btnGplus;
+
     TextView txtRegister, txtForgot;
     EditText edtUsername, edtPassword;
     String name, password, url;
     ProgressDialog pd;
 
+    // Google Integration
     private static final int RC_SIGN_IN = 0;
     private static final String TAG = "MainActivity";
-
     private GoogleApiClient mGoogleApiClient;
-
     private boolean mIntentInProgress;
-
+    SignInButton btnGplus;
     private boolean mSignInClicked;
-
     private ConnectionResult mConnectionResult;
 
     private LinearLayout linearFbLogin;
@@ -128,7 +127,6 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 signInWithGplus();
-//                askRegistrationNo2();
 
             }
         });
@@ -181,34 +179,6 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onError(FacebookException e) {
                 Log.e("ERROR_FB", e.toString());
-            }
-        });
-    }
-
-    private void askRegistrationNo() {
-        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
-        View promptView = li.inflate(R.layout.social_registration, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setView(promptView);
-
-        final EditText edtRegNo = (EditText) promptView.findViewById(R.id.edtRegNo);
-        final Button btnNext = (Button) promptView.findViewById(R.id.btnNext);
-
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtRegNo.length() == 0) {
-                    Functions.snack(v, "Registration Number must be entered to proceed ahead..");
-                } else {
-                    regNo = edtRegNo.getText().toString().trim();
-                    dialog.dismiss();
-                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
-                }
-
             }
         });
     }
@@ -304,18 +274,44 @@ public class LoginActivity extends AppCompatActivity implements
                     snack.show();
                     Functions.logE("Exp", e.toString());
                     e.printStackTrace();
+
+                    try {
+                        // Facebook logout
+                        LoginManager.getInstance().logOut();
+                        //GooglePlus Logout
+                        if (mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                            mGoogleApiClient.disconnect();
+                            mGoogleApiClient.connect();
+                        }
+                    } catch (Exception e1) {
+                        Log.e("EXP LOGOUT", e1.toString());
+                    }
                 }
             }
 
             @Override
             public void error(String error) {
                 pd.dismiss();
-                Snackbar snack = Snackbar.make(btnLogin, "Unable To Login", Snackbar.LENGTH_LONG);
+                Snackbar snack = Snackbar.make(btnLogin, "Unable To Login. " + error, Snackbar.LENGTH_LONG);
                 View view = snack.getView();
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
                 snack.show();
                 Functions.logE("social_media error", error);
+
+                try {
+                    // Facebook logout
+                    LoginManager.getInstance().logOut();
+                    //GooglePlus Logout
+                    if (mGoogleApiClient.isConnected()) {
+                        Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                        mGoogleApiClient.disconnect();
+                        mGoogleApiClient.connect();
+                    }
+                } catch (Exception e1) {
+                    Log.e("EXP LOGOUT", e1.toString());
+                }
             }
         }.call();
     }
@@ -330,10 +326,9 @@ public class LoginActivity extends AppCompatActivity implements
         btnGplus = (SignInButton) findViewById(R.id.btnGplus);
         setGooglePlusButtonText(btnGplus, "SignIn With Google Plus");
 
-        mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
-                .addConnectionCallbacks(LoginActivity.this)
-                .addOnConnectionFailedListener(LoginActivity.this)
-                .addApi(Plus.API, Plus.PlusOptions.builder().build())
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build())
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
 
     }
@@ -433,36 +428,6 @@ public class LoginActivity extends AppCompatActivity implements
             mSignInClicked = true;
             resolveSignInError();
         }
-    }
-
-    private void askRegistrationNo2() {
-        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
-        View promptView = li.inflate(R.layout.social_registration, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setView(promptView);
-
-        final EditText edtRegNo = (EditText) promptView.findViewById(R.id.edtRegNo);
-        final Button btnNext = (Button) promptView.findViewById(R.id.btnNext);
-
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (edtRegNo.length() == 0) {
-                    Functions.snack(v, "Registration Number must be entered to proceed ahead..");
-                } else {
-                    regNo = edtRegNo.getText().toString().trim();
-                    dialog.dismiss();
-                    //signInWithGplus();
-
-                }
-
-            }
-        });
     }
 
     protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {

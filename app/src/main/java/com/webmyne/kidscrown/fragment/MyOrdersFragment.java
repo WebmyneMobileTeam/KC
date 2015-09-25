@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,45 +9,54 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.adapters.OrderAdapter;
+import com.webmyne.kidscrown.helper.CallWebService;
+import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.FinalOrders;
+import com.webmyne.kidscrown.model.OrderProduct;
+import com.webmyne.kidscrown.model.Product;
+import com.webmyne.kidscrown.model.TotalOrder;
+import com.webmyne.kidscrown.model.UserProfile;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 import com.webmyne.kidscrown.ui.OrderDetailsActivity;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 import com.webmyne.kidscrown.ui.widgets.MyOrderItemView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 
 public class MyOrdersFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private Activity activity;
+    ListView orderListview;
     private LinearLayout linearParent;
     private ArrayList<FinalOrders> myOrders = new ArrayList<>();
     ArrayList<String> orderIds;
     private TextView emptyOrder;
+    private String userId, redirectOrderId;
+    ProgressDialog pd;
+    OrderAdapter adapter;
+    ArrayList<OrderProduct> data;
+    ComplexPreferences complexPreferences;
 
-    public static MyOrdersFragment newInstance(String param1, String param2) {
+    public static MyOrdersFragment newInstance() {
         MyOrdersFragment fragment = new MyOrdersFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -57,10 +67,7 @@ public class MyOrdersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -71,12 +78,35 @@ public class MyOrdersFragment extends Fragment {
 
         init(view);
 
+        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+        UserProfile currentUserObj = new UserProfile();
+        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
+        userId = currentUserObj.UserID;
+
+        orderListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                redirectOrderId = data.get(position).OrderNumber;
+                Toast.makeText(getActivity(), redirectOrderId, Toast.LENGTH_LONG).show();
+
+                complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+                OrderProduct object = data.get(position);
+                complexPreferences.putObject("order", object);
+                complexPreferences.commit();
+
+                Intent orderIntent = new Intent(getActivity(), OrderDetailsActivity.class);
+                startActivity(orderIntent);
+
+            }
+        });
+
         return view;
     }
 
     private void init(View view) {
         linearParent = (LinearLayout) view.findViewById(R.id.linearParent);
         emptyOrder = (TextView) view.findViewById(R.id.emptyOrder);
+        orderListview = (ListView) view.findViewById(R.id.orderListview);
     }
 
     @Override
@@ -89,8 +119,57 @@ public class MyOrdersFragment extends Fragment {
             myDrawerActivity.setTitle("My Orders");
         }
 
-        fetchMyOrders();
+        // fetchMyOrders();
 
+        getOrders();
+
+    }
+
+    private void getOrders() {
+        data = new ArrayList<>();
+        pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
+
+        Log.e("API", Constants.FETCH_ORDER + userId);
+        new CallWebService(Constants.FETCH_ORDER + userId, CallWebService.TYPE_GET, null) {
+
+            @Override
+            public void response(String response) {
+                pd.dismiss();
+//                Log.e("order_response", response);
+
+                Type listType = new TypeToken<List<OrderProduct>>() {
+                }.getType();
+
+                try {
+                    data = new GsonBuilder().create().fromJson(response, listType);
+                } catch (Exception e) {
+                    Log.e("error", e.getMessage());
+                }
+
+                for (int i = 0; i < data.size(); i++) {
+
+                    adapter = new OrderAdapter(getActivity(), data);
+                    orderListview.setAdapter(adapter);
+
+                   /* MyOrderItemView itemView = new MyOrderItemView(getActivity(), orderIds.get(k), myOrders);
+                    linearParent.addView(itemView);
+                    final int finalK = k;
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent orderIntent = new Intent(getActivity(), OrderDetailsActivity.class);
+                            orderIntent.putExtra("order_id", orderIds.get(finalK));
+                            startActivity(orderIntent);
+                        }
+                    });*/
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                pd.dismiss();
+            }
+        }.call();
     }
 
     private void fetchMyOrders() {

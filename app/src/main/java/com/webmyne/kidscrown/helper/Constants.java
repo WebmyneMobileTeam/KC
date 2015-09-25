@@ -29,6 +29,8 @@ public class Constants {
 
     public static final String CROWN_PRODUCT_NAME = "Crown";
 
+    public static final String FETCH_ORDER = BASE_URL + "/Order.svc/json/FetchOrdersApp?UserId=";
+
     //Request
     public static final int REQUEST_ERROR_GENERAL = -1;
     public static final int REQUEST_OK = 0;

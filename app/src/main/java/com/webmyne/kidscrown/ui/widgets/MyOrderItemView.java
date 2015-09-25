@@ -10,6 +10,8 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.FinalOrders;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,7 +25,7 @@ public class MyOrderItemView extends LinearLayout {
     LinearLayout parentLayout;
     View view;
     String orderId;
-    TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentVia;
+    TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentStatus;
     ArrayList<FinalOrders> myOrders;
     String[] paymentMethods = new String[]{"Credit Card", "PayUMoney", "Debit Card", "Net Banking"};
     private Random random = new Random();
@@ -47,10 +49,10 @@ public class MyOrderItemView extends LinearLayout {
         view = inflater.inflate(R.layout.order_item, this);
         setOrientation(VERTICAL);
 
+        txtPaymentStatus = (TextView) view.findViewById(R.id.txtPaymentStatus);
         txtOrderId = (TextView) view.findViewById(R.id.txtOrderId);
         txtOrderDate = (TextView) view.findViewById(R.id.txtOrderDate);
         txtAmount = (TextView) view.findViewById(R.id.txtAmount);
-        txtPaymentVia = (TextView) view.findViewById(R.id.txtPaymentVia);
 
         setDetails();
 
@@ -66,7 +68,7 @@ public class MyOrderItemView extends LinearLayout {
             }
         }
         txtAmount.setText(context.getResources().getString(R.string.Rs) + price + " ");
-        txtPaymentVia.setText("via " + paymentMethods[random.nextInt(paymentMethods.length)]);
+        txtPaymentStatus.setText("Payment: " + "Done");
     }
 
 }

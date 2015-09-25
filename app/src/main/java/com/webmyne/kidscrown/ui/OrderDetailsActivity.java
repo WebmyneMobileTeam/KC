@@ -3,25 +3,23 @@ package com.webmyne.kidscrown.ui;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.OrderListAdapter;
+import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
-import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.FinalOrders;
 import com.webmyne.kidscrown.model.OrderModel;
+import com.webmyne.kidscrown.model.OrderProduct;
 import com.webmyne.kidscrown.ui.widgets.MyOrderItemView;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class OrderDetailsActivity extends AppCompatActivity {
 
@@ -34,6 +32,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     OrderListAdapter adapter;
     ArrayList<OrderModel> ordersById;
     private ListView orderListview;
+    ComplexPreferences complexPreferences;
+    String orderNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
         orderId = getIntent().getStringExtra("order_id");
 
         init();
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setOrderDetails();
+        //setOrderDetails();
     }
 
     private void setOrderDetails() {
@@ -89,7 +91,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         imgCart.setVisibility(View.GONE);
 
-        toolbar.setTitle("Order : " + orderId);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,5 +104,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
         txtShipping = (TextView) findViewById(R.id.txtShipping);
+
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
+        OrderProduct currentUserObj = new OrderProduct();
+        currentUserObj = complexPreferences.getObject("order", OrderProduct.class);
+        orderNumber = currentUserObj.OrderNumber;
+
+        Log.e("orderNumber", orderNumber);
+        toolbar.setTitle("Order : " + orderNumber);
     }
 }

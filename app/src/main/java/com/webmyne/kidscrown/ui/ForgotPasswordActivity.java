@@ -60,7 +60,7 @@ public class ForgotPasswordActivity extends ActionBarActivity {
     private void callForgotPassword() {
         //JSONObject emailObject = null;
 
-        String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim() + "/kc";
+        String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim();
 
         pd = ProgressDialog.show(ForgotPasswordActivity.this, "Loading", "Please wait..", true);
         Functions.logE("forget request url", url);

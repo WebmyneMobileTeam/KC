@@ -16,18 +16,9 @@
         android:textSize="@dimen/S_TEXT_SIZE"
         android:visibility="gone" />
 
-    <ScrollView
+    <ListView
+        android:id="@+id/orderListview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="10dp">
-
-        <LinearLayout
-            android:id="@+id/linearParent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/card_margin"
-            android:layout_marginRight="@dimen/card_margin"
-            android:orientation="vertical"></LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"></ListView>
 
 </RelativeLayout>

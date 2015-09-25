@@ -42,15 +42,10 @@
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/primaryColor"></View>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="2dp"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -72,13 +67,12 @@
                     android:textSize="@dimen/VS_TEXT_SIZE" />
 
                 <TextView
-                    android:id="@+id/txtPaymentVia"
+                    android:id="@+id/txtPaymentStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:layout_toRightOf="@+id/txtAmount"
-                    android:text="via PayUMoney"
+                    android:text="Payment Status"
                     android:textSize="@dimen/VS_TEXT_SIZE" />
             </RelativeLayout>
 
