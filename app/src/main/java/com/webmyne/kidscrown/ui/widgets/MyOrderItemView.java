@@ -53,7 +53,7 @@ public class MyOrderItemView extends LinearLayout {
 
         txtOrderId.setText(orderObject.OrderNumber);
         txtOrderDate.setText(orderObject.OrderDate);
-        txtAmount.setText(orderObject.PayableAmount);
+        txtAmount.setText(context.getResources().getString(R.string.Rs) + " " + orderObject.PayableAmount);
 
         if (orderObject.IsPaymentComplete) {
             txtPaymentStatus.setText("Payment: Done");

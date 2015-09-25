@@ -132,7 +132,7 @@ public class MyOrdersFragment extends Fragment {
             @Override
             public void response(String response) {
                 pd.dismiss();
-//                Log.e("order_response", response);
+                Log.e("order_response", response);
 
                 Type listType = new TypeToken<List<OrderProduct>>() {
                 }.getType();
@@ -144,7 +144,6 @@ public class MyOrdersFragment extends Fragment {
                 }
 
                 for (int i = 0; i < data.size(); i++) {
-
                     adapter = new OrderAdapter(getActivity(), data);
                     orderListview.setAdapter(adapter);
 
@@ -154,6 +153,7 @@ public class MyOrdersFragment extends Fragment {
             @Override
             public void error(String error) {
                 pd.dismiss();
+                emptyOrder.setVisibility(View.VISIBLE);
             }
         }.call();
     }
