@@ -87,7 +87,6 @@ public class MyOrdersFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 redirectOrderId = data.get(position).OrderNumber;
-                Toast.makeText(getActivity(), redirectOrderId, Toast.LENGTH_LONG).show();
 
                 complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
                 OrderProduct object = data.get(position);
@@ -119,8 +118,6 @@ public class MyOrdersFragment extends Fragment {
             myDrawerActivity.setTitle("My Orders");
         }
 
-        // fetchMyOrders();
-
         getOrders();
 
     }
@@ -151,17 +148,6 @@ public class MyOrdersFragment extends Fragment {
                     adapter = new OrderAdapter(getActivity(), data);
                     orderListview.setAdapter(adapter);
 
-                   /* MyOrderItemView itemView = new MyOrderItemView(getActivity(), orderIds.get(k), myOrders);
-                    linearParent.addView(itemView);
-                    final int finalK = k;
-                    itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent orderIntent = new Intent(getActivity(), OrderDetailsActivity.class);
-                            orderIntent.putExtra("order_id", orderIds.get(finalK));
-                            startActivity(orderIntent);
-                        }
-                    });*/
                 }
             }
 
@@ -172,54 +158,4 @@ public class MyOrdersFragment extends Fragment {
         }.call();
     }
 
-    private void fetchMyOrders() {
-        // Total Products from Cart
-        myOrders = new ArrayList<>();
-        myOrders.clear();
-
-        orderIds = new ArrayList<>();
-        orderIds.clear();
-
-        linearParent.removeAllViews();
-        linearParent.invalidate();
-
-        try {
-            DatabaseHandler handler = new DatabaseHandler(getActivity());
-            handler.openDataBase();
-            myOrders = handler.getOrders();
-            handler.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (myOrders.size() == 0) {
-            emptyOrder.setVisibility(View.VISIBLE);
-        } else {
-            emptyOrder.setVisibility(View.GONE);
-        }
-
-        for (int i = 0; i < myOrders.size(); i++) {
-            orderIds.add(myOrders.get(i).orderId);
-        }
-
-        HashSet hs = new HashSet();
-        hs.addAll(orderIds);
-        orderIds.clear();
-        orderIds.addAll(hs);
-
-        for (int k = 0; k < orderIds.size(); k++) {
-            MyOrderItemView itemView = new MyOrderItemView(getActivity(), orderIds.get(k), myOrders);
-            linearParent.addView(itemView);
-            final int finalK = k;
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent orderIntent = new Intent(getActivity(), OrderDetailsActivity.class);
-                    orderIntent.putExtra("order_id", orderIds.get(finalK));
-                    startActivity(orderIntent);
-                }
-            });
-        }
-
-    }
 }

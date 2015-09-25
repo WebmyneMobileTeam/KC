@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.FinalOrders;
+import com.webmyne.kidscrown.model.OrderProduct;
 
 import org.w3c.dom.Text;
 
@@ -22,25 +23,14 @@ public class MyOrderItemView extends LinearLayout {
 
     Context context;
     LayoutInflater inflater;
-    LinearLayout parentLayout;
+    OrderProduct orderObject;
     View view;
-    String orderId;
     TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentStatus;
-    ArrayList<FinalOrders> myOrders;
-    String[] paymentMethods = new String[]{"Credit Card", "PayUMoney", "Debit Card", "Net Banking"};
-    private Random random = new Random();
 
-
-    public MyOrderItemView(Context context) {
-        super(context);
-        init();
-    }
-
-    public MyOrderItemView(Context context, String orderId, ArrayList<FinalOrders> myOrders) {
+    public MyOrderItemView(Context context, OrderProduct orderObject) {
         super(context);
         this.context = context;
-        this.orderId = orderId;
-        this.myOrders = myOrders;
+        this.orderObject = orderObject;
         init();
     }
 
@@ -49,26 +39,28 @@ public class MyOrderItemView extends LinearLayout {
         view = inflater.inflate(R.layout.order_item, this);
         setOrientation(VERTICAL);
 
-        txtPaymentStatus = (TextView) view.findViewById(R.id.txtPaymentStatus);
         txtOrderId = (TextView) view.findViewById(R.id.txtOrderId);
         txtOrderDate = (TextView) view.findViewById(R.id.txtOrderDate);
         txtAmount = (TextView) view.findViewById(R.id.txtAmount);
+        txtPaymentStatus = (TextView) view.findViewById(R.id.txtPaymentStatus);
 
         setDetails();
 
     }
 
     private void setDetails() {
-        int price = 0;
-        txtOrderId.setText("Order : " + orderId);
-        for (FinalOrders finalOrder : myOrders) {
-            if (finalOrder.orderId.equals(orderId)) {
-                txtOrderDate.setText(finalOrder.dateTime);
-                price += Integer.parseInt(finalOrder.totalPrice);
-            }
+        txtOrderId.setText("Order : " + orderObject.OrderNumber);
+
+        txtOrderId.setText(orderObject.OrderNumber);
+        txtOrderDate.setText(orderObject.OrderDate);
+        txtAmount.setText(orderObject.PayableAmount);
+
+        if (orderObject.IsPaymentComplete) {
+            txtPaymentStatus.setText("Payment: Done");
+        } else {
+            txtPaymentStatus.setText("Payment: Pending");
         }
-        txtAmount.setText(context.getResources().getString(R.string.Rs) + price + " ");
-        txtPaymentStatus.setText("Payment: " + "Done");
+
     }
 
 }

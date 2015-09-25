@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.adapters.OrderDetailsAdapter;
 import com.webmyne.kidscrown.adapters.OrderListAdapter;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
@@ -29,11 +30,12 @@ public class OrderDetailsActivity extends AppCompatActivity {
     String orderId;
     LinearLayout linearLayout;
     private ArrayList<FinalOrders> myOrders = new ArrayList<>();
-    OrderListAdapter adapter;
+    OrderDetailsAdapter adapter;
     ArrayList<OrderModel> ordersById;
     private ListView orderListview;
     ComplexPreferences complexPreferences;
     String orderNumber;
+    OrderProduct orderObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,42 +46,20 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         init();
 
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //setOrderDetails();
+        setOrderDetails();
     }
 
     private void setOrderDetails() {
-        myOrders = new ArrayList<>();
-        myOrders.clear();
 
-        ordersById = new ArrayList<>();
-        ordersById.clear();
-
-        try {
-            DatabaseHandler handler = new DatabaseHandler(OrderDetailsActivity.this);
-            handler.openDataBase();
-            myOrders = handler.getOrders();
-            ordersById = handler.getOrdersForOrderId(orderId);
-            handler.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        MyOrderItemView itemView = new MyOrderItemView(OrderDetailsActivity.this, orderId, myOrders);
+        MyOrderItemView itemView = new MyOrderItemView(OrderDetailsActivity.this, orderObject);
         linearLayout.addView(itemView);
 
-        for (FinalOrders finalOrder : myOrders) {
-            if (finalOrder.orderId.equals(orderId)) {
-                txtShipping.setText(finalOrder.address);
-            }
-        }
-
-        adapter = new OrderListAdapter(OrderDetailsActivity.this, ordersById);
+        adapter = new OrderDetailsAdapter(OrderDetailsActivity.this, orderObject);
         orderListview.setAdapter(adapter);
 
     }
@@ -91,6 +71,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
         imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         imgCart.setVisibility(View.GONE);
 
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
+        orderObject = new OrderProduct();
+        orderObject = complexPreferences.getObject("order", OrderProduct.class);
+        orderNumber = orderObject.OrderNumber;
+
+        Log.e("orderNumber", orderNumber);
+        toolbar.setTitle("Order : " + orderNumber);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,12 +92,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
         txtShipping = (TextView) findViewById(R.id.txtShipping);
 
-        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
-        OrderProduct currentUserObj = new OrderProduct();
-        currentUserObj = complexPreferences.getObject("order", OrderProduct.class);
-        orderNumber = currentUserObj.OrderNumber;
+        txtShipping.setText(orderObject.FullAddress);
 
-        Log.e("orderNumber", orderNumber);
-        toolbar.setTitle("Order : " + orderNumber);
     }
 }

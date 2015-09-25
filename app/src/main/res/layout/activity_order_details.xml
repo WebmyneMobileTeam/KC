@@ -118,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.3"
                             android:gravity="right"
-                            android:paddingRight="@dimen/M_MARGIN_SIZE"
+                            android:paddingRight="@dimen/BADGE_TEXT_SIZE"
                             android:text="Price"
                             android:textSize="@dimen/VS_TEXT_SIZE"
                             android:textStyle="bold" />
