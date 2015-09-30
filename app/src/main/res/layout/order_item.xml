@@ -29,17 +29,19 @@
                     android:text="Order Id"
                     android:textSize="@dimen/S_TEXT_SIZE"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtOrderDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="Order Date"
-                    android:textSize="@dimen/VS_TEXT_SIZE"
-                    android:textStyle="bold" />
-
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtOrderDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_toRightOf="@+id/txtOrderId"
+                android:gravity="right"
+                android:text="Order Date"
+                android:textSize="@dimen/VS_TEXT_SIZE"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

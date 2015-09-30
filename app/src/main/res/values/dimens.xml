@@ -13,7 +13,7 @@
 
     <dimen name="CARD_DIVIDER_HEIGHT">8dp</dimen>
     <dimen name="VS_TEXT_SIZE">12dp</dimen>
-    <dimen name="S_TEXT_SIZE">15dp</dimen>
+    <dimen name="S_TEXT_SIZE">14dp</dimen>
     <dimen name="M_TEXT_SIZE">18dp</dimen>
     <dimen name="L_TEXT_SIZE">22dp</dimen>
     <dimen name="VL_TEXT_SIZE">24dp</dimen>

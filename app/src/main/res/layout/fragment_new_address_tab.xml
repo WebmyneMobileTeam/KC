@@ -47,9 +47,10 @@
                     android:hint="Address 1"
                     android:inputType="text"
                     android:maxLines="6"
-                    android:singleLine="false"
+                    android:singleLine="true"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="#c0c0c0"
+                    android:textCursorDrawable="@null"
                     android:textSize="@dimen/S_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -66,8 +67,10 @@
                     android:background="@drawable/bottom_line"
                     android:hint="Address 2"
                     android:inputType="text"
+                    android:singleLine="true"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="#c0c0c0"
+                    android:textCursorDrawable="@null"
                     android:textSize="@dimen/S_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -82,11 +85,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line"
-                    android:hint="City"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:hint="City"
                     android:inputType="text"
+                    android:singleLine="true"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="#c0c0c0"
+                    android:textCursorDrawable="@null"
                     android:textSize="@dimen/S_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -115,13 +120,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line"
-                    android:enabled="true"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:enabled="true"
                     android:hint="Country"
                     android:inputType="text"
+                    android:singleLine="true"
                     android:text="India"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="#c0c0c0"
+                    android:textCursorDrawable="@null"
                     android:textSize="@dimen/S_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -137,12 +144,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="50dp"
                     android:background="@drawable/bottom_line"
-                    android:hint="Pincode"
-                    android:inputType="text"
                     android:digits="1234567890"
+                    android:hint="Pincode"
+                    android:inputType="number"
                     android:maxLength="6"
+                    android:singleLine="true"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="#c0c0c0"
+                    android:textCursorDrawable="@null"
                     android:textSize="@dimen/S_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>

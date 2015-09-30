@@ -12,6 +12,7 @@
 
     <style name="TextInputLayout" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/L_MARGIN_SIZE</item>
+        <item name="colorAccent">@color/primaryColor</item>
         <item name="android:textColor">#c0c0c0</item>
     </style>
 

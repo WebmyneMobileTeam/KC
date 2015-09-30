@@ -72,6 +72,12 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
         crownProductId = preferences.getInt("crownProductId", 0);
 
+        productID = getIntent().getIntExtra("product_id", 0);
+        fetchDetails();
+        fetchCrownPricing();
+        helper.displayBadge();
+        fetchCartCrowns();
+
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,10 +97,10 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         sb = new StringBuilder();
         txtDisplayCrownQTY.setText("0");
         String toDelete = txtDisplayCrownName.getText().toString();
-        upperLeft.removeSelected(toDelete);
+       /* upperLeft.removeSelected(toDelete);
         upperRight.removeSelected(toDelete);
         lowerLeft.removeSelected(toDelete);
-        lowerRight.removeSelected(toDelete);
+        lowerRight.removeSelected(toDelete);*/
 
         upperLeft.clearSelection();
         upperRight.clearSelection();
@@ -168,11 +174,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     @Override
     protected void onResume() {
         super.onResume();
-        productID = getIntent().getIntExtra("product_id", 0);
-        fetchDetails();
-        fetchCrownPricing();
-        helper.displayBadge();
-        fetchCartCrowns();
+
     }
 
     private void fetchCartCrowns() {
