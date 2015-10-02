@@ -55,6 +55,7 @@ public class OrderAdapter extends BaseAdapter {
             holder.txtOrderDate = (TextView) convertView.findViewById(R.id.txtOrderDate);
             holder.txtAmount = (TextView) convertView.findViewById(R.id.txtAmount);
             holder.txtPaymentStatus = (TextView) convertView.findViewById(R.id.txtPaymentStatus);
+            holder.txtShipping = (TextView) convertView.findViewById(R.id.txtShipping);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -70,10 +71,16 @@ public class OrderAdapter extends BaseAdapter {
             holder.txtPaymentStatus.setText("Payment Pending");
         }
 
+        if (data.get(position).TaxAmount.equals("")) {
+            holder.txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " 0");
+        } else {
+            holder.txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " " + data.get(position).TaxAmount);
+        }
+
         return convertView;
     }
 
     class ViewHolder {
-        TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentStatus;
+        TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentStatus, txtShipping;
     }
 }

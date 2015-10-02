@@ -195,6 +195,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                setResult(100, getIntent());
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
@@ -216,6 +217,7 @@ public class CartActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        setResult(100, getIntent());
         overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
     }
 

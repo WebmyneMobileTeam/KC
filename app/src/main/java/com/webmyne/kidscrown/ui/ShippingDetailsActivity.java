@@ -304,50 +304,50 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         boolean isValid = true;
 
         if (edtBillingAddress1.getText().toString().length() == 0) {
+            Functions.snack(v, "Enter Billing Address 1");
             isValid = false;
-        }
-        if (edtBillingAddress2.getText().toString().length() == 0) {
+        } else if (edtBillingAddress2.getText().toString().length() == 0) {
+            Functions.snack(v, "Enter Billing Address 2");
             isValid = false;
-        }
-        if (edtBillingCity.getText().toString().length() == 0) {
+        } else if (edtBillingCity.getText().toString().length() == 0) {
+            Functions.snack(v, "Enter Billing City");
             isValid = false;
-        }
-        if (edtBillingCountry.getText().toString().length() == 0) {
+        } else if (edtBillingCountry.getText().toString().length() == 0) {
+            Functions.snack(v, "Enter Billing Address Country");
             isValid = false;
-        }
-        if (edtBillingPincode.getText().toString().length() != 6) {
+        } else if (edtBillingPincode.getText().toString().length() != 6) {
+            Functions.snack(v, "Enter Billing Address Pincode with exactly 6 digits");
             isValid = false;
-        }
-        if (billingStateId == 0) {
+        } else if (billingStateId == 0) {
+            Functions.snack(v, "Select Billing Address State");
             isValid = false;
-        }
-
-        if (sameAsBilling) {
+        } else if (sameAsBilling) {
             isValid = true;
         } else {
             if (edtShippingAddress1.getText().toString().length() == 0) {
+                Functions.snack(v, "Enter Shipping Address 1");
                 isValid = false;
-            }
-            if (edtShippingAddress2.getText().toString().length() == 0) {
+            } else if (edtShippingAddress2.getText().toString().length() == 0) {
+                Functions.snack(v, "Enter Shipping Address 2");
                 isValid = false;
-            }
-            if (edtShippingCity.getText().toString().length() == 0) {
+            } else if (edtShippingCity.getText().toString().length() == 0) {
+                Functions.snack(v, "Enter Shipping Address City");
                 isValid = false;
-            }
-            if (edtShippingCountry.getText().toString().length() == 0) {
+            } else if (edtShippingCountry.getText().toString().length() == 0) {
+                Functions.snack(v, "Enter Shipping Address Country");
                 isValid = false;
-            }
-            if (edtShippingPincode.getText().toString().length() != 6) {
+            } else if (edtShippingPincode.getText().toString().length() != 6) {
+                Functions.snack(v, "Enter Shipping Address Pincode with exactly 6 digits");
                 isValid = false;
-            }
-            if (shippingStateId == 0) {
+            } else if (shippingStateId == 0) {
+                Functions.snack(v, "Select Shipping Address State");
                 isValid = false;
             }
         }
 
-        if (!isValid) {
+       /* if (!isValid) {
             Functions.snack(v, "All shipping and biling details are mandatory and valid.");
-        }
+        }*/
         return isValid;
     }
 

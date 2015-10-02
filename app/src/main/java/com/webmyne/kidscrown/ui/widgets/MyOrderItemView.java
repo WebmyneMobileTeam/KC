@@ -25,7 +25,7 @@ public class MyOrderItemView extends LinearLayout {
     LayoutInflater inflater;
     OrderProduct orderObject;
     View view;
-    TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentStatus;
+    TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentStatus, txtShipping;
 
     public MyOrderItemView(Context context, OrderProduct orderObject) {
         super(context);
@@ -39,6 +39,7 @@ public class MyOrderItemView extends LinearLayout {
         view = inflater.inflate(R.layout.order_item, this);
         setOrientation(VERTICAL);
 
+        txtShipping = (TextView) view.findViewById(R.id.txtShipping);
         txtOrderId = (TextView) view.findViewById(R.id.txtOrderId);
         txtOrderDate = (TextView) view.findViewById(R.id.txtOrderDate);
         txtAmount = (TextView) view.findViewById(R.id.txtAmount);
@@ -59,6 +60,12 @@ public class MyOrderItemView extends LinearLayout {
             txtPaymentStatus.setText("Payment: Done");
         } else {
             txtPaymentStatus.setText("Payment: Pending");
+        }
+
+        if (orderObject.TaxAmount.equals("")) {
+            txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " 0");
+        } else {
+            txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " " + orderObject.TaxAmount);
         }
 
     }

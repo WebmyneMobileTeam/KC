@@ -171,7 +171,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 startActivity(Intent.createChooser(feedbackIntent, "Send Feedback:"));
                 break;
 
-            case R.id.drawer_settings:
+            /*case R.id.drawer_settings:
                 // Settings
                 ft.replace(R.id.content, new SettingsFragment(), "SETTINGS_PAGE");
                 //ft.addToBackStack(null);
@@ -190,7 +190,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 ft.replace(R.id.content, new HelpFragment(), "HELP_PAGE");
                 //ft.addToBackStack(null);
                 ft.commit();
-                break;
+                break;*/
         }
     }
 

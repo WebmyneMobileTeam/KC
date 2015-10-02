@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -281,7 +282,12 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Functions.fireIntent(RefillActivityAnother.this, CartActivity.class);
+
+                Intent i = new Intent(RefillActivityAnother.this, CartActivity.class);
+                startActivityForResult(i, 100);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+
+//                Functions.fireIntent(RefillActivityAnother.this, CartActivity.class);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
             }
         });
@@ -319,6 +325,16 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         });
 
         fillNumberPad();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        fetchDetails();
+        fetchCrownPricing();
+        helper.displayBadge();
+        fetchCartCrowns();
     }
 
     private void fillNumberPad() {

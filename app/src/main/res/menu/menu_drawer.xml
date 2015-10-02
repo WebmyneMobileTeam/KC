@@ -25,16 +25,16 @@
             android:icon="@drawable/ic_action_address"
             android:title="My Address" />
 -->
-        <item
+        <!--<item
             android:id="@+id/drawer_settings"
             android:icon="@drawable/ic_action_settings"
             android:title="Settings" />
-
+-->
         <item
             android:id="@+id/drawer_feedback"
             android:icon="@drawable/ic_action_feedback"
             android:title="Feedback" />
-        <item
+       <!-- <item
             android:id="@+id/drawer_about"
             android:icon="@drawable/ic_action_about"
             android:title="About Us" />
@@ -42,7 +42,7 @@
         <item
             android:id="@+id/drawer_help"
             android:icon="@drawable/ic_action_help"
-            android:title="Help &amp; FAQ" />
+            android:title="Help &amp; FAQ" />-->
 
         <item
             android:id="@+id/drawer_log_out"

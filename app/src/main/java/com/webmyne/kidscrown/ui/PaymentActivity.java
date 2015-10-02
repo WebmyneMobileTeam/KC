@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Functions;
@@ -16,6 +18,52 @@ public class PaymentActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView imgCart;
     private Button viewOrders;
+    TextView txtConfirm;
+    String strHtml="<p align=\"center\">\n" +
+            "    <strong>Order Confirmation</strong>\n" +
+            "</p>\n" +
+            "<p align=\"center\">\n" +
+            "    <strong>Thanks For Your Order</strong>\n" +
+            "</p>\n" +
+            "<p>\n" +
+            "    Please Send Bank Transfer / RTGS / NFT On Below Details To Proceess Your Order.\n" +
+            "    <br/>\n" +
+            "    <br/>\n" +
+            "</p>\n" +
+            "<div>\n" +
+            "    <p>\n" +
+            "        Address\n" +
+            "    </p>\n" +
+            "</div>\n" +
+            "<p>\n" +
+            "    YOGI EnterPrices\n" +
+            "    <br/>\n" +
+            "    A205, Krishna Township,\n" +
+            "    <br/>\n" +
+            "    Opp. Vuda Flats, Opp. Ambe Temple,\n" +
+            "    <br/>\n" +
+            "    Gotri, Vadodara\n" +
+            "    <br/>\n" +
+            "    Gujarat\n" +
+            "    <br/>\n" +
+            "    E-mail : yogienterprices2@gmail.com\n" +
+            "</p>\n" +
+            "<div>\n" +
+            "    <p>\n" +
+            "        Bank Details\n" +
+            "    </p>\n" +
+            "</div>\n" +
+            "<p>\n" +
+            "    Beneficiary Name: Yogi Enterprices Beneficiary\n" +
+            "    <br/>\n" +
+            "    Bank Name: Oriantal Bank Of Commerce\n" +
+            "    <br/>\n" +
+            "    Branch: R.C Dutt Road ,Alkapuri ,Vadodara 390007\n" +
+            "    <br/>\n" +
+            "    IFS Code: ORBC01100957\n" +
+            "    <br/>\n" +
+            "    Beneficiary A/c No. : 51161131000193\n" +
+            "</p>";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +71,12 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
 
         init();
+
+        txtConfirm.setText(Html.fromHtml(strHtml));
     }
 
     private void init() {
+        txtConfirm = (TextView) findViewById(R.id.txtConfirm);
         viewOrders = (Button) findViewById(R.id.viewOrders);
 
         viewOrders.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +91,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("Secure Payment");
+            toolbar.setTitle("Order Confirmation");
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -55,7 +106,6 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
     }
-
 
     @Override
     public void onBackPressed() {
