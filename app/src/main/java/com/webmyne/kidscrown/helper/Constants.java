@@ -27,7 +27,7 @@ public class Constants {
 
     public static final String FORGOT_PASSWORD_URL = BASE_URL + "/User.svc/json/ForgotPassword/";
 
-    public static final String CROWN_PRODUCT_NAME = "Crown";
+    public static final String CROWN_PRODUCT_NAME = "Refill";
 
     public static final String FETCH_ORDER = BASE_URL + "/Order.svc/json/FetchOrdersApp?UserId=";
 

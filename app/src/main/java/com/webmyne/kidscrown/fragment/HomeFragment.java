@@ -171,7 +171,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         String productName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
         int productId = cursor.getInt(cursor.getColumnIndexOrThrow("product_id"));
 
-        if (productName.equalsIgnoreCase("Crown")) {
+        if (productName.equalsIgnoreCase(Constants.CROWN_PRODUCT_NAME)) {
 
             Intent iRefill = new Intent(getActivity(), RefillActivityAnother.class);
             iRefill.putExtra("product_id", productId);
