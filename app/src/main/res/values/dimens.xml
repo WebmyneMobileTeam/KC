@@ -37,4 +37,7 @@
     <dimen name="QUADRANT_LEFT_PADDING">32dp</dimen>
     <dimen name="QUADRANT_RIGHT_PADDING">32dp</dimen>
 
+    <dimen name="bg_line_width">25dp</dimen>
+    <dimen name="bg_line_height">20dp</dimen>
+
 </resources>
