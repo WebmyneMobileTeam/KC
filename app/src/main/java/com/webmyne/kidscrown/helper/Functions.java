@@ -30,13 +30,6 @@ public class Functions {
         return px;
     }
 
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px      A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
     public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
@@ -94,31 +87,6 @@ public class Functions {
         }
 
         return validEmailAddress;
-    }
-
-    public static String md5(String input) {
-
-        String md5 = null;
-
-        if (null == input)
-            return null;
-
-        try {
-
-            // Create MessageDigest object for MD5
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-
-            // Update input string in message digest
-            digest.update(input.getBytes(), 0, input.length());
-
-            // Converts message digest value in base 16 (hex)
-            md5 = new BigInteger(1, digest.digest()).toString(16);
-
-        } catch (NoSuchAlgorithmException e) {
-
-            e.printStackTrace();
-        }
-        return md5;
     }
 
     public static String parseDate(String inputDate, String inputPattern, String outputPattern) {

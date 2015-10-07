@@ -31,14 +31,7 @@ import java.util.List;
 
 
 public class BillingAddressTab extends android.support.v4.app.Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     String userId;
     private AddressAdapter adapter;
     //private ListView listAddress;
@@ -51,10 +44,7 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
 
     public static BillingAddressTab newInstance(String param1, String param2) {
         BillingAddressTab fragment = new BillingAddressTab();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -65,10 +55,7 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -97,20 +84,6 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
         edtPincode = (EditText) parentView.findViewById(R.id.edtBillingPincode);
         saveDetails = (Button) parentView.findViewById(R.id.saveDetails);
 
-     /*   saveDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                billingAndShippingAddress = new BillingAndShippingAddress();
-                billingAndShippingAddress.setBillingAddress1(edtAddress1.getText().toString());
-                billingAndShippingAddress.setBillingAddress2(edtAddress2.getText().toString());
-                billingAndShippingAddress.setBillingCity(edtCity.getText().toString());
-                billingAndShippingAddress.setBillingState(edtState.getText().toString());
-                billingAndShippingAddress.setBillingCountry(edtCountry.getText().toString());
-                billingAndShippingAddress.setBillingPincode(edtPincode.getText().toString());
-
-                list.setAddress(billingAndShippingAddress);
-            }
-        });*/
 
     }
     public void setListener(AddressesList _list){

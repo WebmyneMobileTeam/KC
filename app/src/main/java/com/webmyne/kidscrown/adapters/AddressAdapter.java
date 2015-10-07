@@ -74,9 +74,6 @@ public class AddressAdapter extends SimpleCursorAdapter {
         String address2 = cursor.getString(cursor.getColumnIndexOrThrow("address_2"));
         String pincode = cursor.getString(cursor.getColumnIndexOrThrow("pincode"));
         String mobile = cursor.getString(cursor.getColumnIndexOrThrow("mobile"));
-        String state = cursor.getString(cursor.getColumnIndexOrThrow("state_id"));
-        String country = cursor.getString(cursor.getColumnIndexOrThrow("country_id"));
-        String city = cursor.getString(cursor.getColumnIndexOrThrow("city_id"));
 
         holder.txtAddress1.setText(address1);
         holder.txtAddress2.setText(address2);

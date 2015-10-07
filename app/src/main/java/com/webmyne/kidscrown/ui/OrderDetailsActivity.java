@@ -29,9 +29,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView txtShipping;
     String orderId;
     LinearLayout linearLayout;
-    private ArrayList<FinalOrders> myOrders = new ArrayList<>();
     OrderDetailsAdapter adapter;
-    ArrayList<OrderModel> ordersById;
     private ListView orderListview;
     ComplexPreferences complexPreferences;
     String orderNumber;
@@ -55,6 +53,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
     private void setOrderDetails() {
+
+        linearLayout.removeAllViews();
+        linearLayout.invalidate();
 
         MyOrderItemView itemView = new MyOrderItemView(OrderDetailsActivity.this, orderObject);
         linearLayout.addView(itemView);

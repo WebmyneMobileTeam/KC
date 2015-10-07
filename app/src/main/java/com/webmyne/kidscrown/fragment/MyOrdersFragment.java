@@ -45,10 +45,8 @@ public class MyOrdersFragment extends Fragment {
     private Activity activity;
     ListView orderListview;
     private LinearLayout linearParent;
-    private ArrayList<FinalOrders> myOrders = new ArrayList<>();
-    ArrayList<String> orderIds;
     private TextView emptyOrder;
-    private String userId, redirectOrderId;
+    private String userId;
     ProgressDialog pd;
     OrderAdapter adapter;
     ArrayList<OrderProduct> data;
@@ -86,7 +84,6 @@ public class MyOrdersFragment extends Fragment {
         orderListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                redirectOrderId = data.get(position).OrderNumber;
 
                 complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
                 OrderProduct object = data.get(position);

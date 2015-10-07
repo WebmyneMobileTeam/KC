@@ -10,10 +10,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.Qualification;
-import com.webmyne.kidscrown.model.Salutation;
-import com.webmyne.kidscrown.ui.RegisterActivity;
 
 import java.util.ArrayList;
 

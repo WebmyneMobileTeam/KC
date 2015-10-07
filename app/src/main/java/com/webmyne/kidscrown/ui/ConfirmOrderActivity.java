@@ -276,7 +276,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     pd1.dismiss();
                     Log.e("error", e.getMessage());
-                    e.printStackTrace();
                 }
             }
 

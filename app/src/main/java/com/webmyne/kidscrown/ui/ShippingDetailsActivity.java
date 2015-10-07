@@ -345,9 +345,6 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             }
         }
 
-       /* if (!isValid) {
-            Functions.snack(v, "All shipping and biling details are mandatory and valid.");
-        }*/
         return isValid;
     }
 
@@ -410,7 +407,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         DatabaseHandler handler = new DatabaseHandler(ShippingDetailsActivity.this);
         handler.saveAddressDetails(addressModels);
         handler.close();
-        displayAddress();
+
     }
 
     private void loadStateSpinner() {
@@ -426,19 +423,6 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
-    }
-
-    private void displayAddress() {
-        try {
-            DatabaseHandler handler = new DatabaseHandler(ShippingDetailsActivity.this);
-            handler.openDataBase();
-            Cursor cursor = handler.getAddressCursor();
-            handler.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private class CustomTextWatcher implements TextWatcher {
@@ -464,6 +448,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                         billingAndShippingAddress.setShippingAddress1(s.toString());
                     }
                     break;
+
                 case R.id.edtBillingAddress2:
                     billingAndShippingAddress.setBillingAddress2(s.toString());
                     //set in shipping address too if same as billing
@@ -471,6 +456,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                         billingAndShippingAddress.setShippingAddress2(s.toString());
                     }
                     break;
+
                 case R.id.edtBillingCity:
                     billingAndShippingAddress.setBillingCity(s.toString());
 
@@ -479,6 +465,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                         billingAndShippingAddress.setShippingCity(s.toString());
                     }
                     break;
+
                 case R.id.edtBillingCountry:
                     billingAndShippingAddress.setBillingCountry(s.toString());
 
@@ -487,6 +474,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                         billingAndShippingAddress.setShippingCountry(s.toString());
                     }
                     break;
+
                 case R.id.edtBillingPincode:
                     billingAndShippingAddress.setBillingPincode(s.toString());
 
@@ -499,15 +487,19 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                 case R.id.edtShippingAddress1:
                     billingAndShippingAddress.setShippingAddress1(s.toString());
                     break;
+
                 case R.id.edtShippingAddress2:
                     billingAndShippingAddress.setShippingAddress2(s.toString());
                     break;
+
                 case R.id.edtShippingCity:
                     billingAndShippingAddress.setShippingCity(s.toString());
                     break;
+
                 case R.id.edtShippingCountry:
                     billingAndShippingAddress.setShippingCountry(s.toString());
                     break;
+
                 case R.id.edtShippingPincode:
                     billingAndShippingAddress.setShippingPincode(s.toString());
                     break;

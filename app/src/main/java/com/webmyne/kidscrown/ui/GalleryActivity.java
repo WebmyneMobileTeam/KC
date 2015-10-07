@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class GalleryActivity extends AppCompatActivity {
     Toolbar toolbar;
     ViewPager viewPager;
-    int productID;
+
     Cursor cursorProductImage;
 
     @Override

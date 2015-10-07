@@ -40,16 +40,14 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
     private CrownQuadrant upperRight;
     private CrownQuadrant lowerLeft;
     private CrownQuadrant lowerRight;
-    // private ImageView imgAdd;
+
     private ArrayList<CrownProductItem> orderArray;
     private ListView listRefill;
     RefillOrderAdapter adapter;
     private int productID;
     ImageView imgCart;
     Button btnContinue;
-    ArrayList<String> upperLeftArray = new ArrayList<>();
-    private RefillOrderAdapter.onCartSelectListener onCartSelectListener;
-    ArrayList<CrownProductItem> crownProducts = new ArrayList<>();
+
     ArrayList<CrownPricing> crownPricing;
 
     @Override
@@ -240,8 +238,6 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
                 break;
             }
         }
-        // adapter.notifyDataSetChanged();
-
 
     }
 }

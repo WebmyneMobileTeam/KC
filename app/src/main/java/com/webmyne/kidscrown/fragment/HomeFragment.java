@@ -123,8 +123,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void fetchProducts() {
 
-        View view = ((MyDrawerActivity) getActivity()).getToolbar().getRootView();
-
         new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {

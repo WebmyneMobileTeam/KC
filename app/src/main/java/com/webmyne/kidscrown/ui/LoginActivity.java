@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     Button btnLogin;
-    String regNo;
 
     TextView txtRegister, txtForgot;
     EditText edtUsername, edtPassword;
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     // Google Integration
     private static final int RC_SIGN_IN = 0;
-    private static final String TAG = "MainActivity";
+
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
     SignInButton btnGplus;

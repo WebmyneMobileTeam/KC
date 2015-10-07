@@ -469,7 +469,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 break;
             }
         }
-        // adapter.notifyDataSetChanged();
 
     }
 

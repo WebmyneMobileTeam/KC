@@ -168,15 +168,6 @@ public class CartActivity extends AppCompatActivity {
         gridLayout = (GridLayout) findViewById(R.id.gridLayout);
         gridLayout.setColumnCount(2);
 
-       /* String screenType = getResources().getString(R.string.screen_type);
-        if (screenType.equals("phone")) {
-            gridLayout.setColumnCount(2);
-        } else if (screenType.equals("7-inch")) {
-            gridLayout.setColumnCount(2);
-        } else {
-            gridLayout.setColumnCount(3);
-        }*/
-
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);

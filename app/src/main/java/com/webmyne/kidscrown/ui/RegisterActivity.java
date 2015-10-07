@@ -115,12 +115,6 @@ public class RegisterActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                /*if(edtRegNo.getText().toString().trim().matches(regNoPattern)){
-                    Log.e("match", "yes");
-                }else{
-                    Log.e("match", "false");
-                }*/
-
                 checkValidation();
             }
         });

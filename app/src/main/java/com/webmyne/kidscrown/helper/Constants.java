@@ -9,7 +9,7 @@ public class Constants {
     public static final boolean LOGGING_ENABLED = true;
     public static final String TAG = "KidsCrown";
 
-   /// public static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
+//    public static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
 
     public static final String REGISTRATION_URL = BASE_URL + "/User.svc/json/UserRegistration";
@@ -32,16 +32,6 @@ public class Constants {
     public static final String CROWN_PRODUCT_NAME = "Refill";
 
     public static final String FETCH_ORDER = BASE_URL + "/Order.svc/json/FetchOrdersApp?UserId=";
-
-    //Request
-    public static final int REQUEST_ERROR_GENERAL = -1;
-    public static final int REQUEST_OK = 0;
-    public static final int REQUEST_LOGIN = 1;
-    public static final int REQUEST_FBLOGIN = 2;
-    public static final int REQUEST_GMAILLOGIN = 3;
-    public static final int REQUEST_FORGOT_PASSWORD = 4;
-
-    public static String IMAGE_PREFIX = "http://srijanapp.com/files/profile/";
 
     public static String regNoPattern = "^[A-Z][0-9]{6}$";
 
