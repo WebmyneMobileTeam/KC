@@ -114,7 +114,6 @@ public class RegisterActivity extends AppCompatActivity implements
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 checkValidation();
             }
         });
@@ -220,8 +219,8 @@ public class RegisterActivity extends AppCompatActivity implements
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
-                    Toast.makeText(RegisterActivity.this, "Registraion Number contains total of 7 characters. First character is from A-Z, remaining must be digits 0-9", Toast.LENGTH_LONG).show();
+                if (edtRegNo.getText().toString().trim().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "Registraion Number must required.", Toast.LENGTH_LONG).show();
 
                 } else {
                     regNo = edtRegNo.getText().toString().trim();
@@ -250,8 +249,8 @@ public class RegisterActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
-                    Toast.makeText(RegisterActivity.this, "Registraion Number contains total of 7 characters. First character is from A-Z, remaining must be digits 0-9", Toast.LENGTH_LONG).show();
+                if (edtRegNo.getText().toString().trim().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "Registraion Number must required.", Toast.LENGTH_LONG).show();
                 } else {
                     regNo = edtRegNo.getText().toString().trim();
                     dialog.dismiss();
@@ -446,9 +445,6 @@ public class RegisterActivity extends AppCompatActivity implements
             snack.show();
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             snack.setText("Password and confirm password does not match");
-            snack.show();
-        } else if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
-            snack.setText("Registraion Number contains total of 7 characters. First character is from Uppercase A-Z, remaining must be digits 0-9");
             snack.show();
         } else {
             registerWebService();

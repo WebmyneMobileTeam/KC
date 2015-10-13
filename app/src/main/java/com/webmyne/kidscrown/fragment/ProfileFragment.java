@@ -139,9 +139,6 @@ public class ProfileFragment extends Fragment {
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             snack.setText("Password and confirm password does not match");
             snack.show();
-        } else if (!edtRegNo.getText().toString().trim().matches(Constants.regNoPattern)) {
-            snack.setText("Registraion Number contains total of 7 characters. First character is from Uppercase A-Z, remaining must be digits 0-9");
-            snack.show();
         } else {
             registerWebService();
         }
