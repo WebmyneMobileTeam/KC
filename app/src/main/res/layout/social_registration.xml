@@ -19,10 +19,11 @@
             android:id="@+id/edtRegNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ\\1234567890#_/-"
             android:hint="Dentist Registration Number"
             android:inputType="text"
+            android:maxLength="12"
             android:singleLine="true"
-            android:maxLength="7"
             android:textColor="#ffffff"
             android:textColorHint="@color/editText_hint_color"
             android:textSize="@dimen/M_TEXT_SIZE" />

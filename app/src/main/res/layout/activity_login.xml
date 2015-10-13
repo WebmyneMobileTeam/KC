@@ -161,7 +161,6 @@
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
                     android:background="@drawable/com_facebook_button_like_background"
-
                     android:clickable="true"
                     android:orientation="horizontal">
 

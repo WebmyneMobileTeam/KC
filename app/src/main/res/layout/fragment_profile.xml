@@ -179,6 +179,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Registration Number"
                     android:inputType="text"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ\\1234567890#_/-"
                     android:maxLength="7"
                     android:singleLine="true"
                     android:textColor="#ffffff"
