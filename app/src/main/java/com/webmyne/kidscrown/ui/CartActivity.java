@@ -1,8 +1,10 @@
 package com.webmyne.kidscrown.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,7 +105,6 @@ public class CartActivity extends AppCompatActivity {
             CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
             crownView.setOnRemoveCrownListener(onRemoveCrownListener);
             gridLayout.addView(crownView);
-
         }
 
         totalPrice.setText("Rs. " + price);
@@ -148,18 +150,45 @@ public class CartActivity extends AppCompatActivity {
 
     CrownCartView.onRemoveCrownListener onRemoveCrownListener = new CrownCartView.onRemoveCrownListener() {
         @Override
-        public void removeCrown(String productName) {
-            try {
-                DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
-                handler.openDataBase();
-                handler.deleteCrownProduct(productName);
-                handler.close();
+        public void removeCrown(final String productName) {
 
-                refreshActivity();
+            new AsyncTask<Void, Void, Void>() {
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+                ProgressDialog pd;
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+
+                    pd = ProgressDialog.show(CartActivity.this,"Please wait","Updating Cart",false);
+
+                }
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
+                        handler.openDataBase();
+                        handler.deleteCrownProduct(productName);
+                        handler.close();
+
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    pd.dismiss();
+                    refreshActivity();
+                }
+            }.execute();
+
+
+
         }
     };
 

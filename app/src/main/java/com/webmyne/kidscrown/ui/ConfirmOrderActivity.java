@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -179,112 +180,137 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         });
     }
 
-    private void createAnotherOrder(ArrayList<OrderModel> orders) {
+    private void createAnotherOrder(final ArrayList<OrderModel> orders) {
 
-        JSONObject mainObect = new JSONObject();
-        JSONObject kitObject = new JSONObject();
-        JSONObject crownMainObject = new JSONObject();
-        JSONObject crownSubObject = new JSONObject();
 
-        int grandTotal = 0, crownTotal = 0, crownQty = 0, crownSpecificId = 0;
-        JSONArray ordersArray = new JSONArray();
-        JSONArray crownArray = new JSONArray();
 
-        try {
-            handler = new DatabaseHandler(ConfirmOrderActivity.this);
-            handler.openDataBase();
 
-            for (int i = 0; i < orders.size(); i++) {
-                if (orders.get(i).getProductId() == crownProductId) {
-                    crownQty += orders.get(i).getProductQty();
-                    crownMainObject = new JSONObject();
-                    crownMainObject.put("product_id", orders.get(i).getProductId());
-                    crownMainObject.put("price_id", orders.get(i).getPriceId());
+        new AsyncTask<Void, Void, Void>() {
 
-                    crownSubObject = new JSONObject();
-                    crownSubObject.put("product_name", orders.get(i).getProductName());
-                    crownSubObject.put("qty", orders.get(i).getProductQty());
+             JSONObject mainObect = new JSONObject();
+             JSONObject kitObject = new JSONObject();
+             JSONObject crownMainObject = new JSONObject();
+             JSONObject crownSubObject = new JSONObject();
 
-                    try {
-                        crownSpecificId = handler.getSpecificId(orders.get(i).getProductName());
+            int grandTotal = 0, crownTotal = 0, crownQty = 0, crownSpecificId = 0;
+            final JSONArray ordersArray = new JSONArray();
+            final JSONArray crownArray = new JSONArray();
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+            @Override
+            protected Void doInBackground(Void... params) {
+
+                try {
+                    handler = new DatabaseHandler(ConfirmOrderActivity.this);
+                    handler.openDataBase();
+
+                    for (int i = 0; i < orders.size(); i++) {
+                        if (orders.get(i).getProductId() == crownProductId) {
+                            crownQty += orders.get(i).getProductQty();
+                            crownMainObject = new JSONObject();
+                            crownMainObject.put("product_id", orders.get(i).getProductId());
+                            crownMainObject.put("price_id", orders.get(i).getPriceId());
+
+                            crownSubObject = new JSONObject();
+                            crownSubObject.put("product_name", orders.get(i).getProductName());
+                            crownSubObject.put("qty", orders.get(i).getProductQty());
+
+                            try {
+                                crownSpecificId = handler.getSpecificId(orders.get(i).getProductName());
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            crownSubObject.put("crown_specific_id", crownSpecificId);
+                            crownSubObject.put("unit_price", orders.get(i).getProductUnitPrice());
+                            crownSubObject.put("total_price", orders.get(i).getProductTotalPrice());
+                            grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+                            crownTotal = crownTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+                            crownArray.put(crownSubObject);
+
+                        } else {
+                            kitObject = new JSONObject();
+                            kitObject.put("product_id", orders.get(i).getProductId());
+                            kitObject.put("product_name", orders.get(i).getProductName());
+                            kitObject.put("qty", orders.get(i).getProductQty());
+                            kitObject.put("price_id", orders.get(i).getPriceId());
+                            kitObject.put("unit_price", orders.get(i).getProductUnitPrice());
+                            kitObject.put("total_price", orders.get(i).getProductTotalPrice());
+                            grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+                            ordersArray.put(kitObject);
+                        }
                     }
 
-                    crownSubObject.put("crown_specific_id", crownSpecificId);
-                    crownSubObject.put("unit_price", orders.get(i).getProductUnitPrice());
-                    crownSubObject.put("total_price", orders.get(i).getProductTotalPrice());
-                    grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
-                    crownTotal = crownTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
-                    crownArray.put(crownSubObject);
+                    handler.close();
+                    if (crownQty != 0) {
+                        crownMainObject.put("crownQty", crownQty);
+                        crownMainObject.put("crownTotal", crownTotal);
+                        crownMainObject.put("Crowns", crownArray);
+                        ordersArray.put(crownMainObject);
+                    }
 
-                } else {
-                    kitObject = new JSONObject();
-                    kitObject.put("product_id", orders.get(i).getProductId());
-                    kitObject.put("product_name", orders.get(i).getProductName());
-                    kitObject.put("qty", orders.get(i).getProductQty());
-                    kitObject.put("price_id", orders.get(i).getPriceId());
-                    kitObject.put("unit_price", orders.get(i).getProductUnitPrice());
-                    kitObject.put("total_price", orders.get(i).getProductTotalPrice());
-                    grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
-                    ordersArray.put(kitObject);
-                }
-            }
+                    // Main JSON Object
+                    mainObect = new JSONObject();
+                    mainObect.put("date", dateTime);
+                    mainObect.put("user_id", userId);
 
-            handler.close();
-            if (crownQty != 0) {
-                crownMainObject.put("crownQty", crownQty);
-                crownMainObject.put("crownTotal", crownTotal);
-                crownMainObject.put("Crowns", crownArray);
-                ordersArray.put(crownMainObject);
-            }
+                    if (grandTotal < 3000) {
+                        grandTotal += 100;
+                        mainObect.put("grand_total", grandTotal);
+                        mainObect.put("shipping_cost", 100);
+                    } else {
+                        mainObect.put("grand_total", grandTotal);
+                        mainObect.put("shipping_cost", 0);
+                    }
 
-            // Main JSON Object
-            mainObect = new JSONObject();
-            mainObect.put("date", dateTime);
-            mainObect.put("user_id", userId);
-
-            if (grandTotal < 3000) {
-                grandTotal += 100;
-                mainObect.put("grand_total", grandTotal);
-                mainObect.put("shipping_cost", 100);
-            } else {
-                mainObect.put("grand_total", grandTotal);
-                mainObect.put("shipping_cost", 0);
-            }
-
-            mainObect.put("shipping_address", shippingAddress);
-            mainObect.put("OrdersArray", ordersArray);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Log.e("API", Constants.PLACE_ORDER);
-        Log.e("order_request", mainObect.toString());
-
-        new CallWebService(Constants.PLACE_ORDER, CallWebService.TYPE_POST, mainObect) {
-            @Override
-            public void response(String response) {
-                pd1.dismiss();
-                Log.e("order_response", response);
-                try {
-                    Functions.fireIntent(ConfirmOrderActivity.this, PaymentActivity.class);
-                    overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                    mainObect.put("shipping_address", shippingAddress);
+                    mainObect.put("OrdersArray", ordersArray);
 
                 } catch (Exception e) {
-                    pd1.dismiss();
-                    Log.e("error", e.getMessage());
+                    e.printStackTrace();
                 }
+
+                return null;
             }
 
             @Override
-            public void error(String error) {
-                pd1.dismiss();
-                Log.e("error", error);
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                Log.e("API", Constants.PLACE_ORDER);
+                Log.e("order_request", mainObect.toString());
+
+                new CallWebService(Constants.PLACE_ORDER, CallWebService.TYPE_POST, mainObect) {
+                    @Override
+                    public void response(String response) {
+                        pd1.dismiss();
+                        Log.e("order_response", response);
+                        try {
+                            Functions.fireIntent(ConfirmOrderActivity.this, PaymentActivity.class);
+                            overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+
+                        } catch (Exception e) {
+                            pd1.dismiss();
+                            Log.e("error", e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void error(String error) {
+                        pd1.dismiss();
+                        Log.e("error", error);
+                    }
+                }.call();
+
+
+
+
+
+
             }
-        }.call();
+        }.execute();
+
 
     }
 

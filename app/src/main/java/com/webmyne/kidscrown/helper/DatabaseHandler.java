@@ -14,6 +14,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.CrownPricing;
+import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.model.FinalOrders;
 import com.webmyne.kidscrown.model.OrderModel;
 import com.webmyne.kidscrown.model.Product;
@@ -30,6 +31,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by jaydeeprana on 01-07-2015.
@@ -159,13 +162,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             myDataBase = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("description", product.description);
-
             values.put("price", product.price);
             values.put("product_id", product.productID);
             values.put("name", product.name);
             values.put("product_number", product.product_number);
             values.put("color", colors.get(pos));
             myDataBase.insert(TABLE_PRODUCT, null, values);
+
             if (pos >= colors.size() - 1) {
                 pos = 0;
             } else {
@@ -226,12 +229,82 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase = this.getWritableDatabase();
         String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_id ='" + productID + "'";
         myDataBase.execSQL(selectQuery);
+
+
+
     }
 
     public void deleteCrownProduct(String productName) {
         myDataBase = this.getWritableDatabase();
         String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_name ='" + productName + "'";
         myDataBase.execSQL(selectQuery);
+
+        //todo update pricing
+        int productID = 0;
+
+
+        String selectQueryForCrown = "SELECT * FROM " + TABLE_PRODUCT + " WHERE name ='" + Constants.CROWN_PRODUCT_NAME + "'";
+        Cursor cursor = null;
+        cursor = myDataBase.rawQuery(selectQueryForCrown, null);
+        cursor.moveToFirst();
+
+
+        int crownProductID = cursor.getInt(cursor.getColumnIndex("product_id"));
+
+        ArrayList<ProductCart> crowns = getCrownCartProduct(crownProductID);
+
+        if(crowns == null || crowns.isEmpty()){
+
+        }else{
+
+            ArrayList<CrownPricing> crownPricing = new ArrayList<>();
+            crownPricing = getCrownPricing(crownProductID);
+
+            int totalCrowns = 0;
+            int unitPrice = 0;
+            for (ProductCart item : crowns) {
+                totalCrowns += item.getProductQty();
+            }
+
+            boolean isPass = false;
+            List<Integer> maxies = new ArrayList<>();
+
+            //todo dhruvil/sagar/krishna
+
+            if (totalCrowns != 0) {
+
+                for (int k = 0; k < crownPricing.size(); k++) {
+
+                    maxies.add(crownPricing.get(k).getMax());
+                    if (totalCrowns >= crownPricing.get(k).getMin() && totalCrowns <= crownPricing.get(k).getMax()) {
+                        unitPrice = crownPricing.get(k).getPrice();
+                        isPass = true;
+                        break;
+                    } else {
+                        isPass = false;
+                        continue;
+                    }
+                }
+            }
+
+            if(isPass == false){
+                int tempPos = 0;
+                int max = Collections.max(maxies);
+                tempPos = maxies.indexOf(Integer.valueOf(max));
+                unitPrice = crownPricing.get(tempPos).getPrice();
+            }
+
+            for(ProductCart productCart : crowns){
+                ContentValues cv = new ContentValues();
+                cv.put("unit_price",unitPrice);
+                //myDataBase.update("textlines",cvTextLines,"id_ " + " = ?",new String[]{""+textLineID});
+                myDataBase.update(TABLE_CART_ITEM,cv,"product_name " + " = ?",new String[]{""+productCart.getProductName()});
+            }
+
+
+        }
+
+
     }
 
     public void addCartProduct(ArrayList<String> productDetails) {
@@ -412,6 +485,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Crowns Products
     public ArrayList<ProductCart> getCrownCartProduct(int productID) {
+
         ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();
         Cursor cursor = null;

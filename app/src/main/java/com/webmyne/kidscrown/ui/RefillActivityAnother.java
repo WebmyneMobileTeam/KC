@@ -34,6 +34,7 @@ import com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RefillActivityAnother extends AppCompatActivity implements CrownQuadrantAnother.OnCrownClickListner, RefillOrderAdapterAnother.OnDeleteListner, RefillOrderAdapterAnother.onCartSelectListener, RefillOrderAdapterAnother.onTextChange, MyRecyclerAdapter.addQtyListener {
@@ -371,16 +372,34 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 totalCrowns += item.itemQty;
             }
 
+            boolean isPass = false;
+            List<Integer> maxies = new ArrayList<>();
+
+            //todo dhruvil/sagar/krishna
+
             if (totalCrowns != 0) {
+
                 for (int k = 0; k < crownPricing.size(); k++) {
+
+                    maxies.add(crownPricing.get(k).getMax());
                     if (totalCrowns >= crownPricing.get(k).getMin() && totalCrowns <= crownPricing.get(k).getMax()) {
                         unitPrice = crownPricing.get(k).getPrice();
+                        isPass = true;
                         break;
-                    } else if (totalCrowns > crownPricing.get(k).getMax()) {
-                        unitPrice = crownPricing.get(k).getPrice();
+                    } else {
+                        isPass = false;
+                        continue;
                     }
                 }
             }
+
+            if(isPass == false){
+                int tempPos = 0;
+                int max = Collections.max(maxies);
+                tempPos = maxies.indexOf(Integer.valueOf(max));
+                unitPrice = crownPricing.get(tempPos).getPrice();
+            }
+
 
             DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
             handler.deleteCartProduct(crownProductId);
