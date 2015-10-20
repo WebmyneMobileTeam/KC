@@ -101,7 +101,8 @@ public class CartActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < crowns.size(); i++) {
-            price = price + Integer.parseInt(crowns.get(i).getProductTotalPrice());
+            int subTotal = Integer.parseInt(crowns.get(i).getProductUnitPrice()) * crowns.get(i).getProductQty();
+            price = price + subTotal;
             CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
             crownView.setOnRemoveCrownListener(onRemoveCrownListener);
             gridLayout.addView(crownView);
@@ -171,7 +172,6 @@ public class CartActivity extends AppCompatActivity {
                         handler.openDataBase();
                         handler.deleteCrownProduct(productName);
                         handler.close();
-
 
                     } catch (SQLException e) {
                         e.printStackTrace();

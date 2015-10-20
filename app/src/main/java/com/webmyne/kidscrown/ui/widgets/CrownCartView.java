@@ -8,6 +8,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -117,7 +118,8 @@ public class CrownCartView extends LinearLayout {
         txtName.setText(cart.getProductName());
         unitPrice.setText("Per Crown Rs. " + cart.getProductUnitPrice());
         unitQty.setText(cart.getProductQty() + "");
-        totalPrice.setText("Sub Total Rs. " + cart.getProductTotalPrice());
+        int subTotal = Integer.parseInt(cart.getProductUnitPrice()) * cart.getProductQty();
+        totalPrice.setText("Sub Total Rs. " + subTotal);
 
         final int unitPrice = Integer.parseInt(cart.getProductUnitPrice());
         final String productName = cart.getProductName();

@@ -151,7 +151,11 @@ public class MyOrdersFragment extends Fragment {
             @Override
             public void error(String error) {
                 pd.dismiss();
-                emptyOrder.setVisibility(View.VISIBLE);
+                if (data.size() == 0) {
+                    emptyOrder.setVisibility(View.VISIBLE);
+                } else {
+                    emptyOrder.setVisibility(View.GONE);
+                }
             }
         }.call();
     }

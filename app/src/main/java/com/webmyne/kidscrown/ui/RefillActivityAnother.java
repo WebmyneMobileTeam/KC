@@ -393,13 +393,14 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 }
             }
 
-            if(isPass == false){
+            if (isPass == false) {
                 int tempPos = 0;
                 int max = Collections.max(maxies);
                 tempPos = maxies.indexOf(Integer.valueOf(max));
                 unitPrice = crownPricing.get(tempPos).getPrice();
             }
 
+            Log.e("unit_price", unitPrice + " ---");
 
             DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
             handler.deleteCartProduct(crownProductId);

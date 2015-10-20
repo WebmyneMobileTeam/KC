@@ -15,9 +15,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/S_TEXT_SIZE"
-            android:paddingRight="@dimen/S_TEXT_SIZE"
-            android:paddingTop="@dimen/S_TEXT_SIZE">
+            android:paddingLeft="@dimen/VS_TEXT_SIZE"
+            android:paddingRight="@dimen/VS_TEXT_SIZE"
+            android:paddingTop="@dimen/VS_TEXT_SIZE">
 
             <TextView
                 android:id="@+id/txtName"
