@@ -1,8 +1,6 @@
 package com.webmyne.kidscrown.helper;
 
-/**
- * @author jatin
- */
+
 public class Constants {
 
     // utils
