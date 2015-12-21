@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class OrderProduct {
 
+    @SerializedName("DiscountPercent")
+    public int DiscountPercent;
+
     @SerializedName("FullAddress")
     public String FullAddress;
 

@@ -21,6 +21,8 @@ public class Constants {
     public static final String UPDATE_URL = BASE_URL + "/User.svc/json/UpdateUserProfile";
     public static final String GET_EXISTING_ADDRESS = BASE_URL + "/Master.svc/json/FetchShippingAddresses";
 
+    public static final String GET_OFFERS = BASE_URL + "/Order.svc/json/GetRecentDiscount";
+
     public static final String SAVE_ADDRESS_URL = BASE_URL + "/Master.svc/json/AddNewShippingAddress";
 
     public static final String PLACE_ORDER = BASE_URL + "/Order.svc/json/PlaceOrder";

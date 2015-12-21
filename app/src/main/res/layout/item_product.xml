@@ -40,7 +40,6 @@
                 android:text="@string/cheese_ipsum"
                 android:textColor="#fff" />
 
-
         </LinearLayout>
 
         <ImageView

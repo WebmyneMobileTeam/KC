@@ -10,24 +10,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.adapters.CustomGridAdapter;
-import com.webmyne.kidscrown.adapters.RefillOrderAdapterAnother;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.ui.widgets.CrownCartView;
-import com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 
 import java.sql.SQLException;
@@ -39,11 +31,13 @@ public class CartActivity extends AppCompatActivity {
     GridLayout gridLayout;
     ArrayList<ProductCart> products = new ArrayList<>();
     ArrayList<ProductCart> crowns = new ArrayList<>();
-    TextView totalPrice, emptyCart;
-    LinearLayout linearParent, totalLayout;
+    TextView totalPrice, emptyCart, subtotalPrice, txtSaved, txtSavedPrice;
+    LinearLayout linearParent, totalLayout, offerLayout;
     int price, crownProductId;
     SharedPreferences preferences;
     RelativeLayout rLayoutCheckout;
+    boolean isOffer;
+    float percentage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +46,17 @@ public class CartActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
         crownProductId = preferences.getInt("crownProductId", 0);
+        isOffer = preferences.getBoolean("offer", false);
 
         init();
+
+        if (isOffer) {
+            percentage = preferences.getFloat("percentage", 0);
+            offerLayout.setVisibility(View.VISIBLE);
+            txtSaved.setText("You saved as per " + percentage+"%");
+        } else {
+            offerLayout.setVisibility(View.GONE);
+        }
 
         fetchCartDetails();
 
@@ -70,6 +73,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void fetchCartDetails() {
+
         price = 0;
         gridLayout.removeAllViews();
         gridLayout.invalidate();
@@ -108,7 +112,17 @@ public class CartActivity extends AppCompatActivity {
             gridLayout.addView(crownView);
         }
 
-        totalPrice.setText("Rs. " + price);
+        if (isOffer) {
+            subtotalPrice.setText("Rs. " + price);
+            float savedPrice = ((price * percentage) / 100);
+            txtSavedPrice.setText("Rs. " + savedPrice);
+            totalPrice.setText("Rs. " + (price - (int) savedPrice));
+
+        } else {
+
+            totalPrice.setText("Rs. " + price);
+        }
+
     }
 
     ItemCartView.OnValueChangeListener onValueChangeListener = new ItemCartView.OnValueChangeListener() {
@@ -127,7 +141,19 @@ public class CartActivity extends AppCompatActivity {
                 for (int k = 0; k < crowns.size(); k++) {
                     price += Integer.parseInt(crowns.get(k).getProductTotalPrice());
                 }
-                totalPrice.setText("Rs. " + price);
+
+
+                if (isOffer) {
+                    subtotalPrice.setText("Rs. " + price);
+                    float savedPrice = ((price * percentage) / 100);
+                    txtSavedPrice.setText("Rs. " + savedPrice);
+                    totalPrice.setText("Rs. " + (price - (int) savedPrice));
+
+                } else {
+
+                    totalPrice.setText("Rs. " + price);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -161,7 +187,7 @@ public class CartActivity extends AppCompatActivity {
                 protected void onPreExecute() {
                     super.onPreExecute();
 
-                    pd = ProgressDialog.show(CartActivity.this,"Please wait","Updating Cart",false);
+                    pd = ProgressDialog.show(CartActivity.this, "Please wait", "Updating Cart", false);
 
                 }
 
@@ -188,7 +214,6 @@ public class CartActivity extends AppCompatActivity {
             }.execute();
 
 
-
         }
     };
 
@@ -197,6 +222,10 @@ public class CartActivity extends AppCompatActivity {
         gridLayout = (GridLayout) findViewById(R.id.gridLayout);
         gridLayout.setColumnCount(2);
 
+        offerLayout = (LinearLayout) findViewById(R.id.offerLayout);
+        txtSaved = (TextView) findViewById(R.id.txtSaved);
+        txtSavedPrice = (TextView) findViewById(R.id.txtSavedPrice);
+        subtotalPrice = (TextView) findViewById(R.id.subtotalPrice);
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);

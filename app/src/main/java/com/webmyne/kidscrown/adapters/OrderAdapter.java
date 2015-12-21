@@ -1,13 +1,11 @@
 package com.webmyne.kidscrown.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
@@ -53,9 +51,16 @@ public class OrderAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.txtOrderId = (TextView) convertView.findViewById(R.id.txtOrderId);
             holder.txtOrderDate = (TextView) convertView.findViewById(R.id.txtOrderDate);
-            holder.txtAmount = (TextView) convertView.findViewById(R.id.txtAmount);
+            holder.txtAmount = (TextView) convertView.findViewById(R.id.txtPayable);
             holder.txtPaymentStatus = (TextView) convertView.findViewById(R.id.txtPaymentStatus);
             holder.txtShipping = (TextView) convertView.findViewById(R.id.txtShipping);
+
+            holder.layout1 = (RelativeLayout) convertView.findViewById(R.id.layout1);
+            holder.layout2 = (RelativeLayout) convertView.findViewById(R.id.layout2);
+
+            holder.layout1.setVisibility(View.GONE);
+            holder.layout2.setVisibility(View.GONE);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -82,5 +87,6 @@ public class OrderAdapter extends BaseAdapter {
 
     class ViewHolder {
         TextView txtOrderId, txtOrderDate, txtAmount, txtPaymentStatus, txtShipping;
+        RelativeLayout layout1, layout2;
     }
 }

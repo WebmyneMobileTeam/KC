@@ -4,8 +4,47 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingTop="@dimen/CARD_DIVIDER_HEIGHT"
     tools:context="com.webmyne.kidscrown.fragment.HomeFragment">
+
+    <LinearLayout
+        android:id="@+id/offerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#991B1E"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/L_MARGIN_SIZE"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtOffer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Offer text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#fff"
+                android:textSize="@dimen/S_TEXT_SIZE" />
+
+            <TextView
+                android:id="@+id/txtDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:text="Offer discount in %"
+                android:textColor="#fff"
+                android:textSize="@dimen/S_TEXT_SIZE" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/FDAicon"
@@ -20,8 +59,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/FDAicon"
+        android:layout_below="@+id/offerLayout"
         android:layout_marginLeft="@dimen/card_margin"
         android:layout_marginRight="@dimen/card_margin"
+        android:layout_marginTop="8dp"
         android:divider="#00000000"
         android:dividerHeight="@dimen/CARD_DIVIDER_HEIGHT"
         android:scrollbars="none"></ListView>

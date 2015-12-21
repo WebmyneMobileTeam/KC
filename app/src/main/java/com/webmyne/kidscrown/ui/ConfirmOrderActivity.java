@@ -2,7 +2,6 @@ package com.webmyne.kidscrown.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,12 +27,8 @@ import com.webmyne.kidscrown.model.OrderModel;
 import com.webmyne.kidscrown.model.UserProfile;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,8 +38,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     ArrayList<OrderModel> orders = new ArrayList<>();
-    TextView totalPrice, txtBilling, txtShipping;
-    LinearLayout totalLayout;
+    TextView totalPrice, txtBilling, txtShipping, subtotalPrice, txtSaved, txtSavedPrice;
+    LinearLayout totalLayout, offerLayout;
     int price;
     ListView orderListview;
     OrderListAdapter adapter;
@@ -57,6 +52,9 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     int crownProductId;
     ProgressDialog pd1;
     SharedPreferences preferences;
+    boolean isOffer;
+    float percentage;
+    float savedPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +70,15 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
         crownProductId = preferences.getInt("crownProductId", 0);
+        isOffer = preferences.getBoolean("offer", false);
+
+        if (isOffer) {
+            percentage = preferences.getFloat("percentage", 0);
+            offerLayout.setVisibility(View.VISIBLE);
+            txtSaved.setText("You saved as per " + percentage + "%");
+        } else {
+            offerLayout.setVisibility(View.GONE);
+        }
 
         // Generate Random Order Id
         char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
@@ -124,10 +131,24 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         adapter = new OrderListAdapter(ConfirmOrderActivity.this, orders);
         orderListview.setAdapter(adapter);
 
-        totalPrice.setText(getResources().getString(R.string.Rs) + " " + price);
+        if (isOffer) {
+            subtotalPrice.setText("Rs. " + price);
+            savedPrice = ((price * percentage) / 100);
+            txtSavedPrice.setText("Rs. " + savedPrice);
+            totalPrice.setText("Rs. " + (price - (int) savedPrice));
+
+        } else {
+
+            totalPrice.setText("Rs. " + price);
+        }
     }
 
     private void init() {
+        offerLayout = (LinearLayout) findViewById(R.id.offerLayout);
+        txtSaved = (TextView) findViewById(R.id.txtSaved);
+        txtSavedPrice = (TextView) findViewById(R.id.txtSavedPrice);
+        subtotalPrice = (TextView) findViewById(R.id.subtotalPrice);
+
         continueLayout = (RelativeLayout) findViewById(R.id.continueLayout);
         orderListview = (ListView) findViewById(R.id.orderListview);
         txtBilling = (TextView) findViewById(R.id.txtBilling);
@@ -183,19 +204,16 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     private void createAnotherOrder(final ArrayList<OrderModel> orders) {
 
 
-
-
         new AsyncTask<Void, Void, Void>() {
 
-             JSONObject mainObect = new JSONObject();
-             JSONObject kitObject = new JSONObject();
-             JSONObject crownMainObject = new JSONObject();
-             JSONObject crownSubObject = new JSONObject();
+            JSONObject mainObect = new JSONObject();
+            JSONObject kitObject = new JSONObject();
+            JSONObject crownMainObject = new JSONObject();
+            JSONObject crownSubObject = new JSONObject();
 
             int grandTotal = 0, crownTotal = 0, crownQty = 0, crownSpecificId = 0;
             final JSONArray ordersArray = new JSONArray();
             final JSONArray crownArray = new JSONArray();
-
 
             @Override
             protected Void doInBackground(Void... params) {
@@ -257,11 +275,14 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
                     if (grandTotal < 3000) {
                         grandTotal += 100;
-                        mainObect.put("grand_total", grandTotal);
                         mainObect.put("shipping_cost", 100);
+                        mainObect.put("DiscountPercent", savedPrice);
+                        mainObect.put("grand_total", grandTotal - savedPrice);
+
                     } else {
-                        mainObect.put("grand_total", grandTotal);
                         mainObect.put("shipping_cost", 0);
+                        mainObect.put("DiscountPercent", savedPrice);
+                        mainObect.put("grand_total", grandTotal - savedPrice);
                     }
 
                     mainObect.put("shipping_address", shippingAddress);
@@ -302,10 +323,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                         Log.e("error", error);
                     }
                 }.call();
-
-
-
-
 
 
             }

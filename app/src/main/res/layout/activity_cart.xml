@@ -60,6 +60,64 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/offerLayout"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+                    android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+                    android:padding="@dimen/M_MARGIN_SIZE">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="SubTotal"
+                        android:textSize="@dimen/S_TEXT_SIZE"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/subtotalPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="Subtotal"
+                        android:textSize="@dimen/S_TEXT_SIZE" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
+                    android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+                    android:padding="@dimen/M_MARGIN_SIZE">
+
+                    <TextView
+                        android:id="@+id/txtSaved"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="You Saved"
+                        android:textSize="@dimen/S_TEXT_SIZE"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtSavedPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="txtSavedPrice"
+                        android:textSize="@dimen/S_TEXT_SIZE" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

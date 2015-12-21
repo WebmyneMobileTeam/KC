@@ -44,27 +44,81 @@
                 android:textStyle="bold" />
 
             <RelativeLayout
-                android:id="@+id/layout"
+                android:id="@+id/layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/payment"
+                    android:id="@+id/payment1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:text="Payment : "
+                    android:text="Total Payment : "
                     android:textSize="@dimen/VS_TEXT_SIZE" />
 
                 <TextView
-                    android:id="@+id/txtAmount"
+                    android:id="@+id/txtTotalAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/payment"
+                    android:layout_toRightOf="@+id/payment1"
+                    android:text="Amount"
+                    android:textSize="@dimen/VS_TEXT_SIZE" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/payment2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="You Saved : "
+                    android:textSize="@dimen/VS_TEXT_SIZE" />
+
+                <TextView
+                    android:id="@+id/txtSaved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/payment2"
+                    android:text="Amount"
+                    android:textSize="@dimen/VS_TEXT_SIZE" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/payment3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="Payable Amount : "
+                    android:textSize="@dimen/VS_TEXT_SIZE" />
+
+                <TextView
+                    android:id="@+id/txtPayable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/payment3"
                     android:text="Amount"
                     android:textSize="@dimen/VS_TEXT_SIZE" />
 
@@ -76,6 +130,7 @@
                     android:layout_centerVertical="true"
                     android:text="Payment Status"
                     android:textSize="@dimen/VS_TEXT_SIZE" />
+
             </RelativeLayout>
 
             <TextView
