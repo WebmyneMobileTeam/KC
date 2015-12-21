@@ -6,11 +6,11 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -30,10 +30,7 @@ import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class ProductDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -223,8 +220,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             window.setStatusBarColor(color);
         }
 
+        DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
+        int max = handler.getLimit(productID);
+        handler.close();
 
-        int max = cursorProductPrice.getInt(cursorProductPrice.getColumnIndexOrThrow("max"));
         values = new ArrayList<>();
         for (int i = 1; i <= max; i++) {
             values.add("" + i);
@@ -285,7 +284,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         txtPriceQTY.setText(String.format("x %s QTY", values.get(position)));
         qty = Integer.parseInt(values.get(position));
         int total = price * qty;
-        txtPriceTotal.setText(String.format("= Rs. %d", total));
+        txtPriceTotal.setText(String.format("= Rs.%d", total));
     }
 
     private void checkCart(int productID) {

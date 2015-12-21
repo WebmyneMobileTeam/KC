@@ -119,9 +119,12 @@ public class ItemCartView extends LinearLayout {
         txtName.setText(cart.getProductName());
         unitPrice.setText("Rs. " + cart.getProductUnitPrice());
         unitQty.setText("x " + (cart.getProductQty()) + " QTY");
-        totalPrice.setText("= Rs. " + cart.getProductTotalPrice());
+        totalPrice.setText("= Rs." + cart.getProductTotalPrice());
 
-        int max = cart.getMaxQty();
+        DatabaseHandler handler = new DatabaseHandler(context);
+        int max = handler.getLimit(cart.getProductId());
+        handler.close();
+
         values = new ArrayList<>();
         for (int i = 1; i <= max; i++) {
             values.add("" + i);

@@ -167,6 +167,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("name", product.name);
             values.put("product_number", product.product_number);
             values.put("color", colors.get(pos));
+            values.put("order_limit", product.OrderLimit);
             myDataBase.insert(TABLE_PRODUCT, null, values);
 
             if (pos >= colors.size() - 1) {
@@ -179,6 +180,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             saveProductPrices(product.prices);
 
         }
+
+    }
+
+    public int getLimit(int productID){
+        int qty = 0;
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT order_limit FROM " + TABLE_PRODUCT + " WHERE product_id =" + productID;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            qty = cursor.getInt(cursor.getColumnIndexOrThrow("order_limit"));
+        }
+        return qty;
 
     }
 
@@ -231,7 +247,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
 
 
-
     }
 
     public void deleteCrownProduct(String productName) {
@@ -253,9 +268,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ArrayList<ProductCart> crowns = getCrownCartProduct(crownProductID);
 
-        if(crowns == null || crowns.isEmpty()){
+        if (crowns == null || crowns.isEmpty()) {
 
-        }else{
+        } else {
 
             ArrayList<CrownPricing> crownPricing = new ArrayList<>();
             crownPricing = getCrownPricing(crownProductID);
@@ -287,18 +302,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 }
             }
 
-            if(isPass == false){
+            if (isPass == false) {
                 int tempPos = 0;
                 int max = Collections.max(maxies);
                 tempPos = maxies.indexOf(Integer.valueOf(max));
                 unitPrice = crownPricing.get(tempPos).getPrice();
             }
 
-            for(ProductCart productCart : crowns){
+            for (ProductCart productCart : crowns) {
                 ContentValues cv = new ContentValues();
-                cv.put("unit_price",unitPrice);
+                cv.put("unit_price", unitPrice);
                 //myDataBase.update("textlines",cvTextLines,"id_ " + " = ?",new String[]{""+textLineID});
-                myDataBase.update(TABLE_CART_ITEM,cv,"product_name " + " = ?",new String[]{""+productCart.getProductName()});
+                myDataBase.update(TABLE_CART_ITEM, cv, "product_name " + " = ?", new String[]{"" + productCart.getProductName()});
             }
 
 

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
@@ -42,6 +43,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     Dialog dialog;
     LinearLayout offerLayout;
     TextView txtOffer, txtDiscount;
+    ImageView offerImage;
 
     public HomeFragment() {
 
@@ -58,6 +60,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     private void init(View v) {
+        offerImage = (ImageView) v.findViewById(R.id.offerImage);
         txtDiscount = (TextView) v.findViewById(R.id.txtDiscount);
         txtOffer = (TextView) v.findViewById(R.id.txtOffer);
         offerLayout = (LinearLayout) v.findViewById(R.id.offerLayout);
@@ -134,6 +137,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 } else {
                     offerLayout.setVisibility(View.VISIBLE);
                     txtOffer.setText(discountModels.get(0).DiscountInitial);
+                    Glide.with(getActivity()).load(discountModels.get(0).DiscountImage).into(offerImage);
                     txtDiscount.setText("Offer " + discountModels.get(0).DiscountPercentage + "%");
                     editor.putBoolean("offer", true);
                     editor.putFloat("percentage", discountModels.get(0).DiscountPercentage);

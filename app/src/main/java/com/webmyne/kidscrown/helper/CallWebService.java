@@ -129,6 +129,7 @@ public abstract class CallWebService implements IService {
                         error("Server Error");
                     }
                 });
+
                 request.setRetryPolicy(
                         new DefaultRetryPolicy(
                                 0,

@@ -30,5 +30,7 @@ public class Product {
     @SerializedName("lstProductPriceForMobile")
     public ArrayList<ProductPrice> prices;
 
+    @SerializedName("OrderLimit")
+    public int OrderLimit;
 
 }

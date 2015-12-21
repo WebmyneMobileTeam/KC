@@ -114,40 +114,49 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Pricing"
-                        android:textSize="@dimen/M_TEXT_SIZE"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="@dimen/M_TEXT_SIZE" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/txtPriceIndividual"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
-                            android:textSize="@dimen/M_TEXT_SIZE"
-                            android:text="Price" />
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/txtPriceQTY"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
-                            android:textSize="@dimen/M_TEXT_SIZE"
-                            android:text="Price" />
+                            <TextView
+                                android:id="@+id/txtPriceIndividual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_gravity="left|center_vertical"
+                                android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                                android:text="Price"
+                                android:textSize="@dimen/M_TEXT_SIZE" />
 
-                        <TextView
-                            android:id="@+id/txtPriceTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right|center_vertical"
-                            android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
-                            android:textSize="@dimen/M_TEXT_SIZE"
-                            android:text="Price"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/txtPriceQTY"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                                android:text="Price"
+                                android:textSize="@dimen/M_TEXT_SIZE" />
+
+                            <TextView
+                                android:id="@+id/txtPriceTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_gravity="right|center_vertical"
+                                android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                                android:text="Price"
+                                android:textSize="@dimen/M_TEXT_SIZE"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                     </FrameLayout>
 
@@ -177,16 +186,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Info"
-                        android:textSize="@dimen/M_TEXT_SIZE"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="@dimen/M_TEXT_SIZE" />
 
                     <TextView
                         android:id="@+id/txtInfo"
-                        android:textSize="@dimen/M_TEXT_SIZE"
-                        android:layout_marginTop="@dimen/L_MARGIN_SIZE"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/cheese_ipsum" />
+                        android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                        android:text="@string/cheese_ipsum"
+                        android:textSize="@dimen/M_TEXT_SIZE" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -207,8 +216,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Images"
-                        android:textSize="@dimen/M_TEXT_SIZE"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="@dimen/M_TEXT_SIZE" />
 
                     <com.webmyne.kidscrown.ui.widgets.FlowLayout
                         android:id="@+id/flowImages"
