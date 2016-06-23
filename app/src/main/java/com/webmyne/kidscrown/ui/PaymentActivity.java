@@ -19,7 +19,7 @@ public class PaymentActivity extends AppCompatActivity {
     private ImageView imgCart;
     private Button viewOrders;
     TextView txtConfirm;
-    String strHtml="<p align=\"center\">\n" +
+    String strHtml = "<p align=\"center\">\n" +
             "    <strong>Order Confirmation</strong>\n" +
             "</p>\n" +
             "<p align=\"center\">\n" +
@@ -64,6 +64,8 @@ public class PaymentActivity extends AppCompatActivity {
             "    <br/>\n" +
             "    Beneficiary A/c No. : 51161131000193\n" +
             "</p>";
+    
+    //// TODO: 18-04-2016 SAGAR IFS CODE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

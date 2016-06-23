@@ -355,7 +355,7 @@ public class RegisterActivity extends AppCompatActivity implements
     }
 
     private void socialMediaSignUpProcess(String email, String fName, String lName, String g, String regNo) {
-        url = Constants.SOCIAL_MEDIA_SIGN_UP + email + "/" + fName + "/" + lName + "/" + g + "/" + regNo;
+        url = Constants.SOCIAL_MEDIA_SIGN_UP + email + "/" + fName + "/" + lName + "/" + g + "/" + regNo + "/A";
 
         pd = ProgressDialog.show(RegisterActivity.this, "Loading", "Please wait..", true);
         Functions.logE("login request url", url);

@@ -287,6 +287,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
                     mainObect.put("shipping_address", shippingAddress);
                     mainObect.put("OrdersArray", ordersArray);
+                    mainObect.put("MobileOS", "A");
 
                 } catch (Exception e) {
                     e.printStackTrace();

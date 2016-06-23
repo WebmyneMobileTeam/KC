@@ -75,6 +75,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ShippingDetailsActivity.this, "user_pref", 0);
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
         userId = currentUserObj.UserID;
+        Log.e("userId", userId);
 
         init();
 
@@ -527,6 +528,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             billingAddress.put("PinCode", billingAndShippingAddress.getBillingPincode());
             billingAddress.put("StateID", billingAndShippingAddress.getBillingState());
             billingAddress.put("UserID", Integer.parseInt(userId));
+            Log.e("userId", userId);
 
             shippingAddress = new JSONObject();
             shippingAddress.put("Address1", billingAndShippingAddress.getShippingAddress1());
