@@ -56,6 +56,9 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     float percentage;
     float savedPrice;
 
+    private RelativeLayout chargeLayout;
+    private TextView txtCharge;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,20 +129,28 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < orders.size(); i++) {
-            price += Integer.parseInt(orders.get(i).getProductTotalPrice());
+            int p = orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
+            price += p;
         }
         adapter = new OrderListAdapter(ConfirmOrderActivity.this, orders);
         orderListview.setAdapter(adapter);
 
         if (isOffer) {
-            subtotalPrice.setText("Rs. " + price);
+            subtotalPrice.setText(getString(R.string.Rs) + " " + price);
             savedPrice = ((price * percentage) / 100);
-            txtSavedPrice.setText("Rs. " + savedPrice);
-            totalPrice.setText("Rs. " + (price - (int) savedPrice));
+            txtSavedPrice.setText(getString(R.string.Rs) + " " + savedPrice);
+            totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
 
         } else {
 
-            totalPrice.setText("Rs. " + price);
+            totalPrice.setText(getString(R.string.Rs) + " " + price);
+        }
+
+        if (price < 3000) {
+            totalPrice.setText(getString(R.string.Rs) + " " + (price + 100));
+            chargeLayout.setVisibility(View.VISIBLE);
+        } else {
+            chargeLayout.setVisibility(View.GONE);
         }
     }
 
@@ -148,6 +159,10 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         txtSaved = (TextView) findViewById(R.id.txtSaved);
         txtSavedPrice = (TextView) findViewById(R.id.txtSavedPrice);
         subtotalPrice = (TextView) findViewById(R.id.subtotalPrice);
+        chargeLayout = (RelativeLayout) findViewById(R.id.chargeLayout);
+        txtCharge = (TextView) findViewById(R.id.txtCharge);
+
+        txtCharge.setText(getString(R.string.Rs) + " 100");
 
         continueLayout = (RelativeLayout) findViewById(R.id.continueLayout);
         orderListview = (ListView) findViewById(R.id.orderListview);
@@ -202,7 +217,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     }
 
     private void createAnotherOrder(final ArrayList<OrderModel> orders) {
-
 
         new AsyncTask<Void, Void, Void>() {
 
@@ -324,8 +338,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                         Log.e("error", error);
                     }
                 }.call();
-
-
             }
         }.execute();
 

@@ -62,7 +62,9 @@ public class OrderListAdapter extends BaseAdapter {
 
         holder.productName.setText(orders.get(position).getProductName());
         holder.productQty.setText(orders.get(position).getProductQty() + "");
-        holder.productPrice.setText(context.getResources().getString(R.string.Rs) + " " + orders.get(position).getProductTotalPrice());
+
+        int total = orders.get(position).getProductQty() * Integer.parseInt(orders.get(position).getProductUnitPrice());
+        holder.productPrice.setText(context.getResources().getString(R.string.Rs) + " " + total);
 
         return convertView;
     }

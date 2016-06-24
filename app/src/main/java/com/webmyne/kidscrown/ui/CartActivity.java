@@ -53,7 +53,7 @@ public class CartActivity extends AppCompatActivity {
         if (isOffer) {
             percentage = preferences.getFloat("percentage", 0);
             offerLayout.setVisibility(View.VISIBLE);
-            txtSaved.setText("You saved as per " + percentage+"%");
+            txtSaved.setText("You saved as per " + percentage + "%");
         } else {
             offerLayout.setVisibility(View.GONE);
         }
@@ -113,14 +113,14 @@ public class CartActivity extends AppCompatActivity {
         }
 
         if (isOffer) {
-            subtotalPrice.setText("Rs. " + price);
+            subtotalPrice.setText(getString(R.string.Rs) + " " + price);
             float savedPrice = ((price * percentage) / 100);
-            txtSavedPrice.setText("Rs. " + savedPrice);
-            totalPrice.setText("Rs. " + (price - (int) savedPrice));
+            txtSavedPrice.setText(getString(R.string.Rs) + " " + savedPrice);
+            totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
 
         } else {
 
-            totalPrice.setText("Rs. " + price);
+            totalPrice.setText(getString(R.string.Rs) + " " + price);
         }
 
     }
@@ -144,14 +144,14 @@ public class CartActivity extends AppCompatActivity {
 
 
                 if (isOffer) {
-                    subtotalPrice.setText("Rs. " + price);
+                    subtotalPrice.setText(getString(R.string.Rs) + " " + price);
                     float savedPrice = ((price * percentage) / 100);
-                    txtSavedPrice.setText("Rs. " + savedPrice);
-                    totalPrice.setText("Rs. " + (price - (int) savedPrice));
+                    txtSavedPrice.setText(getString(R.string.Rs) + " " + savedPrice);
+                    totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
 
                 } else {
 
-                    totalPrice.setText("Rs. " + price);
+                    totalPrice.setText(getString(R.string.Rs) + " " + price);
                 }
 
             } catch (Exception e) {
