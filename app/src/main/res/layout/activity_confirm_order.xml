@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context="com.webmyne.kidscrown.ui.CartActivity">
 
-    <include layout="@layout/app_bar2"></include>
+    <include layout="@layout/app_bar2"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

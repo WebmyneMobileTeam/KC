@@ -12,7 +12,7 @@
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_crown">CrownActivity</string>
     <string name="title_activity_refill">RefillActivity</string>
@@ -38,5 +38,16 @@
     <string name="title_activity_payment">PaymentActivity</string>
     <string name="title_activity_my_orders">MyOrdersActivity</string>
     <string name="title_activity_order_details">OrderDetailsActivity</string>
+
+    <string-array name="intro_text">
+        <item>Step 1: Login with your credentials. If you are new user then click New User? Sign Up</item>
+        <item>Step 2: You can register in our application with your credentials or via Social Media</item>
+        <item>Step 3: You can see latest offers and products.</item>
+        <item>Step 4: Product Details Page</item>
+        <item>Step 5: Click on Refill from dashboard to refill your kit.</item>
+        <item>Step 6: Your cart page. You can checkout your order from here.</item>
+        <item>Step 7: In this page, you can fill your shipping and billing details.</item>
+        <item>Step 8: Confirmation page, where you can review and place your order.</item>
+    </string-array>
 
 </resources>

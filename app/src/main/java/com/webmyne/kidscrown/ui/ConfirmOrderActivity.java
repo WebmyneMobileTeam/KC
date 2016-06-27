@@ -40,7 +40,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     ArrayList<OrderModel> orders = new ArrayList<>();
     TextView totalPrice, txtBilling, txtShipping, subtotalPrice, txtSaved, txtSavedPrice;
     LinearLayout totalLayout, offerLayout;
-    int price;
+    int price, finalPrice;
     ListView orderListview;
     OrderListAdapter adapter;
     ArrayList<AddressModel> addressModels;
@@ -139,19 +139,26 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             subtotalPrice.setText(getString(R.string.Rs) + " " + price);
             savedPrice = ((price * percentage) / 100);
             txtSavedPrice.setText(getString(R.string.Rs) + " " + savedPrice);
-            totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
+            finalPrice = price - (int) savedPrice;
 
+            //  totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
         } else {
+            finalPrice = price;
 
-            totalPrice.setText(getString(R.string.Rs) + " " + price);
+            // totalPrice.setText(getString(R.string.Rs) + " " + price);
         }
 
-        if (price < 3000) {
-            totalPrice.setText(getString(R.string.Rs) + " " + (price + 100));
+        int shippingCost = 0;
+
+        if (finalPrice < 3000) {
+            shippingCost = 100;
             chargeLayout.setVisibility(View.VISIBLE);
         } else {
+            shippingCost = 0;
             chargeLayout.setVisibility(View.GONE);
         }
+
+        totalPrice.setText(getString(R.string.Rs) + " " + (finalPrice + shippingCost));
     }
 
     private void init() {
@@ -340,7 +347,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 }.call();
             }
         }.execute();
-
 
     }
 

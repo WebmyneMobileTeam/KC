@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
@@ -25,8 +25,7 @@ public class SplashActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
-       // printKeyHash(SplashActivity.this);
+        // printKeyHash(SplashActivity.this);
 
         new CountDownTimer(1000, 100) {
             @Override
@@ -38,13 +37,17 @@ public class SplashActivity extends ActionBarActivity {
             public void onFinish() {
                 SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
                 if (preferences.contains("isUserLogin")) {
-                        Intent i = new Intent(SplashActivity.this, MyDrawerActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                        finish();
+                    Intent i = new Intent(SplashActivity.this, MyDrawerActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+
+                } else if (!preferences.contains("isSplash")) {
+                    Functions.fireIntent(SplashActivity.this, IntroActivity.class);
+
                 } else {
                     Functions.fireIntent(SplashActivity.this, LoginActivity.class);
                 }
+
                 finish();
             }
         }.start();
@@ -75,8 +78,7 @@ public class SplashActivity extends ActionBarActivity {
             }
         } catch (PackageManager.NameNotFoundException e1) {
             Log.e("Name not found", e1.toString());
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             Log.e("No such an algorithm", e.toString());
         } catch (Exception e) {
             Log.e("Exception", e.toString());
