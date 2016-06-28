@@ -36,6 +36,9 @@ public class OrderProduct {
     @SerializedName("TaxAmount")
     public String TaxAmount;
 
+    @SerializedName("TotalAmount")
+    public String TotalAmount;
+
     @SerializedName("InvoiceNumber")
     public String InvoiceNumber;
 

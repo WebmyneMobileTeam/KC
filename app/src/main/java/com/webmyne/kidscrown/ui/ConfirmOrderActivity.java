@@ -264,8 +264,11 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                             crownSubObject.put("crown_specific_id", crownSpecificId);
                             crownSubObject.put("unit_price", orders.get(i).getProductUnitPrice());
                             crownSubObject.put("total_price", orders.get(i).getProductTotalPrice());
-                            grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
-                            crownTotal = crownTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+
+                            int crownTotalPrice = orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
+
+                            grandTotal = grandTotal + crownTotalPrice;
+                            crownTotal = crownTotal + crownTotalPrice;
                             crownArray.put(crownSubObject);
 
                         } else {
