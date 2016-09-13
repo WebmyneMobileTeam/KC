@@ -36,7 +36,7 @@ public class PaymentActivity extends AppCompatActivity {
             "    </p>\n" +
             "</div>\n" +
             "<p>\n" +
-            "    YOGI EnterPrices\n" +
+            "    YOGI EnterPrises\n" +
             "    <br/>\n" +
             "    A205, Krishna Township,\n" +
             "    <br/>\n" +
@@ -46,7 +46,7 @@ public class PaymentActivity extends AppCompatActivity {
             "    <br/>\n" +
             "    Gujarat\n" +
             "    <br/>\n" +
-            "    E-mail : yogienterprices2@gmail.com\n" +
+            "    E-mail : yogienterprises2@gmail.com\n" +
             "</p>\n" +
             "<div>\n" +
             "    <p>\n" +
@@ -54,18 +54,16 @@ public class PaymentActivity extends AppCompatActivity {
             "    </p>\n" +
             "</div>\n" +
             "<p>\n" +
-            "    Beneficiary Name: Yogi Enterprices Beneficiary\n" +
+            "    Beneficiary Name: YOGI Enterprises\n" +
             "    <br/>\n" +
-            "    Bank Name: Oriantal Bank Of Commerce\n" +
+            "    Bank Name: Oriental Bank Of Commerce\n" +
             "    <br/>\n" +
-            "    Branch: R.C Dutt Road ,Alkapuri ,Vadodara 390007\n" +
+            "    Branch: R.C.Dutt Road, Alkapuri, Vadodara - 390007\n" +
             "    <br/>\n" +
-            "    IFS Code: ORBC01100957\n" +
+            "    IFS Code: ORBC0100957\n" +
             "    <br/>\n" +
             "    Beneficiary A/c No. : 51161131000193\n" +
             "</p>";
-    
-    //// TODO: 18-04-2016 SAGAR IFS CODE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
