@@ -36,12 +36,12 @@ import org.json.JSONObject;
  *         * <blockquote></blockquote>
  *         <p>
  *         <code>CallWebService obj = new CallWebService() {
- * @Override public void response(String response) { // TODO Auto-generated
+ * @Override public void response(String response) {
  * method stub
  * <p>
  * <p>
  * }
- * @Override public void error(VolleyError error) { // TODO Auto-generated
+ * @Override public void error(VolleyError error) {
  * method stub
  * <p>
  * <p>
@@ -125,7 +125,7 @@ public abstract class CallWebService implements IService {
 
                     @Override
                     public void onErrorResponse(VolleyError e) {
-                        // TODO Auto-generated method stub
+
                         error("Server Error");
                     }
                 });

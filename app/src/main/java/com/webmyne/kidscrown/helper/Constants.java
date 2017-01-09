@@ -3,12 +3,18 @@ package com.webmyne.kidscrown.helper;
 
 public class Constants {
 
+    // product ids
+    public static final String INTRO = "14";
+    public static final String ASSORTED = "15";
+    public static final String CROWN = "16";
+    public static final String INVOICE = "0";
+
     // utils
     public static final boolean LOGGING_ENABLED = true;
     public static final String TAG = "KidsCrown";
 
-    //    public static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
-    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
+    private static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
+//    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
 
     public static final String REGISTRATION_URL = BASE_URL + "/User.svc/json/UserRegistration";
     public static final String LOGIN_URL = BASE_URL + "/User.svc/json/UserLogin/";

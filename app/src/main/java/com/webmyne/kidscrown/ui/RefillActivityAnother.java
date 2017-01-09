@@ -26,6 +26,7 @@ import com.webmyne.kidscrown.adapters.MyRecyclerAdapter;
 import com.webmyne.kidscrown.adapters.RefillOrderAdapterAnother;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.CrownProductItem;
@@ -63,6 +64,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     ArrayList<ProductCart> crowns = new ArrayList<>();
     int crownProductId;
     SharedPreferences preferences;
+    private GetSortedDiscount getSortedDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,6 +250,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     }
 
     private void init() {
+        getSortedDiscount = new GetSortedDiscount(this);
 
         btnOK = (Button) findViewById(R.id.btnOK);
         btnCancel = (Button) findViewById(R.id.btnRemove);
@@ -375,8 +378,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
             boolean isPass = false;
             List<Integer> maxies = new ArrayList<>();
 
-            //todo dhruvil/sagar/krishna
-
             if (totalCrowns != 0) {
 
                 for (int k = 0; k < crownPricing.size(); k++) {
@@ -411,7 +412,13 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 productDetails.add(item.itemName);
                 productDetails.add(item.itemQty + "");
                 productDetails.add(unitPrice + "");
-                productDetails.add((unitPrice * item.itemQty) + "");
+                int totalPrice = unitPrice * item.itemQty;
+                productDetails.add(totalPrice+ "");
+                if (getSortedDiscount.getOffer(String.valueOf(productID)) != null || !getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage.equals("0.00")) {
+                    String discount = getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage;
+                    productDetails.add(totalPrice - ((totalPrice * Float.valueOf(discount)) / 100) + "");
+                }
+
                 handler.addCartProduct(productDetails);
             }
             Snackbar.make(btnContinue, "Added to Cart", Snackbar.LENGTH_SHORT).show();
@@ -448,7 +455,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     @Override
     public void onDelete(int position) {
 
-        String toDelete = orderArray.get(position).itemName;//todo
+        String toDelete = orderArray.get(position).itemName;
 
         orderArray.remove(position);
         adapter.notifyDataSetChanged();

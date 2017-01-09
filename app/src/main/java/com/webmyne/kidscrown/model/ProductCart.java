@@ -4,8 +4,21 @@ package com.webmyne.kidscrown.model;
  * Created by sagartahelyani on 24-08-2015.
  */
 public class ProductCart {
+
     String productName, productUnitPrice, productTotalPrice;
-    int productId, productQty, maxQty;
+    int productId;
+    int productQty;
+    int maxQty;
+
+    public int getPayPrice() {
+        return payPrice;
+    }
+
+    public void setPayPrice(int payPrice) {
+        this.payPrice = payPrice;
+    }
+
+    int payPrice;
 
     public int getProductId() {
         return productId;

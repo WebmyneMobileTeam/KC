@@ -5,7 +5,7 @@
     android:orientation="vertical"
     tools:context="com.webmyne.kidscrown.ui.CartActivity">
 
-    <include layout="@layout/app_bar2"></include>
+    <include layout="@layout/app_bar2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                     android:id="@+id/linearParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical" />
 
                 <android.support.v7.widget.GridLayout
                     android:id="@+id/gridLayout"
@@ -49,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center" />
 
-
             </LinearLayout>
+
         </ScrollView>
 
         <LinearLayout
@@ -63,15 +63,15 @@
             <LinearLayout
                 android:id="@+id/offerLayout"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                    android:layout_marginRight="@dimen/VS_TEXT_SIZE"
-                    android:padding="@dimen/M_MARGIN_SIZE">
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -88,14 +88,15 @@
                         android:layout_alignParentRight="true"
                         android:text="Subtotal"
                         android:textSize="@dimen/S_TEXT_SIZE" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                    android:layout_marginRight="@dimen/VS_TEXT_SIZE"
-                    android:padding="@dimen/M_MARGIN_SIZE">
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/txtSaved"
@@ -113,17 +114,16 @@
                         android:layout_alignParentRight="true"
                         android:text="txtSavedPrice"
                         android:textSize="@dimen/S_TEXT_SIZE" />
-                </RelativeLayout>
 
+                </RelativeLayout>
 
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
-                android:padding="@dimen/M_MARGIN_SIZE">
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,18 +137,33 @@
                     android:id="@+id/totalPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:text="Subtotal"
-                    android:textSize="@dimen/S_TEXT_SIZE" />
+                    android:textSize="@dimen/S_TEXT_SIZE"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="right"
+                android:layout_marginBottom="@dimen/STD_TXT_PADDING_SIZE"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                android:text="*Discount will be shown on Confirmation Page"
+                android:textSize="@dimen/S_TEXT_SIZE"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/rLayoutCheckout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/STD_TXT_PADDING_SIZE"
-                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/mybutton"
                 android:padding="@dimen/VS_TEXT_SIZE">
 
@@ -173,7 +188,11 @@
                     android:textColor="#f1f1f1"
                     android:textSize="@dimen/M_TEXT_SIZE"
                     android:textStyle="bold" />
+
             </RelativeLayout>
+
         </LinearLayout>
+
     </RelativeLayout>
+
 </LinearLayout>

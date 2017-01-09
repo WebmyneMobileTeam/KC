@@ -2,7 +2,6 @@ package com.webmyne.kidscrown.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +33,7 @@ import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.BillingAndShippingAddress;
+import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.StateModel;
 import com.webmyne.kidscrown.model.UserProfile;
 
@@ -109,7 +109,6 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void fetchAddress(final ProgressDialog progressDialog) {
         String user = "?UserId=" + userId;
@@ -250,6 +249,11 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         rLContPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(ShippingDetailsActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
+
                 if (validationDone(v)) {
                     saveAddressDetails();
 
@@ -299,6 +303,11 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private boolean validationDone(View v) {

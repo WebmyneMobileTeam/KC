@@ -88,7 +88,10 @@ public class RegisterActivity extends AppCompatActivity implements
         linearFbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                LoginManager.getInstance().logInWithReadPermissions(RegisterActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
+                if (!Functions.isConnected(RegisterActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 askRegistrationNo();
             }
         });
@@ -96,6 +99,10 @@ public class RegisterActivity extends AppCompatActivity implements
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(RegisterActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
@@ -106,6 +113,10 @@ public class RegisterActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 // signInWithGplus();
+                if (!Functions.isConnected(RegisterActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 askRegistrationNo2();
 
             }
@@ -114,6 +125,10 @@ public class RegisterActivity extends AppCompatActivity implements
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(RegisterActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 checkValidation();
             }
         });
@@ -219,6 +234,11 @@ public class RegisterActivity extends AppCompatActivity implements
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(RegisterActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
+
                 if (edtRegNo.getText().toString().trim().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "Registraion Number must required.", Toast.LENGTH_LONG).show();
 
@@ -248,7 +268,10 @@ public class RegisterActivity extends AppCompatActivity implements
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (!Functions.isConnected(RegisterActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 if (edtRegNo.getText().toString().trim().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "Registraion Number must required.", Toast.LENGTH_LONG).show();
                 } else {

@@ -85,6 +85,11 @@ public class LoginActivity extends AppCompatActivity implements
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(LoginActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
+
                 if (edtUsername.getText().toString().trim().length() == 0) {
                     //Functions.snack(v, "Username or Email is required");
                     Snackbar snack = Snackbar.make(btnLogin, "Username or Email is required", Snackbar.LENGTH_LONG);
@@ -109,6 +114,10 @@ public class LoginActivity extends AppCompatActivity implements
         txtForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(LoginActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
@@ -125,6 +134,10 @@ public class LoginActivity extends AppCompatActivity implements
         btnGplus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(LoginActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 signInWithGplus();
 
             }
@@ -134,8 +147,11 @@ public class LoginActivity extends AppCompatActivity implements
         linearFbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(LoginActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
-                //  askRegistrationNo();
             }
         });
 

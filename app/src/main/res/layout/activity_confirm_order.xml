@@ -1,18 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.webmyne.kidscrown.ui.CartActivity">
 
-    <include layout="@layout/app_bar2"/>
+    <include layout="@layout/app_bar2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/card_margin"
-        android:layout_marginRight="@dimen/card_margin">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/emptyCart"
@@ -30,170 +27,160 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/totalLayout"
-            android:layout_alignParentTop="true"
-            android:visibility="gone">
+            android:fillViewport="true"
+            android:layout_alignParentTop="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#f1f1f1"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/linearParent"
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/M_MARGIN_SIZE"
-                    android:orientation="vertical"></LinearLayout>
-
-                <android.support.v7.widget.GridLayout
-                    android:id="@+id/gridLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    app:columnCount="2" />
-
-            </LinearLayout>
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/totalLayout"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
-                android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/S_TEXT_SIZE"
-                    android:paddingRight="@dimen/S_TEXT_SIZE"
-                    android:paddingTop="@dimen/S_TEXT_SIZE">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Billing Address"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
-
-                    <TextView
-                        android:id="@+id/txtBilling"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:layout_marginTop="@dimen/S_MARGIN_SIZE"
-                        android:text="Address"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.1dp"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/primaryColor"></View>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Shipping Address"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
-
-                    <TextView
-                        android:id="@+id/txtShipping"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:layout_marginTop="@dimen/S_MARGIN_SIZE"
-                        android:paddingBottom="@dimen/L_MARGIN_SIZE"
-                        android:text="Address"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
-                android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/M_MARGIN_SIZE">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/M_MARGIN_SIZE"
-                        android:text="Order Summary"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.1dp"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/primaryColor"></View>
+                    android:layout_marginLeft="@dimen/card_margin"
+                    android:layout_marginRight="@dimen/card_margin"
+                    android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/S_MARGIN_SIZE"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Billing Address"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="@dimen/S_TEXT_SIZE" />
+
+                        <TextView
+                            android:id="@+id/txtBilling"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginTop="@dimen/S_MARGIN_SIZE"
+                            android:text="Address"
+                            android:textSize="@dimen/S_TEXT_SIZE" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.1dp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/primaryColor" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Shipping Address"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="@dimen/S_TEXT_SIZE" />
+
+                        <TextView
+                            android:id="@+id/txtShipping"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginTop="@dimen/S_MARGIN_SIZE"
+                            android:paddingBottom="@dimen/L_MARGIN_SIZE"
+                            android:text="Address"
+                            android:textSize="@dimen/S_TEXT_SIZE" />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/card_margin"
+                    android:layout_marginRight="@dimen/card_margin"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:padding="@dimen/M_MARGIN_SIZE">
 
                         <TextView
-                            android:id="@+id/pdName"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
-                            android:text="Product"
-                            android:textSize="@dimen/VS_TEXT_SIZE"
-                            android:textStyle="bold" />
+                            android:paddingLeft="@dimen/M_MARGIN_SIZE"
+                            android:text="Order Summary"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="@dimen/S_TEXT_SIZE" />
 
-                        <TextView
-                            android:id="@+id/pdQty"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
-                            android:gravity="center"
-                            android:text="Quantity"
-                            android:textSize="@dimen/VS_TEXT_SIZE"
-                            android:textStyle="bold" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.1dp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/primaryColor" />
 
-                        <TextView
-                            android:id="@+id/pdPrice"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
-                            android:gravity="right"
-                            android:paddingRight="@dimen/M_MARGIN_SIZE"
-                            android:text="Price"
-                            android:textSize="@dimen/VS_TEXT_SIZE"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="@dimen/S_MARGIN_SIZE"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/M_MARGIN_SIZE">
+
+                            <TextView
+                                android:id="@+id/pdName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:text="Product"
+                                android:textSize="@dimen/VS_TEXT_SIZE"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/pdQty"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:gravity="center"
+                                android:text="Quantity"
+                                android:textSize="@dimen/VS_TEXT_SIZE"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/pdPrice"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:gravity="right"
+                                android:paddingRight="@dimen/M_MARGIN_SIZE"
+                                android:text="Price"
+                                android:textSize="@dimen/VS_TEXT_SIZE"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/orderRV"
+                            android:layout_width="match_parent"
+                            android:visibility="gone"
+                            android:layout_height="match_parent"/>
+
+                        <LinearLayout
+                            android:id="@+id/orderSummaryLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
-                    <ListView
-                        android:id="@+id/orderListview"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
+                </android.support.v7.widget.CardView>
 
-            </android.support.v7.widget.CardView>
+            </LinearLayout>
 
-        </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/totalLayout"
@@ -230,6 +217,7 @@
                         android:layout_alignParentRight="true"
                         android:text="Subtotal"
                         android:textSize="@dimen/S_TEXT_SIZE" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -255,6 +243,7 @@
                         android:layout_alignParentRight="true"
                         android:text="txtSavedPrice"
                         android:textSize="@dimen/S_TEXT_SIZE" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -280,6 +269,7 @@
                         android:layout_alignParentRight="true"
                         android:text="txtSavedPrice"
                         android:textSize="@dimen/S_TEXT_SIZE" />
+
                 </RelativeLayout>
 
             </LinearLayout>
@@ -341,7 +331,11 @@
                     android:textColor="#f1f1f1"
                     android:textSize="@dimen/M_TEXT_SIZE"
                     android:textStyle="bold" />
+
             </RelativeLayout>
+
         </LinearLayout>
+
     </RelativeLayout>
+
 </LinearLayout>

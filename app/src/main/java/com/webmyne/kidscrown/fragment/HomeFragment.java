@@ -25,11 +25,14 @@ import com.webmyne.kidscrown.adapters.ProductAdapter;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
+import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 import com.webmyne.kidscrown.ui.ProductDetailActivity;
 import com.webmyne.kidscrown.ui.RefillActivityAnother;
+import com.webmyne.kidscrown.ui.RegisterActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -39,15 +42,13 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private ListView listProducts;
     private ProductAdapter adapter;
-    ImageView closeInfo;
-    Dialog dialog;
-    LinearLayout offerLayout;
-    TextView txtOffer, txtDiscount;
-    ImageView offerImage;
-
-    public HomeFragment() {
-
-    }
+    private ImageView closeInfo;
+    private Dialog dialog;
+    private LinearLayout offerLayout;
+    private TextView txtOffer, txtDiscount;
+    private ImageView offerImage;
+    private DatabaseHandler handler;
+    private GetSortedDiscount sortedDiscount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +69,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         listProducts.setOnItemClickListener(this);
         listProducts.setEmptyView(v.findViewById(R.id.txtLoading));
         ((MyDrawerActivity) getActivity()).setTitle("Products");
+
+        handler = new DatabaseHandler(getActivity());
+        sortedDiscount = new GetSortedDiscount(getActivity());
     }
 
     @Override
@@ -75,10 +79,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         super.onResume();
         displayProducts();
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
-
-        if (preferences.getBoolean("isFirstTimeLogin", true) == true) {
-
+        SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        if (preferences.getBoolean("isFirstTimeLogin", true)) {
             displayDialogForFirstTime();
             closeInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,9 +88,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                     dialog.dismiss();
                 }
             });
-
         }
-
     }
 
     private void displayDialogForFirstTime() {
@@ -100,10 +100,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         dialog.setCancelable(true);
         dialog.show();
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
+        SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isFirstTimeLogin", false);
-        editor.commit();
+        editor.apply();
 
     }
 
@@ -115,50 +115,21 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     private void getOffers() {
-        new CallWebService(Constants.GET_OFFERS, CallWebService.TYPE_GET) {
-            @Override
-            public void response(String response) {
 
-                Log.e("Response Products", response);
-                Type listType = new TypeToken<List<DiscountModel>>() {
-                }.getType();
-                ArrayList<DiscountModel> discountModels = new GsonBuilder().create().fromJson(response, listType);
-
-                SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-
-                Log.e("discountModels", discountModels.size() + "_");
-
-                if (discountModels.size() == 0) {
-                    offerLayout.setVisibility(View.GONE);
-                    editor.putBoolean("offer", false);
-                    editor.commit();
-
-                } else {
-                    offerLayout.setVisibility(View.VISIBLE);
-                    txtOffer.setText(discountModels.get(0).DiscountInitial);
-                    Glide.with(getActivity()).load(discountModels.get(0).DiscountImage).into(offerImage);
-                    txtDiscount.setText("Offer " + discountModels.get(0).DiscountPercentage + "%");
-                    editor.putBoolean("offer", true);
-                    editor.putFloat("percentage", discountModels.get(0).DiscountPercentage);
-                    editor.commit();
-                }
-
-            }
-
-            @Override
-            public void error(String error) {
-                // helper.hideProgress();
-                Log.e("Error", error);
-
-            }
-        }.call();
+        DiscountModel model = sortedDiscount.getOffer("0");
+        if (model == null || model.DiscountPercentage.equals("0.00")) {
+            offerLayout.setVisibility(View.GONE);
+        } else {
+            offerLayout.setVisibility(View.VISIBLE);
+            txtOffer.setText(model.DiscountInitial);
+            Glide.with(getActivity()).load(model.DiscountImage).into(offerImage);
+            txtDiscount.setText("Offer " + model.DiscountPercentage + "%");
+        }
     }
 
     private void displayProducts() {
 
         try {
-            DatabaseHandler handler = new DatabaseHandler(getActivity());
             handler.openDataBase();
             Cursor cursor = handler.getProductsCursor();
             handler.close();
@@ -177,22 +148,18 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             @Override
             public void response(String response) {
 
-                Log.e("Response Products", response);
                 Type listType = new TypeToken<List<Product>>() {
                 }.getType();
                 ArrayList<Product> products = new GsonBuilder().create().fromJson(response, listType);
-
-                //Log.e("price", products.get(0).prices.get(0) + "---");
 
                 for (Product p : products) {
                     if (p.name.equals(Constants.CROWN_PRODUCT_NAME)) {
                         SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putInt("crownProductId", p.productID);
-                        editor.commit();
+                        editor.apply();
                     }
                 }
-                DatabaseHandler handler = new DatabaseHandler(getActivity());
                 handler.saveProducts(products);
                 handler.close();
                 displayProducts();

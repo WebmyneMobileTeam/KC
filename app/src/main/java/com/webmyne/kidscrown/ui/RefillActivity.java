@@ -214,7 +214,7 @@ public class RefillActivity extends AppCompatActivity implements CrownQuadrant.O
     @Override
     public void onDelete(int position) {
 
-        String toDelete = orderArray.get(position).itemName;//todo
+        String toDelete = orderArray.get(position).itemName;
         upperLeft.removeSelected(toDelete);
         upperRight.removeSelected(toDelete);
         lowerLeft.removeSelected(toDelete);

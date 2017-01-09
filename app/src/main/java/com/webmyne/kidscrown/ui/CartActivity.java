@@ -17,12 +17,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
+import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.ui.widgets.CrownCartView;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
@@ -38,6 +42,8 @@ public class CartActivity extends AppCompatActivity {
     RelativeLayout rLayoutCheckout;
     boolean isOffer;
     float percentage;
+    GetSortedDiscount getSortedDiscount;
+    DecimalFormat formatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +56,10 @@ public class CartActivity extends AppCompatActivity {
 
         init();
 
-        if (isOffer) {
+        if (getSortedDiscount.getOffer(Constants.INVOICE) != null || !getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage.equals("0.00")) {
             percentage = preferences.getFloat("percentage", 0);
-            offerLayout.setVisibility(View.VISIBLE);
-            txtSaved.setText("You saved as per " + percentage + "%");
+            offerLayout.setVisibility(View.GONE);
+            txtSaved.setText("You saved as per " + getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage + "%");
         } else {
             offerLayout.setVisibility(View.GONE);
         }
@@ -64,6 +70,10 @@ public class CartActivity extends AppCompatActivity {
         rLayoutCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(CartActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
                 Intent i = new Intent(CartActivity.this, ShippingDetailsActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
@@ -79,6 +89,7 @@ public class CartActivity extends AppCompatActivity {
         gridLayout.invalidate();
         linearParent.removeAllViews();
         linearParent.invalidate();
+
         try {
             DatabaseHandler handler = new DatabaseHandler(CartActivity.this);
             handler.openDataBase();
@@ -97,32 +108,24 @@ public class CartActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < products.size(); i++) {
-            price = price + Integer.parseInt(products.get(i).getProductTotalPrice());
-            ItemCartView itemView = new ItemCartView(CartActivity.this, products.get(i));
-            itemView.setOnValueChangeListener(onValueChangeListener);
-            itemView.setOnRemoveProductListener(onRemoveProductListener);
-            linearParent.addView(itemView);
+            ItemCartView itemCartView = new ItemCartView(CartActivity.this, products.get(i));
+            itemCartView.setOnValueChangeListener(onValueChangeListener);
+            itemCartView.setOnRemoveProductListener(onRemoveProductListener);
+            linearParent.addView(itemCartView);
+
+            // pricing
+            price += Integer.parseInt(products.get(i).getProductTotalPrice());
         }
 
         for (int i = 0; i < crowns.size(); i++) {
-            int subTotal = Integer.parseInt(crowns.get(i).getProductUnitPrice()) * crowns.get(i).getProductQty();
-            price = price + subTotal;
+            price += Integer.parseInt(crowns.get(i).getProductTotalPrice());
             CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
             crownView.setOnRemoveCrownListener(onRemoveCrownListener);
             gridLayout.addView(crownView);
         }
 
-        if (isOffer) {
-            subtotalPrice.setText(getString(R.string.Rs) + " " + price);
-            float savedPrice = ((price * percentage) / 100);
-            txtSavedPrice.setText(getString(R.string.Rs) + " " + savedPrice);
-            totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
-
-        } else {
-
-            totalPrice.setText(getString(R.string.Rs) + " " + price);
-        }
-
+        String myString = formatter.format(price);
+        totalPrice.setText(getString(R.string.Rs) + " " + myString);
     }
 
     ItemCartView.OnValueChangeListener onValueChangeListener = new ItemCartView.OnValueChangeListener() {
@@ -142,16 +145,16 @@ public class CartActivity extends AppCompatActivity {
                     price += Integer.parseInt(crowns.get(k).getProductTotalPrice());
                 }
 
-
-                if (isOffer) {
+                if (getSortedDiscount.getOffer(Constants.INVOICE) != null || !getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage.equals("0.00")) {
                     subtotalPrice.setText(getString(R.string.Rs) + " " + price);
                     float savedPrice = ((price * percentage) / 100);
                     txtSavedPrice.setText(getString(R.string.Rs) + " " + savedPrice);
-                    totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
+                    String myString = formatter.format((price - (int) savedPrice));
+                    totalPrice.setText(getString(R.string.Rs) + " " + myString);
 
                 } else {
-
-                    totalPrice.setText(getString(R.string.Rs) + " " + price);
+                    String myString = formatter.format(price);
+                    totalPrice.setText(getString(R.string.Rs) + " " + myString);
                 }
 
             } catch (Exception e) {
@@ -186,9 +189,7 @@ public class CartActivity extends AppCompatActivity {
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-
                     pd = ProgressDialog.show(CartActivity.this, "Please wait", "Updating Cart", false);
-
                 }
 
                 @Override
@@ -212,12 +213,12 @@ public class CartActivity extends AppCompatActivity {
                     refreshActivity();
                 }
             }.execute();
-
-
         }
     };
 
     private void init() {
+        formatter = new DecimalFormat("#,##,###");
+        getSortedDiscount = new GetSortedDiscount(this);
 
         gridLayout = (GridLayout) findViewById(R.id.gridLayout);
         gridLayout.setColumnCount(2);

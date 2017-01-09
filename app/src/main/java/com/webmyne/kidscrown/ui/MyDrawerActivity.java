@@ -3,10 +3,8 @@ package com.webmyne.kidscrown.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,21 +25,24 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.fragment.AboutUsFragment;
-import com.webmyne.kidscrown.fragment.HelpFragment;
 import com.webmyne.kidscrown.fragment.HomeFragment;
-import com.webmyne.kidscrown.fragment.HomeInfoFragment;
-import com.webmyne.kidscrown.fragment.MyAddressFragment;
-import com.webmyne.kidscrown.fragment.MyAddressFragment2;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
-import com.webmyne.kidscrown.fragment.SettingsFragment;
+import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.ToolHelper;
+import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.UserProfile;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyDrawerActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
@@ -55,6 +55,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
 
     GoogleApiClient mGoogleApiClient;
     boolean mSignInClicked;
+    private DatabaseHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,31 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+    }
+
+    private void fetchDiscount() {
+
+        handler = new DatabaseHandler(this);
+
+        new CallWebService(Constants.GET_OFFERS, CallWebService.TYPE_GET) {
+            @Override
+            public void response(String response) {
+
+                Log.e("Response Products", response);
+                Type listType = new TypeToken<List<DiscountModel>>() {
+                }.getType();
+                ArrayList<DiscountModel> discountModels = new GsonBuilder().create().fromJson(response, listType);
+
+                handler.saveOffers(discountModels);
+
+            }
+
+            @Override
+            public void error(String error) {
+                Log.e("Error", error);
+
+            }
+        }.call();
     }
 
     public Toolbar getToolbar() {
@@ -268,8 +294,8 @@ public class MyDrawerActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        fetchDiscount();
         helper.displayBadge();
-
     }
 
     @Override

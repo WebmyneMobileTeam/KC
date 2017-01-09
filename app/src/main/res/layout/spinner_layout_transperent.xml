@@ -10,5 +10,6 @@
     android:lines="1"
     android:padding="5dip"
     android:paddingRight="16dp"
+    android:textSize="@dimen/S_TEXT_SIZE"
     android:text="kdnfdfn"
     android:textColor="@color/primaryColor" />

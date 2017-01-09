@@ -11,9 +11,11 @@ public class DiscountModel {
     public String DiscountInitial;
 
     @SerializedName("DiscountPercentage")
-    public float DiscountPercentage;
+    public String DiscountPercentage;
 
     @SerializedName("DiscountImage")
     public String DiscountImage;
 
+    @SerializedName("ProductID")
+    public String ProductID;
 }

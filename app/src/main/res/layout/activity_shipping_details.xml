@@ -10,7 +10,7 @@
         layout="@layout/app_bar2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"></include>
+        android:layout_alignParentTop="true"/>
 
     <LinearLayout
         android:id="@+id/totalLayout"

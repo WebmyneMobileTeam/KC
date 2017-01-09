@@ -8,12 +8,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 /**
  * Application class that called once when application is installed for the first time on device.
  * This class includes the integration of Volly [third party framework for calling webservices]
  */
 public class MyApplication extends Application {
+
+    private static Gson gson;
 
     /**
      * Log or request TAG
@@ -38,6 +41,7 @@ public class MyApplication extends Application {
         super.onCreate();
         // initialize the singleton
         sInstance = this;
+        initGson();
         DatabaseHandler handler = new DatabaseHandler(getApplicationContext());
         try{
             handler.createDataBase();
@@ -47,6 +51,15 @@ public class MyApplication extends Application {
 
 
     }
+
+    private void initGson() {
+        gson = new Gson();
+    }
+
+    public static Gson getGson() {
+        return gson;
+    }
+
 
     /**
      * @return ApplicationController singleton instance

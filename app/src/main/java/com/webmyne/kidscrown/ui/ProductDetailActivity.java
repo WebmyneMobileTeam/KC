@@ -24,8 +24,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
@@ -52,6 +54,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private FlowLayout flowImages;
     int qty;
     boolean added;
+    private GetSortedDiscount getSortedDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        getSortedDiscount = new GetSortedDiscount(this);
+
         combo = (ComboSeekBar) findViewById(R.id.combo);
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtPriceIndividual = (TextView) findViewById(R.id.txtPriceIndividual);
@@ -114,7 +119,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             productDetails.add(cursorProduct.getString(cursorProduct.getColumnIndexOrThrow("name")));
             productDetails.add(qty + "");
             productDetails.add(price + "");
-            productDetails.add((price * qty) + "");
+            int totalPrice = price * qty;
+            productDetails.add(totalPrice + "");
+
+            if (getSortedDiscount.getOffer(String.valueOf(productID)) != null || !getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage.equals("0.00")) {
+                String discount = getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage;
+                productDetails.add(totalPrice - ((totalPrice * Float.valueOf(discount)) / 100) + "");
+            }
 
             handler.addCartProduct(productDetails);
 

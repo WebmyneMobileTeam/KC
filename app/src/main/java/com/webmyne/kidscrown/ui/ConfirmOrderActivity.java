@@ -9,19 +9,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.adapters.OrderListAdapter;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetSortedDiscount;
+import com.webmyne.kidscrown.helper.OfferView;
+import com.webmyne.kidscrown.helper.OrderSummary;
 import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.OrderModel;
 import com.webmyne.kidscrown.model.UserProfile;
@@ -29,6 +31,7 @@ import com.webmyne.kidscrown.model.UserProfile;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,9 +43,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     ArrayList<OrderModel> orders = new ArrayList<>();
     TextView totalPrice, txtBilling, txtShipping, subtotalPrice, txtSaved, txtSavedPrice;
     LinearLayout totalLayout, offerLayout;
-    int price, finalPrice;
-    ListView orderListview;
-    OrderListAdapter adapter;
+    int price, finalPrice, introPrice = 0, assortedPrice = 0, crownPrice = 0;
+    private LinearLayout orderSummaryLayout;
     ArrayList<AddressModel> addressModels;
     RelativeLayout continueLayout;
     String randomOrderId, userId;
@@ -55,14 +57,18 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     boolean isOffer;
     float percentage;
     float savedPrice;
-
+    GetSortedDiscount getSortedDiscount;
     private RelativeLayout chargeLayout;
     private TextView txtCharge;
+    private LinearLayout.LayoutParams params;
+    DecimalFormat formatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
+
+        getSortedDiscount = new GetSortedDiscount(this);
 
         init();
 
@@ -75,7 +81,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         crownProductId = preferences.getInt("crownProductId", 0);
         isOffer = preferences.getBoolean("offer", false);
 
-        if (isOffer) {
+        if (getSortedDiscount.isOffer()) {
             percentage = preferences.getFloat("percentage", 0);
             offerLayout.setVisibility(View.VISIBLE);
             txtSaved.setText("You saved as per " + percentage + "%");
@@ -98,9 +104,18 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
     private void fetchCartDetails() {
 
+        orderSummaryLayout.removeAllViews();
+        orderSummaryLayout.invalidate();
+
+        offerLayout.removeAllViews();
+        offerLayout.invalidate();
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
         // Fetch Address Details
         addressModels = new ArrayList<>();
         addressModels.clear();
+
         try {
             DatabaseHandler handler = new DatabaseHandler(ConfirmOrderActivity.this);
             handler.openDataBase();
@@ -131,21 +146,70 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         for (int i = 0; i < orders.size(); i++) {
             int p = orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
             price += p;
+
+            if (orders.get(i).getProductId() == Integer.parseInt(Constants.INTRO)) {
+                introPrice += orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
+            }
+            if (orders.get(i).getProductId() == Integer.parseInt(Constants.ASSORTED)) {
+                assortedPrice += orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
+            }
+            if (orders.get(i).getProductId() == Integer.parseInt(Constants.CROWN)) {
+                crownPrice += orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
+            }
+
+            OrderSummary summary = new OrderSummary(ConfirmOrderActivity.this);
+            summary.setDetails(orders.get(i));
+            orderSummaryLayout.addView(summary, params);
         }
-        adapter = new OrderListAdapter(ConfirmOrderActivity.this, orders);
-        orderListview.setAdapter(adapter);
 
-        if (isOffer) {
-            subtotalPrice.setText(getString(R.string.Rs) + " " + price);
-            savedPrice = ((price * percentage) / 100);
-            txtSavedPrice.setText(getString(R.string.Rs) + " " + savedPrice);
-            finalPrice = price - (int) savedPrice;
+        if (getSortedDiscount.isOffer()) {
+            OfferView view = null;
 
-            //  totalPrice.setText(getString(R.string.Rs) + " " + (price - (int) savedPrice));
+            if (getSortedDiscount.getOffer(Constants.INTRO) != null && !getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage.equals("0.00")) {
+                int introDiscount = (int) (introPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage)) / 100;
+                Log.e("introDiscount", introDiscount + "");
+                price -= introDiscount;
+                view = new OfferView(this, "Intro Kit Discount " + getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage, introDiscount);
+                offerLayout.addView(view, params);
+            }
+
+            if (getSortedDiscount.getOffer(Constants.ASSORTED) != null && !getSortedDiscount.getOffer(Constants.ASSORTED).DiscountPercentage.equals("0.00")) {
+                int assortedDiscount = (int) (assortedPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.ASSORTED).DiscountPercentage)) / 100;
+                Log.e("assortedDiscount", assortedDiscount + "");
+                price -= assortedDiscount;
+                view = new OfferView(this, "Assorted Kit Discount " + getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage, assortedDiscount);
+                offerLayout.addView(view, params);
+            }
+
+            if (getSortedDiscount.getOffer(Constants.CROWN) != null && !getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage.equals("0.00")) {
+                int crownDiscount = (int) (crownPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage)) / 100;
+                Log.e("crownDiscount", crownDiscount + "");
+                price -= crownDiscount;
+                view = new OfferView(this, "Refil Discount " + getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage, crownDiscount);
+                offerLayout.addView(view, params);
+            }
+
+            view = new OfferView(this, "SubTotal", price);
+            offerLayout.addView(view, params);
+
+            if (getSortedDiscount.getOffer(Constants.INVOICE) != null && !getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage.equals("0.00")) {
+                int invoiceDiscount = (int) (price * Double.valueOf(getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage)) / 100;
+                Log.e("invoiceDiscount", invoiceDiscount + "");
+                price -= invoiceDiscount;
+                view = new OfferView(this, getSortedDiscount.getOffer(Constants.INVOICE).DiscountInitial + " " + getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage, invoiceDiscount);
+                offerLayout.addView(view, params);
+            }
+
+            // savedPrice = ((price * percentage) / 100);
+            // txtSavedPrice.setText(getString(R.string.Rs) + " " + price);
+            finalPrice = price;
+
+
+            totalPrice.setText(getString(R.string.Rs) + " " + formatter.format(price));
         } else {
             finalPrice = price;
 
-            // totalPrice.setText(getString(R.string.Rs) + " " + price);
+            totalPrice.setText(getString(R.string.Rs) + " " + formatter.format(price));
         }
 
         int shippingCost = 0;
@@ -158,10 +222,12 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             chargeLayout.setVisibility(View.GONE);
         }
 
-        totalPrice.setText(getString(R.string.Rs) + " " + (finalPrice + shippingCost));
+        totalPrice.setText(getString(R.string.Rs) + " " + formatter.format((finalPrice + shippingCost)));
     }
 
     private void init() {
+        formatter = new DecimalFormat("#,##,###");
+
         offerLayout = (LinearLayout) findViewById(R.id.offerLayout);
         txtSaved = (TextView) findViewById(R.id.txtSaved);
         txtSavedPrice = (TextView) findViewById(R.id.txtSavedPrice);
@@ -172,7 +238,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         txtCharge.setText(getString(R.string.Rs) + " 100");
 
         continueLayout = (RelativeLayout) findViewById(R.id.continueLayout);
-        orderListview = (ListView) findViewById(R.id.orderListview);
+        orderSummaryLayout = (LinearLayout) findViewById(R.id.orderSummaryLayout);
+
         txtBilling = (TextView) findViewById(R.id.txtBilling);
         txtShipping = (TextView) findViewById(R.id.txtShipping);
         totalLayout = (LinearLayout) findViewById(R.id.totalLayout);
@@ -198,6 +265,10 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         continueLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!Functions.isConnected(ConfirmOrderActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
 
                 // Current date-time
                 Calendar c = Calendar.getInstance();
