@@ -9,6 +9,24 @@ import java.util.List;
  */
 public class OrderProduct {
 
+    @SerializedName("AssortDiscount")
+    public int AssortDiscount;
+
+    @SerializedName("FinalAssortPrice")
+    public int FinalAssortPrice;
+
+    @SerializedName("FinalIntroPrice")
+    public int FinalIntroPrice;
+
+    @SerializedName("FinalRefillPrice")
+    public int FinalRefillPrice;
+
+    @SerializedName("IntroDiscount")
+    public int IntroDiscount;
+
+    @SerializedName("RefillDiscount")
+    public int RefillDiscount;
+
     @SerializedName("DiscountPercent")
     public int DiscountPercent;
 
@@ -31,10 +49,13 @@ public class OrderProduct {
     public String OrderNumber;
 
     @SerializedName("PayableAmount")
-    public String PayableAmount;
+    public int PayableAmount;
 
     @SerializedName("TaxAmount")
-    public String TaxAmount;
+    public int TaxAmount;
+
+    @SerializedName("TotalDiscount")
+    public int TotalDiscount;
 
     @SerializedName("TotalAmount")
     public String TotalAmount;

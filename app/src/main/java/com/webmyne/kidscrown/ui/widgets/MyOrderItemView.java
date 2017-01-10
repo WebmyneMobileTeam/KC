@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.ui.widgets;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -8,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.OrderProduct;
 
 /**
@@ -22,6 +24,7 @@ public class MyOrderItemView extends LinearLayout {
     TextView txtOrderId, txtOrderDate, txtTotalAmount, txtPaymentStatus, txtShipping, txtSaved, txtPayable;
 
     RelativeLayout layout1, layout2;
+    int totalAm = 0;
 
     public MyOrderItemView(Context context, OrderProduct orderObject) {
         super(context);
@@ -50,15 +53,21 @@ public class MyOrderItemView extends LinearLayout {
     }
 
     private void setDetails() {
+        Log.e("order", Functions.jsonString(orderObject));
+
         txtOrderId.setText("Order : " + orderObject.OrderNumber);
 
         txtOrderId.setText(orderObject.OrderNumber);
         txtOrderDate.setText(orderObject.OrderDate);
 
-        if (orderObject.DiscountPercent == 0) {
+        int productDiscount = orderObject.IntroDiscount + orderObject.AssortDiscount + orderObject.RefillDiscount;
+        int t = Integer.parseInt(orderObject.TotalAmount) + orderObject.TaxAmount + productDiscount;
 
-            int t = Integer.parseInt(orderObject.TotalAmount) + Integer.parseInt(orderObject.TaxAmount);
-            if (orderObject.TaxAmount.equals("0")) {
+        int shipping = orderObject.TaxAmount;
+
+        if (orderObject.TotalDiscount == 0) {
+            Log.e("tag", "if");
+            if (orderObject.TaxAmount == 0) {
                 txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + t);
             } else {
                 txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + t + " (" + orderObject.TotalAmount + " + " + orderObject.TaxAmount + " Shipping Cost)");
@@ -67,19 +76,28 @@ public class MyOrderItemView extends LinearLayout {
             layout2.setVisibility(GONE);
 
         } else {
+            Log.e("tag", "else");
             layout1.setVisibility(VISIBLE);
             layout2.setVisibility(VISIBLE);
-            int t = Integer.parseInt(orderObject.TotalAmount) + Integer.parseInt(orderObject.TaxAmount);
-            if (orderObject.TaxAmount.equals("0")) {
-                txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + t);
+
+            int totalAmount = orderObject.PayableAmount + orderObject.TotalDiscount;
+
+            if (orderObject.TaxAmount == 0) {
+                Log.e("tag", "TAX 0");
+               // txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + totalAmount);
             } else {
-                txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + t + " (" + orderObject.TotalAmount + " + " + orderObject.TaxAmount + " Shipping Cost)");
+                Log.e("tag", "TAX " + orderObject.TaxAmount);
+                //txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + totalAmount + " (" + (totalAmount - orderObject.TaxAmount) + " + " + orderObject.TaxAmount + " Shipping Cost)");
             }
 
-            // txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + (Integer.parseInt(orderObject.PayableAmount) + orderObject.DiscountPercent));
         }
 
-        txtPayable.setText(context.getResources().getString(R.string.Rs) + " " + orderObject.PayableAmount);
+        if (orderObject.TaxAmount == 0) {
+            txtPayable.setText(context.getResources().getString(R.string.Rs) + " " + orderObject.PayableAmount);
+        } else {
+            String text = " (" + (orderObject.PayableAmount - shipping) + " + " + shipping + " Shipping Cost)";
+            txtPayable.setText(context.getResources().getString(R.string.Rs) + " " + orderObject.PayableAmount + text);
+        }
 
         if (orderObject.IsPaymentComplete) {
             txtPaymentStatus.setText("Payment: Done");
@@ -87,14 +105,19 @@ public class MyOrderItemView extends LinearLayout {
             txtPaymentStatus.setText("Payment: Pending");
         }
 
-        if (orderObject.TaxAmount.equals("")) {
+        if (orderObject.TaxAmount == 0) {
             txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " 0");
         } else {
             txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " " + orderObject.TaxAmount);
         }
 
-        txtSaved.setText(context.getResources().getString(R.string.Rs) + " " + orderObject.DiscountPercent);
+        txtSaved.setText(context.getResources().getString(R.string.Rs) + " " + (orderObject.DiscountPercent + productDiscount));
 
+        for (int i = 0; i < orderObject.orderProducts.size(); i++) {
+            totalAm += orderObject.orderProducts.get(i).Price * orderObject.orderProducts.get(i).Quantity;
+        }
+
+        txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + totalAm);
     }
 
 }

@@ -65,7 +65,7 @@ public class OrderDetailsAdapter extends BaseAdapter {
             holder.productName.setText(orderObject.orderProducts.get(position).ProductName + " - " + orderObject.orderProducts.get(position).ProductNumber);
         }
         holder.productQty.setText(orderObject.orderProducts.get(position).Quantity);
-        holder.productPrice.setText(context.getResources().getString(R.string.Rs) + " " + ((Integer.parseInt(orderObject.orderProducts.get(position).Quantity)) * (Integer.parseInt(orderObject.orderProducts.get(position).Price))));
+        holder.productPrice.setText(context.getResources().getString(R.string.Rs) + " " + ((orderObject.orderProducts.get(position).Quantity) * (orderObject.orderProducts.get(position).Price)));
 
         return convertView;
     }

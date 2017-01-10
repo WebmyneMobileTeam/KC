@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class OrderProductModel {
 
     @SerializedName("Price")
-    public String Price;
+    public int Price;
 
     @SerializedName("ProductName")
     public String ProductName;
@@ -17,5 +17,8 @@ public class OrderProductModel {
     public String ProductNumber;
 
     @SerializedName("Quantity")
-    public String Quantity;
+    public int Quantity;
+
+    @SerializedName("ProductID")
+    public int ProductID;
 }

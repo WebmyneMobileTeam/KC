@@ -76,7 +76,7 @@ public class OrderAdapter extends BaseAdapter {
             holder.txtPaymentStatus.setText("Payment Pending");
         }
 
-        if (data.get(position).TaxAmount.equals("")) {
+        if (data.get(position).TaxAmount==0) {
             holder.txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " 0");
         } else {
             holder.txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " " + data.get(position).TaxAmount);

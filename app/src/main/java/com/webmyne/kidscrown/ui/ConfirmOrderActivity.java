@@ -56,12 +56,13 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     SharedPreferences preferences;
     boolean isOffer;
     float percentage;
-    float savedPrice;
     GetSortedDiscount getSortedDiscount;
     private RelativeLayout chargeLayout;
     private TextView txtCharge;
     private LinearLayout.LayoutParams params;
     DecimalFormat formatter;
+    int introDiscount, assortedDiscount, crownDiscount, invoiceDiscount;
+    private boolean isIntro = false, isAssorted = false, isRefil = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,11 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     }
 
     private void fetchCartDetails() {
+
+        introDiscount = 0;
+        assortedDiscount = 0;
+        crownDiscount = 0;
+        invoiceDiscount = 0;
 
         orderSummaryLayout.removeAllViews();
         orderSummaryLayout.invalidate();
@@ -148,12 +154,15 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             price += p;
 
             if (orders.get(i).getProductId() == Integer.parseInt(Constants.INTRO)) {
+                isIntro = true;
                 introPrice += orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
             }
             if (orders.get(i).getProductId() == Integer.parseInt(Constants.ASSORTED)) {
+                isAssorted = true;
                 assortedPrice += orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
             }
             if (orders.get(i).getProductId() == Integer.parseInt(Constants.CROWN)) {
+                isRefil = true;
                 crownPrice += orders.get(i).getProductQty() * Integer.parseInt(orders.get(i).getProductUnitPrice());
             }
 
@@ -165,27 +174,27 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         if (getSortedDiscount.isOffer()) {
             OfferView view = null;
 
-            if (getSortedDiscount.getOffer(Constants.INTRO) != null && !getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage.equals("0.00")) {
-                int introDiscount = (int) (introPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage)) / 100;
+            if (isIntro && getSortedDiscount.getOffer(Constants.INTRO) != null && !getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage.equals("0.00")) {
+                introDiscount = (int) (introPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage)) / 100;
                 Log.e("introDiscount", introDiscount + "");
                 price -= introDiscount;
-                view = new OfferView(this, "Intro Kit Discount " + getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage, introDiscount);
+                view = new OfferView(this, "Intro Kit Discount (" + getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage + "%)", introDiscount);
                 offerLayout.addView(view, params);
             }
 
-            if (getSortedDiscount.getOffer(Constants.ASSORTED) != null && !getSortedDiscount.getOffer(Constants.ASSORTED).DiscountPercentage.equals("0.00")) {
-                int assortedDiscount = (int) (assortedPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.ASSORTED).DiscountPercentage)) / 100;
+            if (isAssorted && getSortedDiscount.getOffer(Constants.ASSORTED) != null && !getSortedDiscount.getOffer(Constants.ASSORTED).DiscountPercentage.equals("0.00")) {
+                assortedDiscount = (int) (assortedPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.ASSORTED).DiscountPercentage)) / 100;
                 Log.e("assortedDiscount", assortedDiscount + "");
                 price -= assortedDiscount;
-                view = new OfferView(this, "Assorted Kit Discount " + getSortedDiscount.getOffer(Constants.INTRO).DiscountPercentage, assortedDiscount);
+                view = new OfferView(this, "Assorted Kit Discount (" + getSortedDiscount.getOffer(Constants.ASSORTED).DiscountPercentage + "%)", assortedDiscount);
                 offerLayout.addView(view, params);
             }
 
-            if (getSortedDiscount.getOffer(Constants.CROWN) != null && !getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage.equals("0.00")) {
-                int crownDiscount = (int) (crownPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage)) / 100;
+            if (isRefil && getSortedDiscount.getOffer(Constants.CROWN) != null && !getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage.equals("0.00")) {
+                crownDiscount = (int) (crownPrice * Double.valueOf(getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage)) / 100;
                 Log.e("crownDiscount", crownDiscount + "");
                 price -= crownDiscount;
-                view = new OfferView(this, "Refil Discount " + getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage, crownDiscount);
+                view = new OfferView(this, "Refil Discount (" + getSortedDiscount.getOffer(Constants.CROWN).DiscountPercentage + "%)", crownDiscount);
                 offerLayout.addView(view, params);
             }
 
@@ -193,10 +202,10 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             offerLayout.addView(view, params);
 
             if (getSortedDiscount.getOffer(Constants.INVOICE) != null && !getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage.equals("0.00")) {
-                int invoiceDiscount = (int) (price * Double.valueOf(getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage)) / 100;
+                invoiceDiscount = (int) (price * Double.valueOf(getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage)) / 100;
                 Log.e("invoiceDiscount", invoiceDiscount + "");
                 price -= invoiceDiscount;
-                view = new OfferView(this, getSortedDiscount.getOffer(Constants.INVOICE).DiscountInitial + " " + getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage, invoiceDiscount);
+                view = new OfferView(this, getSortedDiscount.getOffer(Constants.INVOICE).DiscountInitial + " (" + getSortedDiscount.getOffer(Constants.INVOICE).DiscountPercentage + "%)", invoiceDiscount);
                 offerLayout.addView(view, params);
             }
 
@@ -215,11 +224,14 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         int shippingCost = 0;
 
         if (finalPrice < 3000) {
+            Log.e("tag", "tax");
             shippingCost = 100;
-            chargeLayout.setVisibility(View.VISIBLE);
+            offerLayout.setVisibility(View.VISIBLE);
+            OfferView view = new OfferView(this, "Shipping Cost", shippingCost);
+            offerLayout.addView(view, params);
         } else {
+            Log.e("tag", "no tax");
             shippingCost = 0;
-            chargeLayout.setVisibility(View.GONE);
         }
 
         totalPrice.setText(getString(R.string.Rs) + " " + formatter.format((finalPrice + shippingCost)));
@@ -320,6 +332,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                             crownMainObject = new JSONObject();
                             crownMainObject.put("product_id", orders.get(i).getProductId());
                             crownMainObject.put("price_id", orders.get(i).getPriceId());
+                            crownMainObject.put("ProductDiscount", crownDiscount);
 
                             crownSubObject = new JSONObject();
                             crownSubObject.put("product_name", orders.get(i).getProductName());
@@ -345,6 +358,13 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                         } else {
                             kitObject = new JSONObject();
                             kitObject.put("product_id", orders.get(i).getProductId());
+
+                            if (orders.get(i).getProductId() == Integer.parseInt(Constants.INTRO)) {
+                                kitObject.put("ProductDiscount", introDiscount);
+                            } else if (orders.get(i).getProductId() == Integer.parseInt(Constants.ASSORTED)) {
+                                kitObject.put("ProductDiscount", assortedDiscount);
+                            }
+
                             kitObject.put("product_name", orders.get(i).getProductName());
                             kitObject.put("qty", orders.get(i).getProductQty());
                             kitObject.put("price_id", orders.get(i).getPriceId());
@@ -371,13 +391,13 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                     if (grandTotal < 3000) {
                         grandTotal += 100;
                         mainObect.put("shipping_cost", 100);
-                        mainObect.put("DiscountPercent", savedPrice);
-                        mainObect.put("grand_total", grandTotal - savedPrice);
+                        mainObect.put("DiscountPercent", invoiceDiscount);
+                        mainObect.put("grand_total", finalPrice);
 
                     } else {
                         mainObect.put("shipping_cost", 0);
-                        mainObect.put("DiscountPercent", savedPrice);
-                        mainObect.put("grand_total", grandTotal - savedPrice);
+                        mainObect.put("DiscountPercent", invoiceDiscount);
+                        mainObect.put("grand_total", finalPrice);
                     }
 
                     mainObect.put("shipping_address", shippingAddress);

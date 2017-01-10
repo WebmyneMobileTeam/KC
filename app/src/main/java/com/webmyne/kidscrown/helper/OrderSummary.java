@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.OrderModel;
+import com.webmyne.kidscrown.model.OrderProductModel;
 
 import java.text.DecimalFormat;
 
@@ -20,7 +21,7 @@ public class OrderSummary extends LinearLayout {
     private Context context;
     private LayoutInflater inflater;
     private View parentView;
-    private TextView productName, productQty, productPrice;
+    private TextView txtProductName, productQty, productPrice;
     private DecimalFormat formatter;
 
     public OrderSummary(Context context) {
@@ -34,19 +35,25 @@ public class OrderSummary extends LinearLayout {
     private void init() {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         parentView = inflater.inflate(R.layout.order_row, this);
-        productName = (TextView) parentView.findViewById(R.id.pdName);
+        txtProductName = (TextView) parentView.findViewById(R.id.pdName);
         productQty = (TextView) parentView.findViewById(R.id.pdQty);
         productPrice = (TextView) parentView.findViewById(R.id.pdPrice);
         formatter = new DecimalFormat("#,##,###");
     }
 
     public void setDetails(OrderModel orderModel) {
-        productName.setText(orderModel.getProductName());
+        txtProductName.setText(orderModel.getProductName());
         productQty.setText(orderModel.getProductQty() + "");
 
         int total = orderModel.getProductQty() * Integer.parseInt(orderModel.getProductUnitPrice());
 
         productPrice.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(total));
 
+    }
+
+    public void setDetails(String productName, int quantity, int finalIntroPrice) {
+        txtProductName.setText(productName);
+        productQty.setText(quantity + "");
+        productPrice.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(finalIntroPrice));
     }
 }

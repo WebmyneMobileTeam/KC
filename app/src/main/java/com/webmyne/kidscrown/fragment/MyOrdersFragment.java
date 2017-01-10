@@ -87,7 +87,7 @@ public class MyOrdersFragment extends Fragment {
 
                 complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
                 OrderProduct object = data.get(position);
-                Log.e("order object", object.toString());
+               // Log.e("order object", object.toString());
                 complexPreferences.putObject("order", object);
                 complexPreferences.commit();
 
@@ -130,7 +130,7 @@ public class MyOrdersFragment extends Fragment {
             @Override
             public void response(String response) {
                 pd.dismiss();
-                Log.e("my_order_response", response);
+             //   Log.e("my_order_response", response);
 
                 Type listType = new TypeToken<List<OrderProduct>>() {
                 }.getType();
