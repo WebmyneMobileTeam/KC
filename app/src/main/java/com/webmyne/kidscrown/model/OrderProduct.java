@@ -28,7 +28,7 @@ public class OrderProduct {
     public int RefillDiscount;
 
     @SerializedName("DiscountPercent")
-    public int DiscountPercent;
+    public double DiscountPercent;
 
     @SerializedName("FullAddress")
     public String FullAddress;
@@ -55,7 +55,7 @@ public class OrderProduct {
     public int TaxAmount;
 
     @SerializedName("TotalDiscount")
-    public int TotalDiscount;
+    public double TotalDiscount;
 
     @SerializedName("TotalAmount")
     public String TotalAmount;

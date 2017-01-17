@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -277,8 +278,14 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         continueLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                continueLayout.setClickable(false);
+
+                pd1 = ProgressDialog.show(ConfirmOrderActivity.this, "Loading", "Please wait..", true);
+
                 if (!Functions.isConnected(ConfirmOrderActivity.this)) {
                     Functions.snack(v, getString(R.string.no_internet));
+                    pd1.dismiss();
+                    continueLayout.setClickable(true);
                     return;
                 }
 
@@ -300,7 +307,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                pd1 = ProgressDialog.show(ConfirmOrderActivity.this, "Loading", "Please wait..", true);
                 createAnotherOrder(orders);
             }
         });
@@ -426,7 +432,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                         try {
                             Functions.fireIntent(ConfirmOrderActivity.this, PaymentActivity.class);
                             overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-
+                            continueLayout.setClickable(true);
                         } catch (Exception e) {
                             pd1.dismiss();
                             Log.e("error", e.getMessage());
@@ -436,7 +442,11 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                     @Override
                     public void error(String error) {
                         pd1.dismiss();
-                        Log.e("error", error);
+                        if (TextUtils.isEmpty(error)) {
+                            Log.e("error", error);
+                            Functions.snack(continueLayout, error);
+                        }
+                        continueLayout.setClickable(true);
                     }
                 }.call();
             }

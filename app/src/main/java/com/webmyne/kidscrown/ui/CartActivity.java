@@ -70,16 +70,22 @@ public class CartActivity extends AppCompatActivity {
         rLayoutCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (products.size() == 0 && crowns.size() == 0) {
+                    Functions.snack(v, "Please add products before place order.");
+                    return;
+                }
+
                 if (!Functions.isConnected(CartActivity.this)) {
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
                 }
+
                 Intent i = new Intent(CartActivity.this, ShippingDetailsActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
             }
         });
-
     }
 
     private void fetchCartDetails() {
@@ -114,11 +120,13 @@ public class CartActivity extends AppCompatActivity {
             linearParent.addView(itemCartView);
 
             // pricing
-            price += Integer.parseInt(products.get(i).getProductTotalPrice());
+            int productPrice = Integer.parseInt(products.get(i).getProductUnitPrice()) * products.get(i).getProductQty();
+            price += productPrice;
         }
 
         for (int i = 0; i < crowns.size(); i++) {
-            price += Integer.parseInt(crowns.get(i).getProductTotalPrice());
+            int productPrice = Integer.parseInt(crowns.get(i).getProductUnitPrice()) * crowns.get(i).getProductQty();
+            price += productPrice;
             CrownCartView crownView = new CrownCartView(CartActivity.this, crowns.get(i));
             crownView.setOnRemoveCrownListener(onRemoveCrownListener);
             gridLayout.addView(crownView);

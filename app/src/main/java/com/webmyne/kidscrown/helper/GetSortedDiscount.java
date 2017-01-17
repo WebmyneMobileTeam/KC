@@ -43,7 +43,7 @@ public class GetSortedDiscount {
 
     public boolean isOffer() {
         for (int i = 0; i < discountModels.size(); i++) {
-            Log.e("offer", discountModels.get(i).DiscountPercentage);
+            //Log.e("offer", discountModels.get(i).DiscountPercentage);
             if (!discountModels.get(i).DiscountPercentage.equals("0.00")) {
                 isOffer = true;
             }

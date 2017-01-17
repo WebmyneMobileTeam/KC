@@ -20,6 +20,7 @@ import com.webmyne.kidscrown.model.OrderProduct;
 import com.webmyne.kidscrown.model.OrderProductModel;
 import com.webmyne.kidscrown.ui.widgets.MyOrderItemView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class OrderDetailsActivity extends AppCompatActivity {
@@ -36,6 +37,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     OrderProduct orderObject;
     LinearLayout orderSummaryLayout;
     private LinearLayout.LayoutParams params;
+    private TextView txtPayable;
+    private DecimalFormat formatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +106,21 @@ public class OrderDetailsActivity extends AppCompatActivity {
         adapter = new OrderDetailsAdapter(OrderDetailsActivity.this, orderObject);
         orderListview.setAdapter(adapter);
 
+        int shipping = orderObject.TaxAmount;
+        if (orderObject.TaxAmount == 0) {
+            txtPayable.setText(getResources().getString(R.string.Rs) + " " + formatter.format(orderObject.PayableAmount));
+        } else {
+            String text = " (" + (orderObject.PayableAmount - shipping) + " + " + shipping + " Shipping Cost)";
+            txtPayable.setText(getResources().getString(R.string.Rs) + " " + formatter.format(orderObject.PayableAmount) + " " + text);
+        }
     }
 
     private void init() {
+        formatter = new DecimalFormat("#,##,###");
+
         orderListview = (ListView) findViewById(R.id.orderListview);
         orderSummaryLayout = (LinearLayout) findViewById(R.id.orderSummaryLayout);
+        txtPayable = (TextView) findViewById(R.id.txtPayable);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imgCart = (ImageView) findViewById(R.id.imgCartMenu);

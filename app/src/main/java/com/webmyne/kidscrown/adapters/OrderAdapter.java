@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.OrderProduct;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -21,10 +22,12 @@ public class OrderAdapter extends BaseAdapter {
     Context context;
     ArrayList<OrderProduct> data;
     LayoutInflater inflater;
+    private DecimalFormat formatter;
 
     public OrderAdapter(Context context, ArrayList<OrderProduct> data) {
         this.context = context;
         this.data = data;
+        formatter = new DecimalFormat("#,##,###");
     }
 
     @Override
@@ -68,7 +71,7 @@ public class OrderAdapter extends BaseAdapter {
 
         holder.txtOrderId.setText("Order No. " + data.get(position).OrderNumber);
         holder.txtOrderDate.setText(data.get(position).OrderDate);
-        holder.txtAmount.setText(context.getResources().getString(R.string.Rs) + " " + data.get(position).PayableAmount);
+        holder.txtAmount.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(data.get(position).PayableAmount));
 
         if (data.get(position).IsPaymentComplete) {
             holder.txtPaymentStatus.setText("Payment Done");

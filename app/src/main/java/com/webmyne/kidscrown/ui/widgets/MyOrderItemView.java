@@ -12,6 +12,8 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.OrderProduct;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by sagartahelyani on 08-09-2015.
  */
@@ -34,6 +36,7 @@ public class MyOrderItemView extends LinearLayout {
     }
 
     private void init() {
+
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.order_item, this);
         setOrientation(VERTICAL);
@@ -55,7 +58,7 @@ public class MyOrderItemView extends LinearLayout {
     private void setDetails() {
         Log.e("order", Functions.jsonString(orderObject));
 
-        txtOrderId.setText("Order : " + orderObject.OrderNumber);
+        //  txtOrderId.setText("Order : " + orderObject.OrderNumber);
 
         txtOrderId.setText(orderObject.OrderNumber);
         txtOrderDate.setText(orderObject.OrderDate);
@@ -80,11 +83,11 @@ public class MyOrderItemView extends LinearLayout {
             layout1.setVisibility(VISIBLE);
             layout2.setVisibility(VISIBLE);
 
-            int totalAmount = orderObject.PayableAmount + orderObject.TotalDiscount;
+            int totalAmount = orderObject.PayableAmount + (int) orderObject.TotalDiscount;
 
             if (orderObject.TaxAmount == 0) {
                 Log.e("tag", "TAX 0");
-               // txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + totalAmount);
+                // txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + totalAmount);
             } else {
                 Log.e("tag", "TAX " + orderObject.TaxAmount);
                 //txtTotalAmount.setText(context.getResources().getString(R.string.Rs) + " " + totalAmount + " (" + (totalAmount - orderObject.TaxAmount) + " + " + orderObject.TaxAmount + " Shipping Cost)");
@@ -111,7 +114,8 @@ public class MyOrderItemView extends LinearLayout {
             txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " " + orderObject.TaxAmount);
         }
 
-        txtSaved.setText(context.getResources().getString(R.string.Rs) + " " + (orderObject.DiscountPercent + productDiscount));
+        txtSaved.setText(String.format("%s %.2f", context.getResources().getString(R.string.Rs),(orderObject.DiscountPercent + productDiscount)));
+        //txtSaved.setText(context.getResources().getString(R.string.Rs) + " " + (orderObject.DiscountPercent + productDiscount));
 
         for (int i = 0; i < orderObject.orderProducts.size(); i++) {
             totalAm += orderObject.orderProducts.get(i).Price * orderObject.orderProducts.get(i).Quantity;

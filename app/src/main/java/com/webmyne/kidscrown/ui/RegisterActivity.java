@@ -262,6 +262,23 @@ public class RegisterActivity extends AppCompatActivity implements
         final EditText edtRegNo = (EditText) promptView.findViewById(R.id.edtRegNo);
         final Button btnNext = (Button) promptView.findViewById(R.id.btnNext);
 
+       /* edtRegNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });*/
+
         final AlertDialog dialog = builder.create();
         dialog.show();
 
@@ -274,6 +291,7 @@ public class RegisterActivity extends AppCompatActivity implements
                 }
                 if (edtRegNo.getText().toString().trim().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "Registraion Number must required.", Toast.LENGTH_LONG).show();
+
                 } else {
                     regNo = edtRegNo.getText().toString().trim();
                     dialog.dismiss();
