@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_ROWID = "_id";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "kidscrown.db";
     private static final String TABLE_PRODUCT = "Product";
     private static final String TABLE_PRODUCT_IMAGE = "ProductImage";
@@ -164,6 +165,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void saveOffers(ArrayList<DiscountModel> discountModels) {
         myDataBase = this.getWritableDatabase();
         myDataBase.delete(TABLE_DISCOUNT, null, null);
+
+        Cursor cursor = null;
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_DISCOUNT;
+            cursor = myDataBase.rawQuery(selectQuery, null);
+            if (cursor == null) {
+                Log.e("sql", "no table");
+            } else {
+                Log.e("sql", "table exist");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("sql", "no table");
+        }
 
         for (DiscountModel model : discountModels) {
             myDataBase = this.getWritableDatabase();
@@ -663,7 +678,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion < 2) {
+            String createDiscount = "CREATE TABLE `Discount` (\n" +
+                    "\t`DiscountImage`\tTEXT,\n" +
+                    "\t`DiscountInitial`\tTEXT,\n" +
+                    "\t`DiscountPercentage`\tTEXT,\n" +
+                    "\t`ProductID`\tTEXT\n" +
+                    ");";
+            db.execSQL(createDiscount);
+        }
     }
 
     public void deleteCart() {
