@@ -20,11 +20,11 @@
             android:icon="@drawable/ic_action_order"
             android:title="My Orders" />
 
-      <!--  <item
-            android:id="@+id/drawer_address"
-            android:icon="@drawable/ic_action_address"
-            android:title="My Address" />
--->
+        <!--  <item
+              android:id="@+id/drawer_address"
+              android:icon="@drawable/ic_action_address"
+              android:title="My Address" />
+  -->
         <!--<item
             android:id="@+id/drawer_settings"
             android:icon="@drawable/ic_action_settings"
@@ -34,15 +34,21 @@
             android:id="@+id/drawer_feedback"
             android:icon="@drawable/ic_action_feedback"
             android:title="Feedback" />
-       <!-- <item
+
+        <item
             android:id="@+id/drawer_about"
             android:icon="@drawable/ic_action_about"
-            android:title="About Us" />-->
+            android:title="About Us" />
+
+        <item
+            android:id="@+id/drawer_contact_us"
+            android:icon="@drawable/ic_call"
+            android:title="Contact Us" />
 
         <item
             android:id="@+id/drawer_help"
-            android:icon="@drawable/ic_action_help"
             android:checkable="false"
+            android:icon="@drawable/ic_action_help"
             android:title="Application Guide" />
 
         <item

@@ -28,6 +28,8 @@ import com.google.android.gms.plus.Plus;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.fragment.AboutUsFragment;
+import com.webmyne.kidscrown.fragment.ContactUsFragment;
 import com.webmyne.kidscrown.fragment.HomeFragment;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
@@ -46,6 +48,7 @@ import java.util.List;
 
 public class MyDrawerActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
+
     Toolbar toolbar;
     ToolHelper helper;
     private DrawerLayout drawerLayout;
@@ -196,12 +199,14 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 startActivity(Intent.createChooser(feedbackIntent, "Send Feedback:"));
                 break;
 
-            /*case R.id.drawer_settings:
+/*
+            case R.id.drawer_settings:
                 // Settings
                 ft.replace(R.id.content, new SettingsFragment(), "SETTINGS_PAGE");
                 //ft.addToBackStack(null);
                 ft.commit();
                 break;
+*/
 
             case R.id.drawer_about:
                 // About Us
@@ -210,12 +215,21 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 ft.commit();
                 break;
 
+            case R.id.drawer_contact_us:
+                // Contact Us
+                ft.replace(R.id.content, new ContactUsFragment(), "CONTACT_US_PAGE");
+                //ft.addToBackStack(null);
+                ft.commit();
+                break;
+
+/*
             case R.id.drawer_help:
                 // Help and FAQ
                 ft.replace(R.id.content, new HelpFragment(), "HELP_PAGE");
                 //ft.addToBackStack(null);
                 ft.commit();
-                break;*/
+                break;
+*/
         }
     }
 

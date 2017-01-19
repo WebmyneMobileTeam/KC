@@ -106,7 +106,7 @@
     </style>
 
     <style name="list_item_appearance">
-        <item name="android:textSize">@dimen/M_TEXT_SIZE</item>
+        <item name="android:textSize">@dimen/S_TEXT_SIZE</item>
     </style>
 
     <style name="ToolBarStyle" parent="ToolBarStyle.Base"/>

@@ -153,43 +153,44 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/linearFbLogin"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:background="@drawable/com_facebook_button_like_background"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                    android:clickable="true">
 
                     <ImageView
+                        android:id="@+id/ivFacebookIcon"
                         android:layout_width="30dp"
                         android:layout_height="25dp"
-                        android:layout_gravity="center"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:src="@drawable/com_facebook_button_icon" />
 
                     <View
+                        android:id="@+id/ivFacebookDivider"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/ivFacebookIcon"
                         android:background="#6b81c0" />
 
                     <TextView
                         android:id="@+id/tvLogin"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:layout_gravity="center"
-                        android:gravity="center"
-                        android:padding="@dimen/STD_TXT_PADDING_SIZE"
-                        android:text="SignIn With Facebook"
+                        android:text="Continue With Facebook"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/btnGplus"
@@ -200,6 +201,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
 </RelativeLayout>

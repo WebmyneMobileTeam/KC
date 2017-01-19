@@ -12,11 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
 
-    private LinearLayout linearFbLogin;
+    private RelativeLayout linearFbLogin;
     private CallbackManager callbackManager;
 
 
@@ -337,9 +339,11 @@ public class LoginActivity extends AppCompatActivity implements
         txtRegister = (TextView) findViewById(R.id.txtRegister);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
-        linearFbLogin = (LinearLayout) findViewById(R.id.linearFbLogin);
+        linearFbLogin = (RelativeLayout) findViewById(R.id.linearFbLogin);
         btnGplus = (SignInButton) findViewById(R.id.btnGplus);
-        setGooglePlusButtonText(btnGplus, "SignIn With Google Plus");
+        setGooglePlusButtonText(btnGplus, "Continue With Google Plus");
+
+//        btnGplus.setSize(SignInButton.SIZE_STANDARD);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
