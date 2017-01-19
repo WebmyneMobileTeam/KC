@@ -14,6 +14,7 @@
     <dimen name="CARD_DIVIDER_HEIGHT">20dp</dimen>
     <dimen name="VS_TEXT_SIZE">15sp</dimen>
     <dimen name="S_TEXT_SIZE">20sp</dimen>
+
     <dimen name="M_TEXT_SIZE">22sp</dimen>
     <dimen name="L_TEXT_SIZE">26sp</dimen>
     <dimen name="VL_TEXT_SIZE">28sp</dimen>

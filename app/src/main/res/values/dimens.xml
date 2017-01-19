@@ -15,6 +15,7 @@
     <dimen name="VS_TEXT_SIZE">12sp</dimen>
     <dimen name="S_TEXT_SIZE">14sp</dimen>
     <dimen name="M_TEXT_SIZE">18sp</dimen>
+
     <dimen name="L_TEXT_SIZE">22sp</dimen>
     <dimen name="VL_TEXT_SIZE">24sp</dimen>
     <dimen name="STD_HEIGHT_SIZE">40dp</dimen>
