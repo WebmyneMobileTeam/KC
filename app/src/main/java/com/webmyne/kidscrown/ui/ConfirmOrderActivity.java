@@ -394,7 +394,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                     mainObect.put("date", dateTime);
                     mainObect.put("user_id", userId);
 
-                    if (grandTotal < 3000) {
+                    if (finalPrice < 3000) {
                         grandTotal += 100;
                         mainObect.put("shipping_cost", 100);
                         mainObect.put("DiscountPercent", invoiceDiscount);

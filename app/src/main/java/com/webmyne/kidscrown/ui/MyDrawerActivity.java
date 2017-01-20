@@ -207,8 +207,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 ft.commit();
                 break;
 */
-
-            case R.id.drawer_about:
+           /* case R.id.drawer_about:
                 // About Us
                 ft.replace(R.id.content, new AboutUsFragment(), "ABOUT_US_PAGE");
                 //ft.addToBackStack(null);
@@ -220,8 +219,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 ft.replace(R.id.content, new ContactUsFragment(), "CONTACT_US_PAGE");
                 //ft.addToBackStack(null);
                 ft.commit();
-                break;
-
+                break;*/
 /*
             case R.id.drawer_help:
                 // Help and FAQ

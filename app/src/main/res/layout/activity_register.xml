@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -239,7 +240,6 @@
                     android:layout_margin="12dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="gone"
                     android:weightSum="1">
 
                     <View
@@ -269,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/linearFbLogin"
@@ -316,11 +316,8 @@
                         android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT" />
 
                 </LinearLayout>
-
             </LinearLayout>
 
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>

@@ -9,12 +9,15 @@ public class Constants {
     public static final String CROWN = "16";
     public static final String INVOICE = "0";
 
+    public static final int shipping_cost = 100;
+
     public static final int SUCCESS = 1;
 
     // utils
     public static final boolean LOGGING_ENABLED = true;
     public static final String TAG = "KidsCrown";
 
+//    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
     private static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
     public static final String BASE_URL_V03 = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown_V03/WCF/Services/";
 //    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
