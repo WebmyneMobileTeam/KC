@@ -10,12 +10,16 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.fastjson.FastJsonConverterFactory;
+
 /**
  * Application class that called once when application is installed for the first time on device.
  * This class includes the integration of Volly [third party framework for calling webservices]
  */
 public class MyApplication extends Application {
 
+    private static Retrofit retrofit;
     private static Gson gson;
 
     /**
@@ -42,6 +46,7 @@ public class MyApplication extends Application {
         // initialize the singleton
         sInstance = this;
         initGson();
+        initRetrofit();
         DatabaseHandler handler = new DatabaseHandler(getApplicationContext());
         try{
             handler.createDataBase();
@@ -59,6 +64,16 @@ public class MyApplication extends Application {
         return gson;
     }
 
+    private void initRetrofit() {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL_V03)
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .build();
+    }
+
+    public static Retrofit getRetrofit() {
+        return retrofit;
+    }
 
     /**
      * @return ApplicationController singleton instance

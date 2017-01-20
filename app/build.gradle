@@ -41,4 +41,8 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.android.support:gridlayout-v7:22.2.1'
     compile 'com.android.support:recyclerview-v7:22.0.0'
+
+    // retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
 }

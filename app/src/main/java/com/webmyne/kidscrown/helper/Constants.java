@@ -9,12 +9,15 @@ public class Constants {
     public static final String CROWN = "16";
     public static final String INVOICE = "0";
 
+    public static final int SUCCESS = 1;
+
     // utils
     public static final boolean LOGGING_ENABLED = true;
     public static final String TAG = "KidsCrown";
 
-//    private static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
-    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
+    private static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
+    public static final String BASE_URL_V03 = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown_V03/WCF/Services/";
+//    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
 
     public static final String REGISTRATION_URL = BASE_URL + "/User.svc/json/UserRegistration";
     public static final String LOGIN_URL = BASE_URL + "/User.svc/json/UserLogin/";
@@ -39,6 +42,9 @@ public class Constants {
     public static final String CROWN_PRODUCT_NAME = "Refill";
 
     public static final String FETCH_ORDER = BASE_URL + "/Order.svc/json/FetchOrdersApp?UserId=";
+
+    public static final String ABOUT_US_URL = "Home.svc/json/GetAboutUsDetail";
+
 
     public static String regNoPattern = "^[A-Z][0-9]{6}$";
 
