@@ -64,8 +64,10 @@
     <dimen name="m_15dp">15dp</dimen>
     <dimen name="m_18dp">18dp</dimen>
     <dimen name="m_20dp">20dp</dimen>
-    <dimen name="m_25dp">25dp</dimen>
-    <dimen name="m_30dp">30dp</dimen>
+    <dimen name="m_24dp">24dp</dimen>
+    <dimen name="m_28dp">28dp</dimen>
+    <dimen name="m_36dp">36dp</dimen>
+    <dimen name="m_40dp">40dp</dimen>
 
 
 

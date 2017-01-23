@@ -6,25 +6,8 @@ package com.webmyne.kidscrown.model;
 
 public class AboutUsResponseModel {
 
-    private String Description;
-    private String HeaderImage;
     private BaseResponse Response;
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-    public String getHeaderImage() {
-        return HeaderImage;
-    }
-
-    public void setHeaderImage(String headerImage) {
-        HeaderImage = headerImage;
-    }
+    private AboutUsData Data;
 
     public BaseResponse getResponse() {
         return Response;
@@ -32,5 +15,13 @@ public class AboutUsResponseModel {
 
     public void setResponse(BaseResponse response) {
         Response = response;
+    }
+
+    public AboutUsData getData() {
+        return Data;
+    }
+
+    public void setData(AboutUsData data) {
+        Data = data;
     }
 }

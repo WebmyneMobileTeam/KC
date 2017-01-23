@@ -61,11 +61,11 @@ public class LoginActivity extends AppCompatActivity implements
 
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
-//    SignInButton btnGplus;
+    //    SignInButton btnGplus;
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
 
-    private RelativeLayout linearFbLogin,linearGPLusLogin;
+    private RelativeLayout linearFbLogin, linearGPLusLogin;
     private CallbackManager callbackManager;
 
 
@@ -90,14 +90,14 @@ public class LoginActivity extends AppCompatActivity implements
 
                 if (edtUsername.getText().toString().trim().length() == 0) {
                     //Functions.snack(v, "Username or Email is required");
-                    Snackbar snack = Snackbar.make(btnLogin, "Username or Email is required", Snackbar.LENGTH_LONG);
+                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.invalid_username), Snackbar.LENGTH_LONG);
                     View view = snack.getView();
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                     tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
                     snack.show();
                 } else if (edtPassword.getText().toString().trim().length() == 0) {
                     //Functions.snack(v, "Password is required");
-                    Snackbar snack = Snackbar.make(btnLogin, "Password is required", Snackbar.LENGTH_LONG);
+                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.invalid_password), Snackbar.LENGTH_LONG);
                     View view = snack.getView();
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                     tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
@@ -230,7 +230,7 @@ public class LoginActivity extends AppCompatActivity implements
                     finish();
 
                 } catch (Exception e) {
-                    Snackbar snack = Snackbar.make(btnLogin, "Unable To Login", Snackbar.LENGTH_LONG);
+                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.unable_to_login), Snackbar.LENGTH_LONG);
                     View view = snack.getView();
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                     tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
@@ -242,7 +242,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void error(String error) {
                 pd.dismiss();
-                Functions.snack(btnLogin, "Invalid Login Credentials");
+                Functions.snack(btnLogin, getString(R.string.invalid_login));
             }
         }.call();
     }
@@ -250,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements
     private void socialMediaLoginProcess(String email, String loginType) {
         url = Constants.SOCIAL_MEDIA_LOGIN_URL + email + "/" + loginType;
 
-        pd = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait..", true);
+        pd = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.please_wait), true);
         Functions.logE("login request url", url);
 
         new CallWebService(url, CallWebService.TYPE_GET, null) {
@@ -280,7 +280,7 @@ public class LoginActivity extends AppCompatActivity implements
 
                 } catch (Exception e) {
                     pd.dismiss();
-                    Snackbar snack = Snackbar.make(btnLogin, "Unable To Login", Snackbar.LENGTH_LONG);
+                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.unable_to_login), Snackbar.LENGTH_LONG);
                     View view = snack.getView();
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                     tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
@@ -306,7 +306,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void error(String error) {
                 pd.dismiss();
-                Snackbar snack = Snackbar.make(btnLogin, "Unable To Login. " + error, Snackbar.LENGTH_LONG);
+                Snackbar snack = Snackbar.make(btnLogin, getString(R.string.unable_to_login) + " " + error, Snackbar.LENGTH_LONG);
                 View view = snack.getView();
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));

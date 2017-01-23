@@ -49,7 +49,7 @@ public class AboutUsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about, container, false);
-        ((MyDrawerActivity) getActivity()).setTitle("About Us");
+        ((MyDrawerActivity) getActivity()).setTitle(getActivity().getString(R.string.about_us));
 
         init(view);
 
@@ -68,7 +68,7 @@ public class AboutUsFragment extends Fragment {
 
     private void fetchAboutUsData() {
 
-        pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
+        pd = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loading), getActivity().getString(R.string.please_wait), true);
 
         new FetchAboutUsData(getActivity(), new CommonRetrofitResponseListener() {
             @Override
@@ -80,12 +80,12 @@ public class AboutUsFragment extends Fragment {
 
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
-                Glide.with(getActivity()).load(responseModel.getHeaderImage())
+                Glide.with(getActivity()).load(responseModel.getData().getHeaderImage())
 //                        .thumbnail(0.5f)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(ivImage);
 
-                tvAboutUs.setText(Html.fromHtml(responseModel.getDescription()));
+                tvAboutUs.setText(Html.fromHtml(responseModel.getData().getDescription()));
 
             }
 

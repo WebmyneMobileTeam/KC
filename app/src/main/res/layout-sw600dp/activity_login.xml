@@ -5,9 +5,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/m_20dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/m_20dp"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/logo"
@@ -20,16 +21,15 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_25dp">
+            android:layout_marginTop="@dimen/m_24dp">
 
             <EditText
                 android:id="@+id/edtUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username / Email"
+                android:hint="@string/username"
                 android:inputType="text"
-                android:maxLines="6"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textColorHint="@color/half_black"
                 android:textSize="@dimen/M_TEXT" />
@@ -45,9 +45,9 @@
                 android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textColorHint="@color/half_black"
                 android:textSize="@dimen/M_TEXT" />
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/STD_HEIGHT_SIZE"
             android:layout_marginTop="@dimen/m_15dp"
-            android:text="Login"
+            android:text="@string/login"
             android:textAllCaps="false"
             android:textSize="@dimen/L_TEXT" />
 
@@ -75,8 +75,8 @@
                 style="@style/match_wrap_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:singleLine="true"
-                android:text="Forgot Password?"
+                android:maxLines="1"
+                android:text="@string/forget_pass"
                 android:textColor="@color/black"
                 android:textSize="@dimen/M_TEXT" />
 
@@ -87,8 +87,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:singleLine="true"
-                android:text="New User? Sign Up"
+                android:maxLines="1"
+                android:text="@string/new_user_signup"
                 android:textColor="@color/black"
                 android:textSize="@dimen/M_TEXT" />
 
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:gravity="center"
-                android:text="OR"
+                android:text="@string/or"
                 android:textColor="@color/black"
                 android:textSize="@dimen/M_TEXT_SIZE" />
 
@@ -135,7 +135,7 @@
             <RelativeLayout
                 android:id="@+id/linearFbLogin"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/m_40dp"
                 android:layout_marginLeft="@dimen/m_4dp"
                 android:layout_marginRight="@dimen/m_4dp"
                 android:layout_weight="1"
@@ -145,8 +145,8 @@
 
                 <ImageView
                     android:id="@+id/ivFacebookImage"
-                    android:layout_width="@dimen/m_30dp"
-                    android:layout_height="@dimen/m_25dp"
+                    android:layout_width="@dimen/m_24dp"
+                    android:layout_height="@dimen/m_24dp"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/m_8dp"
@@ -158,7 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Facebook"
+                    android:text="@string/facebook"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/M_TEXT"
                     android:textStyle="bold" />
@@ -168,7 +168,7 @@
             <RelativeLayout
                 android:id="@+id/linearGPLusLogin"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/m_40dp"
                 android:layout_marginLeft="@dimen/m_4dp"
                 android:layout_marginRight="@dimen/m_4dp"
                 android:layout_weight="1"
@@ -178,8 +178,8 @@
 
                 <ImageView
                     android:id="@+id/ivGPLusImage"
-                    android:layout_width="@dimen/m_30dp"
-                    android:layout_height="@dimen/m_25dp"
+                    android:layout_width="@dimen/m_24dp"
+                    android:layout_height="@dimen/m_24dp"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/m_8dp"
@@ -191,7 +191,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Google"
+                    android:text="@string/google"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/M_TEXT"
                     android:textStyle="bold" />

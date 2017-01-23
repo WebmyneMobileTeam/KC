@@ -44,4 +44,24 @@
     <dimen name="QUADRANT_BOTTOM_PADDING">2dp</dimen>
     <dimen name="QUADRANT_LEFT_PADDING">40dp</dimen>
     <dimen name="QUADRANT_RIGHT_PADDING">40dp</dimen>
+
+    <dimen name="m_1dp">1dp</dimen>
+    <dimen name="m_2dp">2dp</dimen>
+    <dimen name="m_3dp">3dp</dimen>
+    <dimen name="m_4dp">4dp</dimen>
+    <dimen name="m_5dp">5dp</dimen>
+    <dimen name="m_6dp">6dp</dimen>
+    <dimen name="m_7dp">7dp</dimen>
+    <dimen name="m_8dp">8dp</dimen>
+    <dimen name="m_9dp">9dp</dimen>
+    <dimen name="m_10dp">10dp</dimen>
+    <dimen name="m_12dp">12dp</dimen>
+    <dimen name="m_15dp">15dp</dimen>
+    <dimen name="m_18dp">18dp</dimen>
+    <dimen name="m_20dp">56dp</dimen>
+    <dimen name="m_24dp">24dp</dimen>
+    <dimen name="m_28dp">28dp</dimen>
+    <dimen name="m_36dp">36dp</dimen>
+    <dimen name="m_40dp">56dp</dimen>
+
 </resources>

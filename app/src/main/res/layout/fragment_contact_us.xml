@@ -9,6 +9,17 @@
         android:orientation="vertical"
         android:padding="@dimen/m_10dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/m_5dp"
+            android:layout_marginLeft="@dimen/m_10dp"
+            android:layout_marginRight="@dimen/m_10dp"
+            android:text="@string/contact_detail"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="@dimen/M_TEXT"
+            android:textStyle="bold" />
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -18,43 +29,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/m_10dp"
-                android:text="Android is a mobile operating system developed by Google, based on the Linux kernel and designed primarily for touchscreen mobile devices such as smartphones and tablets. Android's user interface is mainly based on direct manipulation, using touch gestures that loosely correspond to real-world actions, such as swiping, tapping and pinching, to manipulate on-screen objects, along with a virtual keyboard for text input. In addition to touchscreen devices, Google has further developed Android TV for televisions, Android Auto for cars, and Android Wear for wrist watches, each with a specialized user interface. Variants of Android are also used on notebooks, game consoles, digital cameras, and other electronics."
+                android:textColor="@color/colorTextSecondary"
                 android:textSize="@dimen/M_TEXT" />
 
         </android.support.v7.widget.CardView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/m_5dp"
+            android:layout_marginLeft="@dimen/m_10dp"
+            android:layout_marginRight="@dimen/m_10dp"
+            android:layout_marginTop="@dimen/m_15dp"
+            android:text="@string/bank_detail"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="@dimen/M_TEXT"
+            android:textStyle="bold" />
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_10dp">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvBankDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/m_10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Bank Detail"
-                    android:textSize="@dimen/M_TEXT" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/m_1dp"
-                    android:background="@color/black" />
-
-                <TextView
-                    android:id="@+id/tvBankDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/m_10dp"
-                    android:text="Android is a mobile operating system developed by Google, based on the Linux kernel and designed primarily for touchscreen mobile devices such as smartphones and tablets. Android's user interface is mainly based on direct manipulation, using touch gestures that loosely correspond to real-world actions, such as swiping, tapping and pinching, to manipulate on-screen objects, along with a virtual keyboard for text input. In addition to touchscreen devices, Google has further developed Android TV for televisions, Android Auto for cars, and Android Wear for wrist watches, each with a specialized user interface. Variants of Android are also used on notebooks, game consoles, digital cameras, and other electronics."
-                    android:textSize="@dimen/M_TEXT" />
-
-            </LinearLayout>
+                android:layout_margin="@dimen/m_10dp"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="@dimen/M_TEXT" />
 
         </android.support.v7.widget.CardView>
 

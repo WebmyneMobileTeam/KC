@@ -3,6 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="loading">Loading</string>
+    <string name="please_wait">Please wait..</string>
+
+
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
@@ -53,5 +58,30 @@
         <item>Step 7: Shipping and billing address screen</item>
         <item>Step 8: Order Confirmation Screen</item>
     </string-array>
+
+    <!--fragment_contact_us.xml-->
+    <string name="invalid_username">Username or Email is required</string>
+    <string name="invalid_password">Password is required</string>
+    <string name="unable_to_login">Unable To Login</string>
+    <string name="invalid_login">Invalid Login Credentials</string>
+
+    <!--fragment_contact_us.xml-->
+    <string name="contact_detail">Contact Detail</string>
+    <string name="bank_detail">Bank Detail</string>
+
+    <!--activity_login.xml-->
+    <string name="username">Username / Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forget_pass">Forgot Password?</string>
+    <string name="new_user_signup">New User? Sign Up</string>
+    <string name="or">OR</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+
+    <!--ContactUsFragment.java.xml-->
+    <string name="about_us">About Us</string>
+    <string name="contact_us">Contact Us</string>
+
 
 </resources>
