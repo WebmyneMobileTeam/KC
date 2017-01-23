@@ -11,12 +11,21 @@
 
     <dimen name="BADGE_TEXT_SIZE">6dp</dimen>
 
+    <dimen name="VVS_TEXT">8sp</dimen>
+    <dimen name="VS_TEXT">10sp</dimen>
+    <dimen name="S_TEXT">12sp</dimen>
+    <dimen name="N_TEXT">14sp</dimen>
+    <dimen name="M_TEXT">16sp</dimen>
+    <dimen name="L_TEXT">18sp</dimen>
+    <dimen name="XL_TEXT">20sp</dimen>
+    <dimen name="XXL_TEXT">22sp</dimen>
+
     <dimen name="CARD_DIVIDER_HEIGHT">8dp</dimen>
-    <dimen name="VS_TEXT_SIZE">12dp</dimen>
-    <dimen name="S_TEXT_SIZE">14dp</dimen>
-    <dimen name="M_TEXT_SIZE">18dp</dimen>
-    <dimen name="L_TEXT_SIZE">22dp</dimen>
-    <dimen name="VL_TEXT_SIZE">24dp</dimen>
+    <dimen name="VS_TEXT_SIZE">12sp</dimen>
+    <dimen name="S_TEXT_SIZE">14sp</dimen>
+    <dimen name="M_TEXT_SIZE">18sp</dimen>
+    <dimen name="L_TEXT_SIZE">22sp</dimen>
+    <dimen name="VL_TEXT_SIZE">24sp</dimen>
     <dimen name="STD_HEIGHT_SIZE">40dp</dimen>
     <dimen name="STD_HEIGHT_SIZE1">42dp</dimen>
     <dimen name="S_MARGIN_SIZE">2dp</dimen>
@@ -39,5 +48,25 @@
 
     <dimen name="bg_line_width">25dp</dimen>
     <dimen name="bg_line_height">20dp</dimen>
+
+
+    <dimen name="m_1dp">1dp</dimen>
+    <dimen name="m_2dp">2dp</dimen>
+    <dimen name="m_3dp">3dp</dimen>
+    <dimen name="m_4dp">4dp</dimen>
+    <dimen name="m_5dp">5dp</dimen>
+    <dimen name="m_6dp">6dp</dimen>
+    <dimen name="m_7dp">7dp</dimen>
+    <dimen name="m_8dp">8dp</dimen>
+    <dimen name="m_9dp">9dp</dimen>
+    <dimen name="m_10dp">10dp</dimen>
+    <dimen name="m_12dp">12dp</dimen>
+    <dimen name="m_15dp">15dp</dimen>
+    <dimen name="m_18dp">18dp</dimen>
+    <dimen name="m_20dp">20dp</dimen>
+    <dimen name="m_25dp">25dp</dimen>
+    <dimen name="m_30dp">30dp</dimen>
+
+
 
 </resources>

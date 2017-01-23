@@ -1,323 +1,205 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_back"
-    android:orientation="vertical"
-    tools:context="com.webmyne.kidscrown.ui.RegisterActivity">
+    android:background="@color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:text="User Registration"
-        android:textColor="@color/white"
-        android:textSize="@dimen/L_TEXT_SIZE" />
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/m_20dp">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="User Registration"
+            android:textColor="@color/black"
+            android:textSize="@dimen/L_TEXT" />
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_25dp">
 
-            android:orientation="vertical">
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/edtFirstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="@dimen/STD_MARGIN_SIZE"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin"
-                android:orientation="vertical">
+                android:hint="First Name"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
+        </android.support.design.widget.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/edtFirstname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                        android:hint="First Name"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtLastName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                        android:hint="Last Name"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtUserName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Username"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtMobile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:digits="1234567890"
-                        android:hint="Mobile"
-                        android:inputType="phone"
-                        android:maxLength="10"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Password"
-                        android:inputType="textPassword"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtConfirmPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Confirm Password"
-                        android:inputType="textPassword"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtClinicName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Clinic Name"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/L_MARGIN_SIZE"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
-
-                    <EditText
-                        android:id="@+id/edtRegNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ\\1234567890#_/-"
-                        android:hint="Registration Number"
-                        android:inputType="textCapCharacters"
-                        android:maxLength="12"
-                        android:singleLine="true"
-                        android:textColor="#ffffff"
-                        android:textColorHint="@color/editText_hint_color"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearBottom"
+            <EditText
+                android:id="@+id/edtLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"
-                android:layout_marginLeft="@dimen/STD_MARGIN_SIZE"
-                android:layout_marginRight="@dimen/STD_MARGIN_SIZE"
-                android:orientation="vertical">
+                android:hint="Last Name"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
 
-                <Button
-                    android:id="@+id/btnRegister"
-                    style="@style/login_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/STD_TXT_PADDING_SIZE"
-                    android:text="Register"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/M_TEXT_SIZE" />
+        </android.support.design.widget.TextInputLayout>
 
-                <TextView
-                    android:id="@id/btnLogin"
-                    style="@style/match_wrap_parent"
-                    android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                    android:gravity="center"
-                    android:text="Already Have an account? Login"
-                    android:textColor="#ffffff"
-                    android:textSize="@dimen/M_TEXT_SIZE" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+            <EditText
+                android:id="@+id/edtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="0.4"
-                        android:background="#ffffff" />
+        </android.support.design.widget.TextInputLayout>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.15"
-                        android:gravity="center"
-                        android:text="OR"
-                        android:textColor="#ffffff"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="0.4"
-                        android:background="#ffffff" />
-                </LinearLayout>
+            <EditText
+                android:id="@+id/edtMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mobile"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+        </android.support.design.widget.TextInputLayout>
 
-                    <LinearLayout
-                        android:id="@+id/linearFbLogin"
-                        android:layout_width="fill_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:background="@drawable/com_facebook_button_like_background"
-                        android:clickable="true"
-                        android:orientation="horizontal">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/com_facebook_button_icon" />
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="#6b81c0" />
+        </android.support.design.widget.TextInputLayout>
 
-                        <TextView
-                            android:id="@+id/tvLogin"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:padding="@dimen/STD_TXT_PADDING_SIZE"
-                            android:text="SignUp With Facebook"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/S_TEXT_SIZE"
-                            android:textStyle="bold" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
 
-                    </LinearLayout>
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
 
-                    <com.google.android.gms.common.SignInButton
-                        android:id="@+id/btnGplus"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/CARD_DIVIDER_HEIGHT" />
+        </android.support.design.widget.TextInputLayout>
 
-                </LinearLayout>
-            </LinearLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
 
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+            <EditText
+                android:id="@+id/edtConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
+
+            <EditText
+                android:id="@+id/edtClinicName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Clinic Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_5dp">
+
+            <EditText
+                android:id="@+id/edtRegNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Registration Number"
+                android:inputType="textCapCharacters"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/half_black"
+                android:textSize="@dimen/M_TEXT" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnRegister"
+            style="@style/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_15dp"
+            android:padding="@dimen/STD_TXT_PADDING_SIZE"
+            android:text="Register"
+            android:textAllCaps="false"
+            android:textSize="@dimen/M_TEXT_SIZE" />
+
+        <TextView
+            android:id="@id/btnLogin"
+            style="@style/match_wrap_parent"
+            android:layout_marginTop="@dimen/m_20dp"
+            android:gravity="center"
+            android:text="Already Have an account? Login"
+            android:textColor="@color/black"
+            android:textSize="@dimen/M_TEXT" />
+
+    </LinearLayout>
+
+</ScrollView>

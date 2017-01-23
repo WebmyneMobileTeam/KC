@@ -69,7 +69,6 @@ public class AboutUsFragment extends Fragment {
     private void fetchAboutUsData() {
 
         pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
-//        Functions.logE("about request url", Constants.ABOUT_US_URL);
 
         new FetchAboutUsData(getActivity(), new CommonRetrofitResponseListener() {
             @Override
@@ -97,52 +96,6 @@ public class AboutUsFragment extends Fragment {
 
             }
         });
-
-
-//        new CallWebService(Constants.ABOUT_US_URL, CallWebService.TYPE_GET) {
-//            @Override
-//            public void response(String response) {
-//                pd.dismiss();
-//                Log.e("aboutus response", response + "");
-//                try {
-//
-//                    AboutUsResponseModel requestModel = new GsonBuilder().create().fromJson(response, AboutUsResponseModel.class);
-//
-//                    if (requestModel.getResponse().getResponseCode() == Constants.SUCCESS) {
-//
-//                        tvAboutUs.setText(requestModel.getDescription());
-//
-//                    } else {
-//
-//                        pd.dismiss();
-//                        Snackbar snack = Snackbar.make(parentView, requestModel.getResponse().getResponseMsg(), Snackbar.LENGTH_LONG);
-//                        View view = snack.getView();
-//                        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-//                        tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-//                        snack.show();
-//                    }
-//
-//                } catch (Exception e) {
-//                    Snackbar snack = Snackbar.make(parentView, "Unable Fetch Data", Snackbar.LENGTH_LONG);
-//                    View view = snack.getView();
-//                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-//                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-//                    snack.show();
-//                }
-//            }
-//
-//            @Override
-//            public void error(String error) {
-//                pd.dismiss();
-//                Snackbar snack = Snackbar.make(parentView, "Unable Fetch Data. " + error, Snackbar.LENGTH_LONG);
-//                View view = snack.getView();
-//                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-//                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-//                snack.show();
-//
-//                Log.e("error", error);
-//            }
-//        }.call();
 
     }
 

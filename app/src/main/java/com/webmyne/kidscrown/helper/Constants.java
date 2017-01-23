@@ -48,6 +48,7 @@ public class Constants {
 
     public static final String ABOUT_US_URL = "Home.svc/json/GetAboutUsDetail";
 
+    public static final String CONTACT_US_URL = "Home.svc/json/GetPageDetails";
 
     public static String regNoPattern = "^[A-Z][0-9]{6}$";
 

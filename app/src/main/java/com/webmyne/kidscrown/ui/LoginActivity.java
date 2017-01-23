@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
@@ -60,11 +61,11 @@ public class LoginActivity extends AppCompatActivity implements
 
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
-    SignInButton btnGplus;
+//    SignInButton btnGplus;
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
 
-    private LinearLayout linearFbLogin;
+    private RelativeLayout linearFbLogin,linearGPLusLogin;
     private CallbackManager callbackManager;
 
 
@@ -128,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements
             }
         });
 
-        btnGplus.setOnClickListener(new View.OnClickListener() {
+        linearGPLusLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!Functions.isConnected(LoginActivity.this)) {
@@ -334,9 +335,10 @@ public class LoginActivity extends AppCompatActivity implements
         txtRegister = (TextView) findViewById(R.id.txtRegister);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
-        linearFbLogin = (LinearLayout) findViewById(R.id.linearFbLogin);
-        btnGplus = (SignInButton) findViewById(R.id.btnGplus);
-        setGooglePlusButtonText(btnGplus, "Continue With Google Plus");
+        linearFbLogin = (RelativeLayout) findViewById(R.id.linearFbLogin);
+        linearGPLusLogin = (RelativeLayout) findViewById(R.id.linearGPLusLogin);
+//        btnGplus = (SignInButton) findViewById(R.id.btnGplus);
+//        setGooglePlusButtonText(btnGplus, "Continue With Google Plus");
 
 //        btnGplus.setSize(SignInButton.SIZE_STANDARD);
 
