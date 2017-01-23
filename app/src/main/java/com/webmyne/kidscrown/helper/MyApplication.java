@@ -66,7 +66,7 @@ public class MyApplication extends Application {
 
     private void initRetrofit() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL_V03)
+                .baseUrl(URLConstants.BASE_URL_V03)
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .build();
     }
