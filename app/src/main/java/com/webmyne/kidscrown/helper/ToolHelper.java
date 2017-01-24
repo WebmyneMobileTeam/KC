@@ -91,14 +91,4 @@ public class ToolHelper {
 
     }
 
-    public void displayProgress() {
-        SmoothProgressBar progressBar = (SmoothProgressBar) view.findViewById(R.id.progresssTool);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideProgress() {
-        SmoothProgressBar progressBar = (SmoothProgressBar) view.findViewById(R.id.progresssTool);
-        progressBar.setVisibility(View.GONE);
-    }
-
 }

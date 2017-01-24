@@ -15,9 +15,9 @@ public class RetrofitErrorHelper {
     public static void showErrorMsg(Throwable t, Context context) {
 
         if (t instanceof TimeoutException) {
-            Toast.makeText(context, context.getString(R.string.time_out), Toast.LENGTH_SHORT).show();
+            Functions.showToast(context, context.getString(R.string.time_out));
         } else {
-            Toast.makeText(context, context.getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+            Functions.showToast(context, context.getString(R.string.try_again));
         }
     }
 }

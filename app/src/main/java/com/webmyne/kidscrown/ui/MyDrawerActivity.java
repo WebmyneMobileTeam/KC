@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -59,6 +60,8 @@ public class MyDrawerActivity extends AppCompatActivity implements
     GoogleApiClient mGoogleApiClient;
     boolean mSignInClicked;
     private DatabaseHandler handler;
+
+    private TextView txtCustomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +130,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
     }
 
     public void setTitle(String title) {
-        toolbar.setTitle(title);
+        txtCustomTitle.setText(title);
     }
 
     private void setDrawerClick(int itemId) {
@@ -262,13 +265,17 @@ public class MyDrawerActivity extends AppCompatActivity implements
 
     private void init() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         view = (NavigationView) findViewById(R.id.navigation_view);
 
         if (toolbar != null) {
-            toolbar.setTitle("Kids Crown");
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText(getString(R.string.app_name));
+            toolbar.setTitle("");
             setSupportActionBar(toolbar);
         }
+
         helper = new ToolHelper(MyDrawerActivity.this, toolbar);
         ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         imgCart.setOnClickListener(new View.OnClickListener() {

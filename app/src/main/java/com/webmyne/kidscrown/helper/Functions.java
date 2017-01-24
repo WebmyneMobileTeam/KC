@@ -147,7 +147,7 @@ public class Functions {
     public static void showToast(Context context, String message) {
         new ToastLib.Builder(context, message)
                 .duration(ToastEnum.SHORT)
-                .backgroundColor(ContextCompat.getColor(context, R.color.primaryColor))
+                .backgroundColor(ContextCompat.getColor(context, R.color.color_button_darkred))
                 .textColor(ContextCompat.getColor(context, R.color.white))
                 .textSize(18)
                 .corner(12)

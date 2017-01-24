@@ -102,12 +102,10 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
         Log.e("Address URL", Constants.GET_EXISTING_ADDRESS + user);
         View view = ((MyDrawerActivity) getActivity()).getToolbar().getRootView();
         final ToolHelper helper = new ToolHelper(getActivity(), view);
-        helper.displayProgress();
 
         new CallWebService(Constants.GET_EXISTING_ADDRESS + user, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {
-                helper.hideProgress();
                 Log.e("Response Address", response);
                 Type listType = new TypeToken<List<Address>>() {
                 }.getType();
@@ -121,7 +119,6 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
 
             @Override
             public void error(String error) {
-                helper.hideProgress();
                 Log.e("Error", error);
 
             }

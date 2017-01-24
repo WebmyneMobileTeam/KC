@@ -1,11 +1,10 @@
 package com.webmyne.kidscrown.api;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Constants;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.MyApplication;
 import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
 import com.webmyne.kidscrown.model.ProductResponse;
@@ -45,7 +44,7 @@ public class FetchProducts {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
 
-               // hideProgress();
+                hideProgress();
 
                 if (response.isSuccessful()) {
 
@@ -54,11 +53,11 @@ public class FetchProducts {
                         commonRetrofitResponseListener.onSuccess(response.body());
 
                     } else {
-                        Toast.makeText(context, response.body().getResponse().getResponseMsg(), Toast.LENGTH_SHORT).show();
+                        Functions.showToast(context, response.body().getResponse().getResponseMsg());
                     }
 
                 } else {
-                    Toast.makeText(context, context.getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                    Functions.showToast(context, context.getString(R.string.try_again));
                 }
             }
 
@@ -84,8 +83,10 @@ public class FetchProducts {
 
     private void showProgress() {
         if (dialog == null) {
-            dialog = new SpotsDialog(context, "", R.style.Custom);
+            dialog = new SpotsDialog(context, "Loading products..", R.style.Custom);
         }
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
 }

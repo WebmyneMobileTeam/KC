@@ -37,8 +37,6 @@ import com.webmyne.kidscrown.ui.RefillActivityAnother;
 
 import java.util.ArrayList;
 
-import static com.google.android.gms.internal.zzhl.runOnUiThread;
-
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private FamiliarRecyclerView productRV;
@@ -92,16 +90,25 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
         productRV.setEmptyView(emptyLayout);
 
-        emptyLayout.setContent("No Product for this category.");
+        emptyLayout.setContent("No Product found.");
 
         productRV.setAdapter(adapter);
 
-        runOnUiThread(new Runnable() {
+        productRV.setOnItemClickListener(new FamiliarRecyclerView.OnItemClickListener() {
             @Override
-            public void run() {
-                fetchProducts();
+            public void onItemClick(FamiliarRecyclerView familiarRecyclerView, View view, int position) {
+                Product product = productList.get(position);
+                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
             }
         });
+
+        if (Functions.isConnected(getActivity()))
+            fetchProducts();
+        else
+            Functions.showToast(getActivity(), "No Internet Connectivity");
+
     }
 
     @Override
@@ -158,6 +165,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void fetchProducts() {
 
+        Log.e("product", "call");
         /*new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {

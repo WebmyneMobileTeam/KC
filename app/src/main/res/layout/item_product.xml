@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="Product"
                 android:textColor="@color/white"
+                android:fontFamily="sans-serif-condensed"
                 android:textSize="@dimen/M_TEXT"
                 android:textStyle="bold" />
 
@@ -32,6 +33,7 @@
                 android:id="@+id/txtProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
                 android:maxLines="2"
                 android:text="@string/cheese_ipsum"
                 android:textColor="@color/white"

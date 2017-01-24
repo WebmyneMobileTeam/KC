@@ -11,9 +11,9 @@
     <application
         android:name=".helper.MyApplication"
         android:allowBackup="true"
-        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.SplashActivity"
@@ -38,19 +38,19 @@
         <activity
             android:name=".ui.MyDrawerActivity"
             android:label="@string/title_activity_home"
-            android:screenOrientation="sensorPortrait"></activity>
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".ui.CrownActivity"
             android:label="@string/title_activity_crown"
-            android:screenOrientation="sensorPortrait"></activity>
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".ui.RefillActivity"
             android:label="@string/title_activity_refill"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".ui.RefillActivityAnother"
             android:label="@string/title_activity_refill"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <!--
         <activity
             android:name=".ui.DemoCrownActivity"
@@ -61,28 +61,28 @@
         <activity
             android:name=".ui.ProductDetailActivity"
             android:label="@string/title_activity_product_detail"
-            android:screenOrientation="sensorPortrait"></activity>
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".ui.CartActivity"
             android:label="@string/title_activity_cart"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.GalleryActivity"
-            android:label="@string/title_activity_gallery"></activity>
+            android:label="@string/title_activity_gallery" />
         <activity
             android:name=".ui.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
-            android:screenOrientation="sensorPortrait"></activity>
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".ui.ShippingDetailsActivity"
             android:label="@string/title_activity_shipping_details"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.ConfirmOrderActivity"
             android:label="@string/title_activity_confirm_activty"
-            android:screenOrientation="sensorPortrait"></activity>
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -104,14 +104,14 @@
 
         <activity
             android:name=".ui.PaymentActivity"
-            android:label="@string/title_activity_payment"></activity>
+            android:label="@string/title_activity_payment" />
         <activity
             android:name=".ui.MyOrdersActivity"
-            android:label="@string/title_activity_my_orders"></activity>
+            android:label="@string/title_activity_my_orders" />
         <activity
             android:name=".ui.OrderDetailsActivity"
-            android:label="@string/title_activity_order_details"></activity>
-        <activity android:name=".ui.IntroActivity"></activity>
+            android:label="@string/title_activity_order_details" />
+        <activity android:name=".ui.IntroActivity" />
     </application>
 
 </manifest>

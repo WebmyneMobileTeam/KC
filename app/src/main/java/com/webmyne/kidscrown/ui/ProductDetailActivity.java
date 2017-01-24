@@ -24,11 +24,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.ToolHelper;
+import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
 
@@ -56,10 +56,15 @@ public class ProductDetailActivity extends AppCompatActivity {
     boolean added;
     private GetSortedDiscount getSortedDiscount;
 
+    private Product product;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
+
+        init();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,6 +110,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         txtPriceTotal = (TextView) findViewById(R.id.txtPriceTotal);
         flowImages = (FlowLayout) findViewById(R.id.flowImages);
 
+    }
+
+    private void init() {
+        product = (Product) getIntent().getSerializableExtra("product");
     }
 
     private void processAddingCart() {
