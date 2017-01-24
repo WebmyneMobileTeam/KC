@@ -45,7 +45,7 @@ public class FetchProducts {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
 
-                hideProgress();
+               // hideProgress();
 
                 if (response.isSuccessful()) {
 
