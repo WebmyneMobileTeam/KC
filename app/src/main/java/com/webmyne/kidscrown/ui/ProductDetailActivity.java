@@ -57,6 +57,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private GetSortedDiscount getSortedDiscount;
 
     private Product product;
+    private ImageView imgCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,28 +65,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
 
         init();
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        imageProduct = (ImageView) findViewById(R.id.backdrop);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
-            }
-        });
-        helper = new ToolHelper(ProductDetailActivity.this, toolbar);
-        ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
-        imgCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
-                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-            }
-        });
 
         productID = getIntent().getIntExtra("product_id", 0);
 
@@ -114,6 +93,34 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void init() {
         product = (Product) getIntent().getSerializableExtra("product");
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
+            }
+        });
+        helper = new ToolHelper(ProductDetailActivity.this, toolbar);
+
+        imgCart = (ImageView) findViewById(R.id.imgCart);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        imageProduct = (ImageView) findViewById(R.id.backdrop);
+
+        clickListener();
+
+    }
+
+    private void clickListener() {
+        imgCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+            }
+        });
     }
 
     private void processAddingCart() {
