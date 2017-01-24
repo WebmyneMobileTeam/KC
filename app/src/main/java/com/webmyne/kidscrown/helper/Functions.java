@@ -11,16 +11,20 @@ import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.droidbyme.toastlib.ToastEnum;
+import com.droidbyme.toastlib.ToastLib;
+import com.webmyne.kidscrown.R;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Functions {
@@ -120,5 +124,37 @@ public class Functions {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
+    }
+
+    public static int getBgColor(Context context, int position) {
+        ArrayList<Integer> colors;
+        colors = new ArrayList();
+        int pos = position;
+        colors.add(ContextCompat.getColor(context, R.color.quad_green));
+        colors.add(ContextCompat.getColor(context, R.color.quad_violate));
+        colors.add(ContextCompat.getColor(context, R.color.quad_orange));
+        colors.add(ContextCompat.getColor(context, R.color.quad_blue));
+
+        if (pos >= colors.size() - 1) {
+            pos = 0;
+        } else {
+            pos = pos + 1;
+        }
+
+        return colors.get(pos);
+    }
+
+    public static void showToast(Context context, String message) {
+        new ToastLib.Builder(context, message)
+                .duration(ToastEnum.SHORT)
+                .backgroundColor(ContextCompat.getColor(context, R.color.primaryColor))
+                .textColor(ContextCompat.getColor(context, R.color.white))
+                .textSize(18)
+                .corner(12)
+                .margin(128)
+                .padding(22)
+                .spacing(1)
+                .gravity(Gravity.BOTTOM)
+                .show();
     }
 }

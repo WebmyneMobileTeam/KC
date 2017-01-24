@@ -1,36 +1,89 @@
 package com.webmyne.kidscrown.model;
 
-import com.google.gson.annotations.SerializedName;
+import android.content.res.Resources;
 
+import com.webmyne.kidscrown.R;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by dhruvil on 19-08-2015.
  */
-public class Product {
+public class Product implements Serializable {
 
-    @SerializedName("ProductID")
-    public int productID;
+    // new Data
+    private String Description;
+    private int DiscountPercentage;
+    private boolean IsSingle;
+    private int OrderLimit;
+    private int ProductID;
+    private String ProductName;
+    private String RootImage;
+    private ArrayList<PriceSlab> priceSlabDCs;
 
-    @SerializedName("Description")
-    public String description;
+    public String getDescription() {
+        return Description;
+    }
 
-    @SerializedName("Price")
-    public int price;
+    public void setDescription(String description) {
+        Description = description;
+    }
 
-    @SerializedName("ProductName")
-    public String name;
+    public int getDiscountPercentage() {
+        return DiscountPercentage;
+    }
 
-    @SerializedName("ProductNumber")
-    public String product_number;
+    public void setDiscountPercentage(int discountPercentage) {
+        DiscountPercentage = discountPercentage;
+    }
 
-    @SerializedName("lstProductImg")
-    public ArrayList<ProductImage> images;
+    public boolean isSingle() {
+        return IsSingle;
+    }
 
-    @SerializedName("lstProductPriceForMobile")
-    public ArrayList<ProductPrice> prices;
+    public void setSingle(boolean single) {
+        IsSingle = single;
+    }
 
-    @SerializedName("OrderLimit")
-    public int OrderLimit;
+    public int getOrderLimit() {
+        return OrderLimit;
+    }
+
+    public void setOrderLimit(int orderLimit) {
+        OrderLimit = orderLimit;
+    }
+
+    public int getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(int productID) {
+        ProductID = productID;
+    }
+
+    public String getProductName() {
+        return ProductName;
+    }
+
+    public void setProductName(String productName) {
+        ProductName = productName;
+    }
+
+    public String getRootImage() {
+        return RootImage;
+    }
+
+    public void setRootImage(String rootImage) {
+        RootImage = rootImage;
+    }
+
+    public ArrayList<PriceSlab> getPriceSlabDCs() {
+        return priceSlabDCs;
+    }
+
+    public void setPriceSlabDCs(ArrayList<PriceSlab> priceSlabDCs) {
+        this.priceSlabDCs = priceSlabDCs;
+    }
 
 }

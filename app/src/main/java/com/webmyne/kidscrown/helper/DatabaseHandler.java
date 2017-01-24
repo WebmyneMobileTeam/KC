@@ -117,7 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    public void saveProducts(ArrayList<Product> products) {
+    /*public void saveProducts(ArrayList<Product> products) {
         myDataBase = this.getWritableDatabase();
         myDataBase.delete(TABLE_PRODUCT, null, null);
 
@@ -140,10 +140,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             myDataBase = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put("description", product.description);
+            values.put("description", product.Description);
             values.put("price", product.price);
-            values.put("product_id", product.productID);
-            values.put("name", product.name);
+            values.put("product_id", product.ProductID);
+            values.put("name", product.ProductName);
             values.put("product_number", product.product_number);
             values.put("color", colors.get(pos));
             values.put("order_limit", product.OrderLimit);
@@ -160,7 +160,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         }
 
-    }
+    }*/
 
     public void saveOffers(ArrayList<DiscountModel> discountModels) {
         myDataBase = this.getWritableDatabase();

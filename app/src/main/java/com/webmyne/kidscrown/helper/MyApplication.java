@@ -2,6 +2,7 @@ package com.webmyne.kidscrown.helper;
 
 import android.app.Application;
 import android.content.res.Configuration;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -17,7 +18,7 @@ import retrofit2.converter.fastjson.FastJsonConverterFactory;
  * Application class that called once when application is installed for the first time on device.
  * This class includes the integration of Volly [third party framework for calling webservices]
  */
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     private static Retrofit retrofit;
     private static Gson gson;

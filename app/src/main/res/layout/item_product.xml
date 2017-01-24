@@ -2,19 +2,17 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/card_margin"
-    android:layout_marginLeft="@dimen/card_margin"
-    android:layout_marginRight="@dimen/card_margin">
+    android:layout_margin="@dimen/card_margin">
 
     <LinearLayout
         android:id="@+id/linearParent"
-        style="@style/Widget.CardContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:padding="@dimen/m_16dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/L_MARGIN_SIZE"
             android:layout_weight="1"
@@ -26,19 +24,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Product"
-                android:textSize="@dimen/S_TEXT_SIZE"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="#fff" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/M_TEXT"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:maxLines="2"
-                android:textSize="@dimen/S_TEXT_SIZE"
                 android:text="@string/cheese_ipsum"
-                android:textColor="#fff" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/N_TEXT" />
 
         </LinearLayout>
 

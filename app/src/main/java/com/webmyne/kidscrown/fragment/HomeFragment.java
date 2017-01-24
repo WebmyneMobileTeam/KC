@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,33 +15,33 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.ProductAdapter;
-import com.webmyne.kidscrown.helper.CallWebService;
+import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
+import com.webmyne.kidscrown.api.FetchProducts;
+import com.webmyne.kidscrown.custom.EmptyLayout;
+import com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.Product;
+import com.webmyne.kidscrown.model.ProductResponse;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 import com.webmyne.kidscrown.ui.ProductDetailActivity;
 import com.webmyne.kidscrown.ui.RefillActivityAnother;
-import com.webmyne.kidscrown.ui.RegisterActivity;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.google.android.gms.internal.zzhl.runOnUiThread;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private ListView listProducts;
+    private FamiliarRecyclerView productRV;
     private ProductAdapter adapter;
     private ImageView closeInfo;
     private Dialog dialog;
@@ -49,35 +50,63 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     private ImageView offerImage;
     private DatabaseHandler handler;
     private GetSortedDiscount sortedDiscount;
+    private View parentView;
+    private EmptyLayout emptyLayout;
+
+    private ArrayList<Product> productList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        init(view);
+        parentView = inflater.inflate(R.layout.fragment_home, container, false);
+        init();
 
-        return view;
+        return parentView;
     }
 
-    private void init(View v) {
-        offerImage = (ImageView) v.findViewById(R.id.offerImage);
-        txtDiscount = (TextView) v.findViewById(R.id.txtDiscount);
-        txtOffer = (TextView) v.findViewById(R.id.txtOffer);
-        offerLayout = (LinearLayout) v.findViewById(R.id.offerLayout);
-        listProducts = (ListView) v.findViewById(R.id.listProducts);
-        listProducts.setOnItemClickListener(this);
-        listProducts.setEmptyView(v.findViewById(R.id.txtLoading));
+    private void init() {
+
+        offerImage = (ImageView) parentView.findViewById(R.id.offerImage);
+        txtDiscount = (TextView) parentView.findViewById(R.id.txtDiscount);
+        txtOffer = (TextView) parentView.findViewById(R.id.txtOffer);
+        offerLayout = (LinearLayout) parentView.findViewById(R.id.offerLayout);
+
         ((MyDrawerActivity) getActivity()).setTitle("Products");
 
         handler = new DatabaseHandler(getActivity());
         sortedDiscount = new GetSortedDiscount(getActivity());
+
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        productList = new ArrayList<>();
+
+        adapter = new ProductAdapter(getActivity(), productList);
+        productRV = (FamiliarRecyclerView) parentView.findViewById(R.id.productRV);
+        emptyLayout = (EmptyLayout) parentView.findViewById(R.id.emptyLayout);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        productRV.setLayoutManager(layoutManager);
+
+        productRV.setEmptyView(emptyLayout);
+
+        emptyLayout.setContent("No Product for this category.");
+
+        productRV.setAdapter(adapter);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                fetchProducts();
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        displayProducts();
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
         if (preferences.getBoolean("isFirstTimeLogin", true)) {
@@ -111,7 +140,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getOffers();
-        fetchProducts();
+
     }
 
     private void getOffers() {
@@ -127,24 +156,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         }
     }
 
-    private void displayProducts() {
-
-        try {
-            handler.openDataBase();
-            Cursor cursor = handler.getProductsCursor();
-            handler.close();
-            adapter = new ProductAdapter(getActivity(), cursor, 0);
-            listProducts.setAdapter(adapter);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private void fetchProducts() {
 
-        new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
+        /*new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
             @Override
             public void response(String response) {
 
@@ -172,7 +186,21 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 Log.e("Error", error);
 
             }
-        }.call();
+        }.call();*/
+
+        new FetchProducts(getActivity(), new CommonRetrofitResponseListener() {
+            @Override
+            public void onSuccess(Object responseBody) {
+                Log.e("response", Functions.jsonString(responseBody));
+                ProductResponse productResponse = (ProductResponse) responseBody;
+                adapter.setProducts(productResponse.getData());
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
 
     }
 

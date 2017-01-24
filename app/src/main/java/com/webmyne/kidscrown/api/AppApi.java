@@ -1,8 +1,10 @@
 package com.webmyne.kidscrown.api;
 
 import com.webmyne.kidscrown.helper.Constants;
+import com.webmyne.kidscrown.helper.URLConstants;
 import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.model.ContactUsResponseModel;
+import com.webmyne.kidscrown.model.ProductResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,5 +20,7 @@ public interface AppApi {
     @GET(Constants.CONTACT_US_URL)
     Call<ContactUsResponseModel> fetchContactUsData();
 
+    @GET(URLConstants.GET_PRODUCTS)
+    Call<ProductResponse> fetchProducts();
 
 }
