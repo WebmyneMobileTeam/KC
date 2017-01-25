@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "320223166580",
+    "firebase_url": "https://kidscrown-1180.firebaseio.com",
+    "project_id": "kidscrown-1180",
+    "storage_bucket": "kidscrown-1180.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320223166580:android:f810b3cd3f19056a",
+        "android_client_info": {
+          "package_name": "com.webmyne.kidscrown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320223166580-kvl4ukm5qjpie0kv00bv5mi5mh646v9o.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "320223166580-dtvuhj1k230p446usoj586ipeasi6kcn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJl5-oob0SxZyrr_MJFJpkNgUC5ed-G9Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/m_5dp"
+        android:layout_marginLeft="@dimen/m_10dp"
+        android:layout_marginRight="@dimen/m_10dp"
+        android:layout_marginTop="@dimen/m_10dp"
+        android:text="@string/contact_detail"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="@dimen/M_TEXT"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/m_10dp"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/M_TEXT" />
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

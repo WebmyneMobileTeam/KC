@@ -20,7 +20,7 @@ import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
 public class ContactUsFragment extends Fragment {
 
-    private TextView tvContactUs, tvBankDetail;
+    //    private TextView tvContactUs, tvBankDetail;
     private ProgressDialog pd;
     private LinearLayout parentView;
 
@@ -54,8 +54,8 @@ public class ContactUsFragment extends Fragment {
 
     private void init(View view) {
 
-        tvContactUs = (TextView) view.findViewById(R.id.tvContactUs);
-        tvBankDetail = (TextView) view.findViewById(R.id.tvBankDetail);
+//        tvContactUs = (TextView) view.findViewById(R.id.tvContactUs);
+//        tvBankDetail = (TextView) view.findViewById(R.id.tvBankDetail);
         parentView = (LinearLayout) view.findViewById(R.id.parentView);
 
 
@@ -76,8 +76,21 @@ public class ContactUsFragment extends Fragment {
 
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
-                tvContactUs.setText(Html.fromHtml(responseModel.getData().get(0).getDescription()));
-                tvBankDetail.setText(Html.fromHtml(responseModel.getData().get(1).getDescription()));
+                parentView.removeAllViews();
+
+                for (int i = 0; i < responseModel.getData().size(); i++) {
+
+                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.row_contact_us, null, false);
+
+                    TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+                    TextView tvDesc = (TextView) view.findViewById(R.id.tvDesc);
+
+                    tvTitle.setText(responseModel.getData().get(i).getPageName());
+                    tvDesc.setText(Html.fromHtml(responseModel.getData().get(i).getDescription()));
+
+                    parentView.addView(view);
+                }
+
 
             }
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.model.LoginModelRequest;
 import com.webmyne.kidscrown.model.UserProfile;
 
 import org.json.JSONArray;
@@ -41,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     ProgressDialog pd;
     View parentView;
+    Toolbar toolbar;
+
     private static final int RC_SIGN_IN = 0;
 
     private boolean mIntentInProgress;
@@ -248,6 +252,38 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerWebService() {
+
+//        LoginModelRequest model = new LoginModelRequest();
+//        model.setMobileOS("A");
+//        model.setPassword(edtPassword.getText().toString());
+//        model.setUserName(edtUserName.getText().toString().trim());
+//        model.setFirstName(edtFirstname.getText().toString().trim());
+//        model.setLastName(edtLastName.getText().toString().trim());
+//        model.setMobileNo(edtMobile.getText().toString().trim());
+//
+//        new FetchLoginData(this, new LoginModelRequest(), new CommonRetrofitResponseListener() {
+//            @Override
+//            public void onSuccess(Object responseBody) {
+//
+//                pd.dismiss();
+//
+//                LoginModelData responseModel = (LoginModelData) responseBody;
+//
+//                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
+//
+//                PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+//
+//            }
+//
+//            @Override
+//            public void onFail() {
+//
+//                pd.dismiss();
+//
+//            }
+//        });
+
+
         username = edtUserName.getText().toString().trim();
         firstName = edtFirstname.getText().toString().trim();
         lastName = edtLastName.getText().toString().trim();
@@ -354,6 +390,18 @@ public class RegisterActivity extends AppCompatActivity {
         edtClinicName = (EditText) findViewById(R.id.edtClinicName);
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

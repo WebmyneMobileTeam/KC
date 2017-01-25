@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -8,13 +9,13 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,10 +35,16 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.GsonBuilder;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
+import com.webmyne.kidscrown.api.FetchLoginData;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.PrefUtils;
+import com.webmyne.kidscrown.helper.URLConstants;
+import com.webmyne.kidscrown.model.LoginModelData;
+import com.webmyne.kidscrown.model.LoginModelRequest;
 import com.webmyne.kidscrown.model.UserProfile;
 
 import org.json.JSONArray;
@@ -67,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private RelativeLayout linearFbLogin, linearGPLusLogin;
     private CallbackManager callbackManager;
+    private int loginVia = 0;
 
 
     @Override
@@ -90,21 +98,13 @@ public class LoginActivity extends AppCompatActivity implements
 
                 if (edtUsername.getText().toString().trim().length() == 0) {
                     //Functions.snack(v, "Username or Email is required");
-                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.invalid_username), Snackbar.LENGTH_LONG);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
-                    snack.show();
+                    Functions.showToast(LoginActivity.this, getString(R.string.invalid_username));
                 } else if (edtPassword.getText().toString().trim().length() == 0) {
                     //Functions.snack(v, "Password is required");
-                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.invalid_password), Snackbar.LENGTH_LONG);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
-                    snack.show();
-
+                    Functions.showToast(LoginActivity.this, getString(R.string.invalid_password));
                 } else {
-                    loginProcess();
+                    loginVia = 1;
+                    loginProcess(edtUsername.getText().toString().trim(), edtPassword.getText().toString().trim(), "", "");
                 }
             }
         });
@@ -135,8 +135,10 @@ public class LoginActivity extends AppCompatActivity implements
                 if (!Functions.isConnected(LoginActivity.this)) {
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
+                } else {
+                    loginVia = 3;
+                    signInWithGplus();
                 }
-                signInWithGplus();
 
             }
         });
@@ -148,8 +150,10 @@ public class LoginActivity extends AppCompatActivity implements
                 if (!Functions.isConnected(LoginActivity.this)) {
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
+                } else {
+                    loginVia = 2;
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
                 }
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
             }
         });
 
@@ -170,7 +174,8 @@ public class LoginActivity extends AppCompatActivity implements
                                     String email = profile.getString("email").toString();
                                     String fName = profile.getString("name").toString().split(" ")[0];
                                     String lName = profile.getString("name").toString().split(" ")[1];
-                                    socialMediaLoginProcess(email, "F");
+                                    loginProcess(email, "", fName, lName);
+//                                    socialMediaLoginProcess(email, "F");
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -196,55 +201,114 @@ public class LoginActivity extends AppCompatActivity implements
         });
     }
 
-    private void loginProcess() {
-        name = edtUsername.getText().toString().trim();
-        password = edtPassword.getText().toString().trim();
-        url = Constants.LOGIN_URL + name + "/" + password;
+    private void loginProcess(String email, String password, String fName, String lName) {
+//        name = edtUsername.getText().toString().trim();
+//        password = edtPassword.getText().toString().trim();
+//        url = Constants.LOGIN_URL + name + "/" + password;
 
-        pd = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait..", true);
-        Functions.logE("login request url", url);
+        pd = ProgressDialog.show(LoginActivity.this, getString(R.string.loading), getString(R.string.please_wait), true);
 
-        new CallWebService(url, CallWebService.TYPE_GET, null) {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
+//        LoginModelRequest model = new LoginModelRequest();
+//        model.setDeviceID(telephonyManager.getDeviceId());
+//        model.setGCMToken("");
+//        model.setLoginVia(loginVia);
+//        model.setMobileOS("A");
+//        model.setPassword(password);
+//        model.setUserName(email);
+//        model.setFirstName(fName);
+//        model.setLastName(lName);
+
+
+        new FetchLoginData(this, new LoginModelRequest(), new CommonRetrofitResponseListener() {
             @Override
-            public void response(String response) {
+            public void onSuccess(Object responseBody) {
+
                 pd.dismiss();
-                Log.e("login_response", response);
-                try {
-                    JSONArray obj = new JSONArray(response);
-                    JSONObject description = obj.getJSONObject(0);
-                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
 
-                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
-                    complexPreferences.putObject("current-user", profile);
-                    complexPreferences.commit();
+                LoginModelData responseModel = (LoginModelData) responseBody;
 
-                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("isUserLogin", true);
-                    editor.putBoolean("isFirstTimeLogin", true);
-                    editor.commit();
+                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
-                    Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                    finish();
+                PrefUtils.setUserProfile(LoginActivity.this, responseModel);
 
-                } catch (Exception e) {
-                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.unable_to_login), Snackbar.LENGTH_LONG);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
-                    snack.show();
-                    e.printStackTrace();
-                }
             }
 
             @Override
-            public void error(String error) {
+            public void onFail() {
+
                 pd.dismiss();
-                Functions.snack(btnLogin, getString(R.string.invalid_login));
+
             }
-        }.call();
+        });
+
+//
+//        JSONObject jsonObject = null;
+//        try {
+//            jsonObject = new JSONObject();
+//            jsonObject.put("ClinicName", model.getClinicName());
+//            jsonObject.put("DeviceID", model.getDeviceID());
+//            jsonObject.put("EmailID", model.getFirstName());
+//            jsonObject.put("GCMToken", model.getGCMToken());
+//            jsonObject.put("LastName", model.getLastName());
+//            jsonObject.put("LoginVia", model.getLoginVia());
+//            jsonObject.put("MobileNo", model.getMobileNo());
+//            jsonObject.put("MobileOS", model.getMobileOS());
+//            jsonObject.put("Password", model.getPassword());
+//            jsonObject.put("RegistrationNumber", model.getRegistrationNumber());
+//            jsonObject.put("SocialID", model.getSocialID());
+//            jsonObject.put("UserName", model.getUserName());
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Log.e("tag", "login url: " + URLConstants.BASE_URL_V03 + URLConstants.LOGIN);
+//        Log.e("request", "" + jsonObject.toString());
+//        new CallWebService(URLConstants.BASE_URL_V03 + URLConstants.LOGIN, CallWebService.TYPE_POST, jsonObject) {
+//            @Override
+//            public void response(String response) {
+//                pd.dismiss();
+//                Log.e("login_response", response);
+////                try {
+////                    JSONArray obj = new JSONArray(response);
+////                    JSONObject description = obj.getJSONObject(0);
+////                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
+////
+////                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
+////                    complexPreferences.putObject("current-user", profile);
+////                    complexPreferences.commit();
+////
+////                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+////                    SharedPreferences.Editor editor = preferences.edit();
+////                    editor.putBoolean("isUserLogin", true);
+////                    editor.putBoolean("isFirstTimeLogin", true);
+////                    editor.commit();
+////
+////                    Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
+////                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+////                    startActivity(i);
+////                    finish();
+////
+////                } catch (Exception e) {
+////                    Snackbar snack = Snackbar.make(btnLogin, getString(R.string.unable_to_login), Snackbar.LENGTH_LONG);
+////                    View view = snack.getView();
+////                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+////                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), LoginActivity.this));
+////                    snack.show();
+////                    e.printStackTrace();
+////                }
+//            }
+//
+//            @Override
+//            public void error(String error) {
+//                pd.dismiss();
+//                Log.e("error", "" + error);
+//                Functions.snack(btnLogin, getString(R.string.invalid_login));
+//            }
+//        }.call();
+
     }
 
     private void socialMediaLoginProcess(String email, String loginType) {
@@ -425,7 +489,8 @@ public class LoginActivity extends AppCompatActivity implements
 
                 String fName = personName.split(" ")[0];
                 String lName = personName.split(" ")[1];
-                socialMediaLoginProcess(email, "G");
+                loginProcess(email, "", fName, lName);
+//                socialMediaLoginProcess(email, "G");
 
             } else {
             }

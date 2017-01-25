@@ -7,58 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/m_10dp">
+        android:paddingBottom="@dimen/m_10dp"
+        android:paddingLeft="@dimen/m_10dp"
+        android:paddingRight="@dimen/m_10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/m_5dp"
-            android:layout_marginLeft="@dimen/m_10dp"
-            android:layout_marginRight="@dimen/m_10dp"
-            android:text="@string/contact_detail"
-            android:textColor="@color/colorTextPrimary"
-            android:textSize="@dimen/M_TEXT"
-            android:textStyle="bold" />
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvContactUs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/m_10dp"
-                android:textColor="@color/colorTextSecondary"
-                android:textSize="@dimen/M_TEXT" />
-
-        </android.support.v7.widget.CardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/m_5dp"
-            android:layout_marginLeft="@dimen/m_10dp"
-            android:layout_marginRight="@dimen/m_10dp"
-            android:layout_marginTop="@dimen/m_15dp"
-            android:text="@string/bank_detail"
-            android:textColor="@color/colorTextPrimary"
-            android:textSize="@dimen/M_TEXT"
-            android:textStyle="bold" />
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvBankDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/m_10dp"
-                android:textColor="@color/colorTextSecondary"
-                android:textSize="@dimen/M_TEXT" />
-
-        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 

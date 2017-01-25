@@ -9,4 +9,6 @@ public class URLConstants {
     public static final String BASE_URL_V03 = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown_V03/WCF/Services/";
 
     public static final String GET_PRODUCTS = "Product.svc/json/GetProducts";
+
+    public static final String LOGIN = "User.svc/json/LoginSignup";
 }

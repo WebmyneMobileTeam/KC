@@ -1,205 +1,219 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/m_20dp">
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/primaryColor">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/fab_margin"
             android:text="User Registration"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/L_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_24dp">
+    </android.support.v7.widget.Toolbar>
 
-            <EditText
-                android:id="@+id/edtFirstname"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/m_20dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtFirstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First Name"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtLastName"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Last Name"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtUserName"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mobile"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtMobile"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mobile"
-                android:inputType="phone"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtEmail"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtPassword"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtConfirmPassword"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Confirm Password"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtClinicName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Clinic Name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtClinicName"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Clinic Name"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
-                android:textSize="@dimen/M_TEXT" />
+                android:layout_marginTop="@dimen/m_5dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtRegNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Registration Number"
+                    android:inputType="textCapCharacters"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_5dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtRegNo"
+            <Button
+                android:id="@+id/btnRegister"
+                style="@style/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Registration Number"
-                android:inputType="textCapCharacters"
-                android:maxLines="1"
+                android:layout_marginTop="@dimen/m_15dp"
+                android:padding="@dimen/STD_TXT_PADDING_SIZE"
+                android:text="Register"
+                android:textAllCaps="false"
+                android:textSize="@dimen/M_TEXT_SIZE" />
+
+            <TextView
+                android:id="@id/btnLogin"
+                style="@style/match_wrap_parent"
+                android:layout_marginTop="@dimen/m_20dp"
+                android:gravity="center"
+                android:text="Already Have an account? Login"
                 android:textColor="@color/black"
-                android:textColorHint="@color/half_black"
                 android:textSize="@dimen/M_TEXT" />
 
-        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnRegister"
-            style="@style/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_15dp"
-            android:padding="@dimen/STD_TXT_PADDING_SIZE"
-            android:text="Register"
-            android:textAllCaps="false"
-            android:textSize="@dimen/M_TEXT_SIZE" />
+    </ScrollView>
 
-        <TextView
-            android:id="@id/btnLogin"
-            style="@style/match_wrap_parent"
-            android:layout_marginTop="@dimen/m_20dp"
-            android:gravity="center"
-            android:text="Already Have an account? Login"
-            android:textColor="@color/black"
-            android:textSize="@dimen/M_TEXT" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

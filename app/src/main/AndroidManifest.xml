@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="ANDROID.PERMISSION.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".helper.MyApplication"
@@ -112,6 +113,21 @@
             android:name=".ui.OrderDetailsActivity"
             android:label="@string/title_activity_order_details" />
         <activity android:name=".ui.IntroActivity" />
+
+        <!--FCM Services-->
+        <service android:name=".helper.FCM.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".helper.FCM.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!--FCM Services-->
+
     </application>
 
 </manifest>

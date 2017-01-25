@@ -19,6 +19,8 @@ import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.PrefUtils;
+import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
 import com.webmyne.kidscrown.model.UserProfile;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
@@ -145,87 +147,122 @@ public class ProfileFragment extends Fragment {
     }
 
     private void registerWebService() {
-        username = edtUserName.getText().toString().trim();
-        firstName = edtFirstname.getText().toString().trim();
-        lastName = edtLastName.getText().toString().trim();
-        mobile = edtMobile.getText().toString().trim();
-        emailId = edtEmail.getText().toString().trim();
-        password = edtPassword.getText().toString();
-        registartionNo = edtRegNo.getText().toString().trim();
-        clinicName = edtClinicName.getText().toString().trim();
 
-        JSONObject userObject = null;
-        try {
-            userObject = new JSONObject();
-            userObject.put("ClinicName", clinicName);
-            userObject.put("EmailID", emailId);
-            userObject.put("FirstName", firstName);
-            userObject.put("IsActive", true);
-            userObject.put("IsDelete", true);
-            userObject.put("LastName", lastName);
-            userObject.put("MobileNo", mobile);
-            userObject.put("MobileOS", "A");
-            userObject.put("Password", password);
-            userObject.put("RegistrationNumber", registartionNo);
-            userObject.put("Salutation", 0);
-            userObject.put("UserID", Integer.parseInt(userId));
-            userObject.put("UserName", username);
-            userObject.put("UserRoleID", 2);
-            userObject.put("PriorityID", 5);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        UpdateProfileModelRequest model = new UpdateProfileModelRequest();
+        model.setClinicName("");
+        model.setEmailID(edtEmail.getText().toString().trim());
+        model.setFirstName(edtFirstname.getText().toString().trim());
+        model.setLastName(edtLastName.getText().toString().trim());
+        model.setMobileNo(edtMobile.getText().toString().trim());
+        model.setPassword(edtPassword.getText().toString().trim());
+        model.setRegistrationNumber(edtRegNo.getText().toString().trim());
+        model.setUserID(PrefUtils.getUserId(getActivity()));
+        model.setUserName(edtUserName.getText().toString().trim());
 
-        pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
-        Functions.logE("update request", userObject.toString());
+//        new FetchLoginData(this, new LoginModelRequest(), new CommonRetrofitResponseListener() {
+//            @Override
+//            public void onSuccess(Object responseBody) {
+//
+//                pd.dismiss();
+//
+//                LoginModelData responseModel = (LoginModelData) responseBody;
+//
+//                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
+//
+//                PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+//
+//            }
+//
+//            @Override
+//            public void onFail() {
+//
+//                pd.dismiss();
+//
+//            }
+//        });
 
-        new CallWebService(Constants.UPDATE_URL, CallWebService.TYPE_POST, userObject) {
-            @Override
-            public void response(String response) {
-                pd.dismiss();
-                JSONArray data;
-                Log.e("update response", response + "");
-                try {
-                    data = new JSONArray(response);
-                    JSONObject description = data.getJSONObject(0);
 
-                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
-
-                    Snackbar snack = Snackbar.make(parentView, "Update Profile Successfully", Snackbar.LENGTH_LONG);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-                    snack.show();
-
-                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
-                    complexPreferences.putObject("current-user", profile);
-                    complexPreferences.commit();
-
-                    Intent i = new Intent(getActivity(), MyDrawerActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getActivity().startActivity(i);
-
-                } catch (Exception e) {
-                    Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile", Snackbar.LENGTH_LONG);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-                    snack.show();
-                }
-            }
-
-            @Override
-            public void error(String error) {
-                pd.dismiss();
-                Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile. " + error, Snackbar.LENGTH_LONG);
-                View view = snack.getView();
-                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-                snack.show();
-
-                Log.e("error", error);
-            }
-        }.call();
+//        username = edtUserName.getText().toString().trim();
+//        firstName = edtFirstname.getText().toString().trim();
+//        lastName = edtLastName.getText().toString().trim();
+//        mobile = edtMobile.getText().toString().trim();
+//        emailId = edtEmail.getText().toString().trim();
+//        password = edtPassword.getText().toString();
+//        registartionNo = edtRegNo.getText().toString().trim();
+//        clinicName = edtClinicName.getText().toString().trim();
+//
+//        JSONObject userObject = null;
+//        try {
+//            userObject = new JSONObject();
+//            userObject.put("ClinicName", clinicName);
+//            userObject.put("EmailID", emailId);
+//            userObject.put("FirstName", firstName);
+//            userObject.put("IsActive", true);
+//            userObject.put("IsDelete", true);
+//            userObject.put("LastName", lastName);
+//            userObject.put("MobileNo", mobile);
+//            userObject.put("MobileOS", "A");
+//            userObject.put("Password", password);
+//            userObject.put("RegistrationNumber", registartionNo);
+//            userObject.put("Salutation", 0);
+//            userObject.put("UserID", Integer.parseInt(userId));
+//            userObject.put("UserName", username);
+//            userObject.put("UserRoleID", 2);
+//            userObject.put("PriorityID", 5);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
+//        Functions.logE("update request", userObject.toString());
+//
+//        new CallWebService(Constants.UPDATE_URL, CallWebService.TYPE_POST, userObject) {
+//            @Override
+//            public void response(String response) {
+//                pd.dismiss();
+//                JSONArray data;
+//                Log.e("update response", response + "");
+//                try {
+//                    data = new JSONArray(response);
+//                    JSONObject description = data.getJSONObject(0);
+//
+//                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
+//
+//                    Snackbar snack = Snackbar.make(parentView, "Update Profile Successfully", Snackbar.LENGTH_LONG);
+//                    View view = snack.getView();
+//                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+//                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
+//                    snack.show();
+//
+//                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+//                    complexPreferences.putObject("current-user", profile);
+//                    complexPreferences.commit();
+//
+//                    Intent i = new Intent(getActivity(), MyDrawerActivity.class);
+//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    getActivity().startActivity(i);
+//
+//                } catch (Exception e) {
+//                    Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile", Snackbar.LENGTH_LONG);
+//                    View view = snack.getView();
+//                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+//                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
+//                    snack.show();
+//                }
+//            }
+//
+//            @Override
+//            public void error(String error) {
+//                pd.dismiss();
+//                Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile. " + error, Snackbar.LENGTH_LONG);
+//                View view = snack.getView();
+//                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+//                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
+//                snack.show();
+//
+//                Log.e("error", error);
+//            }
+//        }.call();
 
     }
 
