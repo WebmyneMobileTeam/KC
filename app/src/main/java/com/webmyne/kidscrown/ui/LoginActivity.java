@@ -8,11 +8,13 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +29,10 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -37,15 +43,17 @@ import com.google.gson.GsonBuilder;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchLoginData;
+import com.webmyne.kidscrown.api.FetchUpdateProfileData;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
-import com.webmyne.kidscrown.helper.URLConstants;
 import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.LoginModelRequest;
+import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
 import com.webmyne.kidscrown.model.UserProfile;
+import com.webmyne.kidscrown.model.UserProfileModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,18 +61,16 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class LoginActivity extends AppCompatActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     Button btnLogin;
 
     TextView txtRegister, txtForgot;
     EditText edtUsername, edtPassword;
     String name, password, url;
-    ProgressDialog pd;
 
     // Google Integration
-    private static final int RC_SIGN_IN = 0;
+    private static final int RC_SIGN_IN = 007;
 
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
@@ -74,8 +80,9 @@ public class LoginActivity extends AppCompatActivity implements
 
     private RelativeLayout linearFbLogin, linearGPLusLogin;
     private CallbackManager callbackManager;
-    private int loginVia = 0;
-
+    private String loginVia = "0";
+    private ProgressDialog pd;
+    String regNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +110,8 @@ public class LoginActivity extends AppCompatActivity implements
                     //Functions.snack(v, "Password is required");
                     Functions.showToast(LoginActivity.this, getString(R.string.invalid_password));
                 } else {
-                    loginVia = 1;
-                    loginProcess(edtUsername.getText().toString().trim(), edtPassword.getText().toString().trim(), "", "");
+                    loginVia = "1";
+                    loginProcess(edtUsername.getText().toString().trim(), edtPassword.getText().toString().trim(), "", "", "");
                 }
             }
         });
@@ -136,8 +143,9 @@ public class LoginActivity extends AppCompatActivity implements
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
                 } else {
-                    loginVia = 3;
-                    signInWithGplus();
+                    loginVia = "3";
+//                    signInWithGplus();
+                    signIn();
                 }
 
             }
@@ -151,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
                 } else {
-                    loginVia = 2;
+                    loginVia = "2";
                     LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
                 }
             }
@@ -171,10 +179,11 @@ public class LoginActivity extends AppCompatActivity implements
                                 Log.e("fb_reponse", response.getJSONObject().toString());
                                 JSONObject profile = response.getJSONObject();
                                 try {
+                                    String social_id = profile.getString("id").toString();
                                     String email = profile.getString("email").toString();
                                     String fName = profile.getString("name").toString().split(" ")[0];
                                     String lName = profile.getString("name").toString().split(" ")[1];
-                                    loginProcess(email, "", fName, lName);
+                                    loginProcess(email, "", social_id, fName, lName);
 //                                    socialMediaLoginProcess(email, "F");
 
                                 } catch (JSONException e) {
@@ -201,44 +210,54 @@ public class LoginActivity extends AppCompatActivity implements
         });
     }
 
-    private void loginProcess(String email, String password, String fName, String lName) {
+    private void loginProcess(String email, String password, String social_id, String fName, String lName) {
+        Log.e("tag", "email: " + email + "  password: " + password + "  social_id: " + social_id + "  fName: " + fName + "  lName: " + lName);
 //        name = edtUsername.getText().toString().trim();
 //        password = edtPassword.getText().toString().trim();
 //        url = Constants.LOGIN_URL + name + "/" + password;
 
-        pd = ProgressDialog.show(LoginActivity.this, getString(R.string.loading), getString(R.string.please_wait), true);
-
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
-//        LoginModelRequest model = new LoginModelRequest();
-//        model.setDeviceID(telephonyManager.getDeviceId());
-//        model.setGCMToken("");
-//        model.setLoginVia(loginVia);
-//        model.setMobileOS("A");
-//        model.setPassword(password);
-//        model.setUserName(email);
-//        model.setFirstName(fName);
-//        model.setLastName(lName);
+        LoginModelRequest model = new LoginModelRequest();
+        model.setDeviceID(telephonyManager.getDeviceId());
+        model.setGCMToken(PrefUtils.getFCMToken(this));
+        model.setLoginVia(loginVia);
+        model.setMobileOS("A");
+        model.setPassword(password);
+        model.setUserName(email);
+        model.setFirstName(fName);
+        model.setLastName(lName);
+        model.setSocialID(social_id);
 
-
-        new FetchLoginData(this, new LoginModelRequest(), new CommonRetrofitResponseListener() {
+        new FetchLoginData(this, model, new CommonRetrofitResponseListener() {
             @Override
             public void onSuccess(Object responseBody) {
-
-                pd.dismiss();
 
                 LoginModelData responseModel = (LoginModelData) responseBody;
 
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
-                PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+                if (responseModel.isNewUser()) {
+
+//                    PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+
+                    askRegistrationNo(responseModel);
+
+                } else {
+
+                    PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+
+                    Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    finish();
+
+                }
 
             }
 
             @Override
             public void onFail() {
-
-                pd.dismiss();
 
             }
         });
@@ -309,6 +328,90 @@ public class LoginActivity extends AppCompatActivity implements
 //            }
 //        }.call();
 
+    }
+
+    private void askRegistrationNo(final LoginModelData responseModel) {
+
+        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+        View promptView = li.inflate(R.layout.social_registration, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setView(promptView);
+
+        final EditText edtRegNo = (EditText) promptView.findViewById(R.id.edtRegNo);
+        final Button btnNext = (Button) promptView.findViewById(R.id.btnNext);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Functions.isConnected(LoginActivity.this)) {
+                    Functions.snack(v, getString(R.string.no_internet));
+                    return;
+                }
+
+                if (edtRegNo.getText().toString().trim().length() == 0) {
+                    Functions.showToast(LoginActivity.this, "Registraion Number must required.");
+
+                } else {
+                    regNo = edtRegNo.getText().toString().trim();
+
+                    registerWebService(responseModel);
+
+                    dialog.dismiss();
+                }
+
+            }
+        });
+    }
+
+    private void registerWebService(LoginModelData responseModel) {
+
+        UpdateProfileModelRequest model = new UpdateProfileModelRequest();
+        model.setClinicName(responseModel.getClinicName());
+        model.setEmailID(responseModel.getEmailID());
+        model.setFirstName(responseModel.getFirstName());
+        model.setLastName(responseModel.getLastName());
+        model.setMobileNo(responseModel.getMobileNo());
+        model.setPassword(responseModel.getPassword());
+        model.setRegistrationNumber(regNo);
+        model.setUserID(PrefUtils.getUserId(LoginActivity.this));
+        model.setUserName(responseModel.getUserName());
+
+        new FetchUpdateProfileData(this, model, new CommonRetrofitResponseListener() {
+            @Override
+            public void onSuccess(Object responseBody) {
+
+                UserProfileModel responseModel = (UserProfileModel) responseBody;
+
+                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
+
+                LoginModelData modelData = PrefUtils.getUserProfile(LoginActivity.this);
+                modelData.setEmailID(responseModel.getEmailID());
+                modelData.setFirstName(responseModel.getFirstName());
+                modelData.setLastName(responseModel.getLastName());
+                modelData.setMobileNo(responseModel.getMobileNo());
+                modelData.setPassword(responseModel.getPassword());
+                modelData.setRegistrationNumber(responseModel.getRegistrationNumber());
+                modelData.setUserID(responseModel.getUserID());
+                modelData.setUserName(responseModel.getUserName());
+
+                PrefUtils.setUserProfile(LoginActivity.this, modelData);
+
+                Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
+
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     private void socialMediaLoginProcess(String email, String loginType) {
@@ -406,10 +509,19 @@ public class LoginActivity extends AppCompatActivity implements
 
 //        btnGplus.setSize(SignInButton.SIZE_STANDARD);
 
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build())
+//                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build())
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
     }
 
@@ -425,17 +537,22 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    private void resolveSignInError() {
-        if (mConnectionResult.hasResolution()) {
-            try {
-                mIntentInProgress = true;
-                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (IntentSender.SendIntentException e) {
-                mIntentInProgress = false;
-                mGoogleApiClient.connect();
-            }
-        }
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+//    private void resolveSignInError() {
+//        if (mConnectionResult.hasResolution()) {
+//            try {
+//                mIntentInProgress = true;
+//                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
+//            } catch (IntentSender.SendIntentException e) {
+//                mIntentInProgress = false;
+//                mGoogleApiClient.connect();
+//            }
+//        }
+//    }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
@@ -449,83 +566,112 @@ public class LoginActivity extends AppCompatActivity implements
             mConnectionResult = result;
 
             if (mSignInClicked) {
-                resolveSignInError();
+//                resolveSignInError();
             }
         }
 
     }
 
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.e("tag", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Log.e("tag", "display name: " + acct.getDisplayName());
+
+            String personName = acct.getDisplayName();
+            String personPhotoUrl = acct.getPhotoUrl().toString();
+            String email = acct.getEmail();
+
+            Log.e("tag", "Name: " + personName + ", email: " + email
+                    + ", Image: " + personPhotoUrl);
+
+//            loginProcess();
+
+        }
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int responseCode,
-                                    Intent intent) {
+    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
+
+        Log.e("tag", "" + requestCode + "  " + responseCode + "  " + intent);
+
         if (requestCode == RC_SIGN_IN) {
-            if (responseCode != RESULT_OK) {
-                mSignInClicked = false;
-            }
-
-            mIntentInProgress = false;
-
-            if (!mGoogleApiClient.isConnecting()) {
-                mGoogleApiClient.connect();
-            }
-        } else {
-            callbackManager.onActivityResult(requestCode, responseCode, intent);
+            Log.e("Success", "Success");
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
+            handleSignInResult(result);
         }
+
+
+//        if (requestCode == RC_SIGN_IN) {
+//            if (responseCode != RESULT_OK) {
+//                mSignInClicked = false;
+//            }
+//
+//            mIntentInProgress = false;
+//
+//            if (!mGoogleApiClient.isConnecting()) {
+//                mGoogleApiClient.connect();
+//            }
+//        } else {
+//            callbackManager.onActivityResult(requestCode, responseCode, intent);
+//        }
     }
 
-    @Override
-    public void onConnected(Bundle arg0) {
-        mSignInClicked = false;
-        getGPlusProfileInformation();
-    }
+//    @Override
+//    public void onConnected(Bundle arg0) {
+//        mSignInClicked = false;
+////        getGPlusProfileInformation();
+//    }
 
-    private void getGPlusProfileInformation() {
-        try {
-            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                Person currentPerson = Plus.PeopleApi
-                        .getCurrentPerson(mGoogleApiClient);
-                String personName = currentPerson.getDisplayName();
-                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-
-                String fName = personName.split(" ")[0];
-                String lName = personName.split(" ")[1];
-                loginProcess(email, "", fName, lName);
-//                socialMediaLoginProcess(email, "G");
-
-            } else {
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int arg0) {
-        mGoogleApiClient.connect();
-    }
-
-    private void signInWithGplus() {
-        if (!mGoogleApiClient.isConnecting()) {
-            mSignInClicked = true;
-            resolveSignInError();
-        }
-    }
-
-    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
-        for (int i = 0; i < signInButton.getChildCount(); i++) {
-            View v = signInButton.getChildAt(i);
-
-
-            if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.S_TEXT_SIZE));
-                tv.setTypeface(null, Typeface.BOLD);
-                tv.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-                tv.setText(buttonText);
-                tv.setPadding(0, 0, 0, 0);
-                return;
-            }
-        }
-    }
+//    private void getGPlusProfileInformation() {
+//        try {
+//            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+//                Person currentPerson = Plus.PeopleApi
+//                        .getCurrentPerson(mGoogleApiClient);
+//                String personName = currentPerson.getDisplayName();
+//                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+//
+//                String fName = personName.split(" ")[0];
+//                String lName = personName.split(" ")[1];
+//                loginProcess(email, "", "", fName, lName);
+////                socialMediaLoginProcess(email, "G");
+//
+//            } else {
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    public void onConnectionSuspended(int arg0) {
+//        mGoogleApiClient.connect();
+//    }
+//
+//    private void signInWithGplus() {
+//        if (!mGoogleApiClient.isConnecting()) {
+//            mSignInClicked = true;
+//            resolveSignInError();
+//        }
+//    }
+//
+//    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+//        for (int i = 0; i < signInButton.getChildCount(); i++) {
+//            View v = signInButton.getChildAt(i);
+//
+//
+//            if (v instanceof TextView) {
+//                TextView tv = (TextView) v;
+//                tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.S_TEXT_SIZE));
+//                tv.setTypeface(null, Typeface.BOLD);
+//                tv.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+//                tv.setText(buttonText);
+//                tv.setPadding(0, 0, 0, 0);
+//                return;
+//            }
+//        }
+//    }
 
 }

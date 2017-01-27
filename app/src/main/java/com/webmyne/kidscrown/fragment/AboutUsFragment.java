@@ -24,7 +24,6 @@ import com.webmyne.kidscrown.ui.MyDrawerActivity;
 public class AboutUsFragment extends Fragment {
 
     private TextView tvAboutUs;
-    private ProgressDialog pd;
     private ImageView ivImage;
     private LinearLayout parentView;
 
@@ -68,13 +67,9 @@ public class AboutUsFragment extends Fragment {
 
     private void fetchAboutUsData() {
 
-        pd = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loading), getActivity().getString(R.string.please_wait), true);
-
         new FetchAboutUsData(getActivity(), new CommonRetrofitResponseListener() {
             @Override
             public void onSuccess(Object responseBody) {
-
-                pd.dismiss();
 
                 AboutUsResponseModel responseModel = (AboutUsResponseModel) responseBody;
 
@@ -91,8 +86,6 @@ public class AboutUsFragment extends Fragment {
 
             @Override
             public void onFail() {
-
-                pd.dismiss();
 
             }
         });

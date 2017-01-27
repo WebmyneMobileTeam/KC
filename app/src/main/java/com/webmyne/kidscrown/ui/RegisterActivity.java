@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,10 +25,14 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.gson.GsonBuilder;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
+import com.webmyne.kidscrown.api.FetchLoginData;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.PrefUtils;
+import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.LoginModelRequest;
 import com.webmyne.kidscrown.model.UserProfile;
 
@@ -55,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private LinearLayout linearFbLogin;
     String regNo, url;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,36 +221,23 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void checkValidation() {
-        Snackbar snack = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG);
-        View view = snack.getView();
-        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-        tv.setSingleLine(false);
-        tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));
 
         if (edtFirstname.getText().toString().trim().length() == 0) {
-            snack.setText("First name is required");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "First name is required");
         } else if (edtLastName.getText().toString().trim().length() == 0) {
-            snack.setText("Last name is required");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "Last name is required");
         } else if (edtMobile.getText().toString().trim().length() != 10) {
-            snack.setText("Mobile number should contains 10 digits");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "Mobile number should contains 10 digits");
         } else if (edtEmail.getText().toString().trim().length() == 0 || !(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
-            snack.setText("Email-id is not valid");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "Email-id is not valid");
         } else if (edtPassword.getText().toString().trim().length() < 6) {
-            snack.setText("Password must be of minimum 6 characters");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "Password must be of minimum 6 characters");
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
-            snack.setText("Registration number is required");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "Registration number is required");
         } else if (edtUserName.getText().toString().trim().length() == 0) {
-            snack.setText("Username is required");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "Username is required");
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
-            snack.setText("Password and confirm password does not match");
-            snack.show();
+            Functions.showToast(RegisterActivity.this, "Password and confirm password does not match");
         } else {
             registerWebService();
         }
@@ -253,126 +245,137 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerWebService() {
 
-//        LoginModelRequest model = new LoginModelRequest();
-//        model.setMobileOS("A");
-//        model.setPassword(edtPassword.getText().toString());
-//        model.setUserName(edtUserName.getText().toString().trim());
-//        model.setFirstName(edtFirstname.getText().toString().trim());
-//        model.setLastName(edtLastName.getText().toString().trim());
-//        model.setMobileNo(edtMobile.getText().toString().trim());
-//
-//        new FetchLoginData(this, new LoginModelRequest(), new CommonRetrofitResponseListener() {
-//            @Override
-//            public void onSuccess(Object responseBody) {
-//
-//                pd.dismiss();
-//
-//                LoginModelData responseModel = (LoginModelData) responseBody;
-//
-//                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
-//
-//                PrefUtils.setUserProfile(LoginActivity.this, responseModel);
-//
-//            }
-//
-//            @Override
-//            public void onFail() {
-//
-//                pd.dismiss();
-//
-//            }
-//        });
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
+        LoginModelRequest model = new LoginModelRequest();
+        model.setMobileOS("A");
+        model.setPassword(edtPassword.getText().toString());
+        model.setUserName(edtUserName.getText().toString().trim());
+        model.setFirstName(edtFirstname.getText().toString().trim());
+        model.setLastName(edtLastName.getText().toString().trim());
+        model.setMobileNo(edtMobile.getText().toString().trim());
+        model.setEmailID(edtEmail.getText().toString().trim());
+        model.setRegistrationNumber(edtRegNo.getText().toString().trim());
+        model.setDeviceID(telephonyManager.getDeviceId());
+        model.setGCMToken(PrefUtils.getFCMToken(this));
+        model.setLoginVia("1");
+        model.setClinicName(edtClinicName.getText().toString().trim());
 
-        username = edtUserName.getText().toString().trim();
-        firstName = edtFirstname.getText().toString().trim();
-        lastName = edtLastName.getText().toString().trim();
-        mobile = edtMobile.getText().toString().trim();
-        emailId = edtEmail.getText().toString().trim();
-        password = edtPassword.getText().toString();
-        registartionNo = edtRegNo.getText().toString().trim();
-        clinicName = edtClinicName.getText().toString().trim();
-
-        JSONObject userObject = null;
-        try {
-            userObject = new JSONObject();
-            userObject.put("ClinicName", clinicName);
-            userObject.put("EmailID", emailId);
-            userObject.put("FirstName", firstName);
-            userObject.put("IsActive", true);
-            userObject.put("IsDelete", true);
-            userObject.put("LastName", lastName);
-            userObject.put("LoginVia", "N");
-            userObject.put("MobileNo", mobile);
-            userObject.put("MobileOS", "A");
-            userObject.put("Password", password);
-            userObject.put("PriorityID", 5);
-            userObject.put("RegistrationNumber", registartionNo);
-            userObject.put("Salutation", 0);
-            userObject.put("UserID", 0);
-            userObject.put("UserName", username);
-            userObject.put("UserRoleID", 2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        pd = ProgressDialog.show(RegisterActivity.this, "Loading", "Please wait..", true);
-        Functions.logE("register request", userObject.toString());
-
-        new CallWebService(Constants.REGISTRATION_URL, CallWebService.TYPE_POST, userObject) {
+        new FetchLoginData(this, model, new CommonRetrofitResponseListener() {
             @Override
-            public void response(String response) {
-                pd.dismiss();
-                JSONArray data;
-                Log.e("register response", response + "");
-                try {
-                    data = new JSONArray(response);
-                    JSONObject description = data.getJSONObject(0);
+            public void onSuccess(Object responseBody) {
 
-                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
+                LoginModelData responseModel = (LoginModelData) responseBody;
 
-                    Snackbar snack = Snackbar.make(parentView, "Registration Successfull", Snackbar.LENGTH_LONG);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));
-                    snack.show();
+                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
-                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(RegisterActivity.this, "user_pref", 0);
-                    complexPreferences.putObject("current-user", profile);
-                    complexPreferences.commit();
+                PrefUtils.setUserProfile(RegisterActivity.this, responseModel);
 
-                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("isUserLogin", true);
-                    editor.putBoolean("isFirstTimeLogin", true);
-                    editor.commit();
+                Functions.showToast(RegisterActivity.this, getString(R.string.register_success));
 
-                    Intent i = new Intent(RegisterActivity.this, MyDrawerActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                    finish();
+                Intent i = new Intent(RegisterActivity.this, MyDrawerActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
 
-                } catch (Exception e) {
-                    pd.dismiss();
-                    Snackbar snack = Snackbar.make(parentView, "Unable To Register", Snackbar.LENGTH_LONG);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));
-                    snack.show();
-                }
             }
 
             @Override
-            public void error(String error) {
-                pd.dismiss();
-                Snackbar snack = Snackbar.make(parentView, error, Snackbar.LENGTH_LONG);
-                View view = snack.getView();
-                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));
-                snack.show();
-                Log.e("error", error);
+            public void onFail() {
+
             }
-        }.call();
+        });
+
+
+//        username = edtUserName.getText().toString().trim();
+//        firstName = edtFirstname.getText().toString().trim();
+//        lastName = edtLastName.getText().toString().trim();
+//        mobile = edtMobile.getText().toString().trim();
+//        emailId = edtEmail.getText().toString().trim();
+//        password = edtPassword.getText().toString();
+//        registartionNo = edtRegNo.getText().toString().trim();
+//        clinicName = edtClinicName.getText().toString().trim();
+//
+//        JSONObject userObject = null;
+//        try {
+//            userObject = new JSONObject();
+//            userObject.put("ClinicName", clinicName);
+//            userObject.put("EmailID", emailId);
+//            userObject.put("FirstName", firstName);
+//            userObject.put("IsActive", true);
+//            userObject.put("IsDelete", true);
+//            userObject.put("LastName", lastName);
+//            userObject.put("LoginVia", "N");
+//            userObject.put("MobileNo", mobile);
+//            userObject.put("MobileOS", "A");
+//            userObject.put("Password", password);
+//            userObject.put("PriorityID", 5);
+//            userObject.put("RegistrationNumber", registartionNo);
+//            userObject.put("Salutation", 0);
+//            userObject.put("UserID", 0);
+//            userObject.put("UserName", username);
+//            userObject.put("UserRoleID", 2);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+//        pd = ProgressDialog.show(RegisterActivity.this, "Loading", "Please wait..", true);
+//        Functions.logE("register request", userObject.toString());
+//
+//        new CallWebService(Constants.REGISTRATION_URL, CallWebService.TYPE_POST, userObject) {
+//            @Override
+//            public void response(String response) {
+//                pd.dismiss();
+//                JSONArray data;
+//                Log.e("register response", response + "");
+//                try {
+//                    data = new JSONArray(response);
+//                    JSONObject description = data.getJSONObject(0);
+//
+//                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
+//
+//                    Snackbar snack = Snackbar.make(parentView, "Registration Successfull", Snackbar.LENGTH_LONG);
+//                    View view = snack.getView();
+//                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+//                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));
+//                    snack.show();
+//
+//                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(RegisterActivity.this, "user_pref", 0);
+//                    complexPreferences.putObject("current-user", profile);
+//                    complexPreferences.commit();
+//
+//                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = preferences.edit();
+//                    editor.putBoolean("isUserLogin", true);
+//                    editor.putBoolean("isFirstTimeLogin", true);
+//                    editor.commit();
+//
+//                    Intent i = new Intent(RegisterActivity.this, MyDrawerActivity.class);
+//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(i);
+//                    finish();
+//
+//                } catch (Exception e) {
+//                    pd.dismiss();
+//                    Snackbar snack = Snackbar.make(parentView, "Unable To Register", Snackbar.LENGTH_LONG);
+//                    View view = snack.getView();
+//                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+//                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));
+//                    snack.show();
+//                }
+//            }
+//
+//            @Override
+//            public void error(String error) {
+//                pd.dismiss();
+//                Snackbar snack = Snackbar.make(parentView, error, Snackbar.LENGTH_LONG);
+//                View view = snack.getView();
+//                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+//                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), RegisterActivity.this));
+//                snack.show();
+//                Log.e("error", error);
+//            }
+//        }.call();
 
     }
 

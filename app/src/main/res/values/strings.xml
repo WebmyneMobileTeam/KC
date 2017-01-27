@@ -84,5 +84,10 @@
     <string name="contact_us">Contact Us</string>
     <string name="no_record">No Records</string>
 
+    <!--ProfileFragment.java-->
+    <string name="update_profile_success">Profile has been updated</string>
+
+    <!--ContactUsFragment.java.xml-->
+    <string name="register_success">Registration Successfull</string>
 
 </resources>

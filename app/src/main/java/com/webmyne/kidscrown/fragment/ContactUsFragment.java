@@ -21,7 +21,6 @@ import com.webmyne.kidscrown.ui.MyDrawerActivity;
 public class ContactUsFragment extends Fragment {
 
     //    private TextView tvContactUs, tvBankDetail;
-    private ProgressDialog pd;
     private LinearLayout parentView;
 
     public static ContactUsFragment newInstance(String param1, String param2) {
@@ -64,13 +63,9 @@ public class ContactUsFragment extends Fragment {
 
     private void fetchAboutUsData() {
 
-        pd = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loading), getActivity().getString(R.string.please_wait), true);
-
         new FetchContactUsData(getActivity(), new CommonRetrofitResponseListener() {
             @Override
             public void onSuccess(Object responseBody) {
-
-                pd.dismiss();
 
                 ContactUsResponseModel responseModel = (ContactUsResponseModel) responseBody;
 
@@ -96,8 +91,6 @@ public class ContactUsFragment extends Fragment {
 
             @Override
             public void onFail() {
-
-                pd.dismiss();
 
             }
         });

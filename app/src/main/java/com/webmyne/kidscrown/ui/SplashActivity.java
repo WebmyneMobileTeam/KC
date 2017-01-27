@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.PrefUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,7 +26,7 @@ public class SplashActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // printKeyHash(SplashActivity.this);
+//        printKeyHash(SplashActivity.this);
 
         new CountDownTimer(1000, 100) {
             @Override
@@ -36,7 +37,8 @@ public class SplashActivity extends ActionBarActivity {
             @Override
             public void onFinish() {
                 SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-                if (preferences.contains("isUserLogin")) {
+//                if (preferences.contains("isUserLogin")) {
+                if (PrefUtils.getLoggedIn(SplashActivity.this)) {
                     Intent i = new Intent(SplashActivity.this, MyDrawerActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);

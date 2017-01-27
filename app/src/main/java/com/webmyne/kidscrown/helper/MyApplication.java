@@ -1,7 +1,5 @@
 package com.webmyne.kidscrown.helper;
 
-import android.app.Application;
-import android.content.res.Configuration;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
@@ -12,7 +10,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.fastjson.FastJsonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Application class that called once when application is installed for the first time on device.
@@ -68,7 +66,7 @@ public class MyApplication extends MultiDexApplication {
     private void initRetrofit() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(URLConstants.BASE_URL_V03)
-                .addConverterFactory(FastJsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 

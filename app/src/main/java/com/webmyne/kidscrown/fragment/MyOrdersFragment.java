@@ -1,56 +1,45 @@
 package com.webmyne.kidscrown.fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.OrderAdapter;
-import com.webmyne.kidscrown.helper.CallWebService;
+import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
+import com.webmyne.kidscrown.api.FetchOrderHistoryData;
+import com.webmyne.kidscrown.custom.EmptyLayout;
+import com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
-import com.webmyne.kidscrown.helper.Constants;
-import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
-import com.webmyne.kidscrown.model.FinalOrders;
-import com.webmyne.kidscrown.model.OrderProduct;
-import com.webmyne.kidscrown.model.Product;
-import com.webmyne.kidscrown.model.TotalOrder;
+import com.webmyne.kidscrown.helper.PrefUtils;
+import com.webmyne.kidscrown.model.OrderHistoryModel;
 import com.webmyne.kidscrown.model.UserProfile;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 import com.webmyne.kidscrown.ui.OrderDetailsActivity;
-import com.webmyne.kidscrown.ui.widgets.ItemCartView;
-import com.webmyne.kidscrown.ui.widgets.MyOrderItemView;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 
 public class MyOrdersFragment extends Fragment {
 
     private Activity activity;
-    ListView orderListview;
+    private FamiliarRecyclerView orderListview;
     private LinearLayout linearParent;
     private TextView emptyOrder;
     private String userId;
-    ProgressDialog pd;
-    OrderAdapter adapter;
-    ArrayList<OrderProduct> data;
-    ComplexPreferences complexPreferences;
+    private OrderAdapter adapter;
+    private ArrayList<OrderHistoryModel> data;
+    private ComplexPreferences complexPreferences;
+    private EmptyLayout emptyLayout;
 
     public static MyOrdersFragment newInstance() {
         MyOrdersFragment fragment = new MyOrdersFragment();
@@ -79,15 +68,26 @@ public class MyOrdersFragment extends Fragment {
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         UserProfile currentUserObj = new UserProfile();
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
-        userId = currentUserObj.UserID;
+        userId = String.valueOf(PrefUtils.getUserId(getActivity()));
+//        userId = "50073";
 
-        orderListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        orderListview.setLayoutManager(layoutManager);
+
+        data = new ArrayList<>();
+        adapter = new OrderAdapter(getActivity(), data);
+
+        orderListview.setEmptyView(emptyLayout);
+        emptyLayout.setContent("No Order found.");
+
+        orderListview.setAdapter(adapter);
+
+        orderListview.setOnItemClickListener(new FamiliarRecyclerView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(FamiliarRecyclerView familiarRecyclerView, View view, int position) {
 
-                complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
-                OrderProduct object = data.get(position);
-               // Log.e("order object", object.toString());
+                OrderHistoryModel object = data.get(position);
+                // Log.e("order object", object.toString());
                 complexPreferences.putObject("order", object);
                 complexPreferences.commit();
 
@@ -102,8 +102,8 @@ public class MyOrdersFragment extends Fragment {
 
     private void init(View view) {
         linearParent = (LinearLayout) view.findViewById(R.id.linearParent);
-        emptyOrder = (TextView) view.findViewById(R.id.emptyOrder);
-        orderListview = (ListView) view.findViewById(R.id.orderListview);
+        emptyLayout = (EmptyLayout) view.findViewById(R.id.emptyLayout);
+        orderListview = (FamiliarRecyclerView) view.findViewById(R.id.orderListview);
     }
 
     @Override
@@ -121,43 +121,64 @@ public class MyOrdersFragment extends Fragment {
     }
 
     private void getOrders() {
-        data = new ArrayList<>();
-        pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
 
-        Log.e("API", Constants.FETCH_ORDER + userId);
-        new CallWebService(Constants.FETCH_ORDER + userId, CallWebService.TYPE_GET, null) {
-
+        new FetchOrderHistoryData(getActivity(), new CommonRetrofitResponseListener() {
             @Override
-            public void response(String response) {
-                pd.dismiss();
-             //   Log.e("my_order_response", response);
+            public void onSuccess(Object responseBody) {
 
-                Type listType = new TypeToken<List<OrderProduct>>() {
-                }.getType();
+                ArrayList<OrderHistoryModel> responseModel = (ArrayList<OrderHistoryModel>) responseBody;
 
-                try {
-                    data = new GsonBuilder().create().fromJson(response, listType);
-                } catch (Exception e) {
-                    Log.e("error", e.getMessage());
-                }
+                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
-                for (int i = 0; i < data.size(); i++) {
-                    adapter = new OrderAdapter(getActivity(), data);
-                    orderListview.setAdapter(adapter);
+                data.addAll(responseModel);
 
-                }
+                adapter.setOrders(data);
+
+                Log.e("tag", "from here");
             }
 
             @Override
-            public void error(String error) {
-                pd.dismiss();
-                if (data.size() == 0) {
-                    emptyOrder.setVisibility(View.VISIBLE);
-                } else {
-                    emptyOrder.setVisibility(View.GONE);
-                }
+            public void onFail() {
+
             }
-        }.call();
+        });
+
+
+//        Log.e("API", Constants.FETCH_ORDER + userId);
+//        new CallWebService(Constants.FETCH_ORDER + userId, CallWebService.TYPE_GET, null) {
+//
+//            @Override
+//            public void response(String response) {
+//                pd.dismiss();
+//             //   Log.e("my_order_response", response);
+//
+//                Type listType = new TypeToken<List<OrderProduct>>() {
+//                }.getType();
+//
+//                try {
+//                    data = new GsonBuilder().create().fromJson(response, listType);
+//                } catch (Exception e) {
+//                    Log.e("error", e.getMessage());
+//                }
+//
+//                for (int i = 0; i < data.size(); i++) {
+//                    adapter = new OrderAdapter(getActivity(), data);
+//                    orderListview.setAdapter(adapter);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void error(String error) {
+//                pd.dismiss();
+//                if (data.size() == 0) {
+//                    emptyOrder.setVisibility(View.VISIBLE);
+//                } else {
+//                    emptyOrder.setVisibility(View.GONE);
+//                }
+//            }
+//        }.call();
+
     }
 
 }

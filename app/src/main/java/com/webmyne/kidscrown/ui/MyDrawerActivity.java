@@ -39,8 +39,10 @@ import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.DiscountModel;
+import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.UserProfile;
 
 import java.lang.reflect.Type;
@@ -171,6 +173,8 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 SharedPreferences.Editor editor = pref.edit();
                 editor.clear();
                 editor.commit();
+
+                PrefUtils.clearUserProfile(this, new LoginModelData());
 
                 try {
                     // Facebook logout

@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Mobile"
                     android:inputType="phone"
-                    android:maxLines="1"
+                    android:maxLength="10"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"
                     android:textSize="@dimen/M_TEXT" />

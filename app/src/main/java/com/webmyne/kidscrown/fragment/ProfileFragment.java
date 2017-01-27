@@ -1,7 +1,5 @@
 package com.webmyne.kidscrown.fragment;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -13,19 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.GsonBuilder;
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.helper.CallWebService;
-import com.webmyne.kidscrown.helper.ComplexPreferences;
-import com.webmyne.kidscrown.helper.Constants;
+import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
+import com.webmyne.kidscrown.api.FetchUpdateProfileData;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
+import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
-import com.webmyne.kidscrown.model.UserProfile;
+import com.webmyne.kidscrown.model.UserProfileModel;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 
 public class ProfileFragment extends Fragment {
@@ -33,7 +27,6 @@ public class ProfileFragment extends Fragment {
     EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName, edtClinicName;
     String firstName, lastName, mobile, emailId, password, registartionNo, username, salutation, userId, clinicName;
     Button btnUpdate;
-    ProgressDialog pd;
     View parentView;
 
     public static ProfileFragment newInstance(String param1, String param2) {
@@ -73,22 +66,30 @@ public class ProfileFragment extends Fragment {
         edtClinicName = (EditText) view.findViewById(R.id.edtClinicName);
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
-        UserProfile currentUserObj = new UserProfile();
-        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
-        userId = currentUserObj.UserID;
+//        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+//        UserProfile currentUserObj = new UserProfile();
+//        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
+//        userId = currentUserObj.UserID;
+        userId = String.valueOf(PrefUtils.getUserId(getActivity()));
 
         Log.e("userId", userId);
 
-        firstName = currentUserObj.FirstName;
-        lastName = currentUserObj.LastName;
-        username = currentUserObj.UserName;
-        emailId = currentUserObj.EmailID;
-        mobile = currentUserObj.MobileNo;
-        password = currentUserObj.Password;
-        registartionNo = currentUserObj.RegistrationNumber;
-        salutation = currentUserObj.Salutation;
-        clinicName = currentUserObj.ClinicName;
+        firstName = PrefUtils.getUserProfile(getActivity()).getFirstName();
+        Log.e("tag", "firstName: " + firstName);
+        lastName = PrefUtils.getUserProfile(getActivity()).getLastName();
+        Log.e("tag", "lastName: " + lastName);
+        username = PrefUtils.getUserProfile(getActivity()).getUserName();
+        Log.e("tag", "username: " + username);
+        emailId = PrefUtils.getUserProfile(getActivity()).getEmailID();
+        Log.e("tag", "emailId: " + emailId);
+        mobile = PrefUtils.getUserProfile(getActivity()).getMobileNo();
+        Log.e("tag", "mobile: " + mobile);
+        password = PrefUtils.getUserProfile(getActivity()).getPassword();
+        Log.e("tag", "password: " + password);
+        registartionNo = PrefUtils.getUserProfile(getActivity()).getRegistrationNumber();
+        Log.e("tag", "registartionNo: " + registartionNo);
+        clinicName = PrefUtils.getUserProfile(getActivity()).getClinicName();
+        Log.e("tag", "clinicName: " + clinicName);
 
         edtFirstname.setText(firstName);
         edtLastName.setText(lastName);
@@ -159,27 +160,34 @@ public class ProfileFragment extends Fragment {
         model.setUserID(PrefUtils.getUserId(getActivity()));
         model.setUserName(edtUserName.getText().toString().trim());
 
-//        new FetchLoginData(this, new LoginModelRequest(), new CommonRetrofitResponseListener() {
-//            @Override
-//            public void onSuccess(Object responseBody) {
-//
-//                pd.dismiss();
-//
-//                LoginModelData responseModel = (LoginModelData) responseBody;
-//
-//                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
-//
-//                PrefUtils.setUserProfile(LoginActivity.this, responseModel);
-//
-//            }
-//
-//            @Override
-//            public void onFail() {
-//
-//                pd.dismiss();
-//
-//            }
-//        });
+        new FetchUpdateProfileData(getActivity(), model, new CommonRetrofitResponseListener() {
+            @Override
+            public void onSuccess(Object responseBody) {
+
+                UserProfileModel responseModel = (UserProfileModel) responseBody;
+
+                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
+
+                LoginModelData modelData = PrefUtils.getUserProfile(getActivity());
+                modelData.setEmailID(responseModel.getEmailID());
+                modelData.setFirstName(responseModel.getFirstName());
+                modelData.setLastName(responseModel.getLastName());
+                modelData.setMobileNo(responseModel.getMobileNo());
+                modelData.setPassword(responseModel.getPassword());
+                modelData.setRegistrationNumber(responseModel.getRegistrationNumber());
+                modelData.setUserID(responseModel.getUserID());
+                modelData.setUserName(responseModel.getUserName());
+
+                PrefUtils.setUserProfile(getActivity(), modelData);
+
+                Functions.showToast(getActivity(), getString(R.string.update_profile_success));
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
 
 
 //        username = edtUserName.getText().toString().trim();

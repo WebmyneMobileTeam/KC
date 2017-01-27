@@ -13,6 +13,7 @@ import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.model.LoginModelRequest;
 import com.webmyne.kidscrown.model.LoginModelResponse;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +28,7 @@ public class FetchLoginData {
     private AppApi appApi;
     private LoginModelRequest model;
     private CommonRetrofitResponseListener commonRetrofitResponseListener;
+    private SpotsDialog dialog;
 
     public FetchLoginData(Context context, LoginModelRequest model, CommonRetrofitResponseListener commonRetrofitResponseListener) {
         this.context = context;
@@ -40,6 +42,8 @@ public class FetchLoginData {
 
     private void getLoginData() {
 
+        showProgress();
+
         Log.e("request", "" + Functions.jsonString(model));
 
         Call<LoginModelResponse> call = appApi.fetchLoginData(model);
@@ -47,6 +51,8 @@ public class FetchLoginData {
         call.enqueue(new Callback<LoginModelResponse>() {
             @Override
             public void onResponse(Call<LoginModelResponse> call, Response<LoginModelResponse> response) {
+
+                hideProgress();
 
                 if (response.isSuccessful()) {
 
@@ -59,18 +65,20 @@ public class FetchLoginData {
                     } else {
                         commonRetrofitResponseListener.onFail();
 
-                        Toast.makeText(context, response.body().getResponse().getResponseMsg(), Toast.LENGTH_SHORT).show();
+                        Functions.showToast(context, response.body().getResponse().getResponseMsg());
                     }
 
                 } else {
                     commonRetrofitResponseListener.onFail();
 
-                    Toast.makeText(context, context.getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                    Functions.showToast(context, context.getString(R.string.try_again));
                 }
             }
 
             @Override
             public void onFailure(Call<LoginModelResponse> call, Throwable t) {
+
+                hideProgress();
 
                 commonRetrofitResponseListener.onFail();
 
@@ -81,5 +89,18 @@ public class FetchLoginData {
 
     }
 
+    private void hideProgress() {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    private void showProgress() {
+        if (dialog == null) {
+            dialog = new SpotsDialog(context, "Loading products..", R.style.Custom);
+        }
+        dialog.setCancelable(false);
+        dialog.show();
+    }
 
 }

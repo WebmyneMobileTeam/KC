@@ -89,7 +89,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         productRV.setLayoutManager(layoutManager);
 
         productRV.setEmptyView(emptyLayout);
-
         emptyLayout.setContent("No Product found.");
 
         productRV.setAdapter(adapter);

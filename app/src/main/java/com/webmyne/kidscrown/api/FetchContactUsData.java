@@ -6,11 +6,12 @@ import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Constants;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.MyApplication;
 import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
-import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.model.ContactUsResponseModel;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,6 +25,7 @@ public class FetchContactUsData {
     private Context context;
     private AppApi appApi;
     private CommonRetrofitResponseListener commonRetrofitResponseListener;
+    private SpotsDialog dialog;
 
     public FetchContactUsData(Context context, CommonRetrofitResponseListener commonRetrofitResponseListener) {
         this.context = context;
@@ -36,11 +38,15 @@ public class FetchContactUsData {
 
     private void getContactUsData() {
 
+        showProgress();
+
         Call<ContactUsResponseModel> call = appApi.fetchContactUsData();
 
         call.enqueue(new Callback<ContactUsResponseModel>() {
             @Override
             public void onResponse(Call<ContactUsResponseModel> call, Response<ContactUsResponseModel> response) {
+
+                hideProgress();
 
                 if (response.isSuccessful()) {
 
@@ -51,16 +57,18 @@ public class FetchContactUsData {
                         commonRetrofitResponseListener.onSuccess(response.body());
 
                     } else {
-                        Toast.makeText(context, response.body().getResponse().getResponseMsg(), Toast.LENGTH_SHORT).show();
+                        Functions.showToast(context, response.body().getResponse().getResponseMsg());
                     }
 
                 } else {
-                    Toast.makeText(context, context.getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                    Functions.showToast(context, context.getString(R.string.try_again));
                 }
             }
 
             @Override
             public void onFailure(Call<ContactUsResponseModel> call, Throwable t) {
+
+                hideProgress();
 
                 commonRetrofitResponseListener.onFail();
 
@@ -71,5 +79,18 @@ public class FetchContactUsData {
 
     }
 
+    private void hideProgress() {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    private void showProgress() {
+        if (dialog == null) {
+            dialog = new SpotsDialog(context, "Loading products..", R.style.Custom);
+        }
+        dialog.setCancelable(false);
+        dialog.show();
+    }
 
 }

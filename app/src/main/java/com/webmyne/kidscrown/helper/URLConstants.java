@@ -11,4 +11,9 @@ public class URLConstants {
     public static final String GET_PRODUCTS = "Product.svc/json/GetProducts";
 
     public static final String LOGIN = "User.svc/json/LoginSignup";
+
+    public static final String UPDATE_PROFILE = "User.svc/json/UpdateUserProfile";
+
+    public static final String ORDER_HISTORY = "Product.svc/json/OrderHistory/{USERID}";
+
 }

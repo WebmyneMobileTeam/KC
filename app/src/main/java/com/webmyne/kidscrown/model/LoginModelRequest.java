@@ -35,38 +35,47 @@ public class LoginModelRequest {
     private String RegistrationNumber;
     private String SocialID;
     private String UserName;
-
-    public LoginModelRequest() {
-        ClinicName = "";
-        DeviceID = "A342E9D0-FFFF-416E-9B55-0B4FD4E1C36A";
-        EmailID = "jj@gmail.com";
-        FirstName = "";
-        GCMToken = "0";
-        LastName = "";
-        LoginVia = "1";
-        MobileNo = "";
-        MobileOS = "A";
-        Password = "123";
-        RegistrationNumber = "";
-        SocialID = "0";
-        UserName = "";
-    }
+    private int UserID;
 
 //    public LoginModelRequest() {
 //        ClinicName = "";
-//        DeviceID = "";
-//        EmailID = "";
+//        DeviceID = "A342E9D0-FFFF-416E-9B55-0B4FD4E1C36A";
+//        EmailID = "jj@gmail.com";
 //        FirstName = "";
-//        GCMToken = "";
+//        GCMToken = "0";
 //        LastName = "";
-//        LoginVia = 0;
+//        LoginVia = "1";
 //        MobileNo = "";
-//        MobileOS = "";
-//        Password = "";
+//        MobileOS = "A";
+//        Password = "123";
 //        RegistrationNumber = "";
-//        SocialID = "";
+//        SocialID = "0";
 //        UserName = "";
 //    }
+
+    public LoginModelRequest() {
+        ClinicName = "";
+        DeviceID = "";
+        EmailID = "";
+        FirstName = "";
+        GCMToken = "";
+        LastName = "";
+        LoginVia = "0";
+        MobileNo = "";
+        MobileOS = "";
+        Password = "";
+        RegistrationNumber = "";
+        SocialID = "";
+        UserName = "";
+    }
+
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int userID) {
+        UserID = userID;
+    }
 
     public String getClinicName() {
         return ClinicName;

@@ -9,7 +9,10 @@ import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.MyApplication;
 import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
-import com.webmyne.kidscrown.model.AboutUsResponseModel;
+import com.webmyne.kidscrown.model.LoginModelRequest;
+import com.webmyne.kidscrown.model.LoginModelResponse;
+import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
+import com.webmyne.kidscrown.model.UserProfileModelResponse;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -20,53 +23,61 @@ import retrofit2.Response;
  * Created by vatsaldesai on 20-01-2017.
  */
 
-public class FetchAboutUsData {
+public class FetchUpdateProfileData {
 
     private Context context;
     private AppApi appApi;
+    private UpdateProfileModelRequest model;
     private CommonRetrofitResponseListener commonRetrofitResponseListener;
     private SpotsDialog dialog;
 
-    public FetchAboutUsData(Context context, CommonRetrofitResponseListener commonRetrofitResponseListener) {
+    public FetchUpdateProfileData(Context context, UpdateProfileModelRequest model, CommonRetrofitResponseListener commonRetrofitResponseListener) {
         this.context = context;
+        this.model = model;
         this.commonRetrofitResponseListener = commonRetrofitResponseListener;
 
         appApi = MyApplication.getRetrofit().create(AppApi.class);
 
-        getAboutUsData();
+        getLoginData();
     }
 
-    private void getAboutUsData() {
+    private void getLoginData() {
 
         showProgress();
 
-        Call<AboutUsResponseModel> call = appApi.fetchAboutUsData();
+        Log.e("request", "" + Functions.jsonString(model));
 
-        call.enqueue(new Callback<AboutUsResponseModel>() {
+        Call<UserProfileModelResponse> call = appApi.fetchUpdateProfileData(model);
+
+        call.enqueue(new Callback<UserProfileModelResponse>() {
             @Override
-            public void onResponse(Call<AboutUsResponseModel> call, Response<AboutUsResponseModel> response) {
+            public void onResponse(Call<UserProfileModelResponse> call, Response<UserProfileModelResponse> response) {
 
                 hideProgress();
 
                 if (response.isSuccessful()) {
 
-                    Log.e("response", MyApplication.getGson().toJson(response.body(), AboutUsResponseModel.class));
+                    Log.e("response", Functions.jsonString(response));
 
                     if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
 
-                        commonRetrofitResponseListener.onSuccess(response.body());
+                        commonRetrofitResponseListener.onSuccess(response.body().getData());
 
                     } else {
+                        commonRetrofitResponseListener.onFail();
+
                         Functions.showToast(context, response.body().getResponse().getResponseMsg());
                     }
 
                 } else {
+                    commonRetrofitResponseListener.onFail();
+
                     Functions.showToast(context, context.getString(R.string.try_again));
                 }
             }
 
             @Override
-            public void onFailure(Call<AboutUsResponseModel> call, Throwable t) {
+            public void onFailure(Call<UserProfileModelResponse> call, Throwable t) {
 
                 hideProgress();
 
