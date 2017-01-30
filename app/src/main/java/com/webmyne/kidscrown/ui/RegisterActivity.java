@@ -3,9 +3,7 @@ package com.webmyne.kidscrown.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,33 +21,26 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.gson.GsonBuilder;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchLoginData;
-import com.webmyne.kidscrown.helper.CallWebService;
-import com.webmyne.kidscrown.helper.ComplexPreferences;
-import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.LoginModelRequest;
-import com.webmyne.kidscrown.model.UserProfile;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    TextView btnLogin;
-    EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName, edtClinicName;
-    String firstName, lastName, mobile, emailId, password, registartionNo, username, clinicName;
-    Button btnRegister;
-    ProgressDialog pd;
-    View parentView;
-    Toolbar toolbar;
+    private TextView btnLogin;
+    private EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName, edtClinicName;
+    private String firstName, lastName, mobile, emailId, password, registartionNo, username, clinicName;
+    private Button btnRegister;
+    private ProgressDialog pd;
+    private View parentView;
+    private Toolbar toolbar;
+    private TextView txtCustomTitle;
 
     private static final int RC_SIGN_IN = 0;
 
@@ -395,17 +386,19 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = (Button) findViewById(R.id.btnRegister);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText("User Registration");
+            toolbar.setTitle("");
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
     }
-
 }

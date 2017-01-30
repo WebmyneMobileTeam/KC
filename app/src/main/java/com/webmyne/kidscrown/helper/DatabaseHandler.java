@@ -11,10 +11,10 @@ import android.util.Log;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.AddressModel;
+import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.OrderModel;
-import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.ProductImage;
 import com.webmyne.kidscrown.model.ProductPrice;
@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -769,5 +770,63 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return addressModels;
+    }
+
+    public void addToCart(CartProduct cartProduct) {
+        myDataBase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("product_id", cartProduct.getProductId());
+        values.put("product_name", cartProduct.getProductName());
+        values.put("qty", cartProduct.getQty());
+        values.put("unit_price", cartProduct.getUnitPrice());
+        values.put("is_single", cartProduct.isSingle());
+        values.put("max", cartProduct.getMax());
+        values.put("unit_price", cartProduct.getUnitPrice());
+        values.put("total_price", cartProduct.getTotalPrice());
+        myDataBase.insert(TABLE_CART_ITEM, null, values);
+    }
+
+    public int getTotalProducts() {
+        ArrayList<Integer> productsIds = new ArrayList<>();
+        ArrayList<CartProduct> products = new ArrayList<>();
+        products = getCartProducts();
+        if (products.size() > 0) {
+            for (int i = 0; i < products.size(); i++) {
+                productsIds.add(products.get(i).getProductId());
+            }
+            HashSet<Integer> hashSet = new HashSet<Integer>();
+            hashSet.addAll(productsIds);
+            productsIds.clear();
+            productsIds.addAll(hashSet);
+            return productsIds.size();
+
+        } else {
+            return 0;
+        }
+    }
+
+
+    public ArrayList<CartProduct> getCartProducts() {
+        ArrayList<CartProduct> products = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                CartProduct cartProduct = new CartProduct();
+                cartProduct.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+                cartProduct.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
+                cartProduct.setQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
+                cartProduct.setUnitPrice(cursor.getInt(cursor.getColumnIndexOrThrow("unit_price")));
+                cartProduct.setTotalPrice(cursor.getInt(cursor.getColumnIndexOrThrow("total_price")));
+                cartProduct.setSingle(cursor.getInt(cursor.getColumnIndexOrThrow("is_single")));
+                cartProduct.setMax(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+                products.add(cartProduct);
+            } while (cursor.moveToNext());
+        }
+        return products;
     }
 }

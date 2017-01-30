@@ -1,0 +1,171 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.webmyne.kidscrown.custom.EmptyLayout
+        android:id="@+id/emptyLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnCheckout"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <include layout="@layout/app_bar2" />
+
+        <RelativeLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/card_margin"
+            android:layout_marginRight="@dimen/card_margin">
+
+            <LinearLayout
+                android:id="@+id/linearKit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView
+                android:id="@+id/cartRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/totalLayout"
+                android:layout_below="@+id/linearKit"
+                android:layout_marginLeft="@dimen/card_margin"
+                android:layout_marginRight="@dimen/card_margin"
+                android:layout_marginTop="8dp"
+                android:divider="#00000000"
+                android:dividerHeight="@dimen/CARD_DIVIDER_HEIGHT"
+                android:scrollbars="none" />
+
+            <LinearLayout
+                android:id="@+id/totalLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/offerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="SubTotal"
+                            android:textSize="@dimen/S_TEXT_SIZE"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/subtotalPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="Subtotal"
+                            android:textSize="@dimen/S_TEXT_SIZE" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/txtSaved"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="You Saved"
+                            android:textSize="@dimen/S_TEXT_SIZE"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtSavedPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="txtSavedPrice"
+                            android:textSize="@dimen/S_TEXT_SIZE" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Grand Total"
+                        android:textSize="@dimen/M_TEXT"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTotalPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Subtotal"
+                        android:textSize="@dimen/M_TEXT"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="@dimen/STD_TXT_PADDING_SIZE"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="*Discount will be shown on Confirmation Page"
+                    android:textSize="@dimen/N_TEXT"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnCheckout"
+        style="@style/MyButtonStyle"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/m_8dp"
+        android:text="Check Out" />
+
+</RelativeLayout>

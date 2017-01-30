@@ -26,6 +26,7 @@
             <EditText
                 android:id="@+id/edtUsername"
                 android:layout_width="match_parent"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
                 android:inputType="text"
@@ -44,6 +45,7 @@
             <EditText
                 android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
@@ -56,13 +58,10 @@
 
         <Button
             android:id="@+id/btnLogin"
-            style="@style/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/STD_HEIGHT_SIZE"
-            android:layout_marginTop="@dimen/m_15dp"
-            android:text="@string/login"
-            android:textAllCaps="false"
-            android:textSize="@dimen/L_TEXT" />
+            style="@style/MyButtonStyle"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/m_8dp"
+            android:text="@string/login" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,6 +75,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
+                android:fontFamily="sans-serif-condensed"
                 android:text="@string/forget_pass"
                 android:textColor="@color/black"
                 android:textSize="@dimen/M_TEXT" />
@@ -85,6 +85,7 @@
                 style="@style/match_wrap_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
@@ -112,6 +113,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
+                android:fontFamily="sans-serif-condensed"
                 android:gravity="center"
                 android:text="@string/or"
                 android:textColor="@color/black"
@@ -159,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/facebook"
+                    android:fontFamily="sans-serif-condensed"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/M_TEXT"
                     android:textStyle="bold" />
@@ -191,6 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif-condensed"
                     android:text="@string/google"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/M_TEXT"

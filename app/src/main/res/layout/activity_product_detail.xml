@@ -1,19 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2015 The Android Open Source Project
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
--->
-
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cbs="http://schemas.android.com/tools"
@@ -68,15 +53,6 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                <ImageView
-                    android:id="@+id/imgCart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginRight="@dimen/card_margin"
-                    android:src="@drawable/ic_action_order"
-                    android:tint="#fff" />
-
             </android.support.v7.widget.Toolbar>
 
 
@@ -90,7 +66,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -113,26 +88,39 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="Pricing"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
+                        android:textSize="@dimen/M_TEXT_SIZE"
+                        android:textStyle="bold" />
 
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <com.webmyne.kidscrown.custom.QuantityView
+                            android:id="@+id/quantityView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/m_8dp" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginLeft="@dimen/m_16dp"
+                            android:layout_weight="1"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/txtPriceIndividual"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_gravity="left|center_vertical"
                                 android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                                android:fontFamily="sans-serif-condensed"
                                 android:text="Price"
                                 android:textSize="@dimen/M_TEXT_SIZE" />
 
@@ -141,8 +129,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_weight="1"
                                 android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                                android:fontFamily="sans-serif-condensed"
                                 android:text="Price"
                                 android:textSize="@dimen/M_TEXT_SIZE" />
 
@@ -150,24 +138,28 @@
                                 android:id="@+id/txtPriceTotal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_gravity="right|center_vertical"
                                 android:layout_marginTop="@dimen/STD_TXT_PADDING_SIZE"
+                                android:fontFamily="sans-serif-condensed"
                                 android:text="Price"
                                 android:textSize="@dimen/M_TEXT_SIZE"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
-                    </FrameLayout>
+                        <TextView
+                            android:id="@+id/txtPricing"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/m_8dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-condensed"
+                            android:textSize="@dimen/L_TEXT"
+                            android:visibility="gone" />
 
-                    <com.webmyne.kidscrown.ui.widgets.ComboSeekBar
-                        android:id="@+id/combo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_margin"
-                        cbs:myColor="@android:color/black" />
+                    </LinearLayout>
 
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -185,15 +177,18 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="Info"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
+                        android:textSize="@dimen/M_TEXT_SIZE"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="@string/cheese_ipsum"
                         android:textSize="@dimen/M_TEXT_SIZE" />
 
@@ -215,16 +210,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="Images"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/M_TEXT_SIZE" />
+                        android:textSize="@dimen/M_TEXT_SIZE"
+                        android:textStyle="bold" />
 
                     <com.webmyne.kidscrown.ui.widgets.FlowLayout
                         android:id="@+id/flowImages"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/L_MARGIN_SIZE"></com.webmyne.kidscrown.ui.widgets.FlowLayout>
-
+                        android:layout_marginTop="@dimen/L_MARGIN_SIZE" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

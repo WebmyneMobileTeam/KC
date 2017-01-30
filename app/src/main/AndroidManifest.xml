@@ -113,6 +113,7 @@
             android:name=".ui.OrderDetailsActivity"
             android:label="@string/title_activity_order_details" />
         <activity android:name=".ui.IntroActivity" />
+        <activity android:name=".ui.CartActivityRevised"></activity>
 
         <!--FCM Services-->
         <service android:name=".helper.FCM.MyFirebaseMessagingService">

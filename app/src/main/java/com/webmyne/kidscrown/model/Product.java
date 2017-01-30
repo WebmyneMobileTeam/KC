@@ -2,6 +2,7 @@ package com.webmyne.kidscrown.model;
 
 import android.content.res.Resources;
 
+import com.google.gson.annotations.SerializedName;
 import com.webmyne.kidscrown.R;
 
 import java.io.Serializable;
@@ -15,7 +16,21 @@ public class Product implements Serializable {
     // new Data
     private String Description;
     private int DiscountPercentage;
+
+    @SerializedName("IsSingle")
     private boolean IsSingle;
+
+    public int getIsSingleInt() {
+        return IsSingleInt;
+    }
+
+    public void setIsSingleInt(int isSingleInt) {
+        IsSingleInt = isSingleInt;
+    }
+
+    @SerializedName("IsSingleInt")
+    private int IsSingleInt;
+
     private int OrderLimit;
     private int ProductID;
     private String ProductName;

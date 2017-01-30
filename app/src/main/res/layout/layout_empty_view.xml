@@ -21,6 +21,6 @@
         android:gravity="center"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/no_record"
-        android:textSize="@dimen/XL_TEXT" />
+        android:textSize="@dimen/XXL_TEXT" />
 
 </LinearLayout>

@@ -6,27 +6,24 @@ package com.webmyne.kidscrown.helper;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.droidbyme.toastlib.ToastEnum;
 import com.droidbyme.toastlib.ToastLib;
 import com.webmyne.kidscrown.R;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,13 +151,23 @@ public class Functions {
                 .duration(ToastEnum.SHORT)
                 .backgroundColor(ContextCompat.getColor(context, R.color.color_button_darkred))
                 .textColor(ContextCompat.getColor(context, R.color.white))
-                .textSize(18)
+                .textSize(16)
                 .corner(12)
                 .margin(128)
                 .padding(22)
                 .spacing(1)
                 .gravity(Gravity.BOTTOM)
                 .show();
+    }
+
+    public static String getStr(EditText editText){
+        return editText.getText().toString().trim();
+    }
+
+    public static String priceFormat(int amount){
+        DecimalFormat formatter;
+        formatter = new DecimalFormat("#,##,###");
+        return formatter.format(amount);
     }
 
     public static String getBuildVersion(Context context) {

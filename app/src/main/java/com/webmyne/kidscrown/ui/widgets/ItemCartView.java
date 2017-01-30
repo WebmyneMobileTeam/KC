@@ -4,19 +4,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.custom.QuantityView;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
-import com.webmyne.kidscrown.model.ProductCart;
+import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.model.CartProduct;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by sagartahelyani on 24-08-2015.
@@ -26,16 +27,25 @@ public class ItemCartView extends LinearLayout {
     LayoutInflater inflater;
     View view;
     Context context;
-    ProductCart cart;
-    TextView txtName, unitPrice, unitQty, totalPrice;
-    LinearLayout remove;
-    ComboSeekBar combo;
-    FrameLayout cartProductFrame;
 
-    ArrayList<String> values;
     OnValueChangeListener onValueChangeListener;
 
     onRemoveProductListener onRemoveProductListener;
+
+    // new
+    private CartProduct cartProduct;
+    private QuantityView quantityView;
+    private TextView txtPriceIndividual, txtName;
+    private TextView txtQTY, txtPriceTotal;
+    private DatabaseHandler handler;
+    private Button btnRemove;
+
+    public ItemCartView(Context context, CartProduct cartProduct) {
+        super(context);
+        this.context = context;
+        this.cartProduct = cartProduct;
+        init();
+    }
 
     public void setOnRemoveProductListener(ItemCartView.onRemoveProductListener onRemoveProductListener) {
         this.onRemoveProductListener = onRemoveProductListener;
@@ -44,13 +54,6 @@ public class ItemCartView extends LinearLayout {
     public ItemCartView(Context context) {
         super(context);
         this.context = context;
-        init();
-    }
-
-    public ItemCartView(Context context, ProductCart cart) {
-        super(context);
-        this.context = context;
-        this.cart = cart;
         init();
     }
 
@@ -65,28 +68,42 @@ public class ItemCartView extends LinearLayout {
     }
 
     private void init() {
+        handler = new DatabaseHandler(context);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.cart_product, this);
         setOrientation(VERTICAL);
 
+        btnRemove = (Button) view.findViewById(R.id.btnRemove);
         txtName = (TextView) view.findViewById(R.id.txtName);
-        remove = (LinearLayout) view.findViewById(R.id.remove);
-        unitPrice = (TextView) view.findViewById(R.id.unitPrice);
-        unitQty = (TextView) view.findViewById(R.id.unitQty);
-        totalPrice = (TextView) view.findViewById(R.id.totalPrice);
-        combo = (ComboSeekBar) view.findViewById(R.id.combo);
+        quantityView = (QuantityView) view.findViewById(R.id.quantityView);
+        txtPriceIndividual = (TextView) view.findViewById(R.id.txtPriceIndividual);
+        txtQTY = (TextView) view.findViewById(R.id.txtQTY);
+        txtPriceTotal = (TextView) view.findViewById(R.id.txtPriceTotal);
 
+        setDetails();
 
-        cartProductFrame = (FrameLayout) view.findViewById(R.id.cartProductFrame);
+        clickListener();
+    }
 
-        setDetails(cart);
-
-        remove.setOnClickListener(new OnClickListener() {
+    private void clickListener() {
+        btnRemove.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                promptDialog(cartProduct.getProductId());
+            }
+        });
 
-                promptDialog(cart.getProductId());
-
+        quantityView.setOnQtyChangeListener(new QuantityView.OnQtyChangeListener() {
+            @Override
+            public void onChange(int qty) {
+                Log.e("qty", qty + "");
+                txtQTY.setText(String.format(Locale.US, "%s %d", " x ", qty));
+                int totalPrice = cartProduct.getUnitPrice() * qty;
+                txtPriceTotal.setText(String.format(Locale.US, " = %s %s", context.getString(R.string.Rs), Functions.priceFormat(totalPrice)));
+                handler.updateCart(qty, totalPrice, cartProduct.getProductId());
+                if (onValueChangeListener != null) {
+                    onValueChangeListener.onChange();
+                }
             }
         });
     }
@@ -96,7 +113,7 @@ public class ItemCartView extends LinearLayout {
                 context);
         alertDialogBuilder.setTitle("Remove product");
         alertDialogBuilder
-                .setMessage("Want to remove this product from cart?")
+                .setMessage("Are yousure want to remove this product from cart?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -112,64 +129,29 @@ public class ItemCartView extends LinearLayout {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
     }
 
-    private void setDetails(ProductCart cart) {
-        txtName.setText(cart.getProductName());
-        unitPrice.setText("Rs. " + cart.getProductUnitPrice());
-        unitQty.setText("x " + (cart.getProductQty()) + " QTY");
-        totalPrice.setText("= Rs." + cart.getProductTotalPrice());
+    private void setDetails() {
+        txtName.setText(cartProduct.getProductName());
+        quantityView.setQty(cartProduct.getQty());
+        quantityView.setMaxLimit(cartProduct.getMax());
 
-        DatabaseHandler handler = new DatabaseHandler(context);
-        int max = handler.getLimit(cart.getProductId());
-        handler.close();
-
-        values = new ArrayList<>();
-        for (int i = 1; i <= max; i++) {
-            values.add("" + i);
-        }
-        combo.setAdapter(values);
-        combo.setColor(R.color.quad_green);
-        combo.setBackgroundResource(0);
-        combo.setSelection(cart.getProductQty() - 1);
-        displayQTYandTotal(cart.getProductQty());
-        combo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                displayQTYandTotal(position + 1);
-                onValueChangeListener.onChange();
-            }
-        });
-    }
-
-    private void displayQTYandTotal(int position) {
-        unitQty.setText(String.format("x %s QTY", position));
-        int qty = position;
-        int total = Integer.parseInt(cart.getProductUnitPrice()) * qty;
-        totalPrice.setText(String.format("= Rs. %d", total));
-
-        // update database values
-        try {
-            DatabaseHandler handler = new DatabaseHandler(context);
-            handler.openDataBase();
-            handler.updateCart(qty, total, cart.getProductId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        txtPriceIndividual.setText(String.format(Locale.US, "%s %s", context.getString(R.string.Rs), Functions.priceFormat(cartProduct.getUnitPrice())));
+        txtQTY.setText(String.format(Locale.US, "%s %d", " x ", cartProduct.getQty()));
+        txtPriceTotal.setText(String.format(Locale.US, " = %s %s", context.getString(R.string.Rs), Functions.priceFormat(cartProduct.getTotalPrice())));
     }
 
     public interface OnValueChangeListener {
-        public void onChange();
+        void onChange();
     }
 
-    public void hideControls() {
-        remove.setVisibility(GONE);
-        combo.setVisibility(GONE);
-        cartProductFrame.setPadding(0, 0, 0, 20);
-    }
-
+    /* public void hideControls() {
+         remove.setVisibility(GONE);
+         combo.setVisibility(GONE);
+         cartProductFrame.setPadding(0, 0, 0, 20);
+     }
+ */
     public interface onRemoveProductListener {
-        public void removeProduct(int productId);
+        void removeProduct(int productId);
     }
 }

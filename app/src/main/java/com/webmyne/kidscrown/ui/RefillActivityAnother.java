@@ -30,6 +30,7 @@ import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.CrownProductItem;
+import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother;
 
@@ -65,6 +66,8 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     int crownProductId;
     SharedPreferences preferences;
     private GetSortedDiscount getSortedDiscount;
+
+    private Product product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

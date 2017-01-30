@@ -10,6 +10,8 @@ public class URLConstants {
 
     public static final String GET_PRODUCTS = "Product.svc/json/GetProducts";
 
+    public static final String PLACE_ORDER = "Product.svc/json/PlaceOrder";
+
     public static final String LOGIN = "User.svc/json/LoginSignup";
 
     public static final String UPDATE_PROFILE = "User.svc/json/UpdateUserProfile";

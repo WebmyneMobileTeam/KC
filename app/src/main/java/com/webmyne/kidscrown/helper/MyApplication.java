@@ -1,5 +1,6 @@
 package com.webmyne.kidscrown.helper;
 
+import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
@@ -7,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
+import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
 
 import retrofit2.Retrofit;
@@ -42,15 +44,18 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
+
         // initialize the singleton
         sInstance = this;
         initGson();
         initRetrofit();
+        initStetho();
         DatabaseHandler handler = new DatabaseHandler(getApplicationContext());
-        try{
+        try {
             handler.createDataBase();
-        }catch(Exception e){
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -68,6 +73,12 @@ public class MyApplication extends MultiDexApplication {
                 .baseUrl(URLConstants.BASE_URL_V03)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+
+    private void initStetho() {
+        Stetho.initialize(Stetho.newInitializerBuilder(this)
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                .build());
     }
 
     public static Retrofit getRetrofit() {

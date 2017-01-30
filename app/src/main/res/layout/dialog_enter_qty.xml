@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/m_24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Change Quantity"
+        android:textSize="@dimen/L_TEXT" />
+
+    <EditText
+        android:id="@+id/edtQty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/m_12dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/STD_HEIGHT_SIZE"
+            android:layout_gravity="right"
+            android:text="Cancel"
+            android:textColor="@color/primaryColor" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/STD_HEIGHT_SIZE"
+            android:layout_gravity="right"
+            android:text="Submit"
+            android:textColor="@color/primaryColor" />
+
+    </LinearLayout>
+
+</LinearLayout>

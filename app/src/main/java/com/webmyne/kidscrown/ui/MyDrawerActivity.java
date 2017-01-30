@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,12 +29,14 @@ import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
 import com.webmyne.kidscrown.fragment.ContactUsFragment;
 import com.webmyne.kidscrown.fragment.HomeFragment;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
+import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
@@ -64,6 +67,8 @@ public class MyDrawerActivity extends AppCompatActivity implements
     private DatabaseHandler handler;
 
     private TextView txtCustomTitle;
+    private MenuItem cartItem;
+    private BadgeHelper badgeCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +107,16 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
     }
 
-    private void fetchDiscount() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cart, menu);
+        cartItem = menu.findItem(R.id.action_cart);
+        badgeCart = new BadgeHelper(this, cartItem, ActionItemBadge.BadgeStyles.YELLOW);
+        badgeCart.displayBadge(handler.getTotalProducts());
+        return true;
+    }
 
-        handler = new DatabaseHandler(this);
+    private void fetchDiscount() {
 
         new CallWebService(Constants.GET_OFFERS, CallWebService.TYPE_GET) {
             @Override
@@ -268,6 +280,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
     }
 
     private void init() {
+        handler = new DatabaseHandler(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -318,7 +331,8 @@ public class MyDrawerActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         fetchDiscount();
-        helper.displayBadge();
+        if (badgeCart != null)
+            badgeCart.displayBadge(handler.getTotalProducts());
     }
 
     @Override
@@ -327,8 +341,12 @@ public class MyDrawerActivity extends AppCompatActivity implements
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
-        }
 
+            case R.id.action_cart:
+                Functions.fireIntent(this, CartActivityRevised.class);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 

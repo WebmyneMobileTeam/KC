@@ -97,8 +97,15 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             @Override
             public void onItemClick(FamiliarRecyclerView familiarRecyclerView, View view, int position) {
                 Product product = productList.get(position);
-                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                Intent intent = null;
+                /*if (product.getIsSingleInt() == 1) {
+                    intent = new Intent(getActivity(), ProductDetailActivity.class);
+                } else {
+                    intent = new Intent(getActivity(), RefillActivityAnother.class);
+                }*/
+                intent = new Intent(getActivity(), ProductDetailActivity.class);
                 intent.putExtra("product", product);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
@@ -164,42 +171,12 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void fetchProducts() {
 
-        Log.e("product", "call");
-        /*new CallWebService(Constants.FETCH_PRODUCTS, CallWebService.TYPE_GET) {
-            @Override
-            public void response(String response) {
-
-                Type listType = new TypeToken<List<Product>>() {
-                }.getType();
-                ArrayList<Product> products = new GsonBuilder().create().fromJson(response, listType);
-
-                for (Product p : products) {
-                    if (p.name.equals(Constants.CROWN_PRODUCT_NAME)) {
-                        SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt("crownProductId", p.productID);
-                        editor.apply();
-                    }
-                }
-                handler.saveProducts(products);
-                handler.close();
-                displayProducts();
-
-            }
-
-            @Override
-            public void error(String error) {
-                // helper.hideProgress();
-                Log.e("Error", error);
-
-            }
-        }.call();*/
-
         new FetchProducts(getActivity(), new CommonRetrofitResponseListener() {
             @Override
             public void onSuccess(Object responseBody) {
                 Log.e("response", Functions.jsonString(responseBody));
                 ProductResponse productResponse = (ProductResponse) responseBody;
+                productList.addAll(productResponse.getData());
                 adapter.setProducts(productResponse.getData());
             }
 

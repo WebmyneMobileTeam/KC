@@ -1,19 +1,19 @@
 package com.webmyne.kidscrown.ui;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,28 +23,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.custom.QuantityView;
+import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
-import com.webmyne.kidscrown.helper.GetSortedDiscount;
-import com.webmyne.kidscrown.helper.ToolHelper;
+import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ProductDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
-    ToolHelper helper;
+
     CollapsingToolbarLayout collapsingToolbar;
     private ImageView imageProduct;
-    private int productID;
     private FloatingActionButton fabShop;
-    private ComboSeekBar combo;
-    Cursor cursorProduct;
-    Cursor cursorProductPrice;
-    Cursor cursorProductImage;
     private TextView txtInfo;
     private TextView txtPriceIndividual;
     private TextView txtPriceQTY;
@@ -53,11 +51,18 @@ public class ProductDetailActivity extends AppCompatActivity {
     ArrayList<String> values;
     private FlowLayout flowImages;
     int qty;
-    boolean added;
-    private GetSortedDiscount getSortedDiscount;
 
     private Product product;
-    private ImageView imgCart;
+    private int position;
+    private MenuItem cartItem;
+    private BadgeHelper badgeCart;
+    private QuantityView quantityView;
+
+    private int unitPrice;
+    private int unitTotalPrice;
+    private int userQty;
+    private DatabaseHandler handler;
+    private Drawable myFabSrc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,33 +71,25 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         init();
 
-        productID = getIntent().getIntExtra("product_id", 0);
+    }
 
-        fabShop = (FloatingActionButton) findViewById(R.id.fabShop);
-        fabShop.setRippleColor(getResources().getColor(R.color.quad_green));
-
-        fabShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                processAddingCart();
-
-            }
-        });
-
-        getSortedDiscount = new GetSortedDiscount(this);
-
-        combo = (ComboSeekBar) findViewById(R.id.combo);
-        txtInfo = (TextView) findViewById(R.id.txtInfo);
-        txtPriceIndividual = (TextView) findViewById(R.id.txtPriceIndividual);
-        txtPriceQTY = (TextView) findViewById(R.id.txtPriceQTY);
-        txtPriceTotal = (TextView) findViewById(R.id.txtPriceTotal);
-        flowImages = (FlowLayout) findViewById(R.id.flowImages);
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cart, menu);
+        cartItem = menu.findItem(R.id.action_cart);
+        badgeCart = new BadgeHelper(this, cartItem, ActionItemBadge.BadgeStyles.YELLOW);
+        badgeCart.displayBadge(handler.getTotalProducts());
+        return true;
     }
 
     private void init() {
+        // intent data
+        handler = new DatabaseHandler(this);
+        position = getIntent().getIntExtra("position", 0);
         product = (Product) getIntent().getSerializableExtra("product");
+
+        Log.e("json", Functions.jsonString(product));
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,67 +100,131 @@ public class ProductDetailActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
-        helper = new ToolHelper(ProductDetailActivity.this, toolbar);
 
-        imgCart = (ImageView) findViewById(R.id.imgCart);
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         imageProduct = (ImageView) findViewById(R.id.backdrop);
+        fabShop = (FloatingActionButton) findViewById(R.id.fabShop);
+        fabShop.setRippleColor(ContextCompat.getColor(this, R.color.quad_green));
+
+        quantityView = (QuantityView) findViewById(R.id.quantityView);
+        txtInfo = (TextView) findViewById(R.id.txtInfo);
+        txtPriceIndividual = (TextView) findViewById(R.id.txtPriceIndividual);
+        txtPriceQTY = (TextView) findViewById(R.id.txtPriceQTY);
+        txtPriceTotal = (TextView) findViewById(R.id.txtPriceTotal);
+        flowImages = (FlowLayout) findViewById(R.id.flowImages);
 
         clickListener();
 
     }
 
+    private void loadProductDetails() {
+        collapsingToolbar.setTitle(product.getProductName());
+        imageProduct.setBackgroundColor(Functions.getBgColor(ProductDetailActivity.this, position));
+        collapsingToolbar.setContentScrimColor(Functions.getBgColor(ProductDetailActivity.this, position));
+
+        values = new ArrayList<>();
+        values.add("" + product.getOrderLimit());
+
+        txtInfo.setText(product.getDescription());
+
+        if (checkCart(product.getProductID())) {
+            myFabSrc = ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.ic_action_order);
+            userQty = handler.getQty(product.getProductID());
+        } else {
+            userQty = product.getPriceSlabDCs().get(0).getMinQty();
+            myFabSrc = ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.ic_action_action_add_shopping_cart);
+        }
+
+        Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
+        willBeWhite.mutate().setColorFilter(Functions.getBgColor(ProductDetailActivity.this, position), PorterDuff.Mode.MULTIPLY);
+        fabShop.setImageDrawable(willBeWhite);
+
+        fabShop.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(ProductDetailActivity.this, R.color.white)));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Functions.getBgColor(ProductDetailActivity.this, position));
+        }
+
+        if (!TextUtils.isEmpty(product.getRootImage())) {
+            Glide.with(ProductDetailActivity.this).load(product.getRootImage()).into(imageProduct);
+        }
+
+        unitPrice = product.getPriceSlabDCs().get(0).getPrice();
+
+        setPrice(userQty);
+
+        quantityView.setMaxLimit(product.getOrderLimit());
+        quantityView.setOnQtyChangeListener(new QuantityView.OnQtyChangeListener() {
+            @Override
+            public void onChange(int qty) {
+                userQty = qty;
+                setPrice(userQty);
+            }
+        });
+
+        displayImages();
+    }
+
+    private void setPrice(int userQty) {
+        quantityView.setQty(userQty);
+        txtPriceIndividual.setText(String.format(Locale.US, "%s %s", getString(R.string.Rs), Functions.priceFormat(unitPrice)));
+        unitTotalPrice = unitPrice * userQty;
+        txtPriceQTY.setText(String.format(Locale.US, " x %d", userQty));
+        txtPriceTotal.setText(String.format(Locale.US, " = %s %s", getString(R.string.Rs), Functions.priceFormat(unitTotalPrice)));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cart:
+                Functions.fireIntent(ProductDetailActivity.this, CartActivityRevised.class);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void clickListener() {
-        imgCart.setOnClickListener(new View.OnClickListener() {
+
+        fabShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
-                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                if (checkCart(product.getProductID())) {
+                    Functions.showToast(ProductDetailActivity.this, "Product already added to Cart");
+
+                } else {
+                    CartProduct cartProduct = new CartProduct();
+                    cartProduct.setProductName(product.getProductName());
+                    cartProduct.setProductId(product.getProductID());
+                    cartProduct.setQty(userQty);
+                    cartProduct.setUnitPrice(unitPrice);
+                    cartProduct.setTotalPrice(unitTotalPrice);
+                    cartProduct.setSingle(product.getIsSingleInt());
+                    cartProduct.setMax(product.getOrderLimit());
+
+                    Log.e("cart_insert", Functions.jsonString(cartProduct));
+
+                    handler.addToCart(cartProduct);
+                    Functions.showToast(ProductDetailActivity.this, "Added to Cart");
+
+                    Drawable myFabSrc = ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.ic_action_order);
+                    Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
+                    willBeWhite.mutate().setColorFilter(Functions.getBgColor(ProductDetailActivity.this, position), PorterDuff.Mode.MULTIPLY);
+                    fabShop.setImageDrawable(willBeWhite);
+                }
+
+                displayBadge();
             }
         });
     }
 
-    private void processAddingCart() {
-        if (added) {
-            Functions.fireIntent(ProductDetailActivity.this, CartActivity.class);
-            overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-
-        } else {
-            DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
-            ArrayList<String> productDetails = new ArrayList<String>();
-            productDetails.add(productID + "");
-            productDetails.add(cursorProduct.getString(cursorProduct.getColumnIndexOrThrow("name")));
-            productDetails.add(qty + "");
-            productDetails.add(price + "");
-            int totalPrice = price * qty;
-            productDetails.add(totalPrice + "");
-
-            if (getSortedDiscount.getOffer(String.valueOf(productID)) != null || !getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage.equals("0.00")) {
-                String discount = getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage;
-                productDetails.add(totalPrice - ((totalPrice * Float.valueOf(discount)) / 100) + "");
-            }
-
-            handler.addCartProduct(productDetails);
-
-            Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_order);
-            Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
-            willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
-            fabShop.setImageDrawable(willBeWhite);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
-            }
-            added = true;
-
-            Snackbar snack = Snackbar.make(fabShop, "Added to Cart", Snackbar.LENGTH_LONG);
-            View view = snack.getView();
-            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-            tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), ProductDetailActivity.this));
-            snack.show();
-            helper.displayBadge();
+    private void displayBadge() {
+        if (badgeCart != null) {
+            badgeCart.displayBadge(handler.getTotalProducts());
         }
-
     }
 
     @Override
@@ -176,100 +237,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fetchDetails();
-
-        helper.displayBadge();
-    }
-
-    private void fetchDetails() {
-
-        DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
-        cursorProduct = handler.getProductCursor("" + productID);
-        cursorProductImage = handler.getProductImageCursor("" + productID);
-        cursorProductPrice = handler.getProductPriceCursor("" + productID);
-        cursorProductPrice.moveToFirst();
-        handler.close();
-
-        String imagePath = handler.getImagePath("" + productID);
-        if (imagePath != null && imagePath.isEmpty() == false) {
-            Glide.with(ProductDetailActivity.this).load(imagePath).into(imageProduct);
-        }
-        handler.close();
-
-        imageProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processDisplayGallery(0);
-            }
-        });
-
-        displayDetails(cursorProduct, cursorProductPrice, cursorProductImage);
-
-        checkCart(productID);
-    }
-
-    private void processDisplayGallery(int position) {
-
-        Intent iGallery = new Intent(ProductDetailActivity.this, GalleryActivity.class);
-        iGallery.putExtra("pos", position);
-        iGallery.putExtra("id", productID);
-        startActivity(iGallery);
-        overridePendingTransition(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom);
-
-    }
-
-    private void displayDetails(Cursor cursorProduct, Cursor cursorProductPrice, Cursor cursorProductImage) {
-
-        collapsingToolbar.setTitle(cursorProduct.getString(cursorProduct.getColumnIndexOrThrow("name")));
-        imageProduct.setBackgroundColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
-        collapsingToolbar.setContentScrimColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
-        combo.setColor(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")));
-        txtInfo.setText(Html.fromHtml(cursorProduct.getString(cursorProduct.getColumnIndexOrThrow("description"))));
-        price = cursorProductPrice.getInt(cursorProductPrice.getColumnIndexOrThrow("price"));
-
-
-        Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_action_add_shopping_cart);
-        //copy it in a new one
-        Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
-        //set the color filter, you can use also Mode.SRC_ATOP
-        willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
-        //set it to your fab button initialized before
-        fabShop.setImageDrawable(willBeWhite);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            int color = cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color"));
-            float[] hsv = new float[3];
-            Color.colorToHSV(color, hsv);
-            hsv[2] *= 0.7f;
-            color = Color.HSVToColor(hsv);
-            window.setStatusBarColor(color);
-        }
-
-        DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
-        int max = handler.getLimit(productID);
-        handler.close();
-
-        values = new ArrayList<>();
-        for (int i = 1; i <= max; i++) {
-            values.add("" + i);
-        }
-        combo.setAdapter(values);
-        combo.setSelection(0);
-        displayQTYandTotal(0);
-        combo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                displayQTYandTotal(position);
-            }
-        });
-
-        txtPriceIndividual.setText(String.format("Rs. %d", price));
-
-        displayImages();
-
+        loadProductDetails();
+        if (badgeCart != null)
+            badgeCart.displayBadge(handler.getTotalProducts());
     }
 
     private void displayImages() {
@@ -285,25 +255,19 @@ public class ProductDetailActivity extends AppCompatActivity {
         params.bottomMargin = 4;
         params.topMargin = 4;
 
-        cursorProductImage.moveToFirst();
-        do {
-            //Log.e("ImagePath ", cursorProductImage.getString(cursorProductImage.getColumnIndexOrThrow("path")));
-            String imagepath = cursorProductImage.getString(cursorProductImage.getColumnIndexOrThrow("path"));
-            ImageView img = new ImageView(ProductDetailActivity.this);
-            Glide.with(ProductDetailActivity.this).load(imagepath).centerCrop().thumbnail(1).into(img);
-            img.setOnClickListener(flowImageClickListner);
+        String imagePath = product.getRootImage();
+        ImageView img = new ImageView(ProductDetailActivity.this);
+        Glide.with(ProductDetailActivity.this).load(imagePath).centerCrop().into(img);
+        img.setOnClickListener(flowImageClickListner);
 
-            flowImages.addView(img, params);
-            flowImages.invalidate();
-
-        } while (cursorProductImage.moveToNext());
-
+        flowImages.addView(img, params);
+        flowImages.invalidate();
     }
 
     public View.OnClickListener flowImageClickListner = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            processDisplayGallery(flowImages.indexOfChild(v));
+            //processDisplayGallery(flowImages.indexOfChild(v));
         }
     };
 
@@ -311,17 +275,16 @@ public class ProductDetailActivity extends AppCompatActivity {
         txtPriceQTY.setText(String.format("x %s QTY", values.get(position)));
         qty = Integer.parseInt(values.get(position));
         int total = price * qty;
-        txtPriceTotal.setText(String.format("= Rs.%d", total));
+        txtPriceTotal.setText(String.format("= Rs.%s", Functions.priceFormat(total)));
     }
 
-    private void checkCart(int productID) {
+    private boolean checkCart(int productID) {
         DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
         boolean available = handler.ifExists(productID);
 
-        Log.e("available in cart", available + "");
+        /*Log.e("available in cart", available + "");
 
         if (available) {
-            Log.e("qty", handler.getQty(productID) + "");
             added = true;
             Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_order);
             Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
@@ -341,6 +304,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
             willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
             fabShop.setImageDrawable(willBeWhite);
-        }
+        }*/
+
+        return available;
     }
 }

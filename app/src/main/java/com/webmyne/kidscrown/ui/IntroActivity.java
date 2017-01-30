@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.intropager.CustomViewPager;
 import com.webmyne.kidscrown.intropager.PageIndicator;
 
@@ -44,7 +45,7 @@ public class IntroActivity extends AppCompatActivity {
         viewPager = (CustomViewPager) findViewById(R.id.viewPager);
         pageIndicator = (PageIndicator) findViewById(R.id.pageIndicator);
 
-        if (preferences.contains("isUserLogin")) {
+        if (PrefUtils.getLoggedIn(this)) {
             txtSkip.setText("Back");
         } else {
             txtSkip.setText("Skip");
@@ -53,7 +54,7 @@ public class IntroActivity extends AppCompatActivity {
         txtSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (preferences.contains("isUserLogin")) {
+                if (PrefUtils.getLoggedIn(IntroActivity.this)) {
                     txtSkip.setText("Back");
                     finish();
 

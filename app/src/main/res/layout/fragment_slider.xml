@@ -11,17 +11,18 @@
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:layout_weight="1"
-        android:src="@drawable/refill"
-        android:scaleType="centerInside" />
+        android:scaleType="centerInside"
+        android:src="@drawable/refill" />
 
     <TextView
         android:id="@+id/slide_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textColor="@color/black"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="center"
+        android:padding="16dp"
         android:text="Intro"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
 </LinearLayout>

@@ -3,7 +3,6 @@
     xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#8C000000"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -20,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ\\1234567890#_/-"
+            android:fontFamily="sans-serif-condensed"
             android:hint="Dentist Registration Number"
             android:inputType="text|textCapCharacters"
             android:maxLength="12"
@@ -31,14 +31,8 @@
 
     <Button
         android:id="@+id/btnNext"
-        style="@style/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/card_margin"
-        android:layout_marginRight="@dimen/card_margin"
-        android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
-        android:padding="@dimen/STD_TXT_PADDING_SIZE"
-        android:text="Next"
-        android:textAllCaps="false"
-        android:textSize="@dimen/M_TEXT_SIZE" />
+        style="@style/MyButtonStyle"
+        android:layout_marginTop="@dimen/m_8dp"
+        android:text="Next" />
+
 </LinearLayout>

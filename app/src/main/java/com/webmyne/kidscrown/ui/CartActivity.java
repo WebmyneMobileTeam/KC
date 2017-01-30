@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
 
+    private FamiliarRecyclerView cartRV;
     Toolbar toolbar;
     GridLayout gridLayout;
     ArrayList<ProductCart> products = new ArrayList<>();
@@ -44,6 +46,8 @@ public class CartActivity extends AppCompatActivity {
     float percentage;
     GetSortedDiscount getSortedDiscount;
     DecimalFormat formatter;
+
+    private TextView txtCustomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +118,10 @@ public class CartActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < products.size(); i++) {
-            ItemCartView itemCartView = new ItemCartView(CartActivity.this, products.get(i));
+            /*ItemCartView itemCartView = new ItemCartView(CartActivity.this, products.get(i));
             itemCartView.setOnValueChangeListener(onValueChangeListener);
             itemCartView.setOnRemoveProductListener(onRemoveProductListener);
-            linearParent.addView(itemCartView);
+            linearParent.addView(itemCartView);*/
 
             // pricing
             int productPrice = Integer.parseInt(products.get(i).getProductUnitPrice()) * products.get(i).getProductQty();
@@ -244,7 +248,9 @@ public class CartActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("Your Cart");
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText("My Cart");
+            toolbar.setTitle("");
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }

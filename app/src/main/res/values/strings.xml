@@ -86,6 +86,7 @@
     <string name="about_us">About Us</string>
     <string name="contact_us">Contact Us</string>
     <string name="no_record">No Records</string>
+    <string name="action_cart">Cart</string>
 
     <!--ProfileFragment.java-->
     <string name="update_profile_success">Profile has been updated</string>
