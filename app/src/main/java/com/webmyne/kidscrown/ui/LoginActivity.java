@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -216,6 +217,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //        password = edtPassword.getText().toString().trim();
 //        url = Constants.LOGIN_URL + name + "/" + password;
 
+        try {
+            // Facebook logout
+            LoginManager.getInstance().logOut();
+            //GooglePlus Logout
+            if (mGoogleApiClient.isConnected()) {
+                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                mGoogleApiClient.disconnect();
+                mGoogleApiClient.connect();
+            }
+        } catch (Exception e1) {
+            Log.e("EXP LOGOUT", e1.toString());
+        }
+
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
         LoginModelRequest model = new LoginModelRequest();
@@ -237,7 +251,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
-                if (responseModel.isNewUser()) {
+                Log.e("tag", "responseModel.getRegistrationNumber(): " + responseModel.getRegistrationNumber());
+                if (TextUtils.isEmpty(responseModel.getRegistrationNumber())) {
 
 //                    PrefUtils.setUserProfile(LoginActivity.this, responseModel);
 
@@ -377,7 +392,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         model.setMobileNo(responseModel.getMobileNo());
         model.setPassword(responseModel.getPassword());
         model.setRegistrationNumber(regNo);
-        model.setUserID(PrefUtils.getUserId(LoginActivity.this));
+        model.setUserID(responseModel.getUserID());
         model.setUserName(responseModel.getUserName());
 
         new FetchUpdateProfileData(this, model, new CommonRetrofitResponseListener() {
@@ -578,14 +593,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            Log.e("tag", "display name: " + acct.getDisplayName());
+            Log.e("tag", "display name: " + acct.getDisplayName().split(" ")[0]);
+            Log.e("tag", "display name: " + acct.getDisplayName().split(" ")[1]);
+            Log.e("tag", "display name: " + acct.getEmail());
+            Log.e("tag", "display name: " + acct.getId());
 
-            String personName = acct.getDisplayName();
-            String personPhotoUrl = acct.getPhotoUrl().toString();
+            String fName = acct.getDisplayName().split(" ")[0];
+            String lName = acct.getDisplayName().split(" ")[1];
             String email = acct.getEmail();
+            String social_id = acct.getId();
 
-            Log.e("tag", "Name: " + personName + ", email: " + email
-                    + ", Image: " + personPhotoUrl);
+            loginProcess(email, "", social_id, fName, lName);
+
+//            String personName = acct.getDisplayName();
+//            String personPhotoUrl = acct.getPhotoUrl().toString();
+//            String email = acct.getEmail();
+//
+//            Log.e("tag", "Name: " + personName + ", email: " + email
+//                    + ", Image: " + personPhotoUrl);
 
 //            loginProcess();
 
@@ -602,7 +627,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
             handleSignInResult(result);
         }
-
+        if (callbackManager.onActivityResult(requestCode, responseCode, intent)) {
+            return;
+        }
 
 //        if (requestCode == RC_SIGN_IN) {
 //            if (responseCode != RESULT_OK) {

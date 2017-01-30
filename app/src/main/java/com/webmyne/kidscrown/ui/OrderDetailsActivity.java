@@ -16,6 +16,7 @@ import com.webmyne.kidscrown.adapters.OrderDetailsAdapter;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.OrderSummary;
+import com.webmyne.kidscrown.model.OrderHistoryModel;
 import com.webmyne.kidscrown.model.OrderProduct;
 import com.webmyne.kidscrown.model.OrderProductModel;
 import com.webmyne.kidscrown.ui.widgets.MyOrderItemView;
@@ -26,26 +27,27 @@ import java.util.ArrayList;
 public class OrderDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    ImageView imgCart;
-    TextView txtShipping;
-    String orderId;
-    LinearLayout linearLayout;
-    OrderDetailsAdapter adapter;
+    private ImageView imgCart;
+    private TextView txtShipping;
+    private String orderId;
+    private LinearLayout linearLayout;
+    private OrderDetailsAdapter adapter;
     private ListView orderListview;
-    ComplexPreferences complexPreferences;
-    String orderNumber;
-    OrderProduct orderObject;
-    LinearLayout orderSummaryLayout;
+    private ComplexPreferences complexPreferences;
+    private String orderNumber;
+    private OrderProduct orderObject;
+    private LinearLayout orderSummaryLayout;
     private LinearLayout.LayoutParams params;
     private TextView txtPayable;
     private DecimalFormat formatter;
+    private OrderHistoryModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
 
-        orderId = getIntent().getStringExtra("order_id");
+        model = (OrderHistoryModel) getIntent().getSerializableExtra("order");
 
         init();
 

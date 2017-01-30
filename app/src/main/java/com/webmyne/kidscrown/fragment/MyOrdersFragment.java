@@ -88,10 +88,11 @@ public class MyOrdersFragment extends Fragment {
 
                 OrderHistoryModel object = data.get(position);
                 // Log.e("order object", object.toString());
-                complexPreferences.putObject("order", object);
-                complexPreferences.commit();
+//                complexPreferences.putObject("order", object);
+//                complexPreferences.commit();
 
                 Intent orderIntent = new Intent(getActivity(), OrderDetailsActivity.class);
+                orderIntent.putExtra("order", object);
                 startActivity(orderIntent);
 
             }
