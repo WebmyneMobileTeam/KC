@@ -10,6 +10,7 @@ import com.webmyne.kidscrown.model.OrderHistoryModelResponse;
 import com.webmyne.kidscrown.model.ProductResponse;
 import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
 import com.webmyne.kidscrown.model.UserProfileModelResponse;
+import com.webmyne.kidscrown.model.VersionModelResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -39,5 +40,11 @@ public interface AppApi {
 
     @GET(URLConstants.ORDER_HISTORY)
     Call<OrderHistoryModelResponse> fetchOrderHistoryData(@Path("USERID") int USERID);
+
+    @GET(URLConstants.USER_PROFILE)
+    Call<UserProfileModelResponse> fetchUserProfileData(@Path("USERID") int USERID);
+
+    @GET(URLConstants.CHECK_VERSION)
+    Call<VersionModelResponse> fetchVersionData(@Path("VERSION") String VERSION, @Path("DEVICETYPE") String DEVICETYPE);
 
 }

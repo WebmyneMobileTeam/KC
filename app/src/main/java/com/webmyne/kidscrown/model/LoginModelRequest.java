@@ -33,9 +33,10 @@ public class LoginModelRequest {
     private String MobileOS;
     private String Password;
     private String RegistrationNumber;
-    private String SocialID;
     private String UserName;
     private int UserID;
+    private String FacebookID;
+    private String GoogleID;
 
 //    public LoginModelRequest() {
 //        ClinicName = "";
@@ -65,8 +66,23 @@ public class LoginModelRequest {
         MobileOS = "";
         Password = "";
         RegistrationNumber = "";
-        SocialID = "";
         UserName = "";
+    }
+
+    public String getFacebookID() {
+        return FacebookID;
+    }
+
+    public void setFacebookID(String facebookID) {
+        FacebookID = facebookID;
+    }
+
+    public String getGoogleID() {
+        return GoogleID;
+    }
+
+    public void setGoogleID(String googleID) {
+        GoogleID = googleID;
     }
 
     public int getUserID() {
@@ -163,14 +179,6 @@ public class LoginModelRequest {
 
     public void setRegistrationNumber(String RegistrationNumber) {
         this.RegistrationNumber = RegistrationNumber;
-    }
-
-    public String getSocialID() {
-        return SocialID;
-    }
-
-    public void setSocialID(String SocialID) {
-        this.SocialID = SocialID;
     }
 
     public String getUserName() {

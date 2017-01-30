@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,9 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -84,6 +88,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private String loginVia = "0";
     private ProgressDialog pd;
     String regNo;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     //Functions.snack(v, "Password is required");
                     Functions.showToast(LoginActivity.this, getString(R.string.invalid_password));
                 } else {
-                    loginVia = "1";
+                    loginVia = Constants.NORMAL;
                     loginProcess(edtUsername.getText().toString().trim(), edtPassword.getText().toString().trim(), "", "", "");
                 }
             }
@@ -144,14 +153,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
                 } else {
-                    loginVia = "3";
+                    loginVia = Constants.GPLUS;
 //                    signInWithGplus();
                     signIn();
                 }
 
             }
         });
-
 
         linearFbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +168,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
                 } else {
-                    loginVia = "2";
+                    loginVia = Constants.FB;
                     LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile, email, user_birthday, user_friends"));
                 }
             }
@@ -209,6 +217,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Log.e("ERROR_FB", e.toString());
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void loginProcess(String email, String password, String social_id, String fName, String lName) {
@@ -241,7 +252,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         model.setUserName(email);
         model.setFirstName(fName);
         model.setLastName(lName);
-        model.setSocialID(social_id);
+        if (loginVia.equals(Constants.FB)) {
+            model.setFacebookID(social_id);
+        } else if (loginVia.equals(Constants.GPLUS)) {
+            model.setGoogleID(social_id);
+        }
 
         new FetchLoginData(this, model, new CommonRetrofitResponseListener() {
             @Override
@@ -255,6 +270,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (TextUtils.isEmpty(responseModel.getRegistrationNumber())) {
 
 //                    PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+
+                    Log.e("tag", "Functions.jsonString(responseModel): " + Functions.jsonString(responseModel));
 
                     askRegistrationNo(responseModel);
 
@@ -373,6 +390,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     regNo = edtRegNo.getText().toString().trim();
 
+                    Log.e("tag", "Functions.jsonString(responseModel): " + Functions.jsonString(responseModel));
                     registerWebService(responseModel);
 
                     dialog.dismiss();
@@ -541,15 +559,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     protected void onStart() {
-        super.onStart();
+        super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         mGoogleApiClient.connect();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     protected void onStop() {
-        super.onStop();
+        super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
     }
 
     private void signIn() {
@@ -644,6 +672,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //        } else {
 //            callbackManager.onActivityResult(requestCode, responseCode, intent);
 //        }
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Login Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
     }
 
 //    @Override

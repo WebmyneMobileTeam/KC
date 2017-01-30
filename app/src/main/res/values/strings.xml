@@ -4,6 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="ok">OK</string>
+    <string name="goto_playstore">Go To Play Store</string>
+
     <string name="loading">Loading</string>
     <string name="please_wait">Please wait..</string>
 
@@ -89,5 +92,9 @@
 
     <!--ContactUsFragment.java.xml-->
     <string name="register_success">Registration Successfull</string>
+
+    <!--SplashActivity.java-->
+    <string name="update_app">A new version of KidsCrown is available on play store, Please update new version.</string>
+
 
 </resources>

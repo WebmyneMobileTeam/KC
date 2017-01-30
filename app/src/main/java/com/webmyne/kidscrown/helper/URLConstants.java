@@ -16,4 +16,8 @@ public class URLConstants {
 
     public static final String ORDER_HISTORY = "Product.svc/json/OrderHistory/{USERID}";
 
+    public static final String USER_PROFILE = "User.svc/json/UserProfile/{USERID}";
+
+    public static final String CHECK_VERSION = "User.svc/json/GetDeviceInfo/{VERSION}/{DEVICETYPE}";
+
 }

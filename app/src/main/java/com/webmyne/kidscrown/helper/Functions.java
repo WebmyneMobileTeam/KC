@@ -6,12 +6,17 @@ package com.webmyne.kidscrown.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -157,4 +162,54 @@ public class Functions {
                 .gravity(Gravity.BOTTOM)
                 .show();
     }
+
+    public static String getBuildVersion(Context context) {
+        String version = null;
+
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return version;
+    }
+
+    public static void showSimplePrompt(Context context, String title, String msg, String positiveText, String negativeText, final SuccessFailListener successFailListener) {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+
+        dialog.setCancelable(false);
+
+        if (!TextUtils.isEmpty(title)) {
+            dialog.setTitle(title);
+        }
+
+        dialog.setMessage(msg);
+
+        if (!TextUtils.isEmpty(positiveText)) {
+            dialog.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue with delete
+                    successFailListener.Success();
+                }
+            });
+        }
+
+        if (!TextUtils.isEmpty(negativeText)) {
+            dialog.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // do nothing
+                    successFailListener.Fail();
+                }
+            });
+        }
+
+//        dialog.setIcon(android.R.drawable.ic_dialog_alert);
+
+        dialog.show();
+
+    }
+
 }

@@ -2,17 +2,15 @@ package com.webmyne.kidscrown.api;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.MyApplication;
+import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
-import com.webmyne.kidscrown.model.LoginModelRequest;
-import com.webmyne.kidscrown.model.LoginModelResponse;
-import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
 import com.webmyne.kidscrown.model.UserProfileModelResponse;
+import com.webmyne.kidscrown.model.VersionModelResponse;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -23,17 +21,15 @@ import retrofit2.Response;
  * Created by vatsaldesai on 20-01-2017.
  */
 
-public class FetchUpdateProfileData {
+public class FetchVersionData {
 
     private Context context;
     private AppApi appApi;
-    private UpdateProfileModelRequest model;
     private CommonRetrofitResponseListener commonRetrofitResponseListener;
     private SpotsDialog dialog;
 
-    public FetchUpdateProfileData(Context context, UpdateProfileModelRequest model, CommonRetrofitResponseListener commonRetrofitResponseListener) {
+    public FetchVersionData(Context context, CommonRetrofitResponseListener commonRetrofitResponseListener) {
         this.context = context;
-        this.model = model;
         this.commonRetrofitResponseListener = commonRetrofitResponseListener;
 
         appApi = MyApplication.getRetrofit().create(AppApi.class);
@@ -45,13 +41,13 @@ public class FetchUpdateProfileData {
 
         showProgress();
 
-        Log.e("request", "" + Functions.jsonString(model));
+        Log.e("tag", "version: " + Functions.getBuildVersion(context));
 
-        Call<UserProfileModelResponse> call = appApi.fetchUpdateProfileData(model);
+        Call<VersionModelResponse> call = appApi.fetchVersionData(Functions.getBuildVersion(context), "Android");
 
-        call.enqueue(new Callback<UserProfileModelResponse>() {
+        call.enqueue(new Callback<VersionModelResponse>() {
             @Override
-            public void onResponse(Call<UserProfileModelResponse> call, Response<UserProfileModelResponse> response) {
+            public void onResponse(Call<VersionModelResponse> call, Response<VersionModelResponse> response) {
 
                 hideProgress();
 
@@ -59,15 +55,7 @@ public class FetchUpdateProfileData {
 
                     Log.e("response", Functions.jsonString(response));
 
-                    if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
-
-                        commonRetrofitResponseListener.onSuccess(response.body().getData());
-
-                    } else {
-                        commonRetrofitResponseListener.onFail();
-
-                        Functions.showToast(context, response.body().getResponse().getResponseMsg());
-                    }
+                    commonRetrofitResponseListener.onSuccess(response.body());
 
                 } else {
                     commonRetrofitResponseListener.onFail();
@@ -77,7 +65,7 @@ public class FetchUpdateProfileData {
             }
 
             @Override
-            public void onFailure(Call<UserProfileModelResponse> call, Throwable t) {
+            public void onFailure(Call<VersionModelResponse> call, Throwable t) {
 
                 hideProgress();
 

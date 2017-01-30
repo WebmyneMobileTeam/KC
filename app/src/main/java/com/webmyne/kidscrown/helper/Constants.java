@@ -3,6 +3,11 @@ package com.webmyne.kidscrown.helper;
 
 public class Constants {
 
+    // Login with
+    public static final String NORMAL = "1";
+    public static final String FB = "2";
+    public static final String GPLUS = "3";
+
     // product ids
     public static final String INTRO = "14";
     public static final String ASSORTED = "15";

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchUpdateProfileData;
+import com.webmyne.kidscrown.api.FetchUsereProfileData;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.LoginModelData;
@@ -71,35 +72,7 @@ public class ProfileFragment extends Fragment {
 //        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
 //        userId = currentUserObj.UserID;
         userId = String.valueOf(PrefUtils.getUserId(getActivity()));
-
         Log.e("userId", userId);
-
-        firstName = PrefUtils.getUserProfile(getActivity()).getFirstName();
-        Log.e("tag", "firstName: " + firstName);
-        lastName = PrefUtils.getUserProfile(getActivity()).getLastName();
-        Log.e("tag", "lastName: " + lastName);
-        username = PrefUtils.getUserProfile(getActivity()).getUserName();
-        Log.e("tag", "username: " + username);
-        emailId = PrefUtils.getUserProfile(getActivity()).getEmailID();
-        Log.e("tag", "emailId: " + emailId);
-        mobile = PrefUtils.getUserProfile(getActivity()).getMobileNo();
-        Log.e("tag", "mobile: " + mobile);
-        password = PrefUtils.getUserProfile(getActivity()).getPassword();
-        Log.e("tag", "password: " + password);
-        registartionNo = PrefUtils.getUserProfile(getActivity()).getRegistrationNumber();
-        Log.e("tag", "registartionNo: " + registartionNo);
-        clinicName = PrefUtils.getUserProfile(getActivity()).getClinicName();
-        Log.e("tag", "clinicName: " + clinicName);
-
-        edtFirstname.setText(firstName);
-        edtLastName.setText(lastName);
-        edtUserName.setText(username);
-        edtMobile.setText(mobile);
-        edtEmail.setText(emailId);
-        edtPassword.setText(password);
-        edtConfirmPassword.setText(password);
-        edtRegNo.setText(registartionNo);
-        edtClinicName.setText(clinicName);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +82,50 @@ public class ProfileFragment extends Fragment {
         });
 
         ((MyDrawerActivity) getActivity()).setTitle("Profile");
+
+        getUserProfileData();
+    }
+
+    private void getUserProfileData() {
+
+        new FetchUsereProfileData(getActivity(), new CommonRetrofitResponseListener() {
+            @Override
+            public void onSuccess(Object responseBody) {
+
+                UserProfileModel responseModel = (UserProfileModel) responseBody;
+
+                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
+
+                LoginModelData modelData = PrefUtils.getUserProfile(getActivity());
+                modelData.setEmailID(responseModel.getEmailID());
+                modelData.setFirstName(responseModel.getFirstName());
+                modelData.setLastName(responseModel.getLastName());
+                modelData.setMobileNo(responseModel.getMobileNo());
+                modelData.setPassword(responseModel.getPassword());
+                modelData.setRegistrationNumber(responseModel.getRegistrationNumber());
+                modelData.setUserID(responseModel.getUserID());
+                modelData.setUserName(responseModel.getUserName());
+                modelData.setClinicName(responseModel.getClinicName());
+
+                edtFirstname.setText(responseModel.getFirstName());
+                edtLastName.setText(responseModel.getLastName());
+                edtUserName.setText(responseModel.getUserName());
+                edtMobile.setText(responseModel.getMobileNo());
+                edtEmail.setText(responseModel.getEmailID());
+                edtPassword.setText(responseModel.getPassword());
+                edtConfirmPassword.setText(responseModel.getPassword());
+                edtRegNo.setText(responseModel.getRegistrationNumber());
+                edtClinicName.setText(responseModel.getClinicName());
+
+                PrefUtils.setUserProfile(getActivity(), modelData);
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
+
     }
 
     private void checkValidation() {

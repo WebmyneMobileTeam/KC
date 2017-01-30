@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 public class OrderHistoryModelResponse {
 
+    private BaseResponse Response;
+
+    private ArrayList<OrderHistoryModel> Data;
+
     public BaseResponse getResponse() {
         return Response;
     }
@@ -15,10 +19,6 @@ public class OrderHistoryModelResponse {
     public void setResponse(BaseResponse response) {
         Response = response;
     }
-
-    private BaseResponse Response;
-
-    private ArrayList<OrderHistoryModel> Data;
 
     public ArrayList<OrderHistoryModel> getData() {
         return Data;
