@@ -27,9 +27,11 @@ import com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetPriceSlab;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.DiscountModel;
+import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductResponse;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
@@ -115,6 +117,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         else
             Functions.showToast(getActivity(), "No Internet Connectivity");
 
+        PriceSlab priceSlab = new GetPriceSlab(getActivity()).getRelevantPrice(16, 43);
+        Log.e("priceSlab", Functions.jsonString(priceSlab));
+
     }
 
     @Override
@@ -178,6 +183,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 ProductResponse productResponse = (ProductResponse) responseBody;
                 productList.addAll(productResponse.getData());
                 adapter.setProducts(productResponse.getData());
+                handler.savePriceSlab(productResponse.getData());
             }
 
             @Override

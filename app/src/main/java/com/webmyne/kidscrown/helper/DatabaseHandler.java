@@ -15,6 +15,8 @@ import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.OrderModel;
+import com.webmyne.kidscrown.model.PriceSlab;
+import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.ProductImage;
 import com.webmyne.kidscrown.model.ProductPrice;
@@ -27,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -116,11 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        try {
-            openDataBase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /*public void saveProducts(ArrayList<Product> products) {
@@ -282,7 +281,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
-    public void deleteCrown(String productName){
+    public void deleteCrown(String productName) {
         myDataBase = this.getWritableDatabase();
         String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_name ='" + productName + "'";
         myDataBase.execSQL(selectQuery);
@@ -840,5 +839,50 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         close();
         return products;
+    }
+
+    public void savePriceSlab(ArrayList<Product> data) {
+        myDataBase = this.getWritableDatabase();
+
+        for (int i = 0; i < data.size(); i++) {
+            Product product = data.get(i);
+            ArrayList<PriceSlab> slab = new ArrayList<>();
+            slab.addAll(product.getPriceSlabDCs());
+            if (slab.size() > 0) {
+                for (int j = 0; j < slab.size(); j++) {
+                    ContentValues values = new ContentValues();
+                    values.put("product_id", slab.get(j).getProductID());
+                    values.put("price_id", slab.get(j).getPriceID());
+                    values.put("price", slab.get(j).getPrice());
+                    values.put("min", slab.get(j).getMinQty());
+                    values.put("max", slab.get(j).getMaxQty());
+                    myDataBase.insert(TABLE_PRODUCT_PRICE, null, values);
+                }
+            }
+        }
+    }
+
+    public ArrayList<PriceSlab> getPriceSlab(Context context) {
+
+        ArrayList<PriceSlab> prices = new ArrayList<>();
+        ArrayList<CartProduct> products = new ArrayList<>();
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_PRICE;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                PriceSlab price = new PriceSlab();
+                price.setProductID(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+                price.setPriceID(cursor.getInt(cursor.getColumnIndexOrThrow("price_id")));
+                price.setPrice(cursor.getInt(cursor.getColumnIndexOrThrow("price")));
+                price.setMinQty(cursor.getInt(cursor.getColumnIndexOrThrow("min")));
+                price.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+                prices.add(price);
+            } while (cursor.moveToNext());
+        }
+
+        return prices;
     }
 }

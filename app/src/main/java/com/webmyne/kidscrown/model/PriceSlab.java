@@ -8,9 +8,28 @@ import java.io.Serializable;
 
 public class PriceSlab implements Serializable {
 
-    public int MaxQty;
-    public int MinQty;
-    public int Price;
+    private int MaxQty;
+    private int MinQty;
+    private int Price;
+    private int PriceID;
+
+    public int getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(int productID) {
+        ProductID = productID;
+    }
+
+    private int ProductID;
+
+    public int getPriceID() {
+        return PriceID;
+    }
+
+    public void setPriceID(int priceID) {
+        PriceID = priceID;
+    }
 
     public int getMaxQty() {
         return MaxQty;
