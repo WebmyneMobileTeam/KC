@@ -7,6 +7,7 @@ import com.webmyne.kidscrown.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Created by dhruvil on 19-08-2015.
@@ -36,6 +37,15 @@ public class Product implements Serializable {
     private String ProductName;
     private String RootImage;
     private ArrayList<PriceSlab> priceSlabDCs;
+
+    public ArrayList<ProductSlab> getProductDetailsDCs() {
+        return productDetailsDCs;
+    }
+
+    public void setProductDetailsDCs(ArrayList<ProductSlab> productDetailsDCs) {
+        this.productDetailsDCs = productDetailsDCs;
+    }
+
 
     public String getDescription() {
         return Description;
@@ -100,5 +110,29 @@ public class Product implements Serializable {
     public void setPriceSlabDCs(ArrayList<PriceSlab> priceSlabDCs) {
         this.priceSlabDCs = priceSlabDCs;
     }
+
+    private ArrayList<ProductSlab> productDetailsDCs;
+
+    public LinkedHashMap<String, ArrayList<ProductSlab>> getProducts() {
+        LinkedHashMap<String, ArrayList<ProductSlab>> map = new LinkedHashMap<>();
+
+        for (int i = 0; i < productDetailsDCs.size(); i++) {
+
+            ProductSlab slab = productDetailsDCs.get(i);
+
+            ArrayList<ProductSlab> productSlabs = map.get(slab.getPosition());
+
+            if (productSlabs == null || productSlabs.isEmpty()) {
+                productSlabs = new ArrayList<>();
+            }
+            productSlabs.add(slab);
+
+            map.put(slab.getPosition(), productSlabs);
+
+        }
+
+        return map;
+    }
+
 
 }

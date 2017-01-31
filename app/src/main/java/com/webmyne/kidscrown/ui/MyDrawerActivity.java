@@ -1,7 +1,7 @@
 package com.webmyne.kidscrown.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,7 +22,6 @@ import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -91,10 +91,8 @@ public class MyDrawerActivity extends AppCompatActivity implements
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-                setDrawerClick(menuItem.getItemId());
-
-                menuItem.setChecked(true);
+                setDrawerClick(menuItem, menuItem.getItemId());
+                // menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
             }
@@ -147,70 +145,69 @@ public class MyDrawerActivity extends AppCompatActivity implements
         txtCustomTitle.setText(title);
     }
 
-    private void setDrawerClick(int itemId) {
+    private void setDrawerClick(MenuItem menuItem, int itemId) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         switch (itemId) {
             case R.id.drawer_home:
                 // Home
+                menuItem.setChecked(true);
                 ft.replace(R.id.content, new HomeFragment(), "HOME_PAGE");
                 ft.commit();
                 break;
 
             case R.id.drawer_profile:
                 // Profile
+                menuItem.setChecked(true);
                 ft.replace(R.id.content, new ProfileFragment(), "PROFILE_PAGE");
                 ft.commit();
                 break;
 
             case R.id.drawer_orders:
                 // My Orders
+                menuItem.setChecked(true);
                 ft.replace(R.id.content, new MyOrdersFragment(), "MY_ORDERS_PAGE");
                 ft.commit();
                 break;
 
             case R.id.drawer_help:
                 // intro page
+                menuItem.setCheckable(false);
                 Functions.fireIntent(this, IntroActivity.class);
                 break;
 
             case R.id.drawer_log_out:
                 // Logout
-                ComplexPreferences preferences = ComplexPreferences.getComplexPreferences(MyDrawerActivity.this, "user_pref", 0);
-                UserProfile currentUserObj = new UserProfile();
-                preferences.putObject("current-user", currentUserObj);
-                preferences.commit();
+                menuItem.setCheckable(false);
+                final AlertDialog dialog = new AlertDialog.Builder(MyDrawerActivity.this).create();
+                dialog.setTitle("Are you sure want to logout?");
+                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                SharedPreferences pref = getSharedPreferences("login", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.clear();
-                editor.commit();
+                        PrefUtils.clearUserProfile(MyDrawerActivity.this, new LoginModelData());
 
-                PrefUtils.clearUserProfile(this, new LoginModelData());
+                        DatabaseHandler handler = new DatabaseHandler(MyDrawerActivity.this);
+                        handler.deleteCart();
 
-                try {
-                    // Facebook logout
-                    LoginManager.getInstance().logOut();
-                    //GooglePlus Logout
-                    if (mGoogleApiClient.isConnected()) {
-                        Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-                        mGoogleApiClient.disconnect();
-                        mGoogleApiClient.connect();
+                        Intent intent = new Intent(MyDrawerActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
                     }
-                } catch (Exception e) {
-                    Log.e("EXP LOGOUT", e.toString());
-                }
-
-                DatabaseHandler handler = new DatabaseHandler(MyDrawerActivity.this);
-                handler.deleteCart();
-
-                Intent i = new Intent(MyDrawerActivity.this, LoginActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
+                });
+                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
                 break;
 
             case R.id.drawer_feedback:
                 // Feedback
+                menuItem.setCheckable(false);
                 Intent feedbackIntent = new Intent(Intent.ACTION_SEND);
                 feedbackIntent.setType("text/email");
                 feedbackIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"kids@crown.com"});
@@ -218,35 +215,19 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 startActivity(Intent.createChooser(feedbackIntent, "Send Feedback:"));
                 break;
 
-/*
-            case R.id.drawer_settings:
-                // Settings
-                ft.replace(R.id.content, new SettingsFragment(), "SETTINGS_PAGE");
-                //ft.addToBackStack(null);
-                ft.commit();
-                break;
-*/
             case R.id.drawer_about:
                 // About Us
+                menuItem.setChecked(true);
                 ft.replace(R.id.content, new AboutUsFragment(), "ABOUT_US_PAGE");
-                //ft.addToBackStack(null);
                 ft.commit();
                 break;
 
             case R.id.drawer_contact_us:
                 // Contact Us
+                menuItem.setChecked(true);
                 ft.replace(R.id.content, new ContactUsFragment(), "CONTACT_US_PAGE");
-                //ft.addToBackStack(null);
                 ft.commit();
                 break;
-/*
-            case R.id.drawer_help:
-                // Help and FAQ
-                ft.replace(R.id.content, new HelpFragment(), "HELP_PAGE");
-                //ft.addToBackStack(null);
-                ft.commit();
-                break;
-*/
         }
     }
 

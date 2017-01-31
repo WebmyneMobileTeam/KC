@@ -215,20 +215,34 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (edtFirstname.getText().toString().trim().length() == 0) {
             Functions.showToast(RegisterActivity.this, "First name is required");
+
         } else if (edtLastName.getText().toString().trim().length() == 0) {
             Functions.showToast(RegisterActivity.this, "Last name is required");
-        } else if (edtMobile.getText().toString().trim().length() != 10) {
-            Functions.showToast(RegisterActivity.this, "Mobile number should contains 10 digits");
-        } else if (edtEmail.getText().toString().trim().length() == 0 || !(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
-            Functions.showToast(RegisterActivity.this, "Email-id is not valid");
-        } else if (edtPassword.getText().toString().trim().length() < 6) {
-            Functions.showToast(RegisterActivity.this, "Password must be of minimum 6 characters");
-        } else if (edtRegNo.getText().toString().trim().length() == 0) {
-            Functions.showToast(RegisterActivity.this, "Registration number is required");
+
         } else if (edtUserName.getText().toString().trim().length() == 0) {
             Functions.showToast(RegisterActivity.this, "Username is required");
+
+        } else if (edtMobile.getText().toString().trim().length() == 0) {
+            Functions.showToast(RegisterActivity.this, "Mobile number is required");
+
+        } else if (edtMobile.getText().toString().trim().length() != 10) {
+            Functions.showToast(RegisterActivity.this, "Mobile number should contains 10 digits");
+
+        } else if (edtEmail.getText().toString().trim().length() == 0) {
+            Functions.showToast(RegisterActivity.this, "Email-id is required");
+
+        } else if (!(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
+            Functions.showToast(RegisterActivity.this, "Email-id is not valid");
+
+        } else if (edtPassword.getText().toString().trim().length() < 6) {
+            Functions.showToast(RegisterActivity.this, "Password must be of minimum 6 characters");
+
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             Functions.showToast(RegisterActivity.this, "Password and confirm password does not match");
+
+        } else if (edtRegNo.getText().toString().trim().length() == 0) {
+            Functions.showToast(RegisterActivity.this, "Registration number is required");
+
         } else {
             registerWebService();
         }
@@ -261,6 +275,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
                 PrefUtils.setUserProfile(RegisterActivity.this, responseModel);
+
+                PrefUtils.setFirstTime(RegisterActivity.this, true);
 
                 Functions.showToast(RegisterActivity.this, getString(R.string.register_success));
 

@@ -18,11 +18,21 @@ public class Constants {
 
     public static final int SUCCESS = 1;
 
+    public static final String UL = "UL";
+    public static final String UR = "UR";
+    public static final String LL = "LL";
+    public static final String LR = "LR";
+
+    public static final String UL_STR = "Upper Left";
+    public static final String UR_STR = "Upper Right";
+    public static final String LL_STR = "Lower Left";
+    public static final String LR_STR = "Lower Right";
+
     // utils
     public static final boolean LOGGING_ENABLED = true;
     public static final String TAG = "KidsCrown";
 
-//    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
+    //    public static final String BASE_URL = "http://ws.kidscrown.in/Services";
     private static final String BASE_URL = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown/KidsCrownWS_V01/Services";
     public static final String BASE_URL_V03 = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown_V03/WCF/Services/";
 //    public static final String BASE_URL = "http://ws.kidscrown.in/Services";

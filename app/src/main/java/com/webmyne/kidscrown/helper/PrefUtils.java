@@ -11,6 +11,7 @@ public class PrefUtils {
 
     private static final String USER_PROFILE = "USER_PROFILE";
     private static final String USER_ID = "USER_ID";
+    private static final String FIRST_TIME = "FIRST_TIME";
     private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
     private static final String FCM_TOKEN = "FCM_TOKEN";
 
@@ -20,6 +21,14 @@ public class PrefUtils {
 
     public static boolean getLoggedIn(Context context) {
         return Prefs.with(context).getBoolean(IS_LOGGED_IN, false);
+    }
+
+    public static void setFirstTime(Context context, boolean isFirstTimeLogin){
+        Prefs.with(context).save(FIRST_TIME, isFirstTimeLogin);
+    }
+
+    public static boolean getFirstTime(Context context) {
+        return Prefs.with(context).getBoolean(FIRST_TIME, false);
     }
 
     public static void setUserProfile(Context context, LoginModelData response) {

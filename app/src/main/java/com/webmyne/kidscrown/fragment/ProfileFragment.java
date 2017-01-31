@@ -167,7 +167,7 @@ public class ProfileFragment extends Fragment {
     private void registerWebService() {
 
         UpdateProfileModelRequest model = new UpdateProfileModelRequest();
-        model.setClinicName("");
+        model.setClinicName(edtClinicName.getText().toString().trim());
         model.setEmailID(edtEmail.getText().toString().trim());
         model.setFirstName(edtFirstname.getText().toString().trim());
         model.setLastName(edtLastName.getText().toString().trim());

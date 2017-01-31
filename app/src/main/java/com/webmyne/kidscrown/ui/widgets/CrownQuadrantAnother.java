@@ -3,15 +3,18 @@ package com.webmyne.kidscrown.ui.widgets;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.custom.CrownItemAnother;
+import com.webmyne.kidscrown.model.ProductSlab;
 import com.webmyne.kidscrown.model.QuadSheet;
+import com.webmyne.kidscrown.ui.RefillActivityAnother;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,21 +33,43 @@ public class CrownQuadrantAnother extends LinearLayout {
     private OnCrownClickListner onCrownClickListner;
     private LinearLayout linearParentQuad;
     private ArrayList<String> addedValues;
+    private Context context;
+    TableRow.LayoutParams rowParams;
 
+    private TextView txtHeader;
+    private String header;
+    private int image, color;
 
     public CrownQuadrantAnother(Context context) {
         super(context);
+        this.context = context;
         init(context);
     }
 
     public CrownQuadrantAnother(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
+        init(context);
+    }
+
+    public CrownQuadrantAnother(RefillActivityAnother context, String header, int image, int color) {
+        super(context);
+        this.context = context;
+        this.header = header;
+        this.image = image;
+        this.color = color;
         init(context);
     }
 
     private void init(Context context) {
+        rowParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
         View.inflate(context, R.layout.crown_grid_another, this);
         tableLayout = (TableLayout) findViewById(R.id.tableLayout);
+
+        txtHeader = (TextView) findViewById(R.id.txtHeader);
+        txtHeader.setText(header);
+
         row1 = (TableRow) tableLayout.getChildAt(0);
         row2 = (TableRow) tableLayout.getChildAt(1);
         linearParentQuad = (LinearLayout) findViewById(R.id.linearParentQuad);
@@ -74,12 +99,10 @@ public class CrownQuadrantAnother extends LinearLayout {
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     onCrownClickListner.setSelection(name);
                     onCrownClickListner.displayNumberpad(name);
                 }
             });
-
         }
 
         for (int i = 0; i < row2.getChildCount(); i++) {
@@ -292,6 +315,25 @@ public class CrownQuadrantAnother extends LinearLayout {
 
     public void setOnCrownClickListner(OnCrownClickListner listner) {
         this.onCrownClickListner = listner;
+    }
+
+    public void setupCrowns(ArrayList<ProductSlab> productSlabs) {
+
+        TableRow row = new TableRow(context);
+        tableLayout.addView(row, rowParams);
+
+        for (int i = 0; i < productSlabs.size(); i++) {
+            ProductSlab slab = productSlabs.get(i);
+
+            if (tableLayout.getChildCount() < slab.getRows()) {
+                row = new TableRow(context);
+                tableLayout.addView(row, rowParams);
+            }
+            CrownItemAnother itemAnother = new CrownItemAnother(context, slab, image, color);
+            ((TableRow) tableLayout.getChildAt(slab.getRows() - 1)).addView(itemAnother, rowParams);
+        }
+
+       // setupRows(image, color, sheet.getUl1(), sheet.getUl2());
     }
 
     public void setUpperLeft() {

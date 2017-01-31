@@ -79,8 +79,6 @@ public class PlaceOrderRequest {
             Address2 = "";
             BillingAddressID = 0;
             City = "";
-            Country = "";
-            Email = "";
             IsUpdated = false;
             MobileNo = "";
             PinCode = "";
@@ -429,8 +427,6 @@ public class PlaceOrderRequest {
             Address1 = "";
             Address2 = "";
             City = "";
-            Country = "";
-            Email = "";
             IsUpdated = false;
             MobileNo = "";
             PinCode = "";

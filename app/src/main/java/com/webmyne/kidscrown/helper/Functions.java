@@ -6,12 +6,17 @@ package com.webmyne.kidscrown.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -149,7 +154,7 @@ public class Functions {
     public static void showToast(Context context, String message) {
         new ToastLib.Builder(context, message)
                 .duration(ToastEnum.SHORT)
-                .backgroundColor(ContextCompat.getColor(context, R.color.color_button_darkred))
+                .backgroundColor(ContextCompat.getColor(context, R.color.primaryColor))
                 .textColor(ContextCompat.getColor(context, R.color.white))
                 .textSize(16)
                 .corner(12)
@@ -160,11 +165,11 @@ public class Functions {
                 .show();
     }
 
-    public static String getStr(EditText editText){
+    public static String getStr(EditText editText) {
         return editText.getText().toString().trim();
     }
 
-    public static String priceFormat(int amount){
+    public static String priceFormat(int amount) {
         DecimalFormat formatter;
         formatter = new DecimalFormat("#,##,###");
         return formatter.format(amount);
@@ -213,10 +218,40 @@ public class Functions {
             });
         }
 
-//        dialog.setIcon(android.R.drawable.ic_dialog_alert);
-
         dialog.show();
 
     }
 
+    public static int getResources(String header) {
+        if (header.equalsIgnoreCase(Constants.UL))
+            return R.drawable.ul;
+        else if (header.equalsIgnoreCase(Constants.UR))
+            return R.drawable.ur;
+        else if (header.equalsIgnoreCase(Constants.LL))
+            return R.drawable.ll;
+        else
+            return R.drawable.lr;
+    }
+
+    public static String getHeaderValue(String header) {
+        if (header.equalsIgnoreCase(Constants.UL))
+            return Constants.UL_STR;
+        else if (header.equalsIgnoreCase(Constants.UR))
+            return Constants.UR_STR;
+        else if (header.equalsIgnoreCase(Constants.LL))
+            return Constants.LL_STR;
+        else
+            return Constants.LR_STR;
+    }
+
+    public static int getColor(Context context, String header) {
+        if (header.equalsIgnoreCase(Constants.UL))
+            return ContextCompat.getColor(context, R.color.quad_blue);
+        else if (header.equalsIgnoreCase(Constants.UR))
+            return ContextCompat.getColor(context, R.color.quad_orange);
+        else if (header.equalsIgnoreCase(Constants.LL))
+            return ContextCompat.getColor(context, R.color.quad_green);
+        else
+            return ContextCompat.getColor(context, R.color.quad_violate);
+    }
 }

@@ -28,6 +28,7 @@ import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
+import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductResponse;
@@ -98,12 +99,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             public void onItemClick(FamiliarRecyclerView familiarRecyclerView, View view, int position) {
                 Product product = productList.get(position);
                 Intent intent = null;
-                /*if (product.getIsSingleInt() == 1) {
+                if (product.getIsSingleInt() == 1) {
                     intent = new Intent(getActivity(), ProductDetailActivity.class);
                 } else {
                     intent = new Intent(getActivity(), RefillActivityAnother.class);
-                }*/
-                intent = new Intent(getActivity(), ProductDetailActivity.class);
+                }
                 intent.putExtra("product", product);
                 intent.putExtra("position", position);
                 startActivity(intent);
@@ -121,12 +121,12 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onResume() {
         super.onResume();
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-        if (preferences.getBoolean("isFirstTimeLogin", true)) {
+        if (PrefUtils.getFirstTime(getActivity())) {
             displayDialogForFirstTime();
             closeInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    PrefUtils.setFirstTime(getActivity(), false);
                     dialog.dismiss();
                 }
             });

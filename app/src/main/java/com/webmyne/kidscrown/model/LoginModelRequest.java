@@ -35,8 +35,8 @@ public class LoginModelRequest {
     private String RegistrationNumber;
     private String UserName;
     private int UserID;
-    private String FacebookID;
-    private String GoogleID;
+    private String FacebookID="";
+    private String GoogleID="";
 
 //    public LoginModelRequest() {
 //        ClinicName = "";

@@ -8,10 +8,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,12 +34,15 @@ import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
+import com.webmyne.kidscrown.model.ProductSlab;
 import com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RefillActivityAnother extends AppCompatActivity implements CrownQuadrantAnother.OnCrownClickListner, RefillOrderAdapterAnother.OnDeleteListner, RefillOrderAdapterAnother.onCartSelectListener, RefillOrderAdapterAnother.onTextChange, MyRecyclerAdapter.addQtyListener {
 
@@ -52,7 +57,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     private ListView listRefill;
     RefillOrderAdapterAnother adapter;
     private int productID;
-    ImageView imgCart;
     Button btnContinue, btnOK, btnCancel;
     ArrayList<CrownPricing> crownPricing;
     RecyclerView numberPad;
@@ -68,22 +72,29 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     private GetSortedDiscount getSortedDiscount;
 
     private Product product;
+    private TextView txtCustomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refill_another);
 
+        product = (Product) getIntent().getSerializableExtra("product");
+
+     /*   for (int i = 0; i < product.getProductDetailsDCs().size(); i++) {
+            Log.e("refill", Functions.jsonString(product.getProductDetailsDCs().get(i)));
+        }
+*/
         init();
 
-        preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-        crownProductId = preferences.getInt("crownProductId", 0);
+        //    preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        // crownProductId = preferences.getInt("crownProductId", 0);
 
         productID = getIntent().getIntExtra("product_id", 0);
-        fetchDetails();
-        fetchCrownPricing();
-        helper.displayBadge();
-        fetchCartCrowns();
+        // fetchDetails();
+        // fetchCrownPricing();
+        // helper.displayBadge();
+        //  fetchCartCrowns();
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,6 +264,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     }
 
     private void init() {
+
         getSortedDiscount = new GetSortedDiscount(this);
 
         btnOK = (Button) findViewById(R.id.btnOK);
@@ -272,12 +284,14 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         crownSetLayout = (LinearLayout) findViewById(R.id.crownSetLayout);
 
         if (toolbar != null) {
-            toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
-            toolbar.setTitle("Refill");
+            toolbar.setTitle("");
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText("Refill");
             setSupportActionBar(toolbar);
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        helper = new ToolHelper(RefillActivityAnother.this, toolbar);
+        // helper = new ToolHelper(RefillActivityAnother.this, toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,35 +299,22 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 finish();
             }
         });
-        imgCart = (ImageView) findViewById(R.id.imgCartMenu);
-        imgCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent i = new Intent(RefillActivityAnother.this, CartActivity.class);
-                startActivityForResult(i, 100);
-                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+//        upperLeft = (CrownQuadrantAnother) findViewById(R.id.quadUpperLeft);
+//        upperRight = (CrownQuadrantAnother) findViewById(R.id.quadUpperRight);
+//        lowerLeft = (CrownQuadrantAnother) findViewById(R.id.quadLowerLeft);
+//        lowerRight = (CrownQuadrantAnother) findViewById(R.id.quadLowerRight);
 
-//                Functions.fireIntent(RefillActivityAnother.this, CartActivity.class);
-                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-            }
-        });
+//        upperLeft.setOnCrownClickListner(this);
+//        upperRight.setOnCrownClickListner(this);
+//        lowerLeft.setOnCrownClickListner(this);
+//        lowerRight.setOnCrownClickListner(this);
 
-        crownSetLayout = (LinearLayout) findViewById(R.id.crownSetLayout);
-        upperLeft = (CrownQuadrantAnother) findViewById(R.id.quadUpperLeft);
-        upperRight = (CrownQuadrantAnother) findViewById(R.id.quadUpperRight);
-        lowerLeft = (CrownQuadrantAnother) findViewById(R.id.quadLowerLeft);
-        lowerRight = (CrownQuadrantAnother) findViewById(R.id.quadLowerRight);
-
-        upperLeft.setOnCrownClickListner(this);
-        upperRight.setOnCrownClickListner(this);
-        lowerLeft.setOnCrownClickListner(this);
-        lowerRight.setOnCrownClickListner(this);
-
-        upperLeft.setUpperLeft();
+        // TODO: 30-01-2017
+      /*  upperLeft.setUpperLeft();
         upperRight.setUpperRight();
         lowerLeft.setLowerLeft();
-        lowerRight.setLowerRight();
+        lowerRight.setLowerRight();*/
 
         listRefill = (ListView) findViewById(R.id.listRefill);
         listRefill.setEmptyView(findViewById(android.R.id.empty));
@@ -332,6 +333,36 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         });
 
         fillNumberPad();
+
+        crownSetLayout.removeAllViews();
+        crownSetLayout.invalidate();
+
+        fetchCrowns();
+    }
+
+    private void fetchCrowns() {
+        LinkedHashMap<String, ArrayList<ProductSlab>> productsMap = product.getProducts();
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        for (Map.Entry<String, ArrayList<ProductSlab>> entry : productsMap.entrySet()) {
+
+            String header = entry.getKey();
+            ArrayList<ProductSlab> values = entry.getValue();
+
+            for (ProductSlab value : values) {
+                Log.e("Header " + header, "  Values " + value.getModelNumber());
+            }
+
+            int res = Functions.getResources(header);
+            int color = Functions.getColor(RefillActivityAnother.this,header);
+            String strHeader = Functions.getHeaderValue(header);
+
+            CrownQuadrantAnother crownQuadrantAnother = new CrownQuadrantAnother(RefillActivityAnother.this, strHeader, res, color);
+            crownQuadrantAnother.setOnCrownClickListner(this);
+            crownSetLayout.addView(crownQuadrantAnother, params);
+            crownQuadrantAnother.setupCrowns(values);
+        }
     }
 
     @Override
@@ -416,7 +447,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 productDetails.add(item.itemQty + "");
                 productDetails.add(unitPrice + "");
                 int totalPrice = unitPrice * item.itemQty;
-                productDetails.add(totalPrice+ "");
+                productDetails.add(totalPrice + "");
                 if (getSortedDiscount.getOffer(String.valueOf(productID)) != null || !getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage.equals("0.00")) {
                     String discount = getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage;
                     productDetails.add(totalPrice - ((totalPrice * Float.valueOf(discount)) / 100) + "");
