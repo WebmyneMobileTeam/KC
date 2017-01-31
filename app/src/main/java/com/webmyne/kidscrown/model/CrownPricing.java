@@ -4,29 +4,46 @@ package com.webmyne.kidscrown.model;
  * Created by sagartahelyani on 26-08-2015.
  */
 public class CrownPricing {
-    int price, min, max;
+
+    int Price, MinQty, MaxQty, PriceID, ProductID;
 
     public int getPrice() {
-        return price;
+        return Price;
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        Price = price;
     }
 
-    public int getMin() {
-        return min;
+    public int getMinQty() {
+        return MinQty;
     }
 
-    public void setMin(int min) {
-        this.min = min;
+    public void setMinQty(int minQty) {
+        MinQty = minQty;
     }
 
-    public int getMax() {
-        return max;
+    public int getMaxQty() {
+        return MaxQty;
     }
 
-    public void setMax(int max) {
-        this.max = max;
+    public void setMaxQty(int maxQty) {
+        MaxQty = maxQty;
+    }
+
+    public int getPriceID() {
+        return PriceID;
+    }
+
+    public void setPriceID(int priceID) {
+        PriceID = priceID;
+    }
+
+    public int getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(int productID) {
+        ProductID = productID;
     }
 }

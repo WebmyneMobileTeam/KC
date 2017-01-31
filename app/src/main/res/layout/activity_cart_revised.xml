@@ -6,8 +6,8 @@
         android:id="@+id/emptyLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,6 +29,8 @@
                 android:id="@+id/linearKit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/m_2dp"
+                android:visibility="gone"
                 android:layout_alignParentTop="true"
                 android:orientation="vertical">
 
@@ -40,9 +42,7 @@
                 android:layout_height="match_parent"
                 android:layout_above="@id/totalLayout"
                 android:layout_below="@+id/linearKit"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/m_8dp"
                 android:divider="#00000000"
                 android:dividerHeight="@dimen/CARD_DIVIDER_HEIGHT"
                 android:scrollbars="none" />
@@ -51,6 +51,7 @@
                 android:id="@+id/totalLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="@dimen/m_8dp"
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical">
 

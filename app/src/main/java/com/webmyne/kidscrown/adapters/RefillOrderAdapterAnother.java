@@ -48,6 +48,12 @@ public class RefillOrderAdapterAnother extends BaseAdapter {
         return crowns.size();
     }
 
+    public void setCrowns(ArrayList<CrownProductItem> crowns) {
+        this.crowns = new ArrayList<>();
+        this.crowns = crowns;
+        notifyDataSetChanged();
+    }
+
     class ViewHolder {
         TextView txtName;
         TextView edQty;

@@ -1,37 +1,37 @@
 package com.webmyne.kidscrown.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.MyRecyclerAdapter;
 import com.webmyne.kidscrown.adapters.RefillOrderAdapterAnother;
+import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.ToolHelper;
-import com.webmyne.kidscrown.model.CrownPricing;
+import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.CrownProductItem;
+import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.ProductSlab;
@@ -57,8 +57,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     private ListView listRefill;
     RefillOrderAdapterAnother adapter;
     private int productID;
-    Button btnContinue, btnOK, btnCancel;
-    ArrayList<CrownPricing> crownPricing;
+    Button btnContinue, btnSave, btnCancel;
     RecyclerView numberPad;
     private LinearLayout linearNumberPad;
     private LinearLayout linearProducts;
@@ -68,11 +67,15 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     private StringBuilder sb = new StringBuilder();
     ArrayList<ProductCart> crowns = new ArrayList<>();
     int crownProductId;
-    SharedPreferences preferences;
     private GetSortedDiscount getSortedDiscount;
 
     private Product product;
     private TextView txtCustomTitle;
+    private ArrayList<PriceSlab> priceSlabs;
+    private MenuItem cartItem;
+    private BadgeHelper badgeCart;
+    private DatabaseHandler handler;
+    private int unitTotalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,25 +84,19 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
         product = (Product) getIntent().getSerializableExtra("product");
 
-     /*   for (int i = 0; i < product.getProductDetailsDCs().size(); i++) {
-            Log.e("refill", Functions.jsonString(product.getProductDetailsDCs().get(i)));
-        }
-*/
         init();
 
-        //    preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-        // crownProductId = preferences.getInt("crownProductId", 0);
-
         productID = getIntent().getIntExtra("product_id", 0);
+
         // fetchDetails();
         // fetchCrownPricing();
         // helper.displayBadge();
         //  fetchCartCrowns();
 
-        btnOK.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processOK(v);
+                processSave();
             }
         });
 
@@ -109,22 +106,27 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 processCancel();
             }
         });
+
+        adapter = new RefillOrderAdapterAnother(RefillActivityAnother.this, orderArray);
+        adapter.setOnDeleteListner(RefillActivityAnother.this);
+        adapter.setOnTextChange(RefillActivityAnother.this);
+        listRefill.setAdapter(adapter);
     }
 
     private void processCancel() {
         sb = new StringBuilder();
         txtDisplayCrownQTY.setText("0");
         String toDelete = txtDisplayCrownName.getText().toString();
+
        /* upperLeft.removeSelected(toDelete);
         upperRight.removeSelected(toDelete);
         lowerLeft.removeSelected(toDelete);
         lowerRight.removeSelected(toDelete);*/
 
-        upperLeft.clearSelection();
-        upperRight.clearSelection();
-        lowerLeft.clearSelection();
-        lowerRight.clearSelection();
-
+        for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
+            CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
+            crownQuadrantAnother.clearSelection();
+        }
 
         if (linearNumberPad.isShown()) {
             linearNumberPad.setVisibility(View.GONE);
@@ -132,54 +134,53 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         }
     }
 
-    private void processOK(View v) {
+    private void processSave() {
         String crownName = txtDisplayCrownName.getText().toString();
         String crownQty = txtDisplayCrownQTY.getText().toString();
 
         if (crownQty.length() == 0 || crownQty.equals("0") || crownQty.equals("00")) {
-            Functions.snack(v, "Enter Valid Quantity");
+            Functions.showToast(RefillActivityAnother.this, "Enter valid quantity");
+
         } else {
             boolean shouldAdd = false;
             int position = 0;
             if (orderArray.isEmpty()) {
-                Log.e("crown", "added");
-                CrownProductItem item = new CrownProductItem();
-                item.itemName = crownName;
-                item.itemQty = Integer.parseInt(crownQty);
+                CrownProductItem item = new CrownProductItem(crownName, Integer.parseInt(crownQty));
                 orderArray.add(item);
+
             } else {
                 for (int i = 0; i < orderArray.size(); i++) {
                     if (orderArray.get(i).itemName.equalsIgnoreCase(crownName)) {
                         position = i;
                         shouldAdd = false;
                         break;
+
                     } else {
                         shouldAdd = true;
                     }
                 }
+
                 if (shouldAdd) {
-                    Log.e("crown", "added");
-                    CrownProductItem newItem = new CrownProductItem();
-                    newItem.itemName = crownName;
-                    newItem.itemQty = Integer.parseInt(crownQty);
+                    CrownProductItem newItem = new CrownProductItem(crownName, Integer.parseInt(crownQty));
                     orderArray.add(newItem);
+
                 } else {
-                    Log.e("crown", "updated");
                     CrownProductItem updatedItem = orderArray.get(position);
                     updatedItem.itemQty = Integer.parseInt(crownQty);
                 }
             }
 
-            adapter = new RefillOrderAdapterAnother(RefillActivityAnother.this, orderArray);
-            adapter.setOnDeleteListner(RefillActivityAnother.this);
-            adapter.setOnTextChange(RefillActivityAnother.this);
-            listRefill.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            adapter.setCrowns(orderArray);
 
-            upperLeft.setQuanity(crownName, crownQty);
-            upperRight.setQuanity(crownName, crownQty);
-            lowerLeft.setQuanity(crownName, crownQty);
-            lowerRight.setQuanity(crownName, crownQty);
+//            upperLeft.setQuanity(crownName, crownQty);
+//            upperRight.setQuanity(crownName, crownQty);
+//            lowerLeft.setQuanity(crownName, crownQty);
+//            lowerRight.setQuanity(crownName, crownQty);
+
+            for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
+                CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
+                crownQuadrantAnother.setQuanity(crownName, crownQty);
+            }
 
             sb = new StringBuilder();
             txtDisplayCrownQTY.setText("0");
@@ -200,47 +201,26 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         orderArray = new ArrayList<>();
         orderArray.clear();
 
-        upperLeft.setDefault();
-        upperRight.setDefault();
-        lowerRight.setDefault();
-        lowerLeft.setDefault();
-
-        try {
-            DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
-            handler.openDataBase();
-            crowns = handler.getCrownCartProduct(crownProductId);
-
-            for (ProductCart cart : crowns) {
-                String crown = cart.getProductName();
-                int qty = cart.getProductQty();
-
-                upperLeft.setQuanity(crown, qty + "");
-                upperRight.setQuanity(crown, qty + "");
-                lowerLeft.setQuanity(crown, qty + "");
-                lowerRight.setQuanity(crown, qty + "");
-
-                CrownProductItem item = new CrownProductItem();
-                item.itemName = crown;
-                item.itemQty = qty;
-                orderArray.add(item);
-
-            }
-
-            adapter = new RefillOrderAdapterAnother(RefillActivityAnother.this, orderArray);
-            adapter.setOnDeleteListner(RefillActivityAnother.this);
-            adapter.setOnTextChange(RefillActivityAnother.this);
-            listRefill.setAdapter(adapter);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
+            CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
+            crownQuadrantAnother.setDefault();
         }
 
-    }
+        crowns = handler.getCrownCartProduct(product.getProductID());
+        Log.e("crowns", crowns.size() + "##");
 
-    private void fetchCrownPricing() {
-        DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
-        crownPricing = new ArrayList<>();
-        crownPricing = handler.getCrownPricing(productID);
+        for (ProductCart cart : crowns) {
+            String crown = cart.getProductName();
+            int qty = cart.getProductQty();
+
+            for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
+                CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
+                crownQuadrantAnother.setQuanity(crown, qty + "");
+            }
+            CrownProductItem item = new CrownProductItem(crown, qty);
+            orderArray.add(item);
+        }
+        adapter.setCrowns(orderArray);
     }
 
     private void fetchDetails() {
@@ -264,11 +244,14 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     }
 
     private void init() {
+        priceSlabs = new ArrayList<>();
+        priceSlabs.addAll(product.getPriceSlabDCs());
+        handler = new DatabaseHandler(this);
 
         getSortedDiscount = new GetSortedDiscount(this);
 
-        btnOK = (Button) findViewById(R.id.btnOK);
-        btnCancel = (Button) findViewById(R.id.btnRemove);
+        btnSave = (Button) findViewById(R.id.btnSave);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
 
         txtDisplayCrownName = (TextView) findViewById(R.id.txtDisplayCrownName);
         txtDisplayCrownQTY = (TextView) findViewById(R.id.txtDisplayCrownQTY);
@@ -286,7 +269,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         if (toolbar != null) {
             toolbar.setTitle("");
             txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
-            txtCustomTitle.setText("Refill");
+            txtCustomTitle.setText(product.getProductName());
             setSupportActionBar(toolbar);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -338,6 +321,8 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         crownSetLayout.invalidate();
 
         fetchCrowns();
+
+        fetchCartCrowns();
     }
 
     private void fetchCrowns() {
@@ -350,12 +335,8 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
             String header = entry.getKey();
             ArrayList<ProductSlab> values = entry.getValue();
 
-            for (ProductSlab value : values) {
-                Log.e("Header " + header, "  Values " + value.getModelNumber());
-            }
-
             int res = Functions.getResources(header);
-            int color = Functions.getColor(RefillActivityAnother.this,header);
+            int color = Functions.getColor(RefillActivityAnother.this, header);
             String strHeader = Functions.getHeaderValue(header);
 
             CrownQuadrantAnother crownQuadrantAnother = new CrownQuadrantAnother(RefillActivityAnother.this, strHeader, res, color);
@@ -370,7 +351,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         super.onActivityResult(requestCode, resultCode, data);
 
         fetchDetails();
-        fetchCrownPricing();
+        //fetchCrownPricing();
         helper.displayBadge();
         fetchCartCrowns();
     }
@@ -414,11 +395,11 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
             if (totalCrowns != 0) {
 
-                for (int k = 0; k < crownPricing.size(); k++) {
+                for (int k = 0; k < priceSlabs.size(); k++) {
 
-                    maxies.add(crownPricing.get(k).getMax());
-                    if (totalCrowns >= crownPricing.get(k).getMin() && totalCrowns <= crownPricing.get(k).getMax()) {
-                        unitPrice = crownPricing.get(k).getPrice();
+                    maxies.add(priceSlabs.get(k).getMaxQty());
+                    if (totalCrowns >= priceSlabs.get(k).getMinQty() && totalCrowns <= priceSlabs.get(k).getMaxQty()) {
+                        unitPrice = priceSlabs.get(k).getPrice();
                         isPass = true;
                         break;
                     } else {
@@ -428,35 +409,35 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 }
             }
 
-            if (isPass == false) {
+            if (!isPass) {
                 int tempPos = 0;
                 int max = Collections.max(maxies);
                 tempPos = maxies.indexOf(Integer.valueOf(max));
-                unitPrice = crownPricing.get(tempPos).getPrice();
+                unitPrice = priceSlabs.get(tempPos).getPrice();
             }
 
             Log.e("unit_price", unitPrice + " ---");
 
-            DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
-            handler.deleteCartProduct(crownProductId);
+            handler.deleteCartProduct(product.getProductID());
 
             for (CrownProductItem item : orderArray) {
-                ArrayList<String> productDetails = new ArrayList<String>();
-                productDetails.add(productID + "");
-                productDetails.add(item.itemName);
-                productDetails.add(item.itemQty + "");
-                productDetails.add(unitPrice + "");
-                int totalPrice = unitPrice * item.itemQty;
-                productDetails.add(totalPrice + "");
-                if (getSortedDiscount.getOffer(String.valueOf(productID)) != null || !getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage.equals("0.00")) {
-                    String discount = getSortedDiscount.getOffer(String.valueOf(productID)).DiscountPercentage;
-                    productDetails.add(totalPrice - ((totalPrice * Float.valueOf(discount)) / 100) + "");
-                }
+                CartProduct cartProduct = new CartProduct();
+                cartProduct.setProductName(item.itemName);
+                cartProduct.setProductId(product.getProductID());
+                cartProduct.setQty(item.itemQty);
+                cartProduct.setUnitPrice(unitPrice);
+                unitTotalPrice = unitPrice * item.itemQty;
+                cartProduct.setTotalPrice(unitTotalPrice);
+                cartProduct.setSingle(product.getIsSingleInt());
+                cartProduct.setMax(product.getOrderLimit());
 
-                handler.addCartProduct(productDetails);
+                Log.e("cart_insert", Functions.jsonString(cartProduct));
+
+                handler.addToCart(cartProduct);
             }
-            Snackbar.make(btnContinue, "Added to Cart", Snackbar.LENGTH_SHORT).show();
-            helper.displayBadge();
+
+            Functions.showToast(RefillActivityAnother.this, "Added to Cart");
+            badgeCart.displayBadge(handler.getTotalProducts());
         }
 
     }
@@ -479,10 +460,16 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     @Override
     public void setSelection(String value) {
 
-        upperLeft.setSelection(value);
-        upperRight.setSelection(value);
-        lowerLeft.setSelection(value);
-        lowerRight.setSelection(value);
+        for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
+
+            CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
+            crownQuadrantAnother.setSelection(value);
+
+        }
+//        upperLeft.setSelection(value);
+//        upperRight.setSelection(value);
+//        lowerLeft.setSelection(value);
+//        lowerRight.setSelection(value);
 
     }
 
@@ -494,26 +481,44 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         orderArray.remove(position);
         adapter.notifyDataSetChanged();
 
-        upperLeft.removeSelected(toDelete);
-        upperRight.removeSelected(toDelete);
-        lowerLeft.removeSelected(toDelete);
-        lowerRight.removeSelected(toDelete);
+        for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
+            CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
+            crownQuadrantAnother.removeSelected(toDelete);
+            crownQuadrantAnother.clearSelected(toDelete);
+        }
 
-        upperLeft.clearSelected(toDelete);
-        upperRight.clearSelected(toDelete);
-        lowerLeft.clearSelected(toDelete);
-        lowerRight.clearSelected(toDelete);
+//        upperLeft.removeSelected(toDelete);
+//        upperRight.removeSelected(toDelete);
+//        lowerLeft.removeSelected(toDelete);
+//        lowerRight.removeSelected(toDelete);
+//
+//
+//
+//        upperLeft.clearSelected(toDelete);
+//        upperRight.clearSelected(toDelete);
+//        lowerLeft.clearSelected(toDelete);
+//        lowerRight.clearSelected(toDelete);
+
 
         try {
             DatabaseHandler handler = new DatabaseHandler(RefillActivityAnother.this);
             handler.openDataBase();
-            handler.deleteCrownProduct(toDelete);
+            handler.deleteCrown(toDelete);
             handler.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        helper.displayBadge();
+        //helper.displayBadge();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cart, menu);
+        cartItem = menu.findItem(R.id.action_cart);
+        badgeCart = new BadgeHelper(this, cartItem, ActionItemBadge.BadgeStyles.YELLOW);
+        badgeCart.displayBadge(handler.getTotalProducts());
+        return true;
     }
 
     @Override
@@ -544,7 +549,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
             if (sb.toString().equals("100")) {
                 txtDisplayCrownQTY.setText(sb.toString());
             } else {
-                Functions.snack(txtDisplayCrownQTY, "Quantity is in between 1 to 100");
+                Functions.showToast(RefillActivityAnother.this, "Quantity is in between 1 to 100");
             }
         } else {
             txtDisplayCrownQTY.setText(sb.toString());

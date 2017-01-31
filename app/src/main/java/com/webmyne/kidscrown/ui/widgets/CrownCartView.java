@@ -83,7 +83,6 @@ public class CrownCartView extends LinearLayout {
         remove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 promptDialog(cart.getProductName());
 
             }

@@ -37,7 +37,6 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
     //private ListView listAddress;
     View parentView;
     private EditText edtAddress1, edtAddress2, edtCity, edtState, edtCountry, edtPincode ;
-    private Button saveDetails;
     AddressesList list;
     BillingAndShippingAddress billingAndShippingAddress;
 
@@ -82,8 +81,6 @@ public class BillingAddressTab extends android.support.v4.app.Fragment {
         edtState = (EditText) parentView.findViewById(R.id.edtBillingState);
         edtCountry = (EditText) parentView.findViewById(R.id.edtBillingCountry);
         edtPincode = (EditText) parentView.findViewById(R.id.edtBillingPincode);
-        saveDetails = (Button) parentView.findViewById(R.id.saveDetails);
-
 
     }
     public void setListener(AddressesList _list){

@@ -79,6 +79,7 @@ public class PlaceOrderRequest {
             Address2 = "";
             BillingAddressID = 0;
             City = "";
+            Email = "";
             IsUpdated = false;
             MobileNo = "";
             PinCode = "";

@@ -116,6 +116,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+        try {
+            openDataBase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /*public void saveProducts(ArrayList<Product> products) {
@@ -275,7 +280,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase = this.getWritableDatabase();
         String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_id ='" + productID + "'";
         myDataBase.execSQL(selectQuery);
+    }
 
+    public void deleteCrown(String productName){
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_name ='" + productName + "'";
+        myDataBase.execSQL(selectQuery);
     }
 
     public void deleteCrownProduct(String productName) {
@@ -314,8 +324,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 for (int k = 0; k < crownPricing.size(); k++) {
 
-                    maxies.add(crownPricing.get(k).getMax());
-                    if (totalCrowns >= crownPricing.get(k).getMin() && totalCrowns <= crownPricing.get(k).getMax()) {
+                    maxies.add(crownPricing.get(k).getMaxQty());
+                    if (totalCrowns >= crownPricing.get(k).getMinQty() && totalCrowns <= crownPricing.get(k).getMaxQty()) {
                         unitPrice = crownPricing.get(k).getPrice();
                         isPass = true;
                         break;
@@ -477,7 +487,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();
         Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price AND CartItem.product_id=" + productID;
+        //String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price AND CartItem.product_id=" + productID;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + " WHERE product_id ='" + productID + "'";
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
@@ -505,8 +516,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             do {
                 CrownPricing pricing = new CrownPricing();
-                pricing.setMin(cursor.getInt(cursor.getColumnIndexOrThrow("min")));
-                pricing.setMax(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
+                pricing.setMinQty(cursor.getInt(cursor.getColumnIndexOrThrow("min")));
+                pricing.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
                 pricing.setPrice(cursor.getInt(cursor.getColumnIndexOrThrow("price")));
                 crownPricing.add(pricing);
             } while (cursor.moveToNext());
@@ -827,6 +838,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 products.add(cartProduct);
             } while (cursor.moveToNext());
         }
+        close();
         return products;
     }
 }

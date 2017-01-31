@@ -3,6 +3,11 @@ package com.webmyne.kidscrown.helper;
 
 public class Constants {
 
+    public static final int SINGLE = 1;
+    public static final int NOT_SINGLE = 0;
+
+    public static final String PREF_NAME = "user_pref";
+
     // Login with
     public static final String NORMAL = "1";
     public static final String FB = "2";

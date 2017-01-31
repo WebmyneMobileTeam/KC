@@ -17,8 +17,8 @@
     </style>
 
     <style name="CheckBoxCustom" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="colorAccent">@color/primaryColor</item>
-        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="colorControlActivated">@color/primaryColor</item>
+        <item name="colorSwitchThumbNormal">@color/half_black</item>
     </style>
 
     <style name="MyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">

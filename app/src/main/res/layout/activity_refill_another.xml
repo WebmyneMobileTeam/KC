@@ -143,23 +143,25 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnRemove"
+                        android:id="@+id/btnCancel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00000000"
                         android:fontFamily="sans-serif-condensed"
                         android:text="Cancel"
+                        android:textAllCaps="false"
                         android:textColor="#fff" />
 
                     <Button
-                        android:id="@+id/btnOK"
+                        android:id="@+id/btnSave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00000000"
                         android:fontFamily="sans-serif-condensed"
                         android:text="Save"
+                        android:textAllCaps="false"
                         android:textColor="#fff" />
 
                 </LinearLayout>
@@ -196,6 +198,7 @@
                     android:background="@color/primaryColor"
                     android:fontFamily="sans-serif-condensed"
                     android:text="Continue To Cart"
+                    android:textAllCaps="false"
                     android:textColor="#fff" />
 
             </LinearLayout>

@@ -45,10 +45,6 @@
             android:label="@string/title_activity_crown"
             android:screenOrientation="sensorPortrait" />
         <activity
-            android:name=".ui.RefillActivity"
-            android:label="@string/title_activity_refill"
-            android:screenOrientation="landscape" />
-        <activity
             android:name=".ui.RefillActivityAnother"
             android:label="@string/title_activity_refill"
             android:screenOrientation="landscape" />

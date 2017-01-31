@@ -1,12 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shippingLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:visibility="gone"
     android:paddingLeft="@dimen/card_margin"
-    android:paddingRight="@dimen/card_margin"
-    tools:context="com.webmyne.kidscrown.fragment.ShippingAddressTab">
+    android:paddingRight="@dimen/card_margin">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,138 +21,96 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <CheckBox
+            <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/checkbox"
+                style="@style/CheckBoxCustom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:fontFamily="sans-serif-condensed"
                 android:text="Same as Billing Address?"
                 android:textColor="@color/primaryColor"
-                android:textSize="@dimen/S_TEXT_SIZE"
-                android:theme="@style/CheckBoxCustom" />
+                android:textSize="@dimen/M_TEXT" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                app:hintTextAppearance="@style/TextInputLayout">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
                 <EditText
                     android:id="@+id/edtShippingAddress1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bottom_line"
+                    android:fontFamily="sans-serif-condensed"
                     android:hint="Address 1"
                     android:inputType="text"
-                    android:maxLines="6"
-                    android:singleLine="true"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="#c0c0c0"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/S_TEXT_SIZE" />
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                app:hintTextAppearance="@style/TextInputLayout">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
                 <EditText
                     android:id="@+id/edtShippingAddress2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bottom_line"
+                    android:fontFamily="sans-serif-condensed"
                     android:hint="Address 2"
                     android:inputType="text"
-                    android:singleLine="true"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="#c0c0c0"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/S_TEXT_SIZE" />
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                app:hintTextAppearance="@style/TextInputLayout">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
                 <EditText
                     android:id="@+id/edtShippingCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bottom_line"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:fontFamily="sans-serif-condensed"
                     android:hint="City"
                     android:inputType="text"
-                    android:singleLine="true"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="#c0c0c0"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/S_TEXT_SIZE" />
-            </android.support.design.widget.TextInputLayout>
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                android:text="State"
-                android:textColor="#c0c0c0"
-                android:textSize="@dimen/VS_TEXT_SIZE" />
-
-            <Spinner
-                android:id="@+id/edtShipingStateSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bottom_line"></Spinner>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                app:hintTextAppearance="@style/TextInputLayout">
-
-                <EditText
-                    android:id="@+id/edtShippingCountry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bottom_line"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:enabled="true"
-                    android:hint="Country"
-                    android:inputType="text"
-                    android:singleLine="true"
-                    android:text="India"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="#c0c0c0"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/S_TEXT_SIZE" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-                app:hintTextAppearance="@style/TextInputLayout">
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
                 <EditText
                     android:id="@+id/edtShippingPincode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="50dp"
-                    android:background="@drawable/bottom_line"
-                    android:digits="1234567890"
+                    android:fontFamily="sans-serif-condensed"
                     android:hint="Pincode"
                     android:inputType="number"
                     android:maxLength="6"
-                    android:singleLine="true"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="#c0c0c0"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/S_TEXT_SIZE" />
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
+
             </android.support.design.widget.TextInputLayout>
+
         </LinearLayout>
+
     </ScrollView>
 
 </RelativeLayout>

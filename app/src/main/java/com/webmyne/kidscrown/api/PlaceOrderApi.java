@@ -38,13 +38,13 @@ public class PlaceOrderApi {
     }
 
     private void doCallPlaceOrder() {
-        showProgress();
+       // showProgress();
 
         Call<PlaceOrderResponse> call = appApi.placeOrder(placeOrderRequest);
         call.enqueue(new Callback<PlaceOrderResponse>() {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
-                hideProgress();
+               // hideProgress();
 
                 if (response.isSuccessful()) {
 
@@ -63,7 +63,7 @@ public class PlaceOrderApi {
 
             @Override
             public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
-                hideProgress();
+              //  hideProgress();
 
                 commonRetrofitResponseListener.onFail();
 
