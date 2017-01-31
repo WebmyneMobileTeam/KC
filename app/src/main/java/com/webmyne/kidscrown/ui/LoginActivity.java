@@ -134,7 +134,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     return;
                 }
                 Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             }
         });

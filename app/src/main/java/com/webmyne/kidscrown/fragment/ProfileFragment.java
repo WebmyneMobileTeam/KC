@@ -71,6 +71,10 @@ public class ProfileFragment extends Fragment {
 //        UserProfile currentUserObj = new UserProfile();
 //        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
 //        userId = currentUserObj.UserID;
+
+        edtUserName.setEnabled(false);
+        edtEmail.setEnabled(false);
+
         userId = String.valueOf(PrefUtils.getUserId(getActivity()));
         Log.e("userId", userId);
 
@@ -141,6 +145,9 @@ public class ProfileFragment extends Fragment {
         } else if (edtLastName.getText().toString().trim().length() == 0) {
             snack.setText("Last name is required");
             snack.show();
+        } else if (edtUserName.getText().toString().trim().length() == 0) {
+            snack.setText("Username is required");
+            snack.show();
         } else if (edtMobile.getText().toString().trim().length() != 10) {
             snack.setText("Mobile number should contains 10 digits");
             snack.show();
@@ -150,14 +157,11 @@ public class ProfileFragment extends Fragment {
         } else if (edtPassword.getText().toString().trim().length() < 6) {
             snack.setText("Password must be of minimum 6 characters");
             snack.show();
-        } else if (edtRegNo.getText().toString().trim().length() == 0) {
-            snack.setText("Registration number is required");
-            snack.show();
-        } else if (edtUserName.getText().toString().trim().length() == 0) {
-            snack.setText("Username is required");
-            snack.show();
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             snack.setText("Password and confirm password does not match");
+            snack.show();
+        } else if (edtRegNo.getText().toString().trim().length() == 0) {
+            snack.setText("Registration number is required");
             snack.show();
         } else {
             registerWebService();

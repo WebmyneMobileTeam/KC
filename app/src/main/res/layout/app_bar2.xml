@@ -32,11 +32,11 @@
             android:id="@+id/imgCartMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="@dimen/card_margin"
             android:src="@drawable/ic_action_cart"
-            android:tint="#fff" />
+            android:tint="#fff"
+            android:visibility="gone" />
     </android.support.v7.widget.Toolbar>
 
 </RelativeLayout>

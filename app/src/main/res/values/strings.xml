@@ -97,5 +97,11 @@
     <!--SplashActivity.java-->
     <string name="update_app">A new version of KidsCrown is available on play store, Please update new version.</string>
 
+    <!--ContactUsFragment.java.xml-->
+    <string name="usernm">Username</string>
+
+    <!--ForgotPassword.java.xml-->
+    <string name="forgot_pass">Forgot Password</string>
+
 
 </resources>

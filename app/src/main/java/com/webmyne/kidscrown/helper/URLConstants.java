@@ -22,4 +22,6 @@ public class URLConstants {
 
     public static final String CHECK_VERSION = "User.svc/json/GetDeviceInfo/{VERSION}/{DEVICETYPE}";
 
+    public static final String FORGOT_PASSWORD = "User.svc/json/ForgotPassword/{USERNAME}";
+
 }

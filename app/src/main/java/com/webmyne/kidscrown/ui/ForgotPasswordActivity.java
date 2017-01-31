@@ -1,31 +1,36 @@
 package com.webmyne.kidscrown.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import com.google.gson.GsonBuilder;
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.helper.CallWebService;
-import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.api.AppApi;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
-import com.webmyne.kidscrown.model.UserProfile;
+import com.webmyne.kidscrown.helper.MyApplication;
+import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
+import com.webmyne.kidscrown.model.ForgetPasswordModelResponse;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ForgotPasswordActivity extends ActionBarActivity {
 
     private EditText edtEmail;
     private Button btnForgotPassword;
-    ProgressDialog pd;
+    private AppApi appApi;
+    private SpotsDialog dialog;
+    private Toolbar toolbar;
+    private TextView txtCustomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +40,30 @@ public class ForgotPasswordActivity extends ActionBarActivity {
         edtEmail = (EditText) findViewById(R.id.edtEmail);
         btnForgotPassword = (Button) findViewById(R.id.btnForgotPassword);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText(getString(R.string.forgot_pass));
+            toolbar.setTitle("");
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        appApi = MyApplication.getRetrofit().create(AppApi.class);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         btnForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtEmail.getText().length() == 0) {
+                if (edtEmail.getText().toString().trim().length() == 0) {
                     View view = findViewById(android.R.id.content);
-                    Functions.snack(view, "Please Enter Your Email Id");
+                    Functions.snack(view, "Please Enter Your User Name");
                 } else {
                     callForgotPassword();
                 }
@@ -58,35 +81,91 @@ public class ForgotPasswordActivity extends ActionBarActivity {
     }
 
     private void callForgotPassword() {
-        //JSONObject emailObject = null;
 
-        String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim();
+        showProgress();
 
-        pd = ProgressDialog.show(ForgotPasswordActivity.this, "Loading", "Please wait..", true);
-        Functions.logE("forget request url", url);
+        Log.e("request", "email: " + edtEmail.getText().toString().trim());
 
-        new CallWebService(url, CallWebService.TYPE_GET, null) {
+        Call<ForgetPasswordModelResponse> call = appApi.fetchForgotPasswordData(edtEmail.getText().toString().trim());
+
+        call.enqueue(new Callback<ForgetPasswordModelResponse>() {
             @Override
-            public void response(String response) {
-                View view = findViewById(android.R.id.content);
-                pd.dismiss();
+            public void onResponse(Call<ForgetPasswordModelResponse> call, Response<ForgetPasswordModelResponse> response) {
 
-                if (response.equals("Success")) {
-                    Functions.snack(view, "Reset Password Link sent to your Email Id");
+                hideProgress();
+
+                Log.e("response", MyApplication.getGson().toJson(response.body(), ForgetPasswordModelResponse.class));
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
+
+                        Functions.showToast(ForgotPasswordActivity.this, response.body().getResponse().getResponseMsg());
+
+                        finish();
+
+                    } else {
+                        Functions.showToast(ForgotPasswordActivity.this, response.body().getResponse().getResponseMsg());
+                    }
+
                 } else {
-                    Functions.snack(view, response);
+                    Functions.showToast(ForgotPasswordActivity.this, getString(R.string.try_again));
                 }
-
             }
 
             @Override
-            public void error(String error) {
-                pd.dismiss();
-                View view = findViewById(android.R.id.content);
-                Functions.snack(view, error);
+            public void onFailure(Call<ForgetPasswordModelResponse> call, Throwable t) {
+
+                hideProgress();
+
+                RetrofitErrorHelper.showErrorMsg(t, ForgotPasswordActivity.this);
 
             }
-        }.call();
+        });
+
+
+//        String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim();
+//
+//        pd = ProgressDialog.show(ForgotPasswordActivity.this, "Loading", "Please wait..", true);
+//        Functions.logE("forget request url", url);
+//
+//        new CallWebService(url, CallWebService.TYPE_GET, null) {
+//            @Override
+//            public void response(String response) {
+//                View view = findViewById(android.R.id.content);
+//                pd.dismiss();
+//
+//                if (response.equals("Success")) {
+//                    Functions.snack(view, "Reset Password Link sent to your Email Id");
+//                } else {
+//                    Functions.snack(view, response);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void error(String error) {
+//                pd.dismiss();
+//                View view = findViewById(android.R.id.content);
+//                Functions.snack(view, error);
+//
+//            }
+//        }.call();
+
+    }
+
+    private void hideProgress() {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    private void showProgress() {
+        if (dialog == null) {
+            dialog = new SpotsDialog(this, "Loading..", R.style.Custom);
+        }
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
 }

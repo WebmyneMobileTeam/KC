@@ -4,6 +4,7 @@ import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.URLConstants;
 import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.model.ContactUsResponseModel;
+import com.webmyne.kidscrown.model.ForgetPasswordModelResponse;
 import com.webmyne.kidscrown.model.LoginModelRequest;
 import com.webmyne.kidscrown.model.LoginModelResponse;
 import com.webmyne.kidscrown.model.OrderHistoryModelResponse;
@@ -52,5 +53,8 @@ public interface AppApi {
 
     @GET(URLConstants.CHECK_VERSION)
     Call<VersionModelResponse> fetchVersionData(@Path("VERSION") String VERSION, @Path("DEVICETYPE") String DEVICETYPE);
+
+    @GET(URLConstants.FORGOT_PASSWORD)
+    Call<ForgetPasswordModelResponse> fetchForgotPasswordData(@Path("USERNAME") String USERNAME);
 
 }
