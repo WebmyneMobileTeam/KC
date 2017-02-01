@@ -100,7 +100,7 @@ public class CrownQuadrantAnother extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     onCrownClickListner.setSelection(name);
-                    onCrownClickListner.displayNumberpad(name);
+                    onCrownClickListner.displayNumberpad(name, 0);
                 }
             });
         }
@@ -123,7 +123,7 @@ public class CrownQuadrantAnother extends LinearLayout {
                 public void onClick(View v) {
 
                     onCrownClickListner.setSelection(name);
-                    onCrownClickListner.displayNumberpad(name);
+                    onCrownClickListner.displayNumberpad(name, 0);
 
                 }
             });
@@ -148,13 +148,14 @@ public class CrownQuadrantAnother extends LinearLayout {
                 viewCB.setBackgroundResource(res);
                 viewCB.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
                 final String name = arr1.get(i).getModelNumber();
+                final int specificId = arr1.get(i).getProductSpecID();
                 txtCrown.setPadding(8, 8, 8, 8);
 
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         onCrownClickListner.setSelection(name);
-                        onCrownClickListner.displayNumberpad(name);
+                        onCrownClickListner.displayNumberpad(name, specificId);
                     }
                 });
             }
@@ -173,13 +174,14 @@ public class CrownQuadrantAnother extends LinearLayout {
                 viewCB.setBackgroundResource(res);
                 viewCB.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
                 final String name = arr2.get(i).getModelNumber();
+                final int specificId = arr2.get(i).getProductSpecID();
                 txtCrown.setPadding(8, 8, 8, 8);
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         onCrownClickListner.setSelection(name);
-                        onCrownClickListner.displayNumberpad(name);
+                        onCrownClickListner.displayNumberpad(name, specificId);
 
                     }
                 });
@@ -440,7 +442,7 @@ public class CrownQuadrantAnother extends LinearLayout {
 
     public interface OnCrownClickListner {
 
-        void displayNumberpad(String value);
+        void displayNumberpad(String value, int specificId);
 
         void setSelection(String value);
 

@@ -2,6 +2,7 @@ package com.webmyne.kidscrown.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,12 +12,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
+import com.webmyne.kidscrown.api.PlaceOrderApi;
 import com.webmyne.kidscrown.helper.CallWebService;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
@@ -25,9 +29,12 @@ import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.OfferView;
 import com.webmyne.kidscrown.helper.OrderSummary;
+import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.AddressModel;
+import com.webmyne.kidscrown.model.FinalOrderRequest;
 import com.webmyne.kidscrown.model.OrderModel;
-import com.webmyne.kidscrown.model.UserProfile;
+import com.webmyne.kidscrown.model.PlaceOrderRequest;
+import com.webmyne.kidscrown.model.PlaceOrderResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +44,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
+
+import dmax.dialog.SpotsDialog;
 
 public class ConfirmOrderActivity extends AppCompatActivity {
 
@@ -65,6 +74,13 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     int introDiscount, assortedDiscount, crownDiscount, invoiceDiscount;
     private boolean isIntro = false, isAssorted = false, isRefil = false;
 
+    PlaceOrderResponse.DataBean resBean;
+    PlaceOrderRequest reqBean;
+    private TextView txtCustomTitle;
+    private Button btnContinue;
+    private SpotsDialog dialog;
+    ComplexPreferences complexPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +90,12 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         init();
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ConfirmOrderActivity.this, "user_pref", 0);
-        UserProfile currentUserObj = new UserProfile();
-        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
-        userId = currentUserObj.UserID;
+        complexPreferences = ComplexPreferences.getComplexPreferences(ConfirmOrderActivity.this, Constants.PREF_NAME, 0);
+        resBean = complexPreferences.getObject("placeOrderRes", PlaceOrderResponse.DataBean.class);
+        reqBean = complexPreferences.getObject("placeOrderReq", PlaceOrderRequest.class);
+
+        txtBilling.setText(reqBean.getBillingAddressDC().toString());
+        txtShipping.setText(reqBean.getShippingAddressDC().toString());
 
         preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
         crownProductId = preferences.getInt("crownProductId", 0);
@@ -86,7 +104,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         if (getSortedDiscount.isOffer()) {
             percentage = preferences.getFloat("percentage", 0);
             offerLayout.setVisibility(View.VISIBLE);
-            txtSaved.setText("You saved as per " + percentage + "%");
+            //txtSaved.setText("You saved as per " + percentage + "%");
         } else {
             offerLayout.setVisibility(View.GONE);
         }
@@ -101,7 +119,43 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         }
         randomOrderId = sb.toString();
 
-        fetchCartDetails();
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        displayProducts();
+
+        //fetchCartDetails();
+    }
+
+    private void displayProducts() {
+
+        orderSummaryLayout.removeAllViews();
+        orderSummaryLayout.invalidate();
+
+        for (int i = 0; i < resBean.getPlaceOrderCalculationDC().getProductCalculationDCs().size(); i++) {
+            String productName = "";
+            PlaceOrderResponse.DataBean.PlaceOrderCalculationDCBean.ProductCalculationDCsBean bean = resBean.getPlaceOrderCalculationDC().getProductCalculationDCs().get(i);
+            OrderSummary summary = new OrderSummary(ConfirmOrderActivity.this);
+
+            if (bean.getPlaceOrderRiffileDC() == null || bean.getPlaceOrderRiffileDC().isEmpty()) {
+                productName = bean.getProductName();
+
+            } else {
+                StringBuilder sb = new StringBuilder();
+                for (int i1 = 0; i1 < bean.getPlaceOrderRiffileDC().size(); i1++) {
+                    sb.append(bean.getPlaceOrderRiffileDC().get(i1).getRiffleName());
+                }
+                productName = bean.getProductName() + "\n" + sb.toString();
+            }
+
+            summary.setDetails(productName, bean.getQuntity(), bean.getTotalPrice());
+            orderSummaryLayout.addView(summary, params);
+        }
+
+        subtotalPrice.setText(getString(R.string.Rs) + "" + resBean.getPlaceOrderCalculationDC().getTotalAmount());
+        txtSavedPrice.setText(getString(R.string.Rs) + "" + resBean.getPlaceOrderCalculationDC().getTotalDiscount());
+        txtCharge.setText(getString(R.string.Rs) + "" + resBean.getPlaceOrderCalculationDC().getDeliveryCharge());
+        totalPrice.setText(getString(R.string.Rs) + "" + resBean.getPlaceOrderCalculationDC().getPayableAmount());
+
     }
 
     private void fetchCartDetails() {
@@ -116,8 +170,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         offerLayout.removeAllViews();
         offerLayout.invalidate();
-
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Fetch Address Details
         addressModels = new ArrayList<>();
@@ -247,6 +299,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         subtotalPrice = (TextView) findViewById(R.id.subtotalPrice);
         chargeLayout = (RelativeLayout) findViewById(R.id.chargeLayout);
         txtCharge = (TextView) findViewById(R.id.txtCharge);
+        btnContinue = (Button) findViewById(R.id.btnContinue);
 
         txtCharge.setText(getString(R.string.Rs) + " 100");
 
@@ -262,7 +315,9 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("Confirm Order");
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            toolbar.setTitle("");
+            txtCustomTitle.setText("Order Confirmation");
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -310,6 +365,66 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 createAnotherOrder(orders);
             }
         });
+
+        clickListener();
+    }
+
+    private void clickListener() {
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showProgress();
+
+                FinalOrderRequest orderRequest = new FinalOrderRequest();
+                orderRequest.setMobileOS("A");
+                orderRequest.setUserID(PrefUtils.getUserId(ConfirmOrderActivity.this));
+                orderRequest.setBillingAddressDC(reqBean.getBillingAddressDC());
+                orderRequest.setPlaceOrderCalculationDC(resBean.getPlaceOrderCalculationDC());
+                orderRequest.setPlaceOrderProductDC(reqBean.getPlaceOrderProductDC());
+                orderRequest.setShippingAddressDC(reqBean.getShippingAddressDC());
+
+                Log.e("final_req", Functions.jsonString(orderRequest));
+
+                //reqBean.setPlaceOrderCalculationDC(resBean.getPlaceOrderCalculationDC());
+
+                new PlaceOrderApi(ConfirmOrderActivity.this, new CommonRetrofitResponseListener() {
+                    @Override
+                    public void onSuccess(Object responseBody) {
+                        hideProgress();
+
+                        PlaceOrderResponse placeOrderResponse = (PlaceOrderResponse) responseBody;
+                        Log.e("final_res", Functions.jsonString(placeOrderResponse));
+
+                        complexPreferences.putObject("placeOrderRes", placeOrderResponse.getData());
+                        complexPreferences.commit();
+
+                        Intent i = new Intent(ConfirmOrderActivity.this, PaymentActivity.class);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                    }
+
+                    @Override
+                    public void onFail() {
+                        hideProgress();
+                    }
+                }, orderRequest);
+            }
+        });
+    }
+
+    private void showProgress() {
+        if (dialog == null) {
+            dialog = new SpotsDialog(this, "Loading..", R.style.Custom);
+        }
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private void hideProgress() {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     private void createAnotherOrder(final ArrayList<OrderModel> orders) {
@@ -376,7 +491,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                             kitObject.put("price_id", orders.get(i).getPriceId());
                             kitObject.put("unit_price", orders.get(i).getProductUnitPrice());
                             kitObject.put("total_price", orders.get(i).getProductTotalPrice());
-                            grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
+                            // grandTotal = grandTotal + Integer.parseInt(orders.get(i).getProductTotalPrice());
                             ordersArray.put(kitObject);
                         }
                     }

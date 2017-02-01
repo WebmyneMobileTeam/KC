@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by sagartahelyani on 27-01-2017.
+ * Created by sagartahelyani on 01-02-2017.
  */
 
-public class PlaceOrderRequest {
+public class FinalOrderRequest {
 
     /**
      * MobileOS : String content
@@ -20,10 +20,10 @@ public class PlaceOrderRequest {
 
     private String MobileOS = "A";
     private long UserID;
-    private BillingAddressDCBean billingAddressDC;
-    private PlaceOrderCalculationDCBean placeOrderCalculationDC;
-    private ShippingAddressDCBean shippingAddressDC;
-    private List<PlaceOrderProductDCBean> placeOrderProductDC;
+    private PlaceOrderRequest.BillingAddressDCBean billingAddressDC;
+    private PlaceOrderResponse.DataBean.PlaceOrderCalculationDCBean placeOrderCalculationDC;
+    private PlaceOrderRequest.ShippingAddressDCBean shippingAddressDC;
+    private List<PlaceOrderRequest.PlaceOrderProductDCBean> placeOrderProductDC;
 
     public String getMobileOS() {
         return MobileOS;
@@ -41,35 +41,35 @@ public class PlaceOrderRequest {
         this.UserID = UserID;
     }
 
-    public BillingAddressDCBean getBillingAddressDC() {
+    public PlaceOrderRequest.BillingAddressDCBean getBillingAddressDC() {
         return billingAddressDC;
     }
 
-    public void setBillingAddressDC(BillingAddressDCBean billingAddressDC) {
+    public void setBillingAddressDC(PlaceOrderRequest.BillingAddressDCBean billingAddressDC) {
         this.billingAddressDC = billingAddressDC;
     }
 
-    public PlaceOrderCalculationDCBean getPlaceOrderCalculationDC() {
+    public PlaceOrderResponse.DataBean.PlaceOrderCalculationDCBean getPlaceOrderCalculationDC() {
         return placeOrderCalculationDC;
     }
 
-    public void setPlaceOrderCalculationDC(PlaceOrderCalculationDCBean placeOrderCalculationDC) {
+    public void setPlaceOrderCalculationDC(PlaceOrderResponse.DataBean.PlaceOrderCalculationDCBean placeOrderCalculationDC) {
         this.placeOrderCalculationDC = placeOrderCalculationDC;
     }
 
-    public ShippingAddressDCBean getShippingAddressDC() {
+    public PlaceOrderRequest.ShippingAddressDCBean getShippingAddressDC() {
         return shippingAddressDC;
     }
 
-    public void setShippingAddressDC(ShippingAddressDCBean shippingAddressDC) {
+    public void setShippingAddressDC(PlaceOrderRequest.ShippingAddressDCBean shippingAddressDC) {
         this.shippingAddressDC = shippingAddressDC;
     }
 
-    public List<PlaceOrderProductDCBean> getPlaceOrderProductDC() {
+    public List<PlaceOrderRequest.PlaceOrderProductDCBean> getPlaceOrderProductDC() {
         return placeOrderProductDC;
     }
 
-    public void setPlaceOrderProductDC(List<PlaceOrderProductDCBean> placeOrderProductDC) {
+    public void setPlaceOrderProductDC(List<PlaceOrderRequest.PlaceOrderProductDCBean> placeOrderProductDC) {
         this.placeOrderProductDC = placeOrderProductDC;
     }
 
@@ -192,7 +192,7 @@ public class PlaceOrderRequest {
             ProductDiscount = 0.0;
             TotalAmount = 0.0;
             productCalculationDCs = new ArrayList<>();
-            productCalculationDCs.add(new ProductCalculationDCsBean());
+            productCalculationDCs.add(new PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean());
         }
 
         /**
@@ -212,7 +212,7 @@ public class PlaceOrderRequest {
         private double PayableAmount;
         private double ProductDiscount;
         private double TotalAmount;
-        private List<ProductCalculationDCsBean> productCalculationDCs;
+        private List<PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean> productCalculationDCs;
 
         public double getDeliveryCharge() {
             return DeliveryCharge;
@@ -262,11 +262,11 @@ public class PlaceOrderRequest {
             this.TotalAmount = TotalAmount;
         }
 
-        public List<ProductCalculationDCsBean> getProductCalculationDCs() {
+        public List<PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean> getProductCalculationDCs() {
             return productCalculationDCs;
         }
 
-        public void setProductCalculationDCs(List<ProductCalculationDCsBean> productCalculationDCs) {
+        public void setProductCalculationDCs(List<PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean> productCalculationDCs) {
             this.productCalculationDCs = productCalculationDCs;
         }
 
@@ -281,7 +281,7 @@ public class PlaceOrderRequest {
                 Quntity = 0;
                 TotalPrice = 0.0;
                 placeOrderRiffileDC = new ArrayList<>();
-                placeOrderRiffileDC.add(new PlaceOrderRiffileDCBean());
+                placeOrderRiffileDC.add(new PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean.PlaceOrderRiffileDCBean());
             }
 
             /**
@@ -305,7 +305,7 @@ public class PlaceOrderRequest {
             private String ProductName;
             private int Quntity;
             private double TotalPrice;
-            private List<PlaceOrderRiffileDCBean> placeOrderRiffileDC;
+            private List<PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean.PlaceOrderRiffileDCBean> placeOrderRiffileDC;
 
             public double getDiscount() {
                 return Discount;
@@ -371,11 +371,11 @@ public class PlaceOrderRequest {
                 this.TotalPrice = TotalPrice;
             }
 
-            public List<PlaceOrderRiffileDCBean> getPlaceOrderRiffileDC() {
+            public List<PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean.PlaceOrderRiffileDCBean> getPlaceOrderRiffileDC() {
                 return placeOrderRiffileDC;
             }
 
-            public void setPlaceOrderRiffileDC(List<PlaceOrderRiffileDCBean> placeOrderRiffileDC) {
+            public void setPlaceOrderRiffileDC(List<PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean.PlaceOrderRiffileDCBean> placeOrderRiffileDC) {
                 this.placeOrderRiffileDC = placeOrderRiffileDC;
             }
 
@@ -545,7 +545,7 @@ public class PlaceOrderRequest {
 
         private int ProductID;
         private int Quntity;
-        private List<PlaceOrderRiffileDCBeanX> placeOrderRiffileDC;
+        private List<PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX> placeOrderRiffileDC;
 
         public int getProductID() {
             return ProductID;
@@ -563,11 +563,11 @@ public class PlaceOrderRequest {
             this.Quntity = Quntity;
         }
 
-        public List<PlaceOrderRiffileDCBeanX> getPlaceOrderRiffileDC() {
+        public List<PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX> getPlaceOrderRiffileDC() {
             return placeOrderRiffileDC;
         }
 
-        public void setPlaceOrderRiffileDC(List<PlaceOrderRiffileDCBeanX> placeOrderRiffileDC) {
+        public void setPlaceOrderRiffileDC(List<PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX> placeOrderRiffileDC) {
             this.placeOrderRiffileDC = placeOrderRiffileDC;
         }
 

@@ -27,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/totalLayout"
-            android:fillViewport="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,9 +51,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
                             android:text="Billing Address"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="@dimen/S_TEXT_SIZE" />
+                            android:textSize="@dimen/M_TEXT"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtBilling"
@@ -61,22 +62,26 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|center_vertical"
                             android:layout_marginTop="@dimen/S_MARGIN_SIZE"
+                            android:fontFamily="sans-serif-condensed"
                             android:text="Address"
-                            android:textSize="@dimen/S_TEXT_SIZE" />
+                            android:textSize="@dimen/N_TEXT" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="0.1dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="@dimen/m_8dp"
+                            android:layout_marginLeft="@dimen/m_16dp"
+                            android:layout_marginRight="@dimen/m_16dp"
+                            android:layout_marginTop="@dimen/m_8dp"
                             android:background="@color/primaryColor" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
                             android:text="Shipping Address"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="@dimen/S_TEXT_SIZE" />
+                            android:textSize="@dimen/M_TEXT"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtShipping"
@@ -84,9 +89,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|center_vertical"
                             android:layout_marginTop="@dimen/S_MARGIN_SIZE"
+                            android:fontFamily="sans-serif-condensed"
                             android:paddingBottom="@dimen/L_MARGIN_SIZE"
                             android:text="Address"
-                            android:textSize="@dimen/S_TEXT_SIZE" />
+                            android:textSize="@dimen/N_TEXT" />
 
                     </LinearLayout>
 
@@ -95,9 +101,9 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
                     android:layout_marginLeft="@dimen/card_margin"
                     android:layout_marginRight="@dimen/card_margin"
-                    android:layout_marginBottom="@dimen/card_margin"
                     android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT">
 
                     <LinearLayout
@@ -109,10 +115,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
                             android:paddingLeft="@dimen/M_MARGIN_SIZE"
                             android:text="Order Summary"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="@dimen/S_TEXT_SIZE" />
+                            android:textSize="@dimen/M_TEXT"
+                            android:textStyle="bold" />
 
                         <View
                             android:layout_width="match_parent"
@@ -133,8 +140,9 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.3"
+                                android:fontFamily="sans-serif-condensed"
                                 android:text="Product"
-                                android:textSize="@dimen/VS_TEXT_SIZE"
+                                android:textSize="@dimen/N_TEXT"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -142,9 +150,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.3"
+                                android:fontFamily="sans-serif-condensed"
                                 android:gravity="center"
                                 android:text="Quantity"
-                                android:textSize="@dimen/VS_TEXT_SIZE"
+                                android:textSize="@dimen/N_TEXT"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -152,10 +161,11 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.3"
+                                android:fontFamily="sans-serif-condensed"
                                 android:gravity="right"
                                 android:paddingRight="@dimen/M_MARGIN_SIZE"
                                 android:text="Price"
-                                android:textSize="@dimen/VS_TEXT_SIZE"
+                                android:textSize="@dimen/N_TEXT"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -163,8 +173,8 @@
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/orderRV"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/orderSummaryLayout"
@@ -206,6 +216,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="SubTotal"
                         android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
@@ -215,6 +226,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="Subtotal"
                         android:textSize="@dimen/S_TEXT_SIZE" />
 
@@ -232,6 +244,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="You Saved"
                         android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
@@ -241,6 +254,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="txtSavedPrice"
                         android:textSize="@dimen/S_TEXT_SIZE" />
 
@@ -258,6 +272,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="Shipping Cost"
                         android:textSize="@dimen/S_TEXT_SIZE"
                         android:textStyle="bold" />
@@ -267,6 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="txtSavedPrice"
                         android:textSize="@dimen/S_TEXT_SIZE" />
 
@@ -285,7 +301,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="Grand Total"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Payable Amount"
                     android:textSize="@dimen/S_TEXT_SIZE"
                     android:textStyle="bold" />
 
@@ -295,10 +312,18 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/M_MARGIN_SIZE"
+                    android:fontFamily="sans-serif-condensed"
                     android:text="price"
                     android:textSize="@dimen/S_TEXT_SIZE"
                     android:textStyle="bold" />
             </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnContinue"
+                style="@style/MyButtonStyle"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/m_8dp"
+                android:text="Continue to Payment" />
 
             <RelativeLayout
                 android:id="@+id/continueLayout"
@@ -308,7 +333,8 @@
                 android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
                 android:layout_marginRight="@dimen/VS_TEXT_SIZE"
                 android:background="@drawable/mybutton"
-                android:padding="@dimen/VS_TEXT_SIZE">
+                android:padding="@dimen/VS_TEXT_SIZE"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"

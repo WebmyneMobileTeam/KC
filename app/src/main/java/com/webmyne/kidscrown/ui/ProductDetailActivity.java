@@ -199,6 +199,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     CartProduct cartProduct = new CartProduct();
                     cartProduct.setProductName(product.getProductName());
                     cartProduct.setProductId(product.getProductID());
+                    cartProduct.setSpecificId(0);
                     cartProduct.setQty(userQty);
                     cartProduct.setUnitPrice(unitPrice);
                     cartProduct.setTotalPrice(unitTotalPrice);

@@ -471,7 +471,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
                 cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
                 cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
-                cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+               // cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
                 cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
                 cart.setPriceId(cursor.getInt(cursor.getColumnIndexOrThrow("price_id")));
                 orders.add(cart);
@@ -787,6 +787,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("product_id", cartProduct.getProductId());
+        values.put("specific_id", cartProduct.getSpecificId());
         values.put("product_name", cartProduct.getProductName());
         values.put("qty", cartProduct.getQty());
         values.put("unit_price", cartProduct.getUnitPrice());
@@ -828,6 +829,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do {
                 CartProduct cartProduct = new CartProduct();
                 cartProduct.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
+                cartProduct.setSpecificId(cursor.getInt(cursor.getColumnIndexOrThrow("specific_id")));
                 cartProduct.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
                 cartProduct.setQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
                 cartProduct.setUnitPrice(cursor.getInt(cursor.getColumnIndexOrThrow("unit_price")));
@@ -862,7 +864,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<PriceSlab> getPriceSlab(Context context) {
+    public ArrayList<PriceSlab> getPriceSlab() {
 
         ArrayList<PriceSlab> prices = new ArrayList<>();
         ArrayList<CartProduct> products = new ArrayList<>();

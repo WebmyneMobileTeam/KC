@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.location.places.Place;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.CrownCartAdapter;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
@@ -29,7 +30,6 @@ import com.webmyne.kidscrown.model.PlaceOrderRequest;
 import com.webmyne.kidscrown.model.PlaceOrderResponse;
 import com.webmyne.kidscrown.ui.widgets.ItemCartView;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -53,6 +53,8 @@ public class CartActivityRevised extends AppCompatActivity {
     private EmptyLayout emptyLayout;
     private CrownCartAdapter adapter;
     private SpotsDialog dialog;
+    private ArrayList<Integer> crownIds;
+    ComplexPreferences complexPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +124,9 @@ public class CartActivityRevised extends AppCompatActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                complexPreferences = ComplexPreferences.getComplexPreferences(CartActivityRevised.this, Constants.PREF_NAME, 0);
+                complexPreferences.putObject("placeOrderReq", new PlaceOrderRequest());
+                complexPreferences.commit();
                 doCallApi();
             }
         });
@@ -129,9 +134,11 @@ public class CartActivityRevised extends AppCompatActivity {
 
     private void doCallApi() {
 
+        crownIds = new ArrayList<>();
+
         showProgress();
 
-        PlaceOrderRequest request = new PlaceOrderRequest();
+        final PlaceOrderRequest request = new PlaceOrderRequest();
         request.setBillingAddressDC(new PlaceOrderRequest.BillingAddressDCBean());
         request.setUserID(PrefUtils.getUserId(this));
 
@@ -143,33 +150,36 @@ public class CartActivityRevised extends AppCompatActivity {
         List<PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX> crownDC = new ArrayList<>();
         PlaceOrderRequest.PlaceOrderProductDCBean bean = new PlaceOrderRequest.PlaceOrderProductDCBean();
 
-        int crownCount = 0;
-        for (int i = 0; i < cartProducts.size(); i++) {
-            if (cartProducts.get(i).isSingle() == Constants.NOT_SINGLE) {
-                PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX riffileDCBean = new PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX();
-                riffileDCBean.setProductSpecID(cartProducts.get(i).getProductId());
-                riffileDCBean.setQuntity(cartProducts.get(i).getQty());
-                crownCount += cartProducts.get(i).getQty();
-                riffileDCBean.setRiffleName(cartProducts.get(i).getProductName());
-                crownDC.add(riffileDCBean);
-            }
-        }
-
-        /*if (crownDC.size() > 0)
-            bean.setPlaceOrderRiffileDC(crownDC);*/
-
         for (int i = 0; i < cartProducts.size(); i++) {
             if (cartProducts.get(i).isSingle() == Constants.SINGLE) {
                 bean = new PlaceOrderRequest.PlaceOrderProductDCBean();
                 bean.setProductID(cartProducts.get(i).getProductId());
                 bean.setQuntity(cartProducts.get(i).getQty());
+                placeOrderProductDC.add(bean);
+
             } else {
+                int crownCount = 0;
+                crownDC = new ArrayList<>();
                 bean = new PlaceOrderRequest.PlaceOrderProductDCBean();
-                bean.setProductID(cartProducts.get(i).getProductId());
+                CartProduct cartProduct = cartProducts.get(i);
+                bean.setProductID(cartProduct.getProductId());
+                for (int j = 0; j < crownProducts.size(); j++) {
+                    if (crownProducts.get(j).getProductId() == cartProduct.getProductId()) {
+                        crownCount += crownProducts.get(j).getQty();
+                        PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX beanX = new PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX();
+                        beanX.setProductSpecID(crownProducts.get(j).getSpecificId());
+                        beanX.setQuntity(crownProducts.get(j).getQty());
+                        beanX.setRiffleName(crownProducts.get(j).getProductName());
+                        crownDC.add(beanX);
+                    }
+                }
                 bean.setQuntity(crownCount);
                 bean.setPlaceOrderRiffileDC(crownDC);
+                if (!crownIds.contains(bean.getProductID())) {
+                    placeOrderProductDC.add(bean);
+                    crownIds.add(bean.getProductID());
+                }
             }
-            placeOrderProductDC.add(bean);
         }
         request.setPlaceOrderProductDC(placeOrderProductDC);
 
@@ -183,7 +193,8 @@ public class CartActivityRevised extends AppCompatActivity {
                 Log.e("res", Functions.jsonString(placeOrderResponse));
 
                 ComplexPreferences preferences = ComplexPreferences.getComplexPreferences(CartActivityRevised.this, Constants.PREF_NAME, 0);
-                preferences.putObject("placeOrder1", placeOrderResponse.getData());
+                preferences.putObject("placeOrderRes", placeOrderResponse.getData());
+                preferences.putObject("placeOrderReq", request);
                 preferences.commit();
 
                 Intent i = new Intent(CartActivityRevised.this, ShippingDetailsActivity.class);

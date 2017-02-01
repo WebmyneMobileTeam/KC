@@ -9,8 +9,11 @@ public class CrownProductItem {
 
     public int itemQty;
 
-    public CrownProductItem(String itemName, int itemQty) {
+    public int specificId;
+
+    public CrownProductItem(String itemName, int itemQty, int specificId) {
         this.itemName = itemName;
         this.itemQty = itemQty;
+        this.specificId = specificId;
     }
 }

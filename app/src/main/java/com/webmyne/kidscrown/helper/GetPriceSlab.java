@@ -14,8 +14,6 @@ import java.util.List;
 
 public class GetPriceSlab {
 
-    private Context context;
-    private DatabaseHandler handler;
     private ArrayList<PriceSlab> prices;
     private ArrayList<PriceSlab> tempPrices;
     private List<Integer> maxies;
@@ -23,10 +21,9 @@ public class GetPriceSlab {
     private boolean isPass = false;
 
     public GetPriceSlab(Context context) {
-        this.context = context;
-        handler = new DatabaseHandler(context);
+        DatabaseHandler handler = new DatabaseHandler(context);
         prices = new ArrayList<>();
-        prices.addAll(handler.getPriceSlab(context));
+        prices.addAll(handler.getPriceSlab());
         tempPrices = new ArrayList<>();
         maxies = new ArrayList<>();
     }

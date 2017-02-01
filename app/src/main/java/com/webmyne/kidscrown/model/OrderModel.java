@@ -8,8 +8,9 @@ import java.util.ArrayList;
  */
 public class OrderModel {
 
-    String productName, productUnitPrice, productTotalPrice;
+    String productName, productUnitPrice;
     int productId, productQty, priceId, maxQty;
+    double productTotalPrice;
 
     public int getPriceId() {
         return priceId;
@@ -60,11 +61,11 @@ public class OrderModel {
         this.productUnitPrice = productUnitPrice;
     }
 
-    public String getProductTotalPrice() {
+    public double getProductTotalPrice() {
         return productTotalPrice;
     }
 
-    public void setProductTotalPrice(String productTotalPrice) {
+    public void setProductTotalPrice(double productTotalPrice) {
         this.productTotalPrice = productTotalPrice;
     }
 }

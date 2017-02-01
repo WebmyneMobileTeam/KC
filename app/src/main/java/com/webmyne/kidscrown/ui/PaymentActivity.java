@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.model.PlaceOrderResponse;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -65,10 +68,18 @@ public class PaymentActivity extends AppCompatActivity {
             "    Beneficiary A/c No. : 51161131000193\n" +
             "</p>";
 
+    ComplexPreferences complexPreferences;
+    PlaceOrderResponse.DataBean resBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        complexPreferences = ComplexPreferences.getComplexPreferences(PaymentActivity.this, Constants.PREF_NAME, 0);
+        resBean = complexPreferences.getObject("placeOrderRes", PlaceOrderResponse.DataBean.class);
+
+        strHtml = resBean.getPlaceOrderSuccessDetailsDC().getBankDetails();
 
         init();
 

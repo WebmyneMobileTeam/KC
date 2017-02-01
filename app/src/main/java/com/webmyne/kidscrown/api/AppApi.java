@@ -4,6 +4,7 @@ import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.URLConstants;
 import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.model.ContactUsResponseModel;
+import com.webmyne.kidscrown.model.FinalOrderRequest;
 import com.webmyne.kidscrown.model.ForgetPasswordModelResponse;
 import com.webmyne.kidscrown.model.LoginModelRequest;
 import com.webmyne.kidscrown.model.LoginModelResponse;
@@ -47,6 +48,9 @@ public interface AppApi {
 
     @POST(URLConstants.PLACE_ORDER)
     Call<PlaceOrderResponse> placeOrder(@Body PlaceOrderRequest request);
+
+    @POST(URLConstants.PLACE_ORDER)
+    Call<PlaceOrderResponse> placeOrderFinal(@Body FinalOrderRequest request);
 
     @GET(URLConstants.USER_PROFILE)
     Call<UserProfileModelResponse> fetchUserProfileData(@Path("USERID") int USERID);

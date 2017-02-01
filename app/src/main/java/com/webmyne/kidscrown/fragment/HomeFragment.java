@@ -117,8 +117,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         else
             Functions.showToast(getActivity(), "No Internet Connectivity");
 
-        PriceSlab priceSlab = new GetPriceSlab(getActivity()).getRelevantPrice(16, 43);
-        Log.e("priceSlab", Functions.jsonString(priceSlab));
+        /*PriceSlab priceSlab = new GetPriceSlab(getActivity()).getRelevantPrice(16, 43);
+        Log.e("priceSlab", Functions.jsonString(priceSlab));*/
 
     }
 

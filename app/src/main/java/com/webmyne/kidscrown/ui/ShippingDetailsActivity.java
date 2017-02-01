@@ -66,18 +66,21 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     ArrayList<StateModel> states = new ArrayList<>();
     boolean sameAsBilling = false;
 
-    PlaceOrderResponse.DataBean dataBean;
+    PlaceOrderResponse.DataBean resBean;
+    PlaceOrderRequest reqBean;
     private Button btnConfirm;
     private TextView txtCustomTitle;
     private RelativeLayout shippingLayout, billingLayout;
+    private ComplexPreferences complexPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipping_details);
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ShippingDetailsActivity.this, Constants.PREF_NAME, 0);
-        dataBean = complexPreferences.getObject("placeOrder1", PlaceOrderResponse.DataBean.class);
+        complexPreferences = ComplexPreferences.getComplexPreferences(ShippingDetailsActivity.this, Constants.PREF_NAME, 0);
+        resBean = complexPreferences.getObject("placeOrderRes", PlaceOrderResponse.DataBean.class);
+        reqBean = complexPreferences.getObject("placeOrderReq", PlaceOrderRequest.class);
 
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
 
@@ -116,15 +119,15 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     }
 
     private void displayAddress() {
-        edtShippingAddress1.setText(dataBean.getShippingAddressDC().getAddress1());
-        edtShippingAddress2.setText(dataBean.getShippingAddressDC().getAddress2());
-        edtShippingCity.setText(dataBean.getShippingAddressDC().getCity());
-        edtShippingPincode.setText(dataBean.getShippingAddressDC().getPinCode());
+        edtShippingAddress1.setText(resBean.getShippingAddressDC().getAddress1());
+        edtShippingAddress2.setText(resBean.getShippingAddressDC().getAddress2());
+        edtShippingCity.setText(resBean.getShippingAddressDC().getCity());
+        edtShippingPincode.setText(resBean.getShippingAddressDC().getPinCode());
 
-        edtBillingAddress1.setText(dataBean.getBillingAddressDC().getAddress1());
-        edtBillingAddress2.setText(dataBean.getBillingAddressDC().getAddress2());
-        edtBillingCity.setText(dataBean.getBillingAddressDC().getCity());
-        edtBillingPincode.setText(dataBean.getBillingAddressDC().getPinCode());
+        edtBillingAddress1.setText(resBean.getBillingAddressDC().getAddress1());
+        edtBillingAddress2.setText(resBean.getBillingAddressDC().getAddress2());
+        edtBillingCity.setText(resBean.getBillingAddressDC().getCity());
+        edtBillingPincode.setText(resBean.getBillingAddressDC().getPinCode());
 
         /*for (int k = 0; k < addresses.size(); k++) {
             boolean isShipping = addresses.get(k).IsShipping;
@@ -232,8 +235,8 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                 if (validationDone(v)) {
                     saveAddressDetails();
 
-                    pd1 = ProgressDialog.show(ShippingDetailsActivity.this, "Loading", "Please wait..", true);
-                    sendAddressDetails(pd1);
+                    /*pd1 = ProgressDialog.show(ShippingDetailsActivity.this, "Loading", "Please wait..", true);
+                    sendAddressDetails(pd1);*/
                 }
             }
         });
@@ -331,7 +334,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         PlaceOrderRequest.BillingAddressDCBean billingAddressDCBean = new PlaceOrderRequest.BillingAddressDCBean();
         billingAddressDCBean.setAddress1(Functions.getStr(edtBillingAddress1));
         billingAddressDCBean.setAddress2(Functions.getStr(edtBillingAddress2));
-        billingAddressDCBean.setBillingAddressID(dataBean.getBillingAddressDC().getBillingAddressID());
+        billingAddressDCBean.setBillingAddressID(resBean.getBillingAddressDC().getBillingAddressID());
         billingAddressDCBean.setCity(Functions.getStr(edtBillingCity));
         billingAddressDCBean.setIsUpdated(true);
         billingAddressDCBean.setMobileNo(PrefUtils.getUserProfile(this).getMobileNo());
@@ -342,12 +345,21 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         PlaceOrderRequest.ShippingAddressDCBean shippingAddressDCBean = new PlaceOrderRequest.ShippingAddressDCBean();
         shippingAddressDCBean.setAddress1(Functions.getStr(edtShippingAddress1));
         shippingAddressDCBean.setAddress2(Functions.getStr(edtShippingAddress2));
-        shippingAddressDCBean.setShippingAddressID(dataBean.getShippingAddressDC().getShippingAddressID());
+        shippingAddressDCBean.setShippingAddressID(resBean.getShippingAddressDC().getShippingAddressID());
         shippingAddressDCBean.setCity(Functions.getStr(edtShippingCity));
         shippingAddressDCBean.setIsUpdated(true);
         shippingAddressDCBean.setMobileNo(PrefUtils.getUserProfile(this).getMobileNo());
         shippingAddressDCBean.setPinCode(Functions.getStr(edtShippingPincode));
         Log.e("shippingAddressDCBean", Functions.jsonString(shippingAddressDCBean));
+
+        reqBean.setBillingAddressDC(billingAddressDCBean);
+        reqBean.setShippingAddressDC(shippingAddressDCBean);
+        complexPreferences.putObject("placeOrderReq", reqBean);
+        complexPreferences.commit();
+
+        Intent i = new Intent(ShippingDetailsActivity.this, ConfirmOrderActivity.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
 
         /*addresses.clear();
         addressModels = new ArrayList<>();

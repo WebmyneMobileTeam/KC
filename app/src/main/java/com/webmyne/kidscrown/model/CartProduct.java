@@ -18,6 +18,16 @@ public class CartProduct {
 
     private int isSingleInt;
 
+    public int getSpecificId() {
+        return specificId;
+    }
+
+    public void setSpecificId(int specificId) {
+        this.specificId = specificId;
+    }
+
+    private int specificId;
+
     public int getMax() {
         return max;
     }

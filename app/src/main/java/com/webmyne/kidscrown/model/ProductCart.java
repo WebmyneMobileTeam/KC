@@ -10,6 +10,16 @@ public class ProductCart {
     int productQty;
     int maxQty;
 
+    public int getSpecificId() {
+        return specificId;
+    }
+
+    public void setSpecificId(int specificId) {
+        this.specificId = specificId;
+    }
+
+    int specificId;
+
     public int getPayPrice() {
         return payPrice;
     }

@@ -202,6 +202,16 @@ public class PlaceOrderResponse {
             private double TotalAmount;
             private List<ProductCalculationDCsBean> productCalculationDCs;
 
+            public double getTotalDiscount() {
+                return InvoiceDiscount + ProductDiscount;
+            }
+
+            public void setTotalDiscount(double totalDiscount) {
+                TotalDiscount = totalDiscount;
+            }
+
+            private double TotalDiscount = 0;
+
             public double getDeliveryCharge() {
                 return DeliveryCharge;
             }

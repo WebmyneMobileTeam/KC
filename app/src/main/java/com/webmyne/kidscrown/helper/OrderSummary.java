@@ -51,7 +51,7 @@ public class OrderSummary extends LinearLayout {
 
     }
 
-    public void setDetails(String productName, int quantity, int finalIntroPrice) {
+    public void setDetails(String productName, int quantity, double finalIntroPrice) {
         txtProductName.setText(productName);
         productQty.setText(quantity + "");
         productPrice.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(finalIntroPrice));
