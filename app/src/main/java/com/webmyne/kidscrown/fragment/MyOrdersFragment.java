@@ -17,8 +17,10 @@ import com.webmyne.kidscrown.adapters.OrderAdapter;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchOrderHistoryData;
 import com.webmyne.kidscrown.custom.EmptyLayout;
+import com.webmyne.kidscrown.custom.LineDividerItemDecoration;
 import com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
+import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.OrderHistoryModel;
@@ -35,7 +37,6 @@ public class MyOrdersFragment extends Fragment {
     private FamiliarRecyclerView orderListview;
     private LinearLayout linearParent;
     private TextView emptyOrder;
-    private String userId;
     private OrderAdapter adapter;
     private ArrayList<OrderHistoryModel> data;
     private ComplexPreferences complexPreferences;
@@ -65,15 +66,11 @@ public class MyOrdersFragment extends Fragment {
 
         init(view);
 
-        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
-        UserProfile currentUserObj = new UserProfile();
-        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
-        userId = String.valueOf(PrefUtils.getUserId(getActivity()));
-//        userId = "50073";
+        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), Constants.PREF_NAME, 0);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         orderListview.setLayoutManager(layoutManager);
-
+        orderListview.addItemDecoration(new LineDividerItemDecoration(getActivity()));
         data = new ArrayList<>();
         adapter = new OrderAdapter(getActivity(), data);
 
@@ -90,9 +87,11 @@ public class MyOrdersFragment extends Fragment {
                 // Log.e("order object", object.toString());
 //                complexPreferences.putObject("order", object);
 //                complexPreferences.commit();
+                complexPreferences.putObject("order", object);
+                complexPreferences.commit();
 
                 Intent orderIntent = new Intent(getActivity(), OrderDetailsActivity.class);
-                orderIntent.putExtra("order", object);
+               // orderIntent.putExtra("order", object);
                 startActivity(orderIntent);
 
             }

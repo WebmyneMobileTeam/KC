@@ -4,6 +4,7 @@ import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.URLConstants;
 import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.model.ContactUsResponseModel;
+import com.webmyne.kidscrown.model.CountryResponse;
 import com.webmyne.kidscrown.model.FinalOrderRequest;
 import com.webmyne.kidscrown.model.ForgetPasswordModelResponse;
 import com.webmyne.kidscrown.model.LoginModelRequest;
@@ -60,5 +61,9 @@ public interface AppApi {
 
     @GET(URLConstants.FORGOT_PASSWORD)
     Call<ForgetPasswordModelResponse> fetchForgotPasswordData(@Path("USERNAME") String USERNAME);
+
+    @GET(URLConstants.GET_STATE)
+    Call<CountryResponse> fetchState();
+
 
 }

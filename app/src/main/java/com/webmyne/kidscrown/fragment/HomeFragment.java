@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +21,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.adapters.ProductAdapter;
+import com.webmyne.kidscrown.api.AppApi;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchProducts;
 import com.webmyne.kidscrown.custom.EmptyLayout;
 import com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView;
+import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetPriceSlab;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
+import com.webmyne.kidscrown.helper.MyApplication;
 import com.webmyne.kidscrown.helper.PrefUtils;
+import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
+import com.webmyne.kidscrown.model.CountryResponse;
 import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
@@ -39,6 +45,10 @@ import com.webmyne.kidscrown.ui.ProductDetailActivity;
 import com.webmyne.kidscrown.ui.RefillActivityAnother;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -56,6 +66,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private ArrayList<Product> productList;
 
+    // state
+    private AppApi appApi;
+    private ComplexPreferences complexPreferences;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,6 +81,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     private void init() {
+        appApi = MyApplication.getRetrofit().create(AppApi.class);
+        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), Constants.PREF_NAME, 0);
 
         offerImage = (ImageView) parentView.findViewById(R.id.offerImage);
         txtDiscount = (TextView) parentView.findViewById(R.id.txtDiscount);
@@ -157,7 +173,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getOffers();
+        //getOffers();
 
     }
 
@@ -184,6 +200,15 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 productList.addAll(productResponse.getData());
                 adapter.setProducts(productResponse.getData());
                 handler.savePriceSlab(productResponse.getData());
+
+                if (!TextUtils.isEmpty(productResponse.getRootImage().getImage())) {
+                    offerLayout.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(productResponse.getRootImage().getImage()).into(offerImage);
+                } else {
+                    offerLayout.setVisibility(View.GONE);
+                }
+
+                fetchState();
             }
 
             @Override
@@ -192,6 +217,35 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             }
         });
 
+    }
+
+    private void fetchState() {
+        Call<CountryResponse> call = appApi.fetchState();
+        call.enqueue(new Callback<CountryResponse>() {
+            @Override
+            public void onResponse(Call<CountryResponse> call, Response<CountryResponse> response) {
+                if (response.isSuccessful()) {
+
+                    if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
+
+                        CountryResponse countryResponse = response.body();
+                        complexPreferences.putObject("state", countryResponse);
+                        complexPreferences.commit();
+
+                    } else {
+                        Functions.showToast(getActivity(), response.body().getResponse().getResponseMsg());
+                    }
+
+                } else {
+                    Functions.showToast(getActivity(), getActivity().getString(R.string.try_again));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CountryResponse> call, Throwable t) {
+                RetrofitErrorHelper.showErrorMsg(t, getActivity());
+            }
+        });
     }
 
     @Override

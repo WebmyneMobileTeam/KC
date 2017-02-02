@@ -32,7 +32,6 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="Address 1"
                     android:inputType="text"
-                    android:text="Address1"
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"
@@ -53,7 +52,6 @@
                     android:hint="Address 2"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:text="Address 2"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"
                     android:textSize="@dimen/M_TEXT" />
@@ -72,7 +70,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:hint="City"
-                    android:text="Vadodara"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/black"
@@ -80,6 +77,20 @@
                     android:textSize="@dimen/M_TEXT" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android:fontFamily="sans-serif-condensed"
+                android:text="State"
+                android:textSize="@dimen/S_TEXT" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/stateBillingSpinner"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -90,7 +101,6 @@
                     android:id="@+id/edtBillingPincode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="390025"
                     android:fontFamily="sans-serif-condensed"
                     android:hint="Pincode"
                     android:inputType="number"

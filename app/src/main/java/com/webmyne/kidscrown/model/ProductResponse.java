@@ -27,4 +27,26 @@ public class ProductResponse {
     public void setResponse(BaseResponse response) {
         Response = response;
     }
+
+    public Banner getRootImage() {
+        return RootImage;
+    }
+
+    public void setRootImage(Banner rootImage) {
+        RootImage = rootImage;
+    }
+
+    public Banner RootImage;
+
+    public class Banner {
+        public String getImage() {
+            return Image;
+        }
+
+        public void setImage(String image) {
+            Image = image;
+        }
+
+        private String Image;
+    }
 }

@@ -29,6 +29,7 @@ import com.webmyne.kidscrown.custom.QuantityView;
 import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetPriceSlab;
 import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
@@ -88,7 +89,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         position = getIntent().getIntExtra("position", 0);
         product = (Product) getIntent().getSerializableExtra("product");
 
-        Log.e("json", Functions.jsonString(product));
+       // Log.e("json", Functions.jsonString(product));
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -152,7 +153,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             Glide.with(ProductDetailActivity.this).load(product.getRootImage()).into(imageProduct);
         }
 
-        unitPrice = product.getPriceSlabDCs().get(0).getPrice();
+        //unitPrice = product.getPriceSlabDCs().get(0).getPrice();
+        // unitPrice = new GetPriceSlab(this).getRelevantPrice(product.getProductID(),userQty).getPrice();
 
         setPrice(userQty);
 
@@ -170,6 +172,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setPrice(int userQty) {
         quantityView.setQty(userQty);
+        unitPrice = new GetPriceSlab(this).getRelevantPrice(product.getProductID(), userQty).getPrice();
         txtPriceIndividual.setText(String.format(Locale.US, "%s %s", getString(R.string.Rs), Functions.priceFormat(unitPrice)));
         unitTotalPrice = unitPrice * userQty;
         txtPriceQTY.setText(String.format(Locale.US, " x %d", userQty));

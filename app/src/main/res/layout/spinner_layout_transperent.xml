@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/spID"
-    android:layout_width="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
-    android:background="@drawable/spinner_background_transperent"
-    android:drawableRight="@drawable/dropdown_arrow"
-    android:gravity="center"
-    android:lines="1"
-    android:padding="5dip"
-    android:paddingRight="16dp"
-    android:textSize="@dimen/S_TEXT_SIZE"
-    android:text="kdnfdfn"
-    android:textColor="@color/primaryColor" />
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/spinnerItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:padding="@dimen/m_8dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/M_TEXT" />
+
+</LinearLayout>

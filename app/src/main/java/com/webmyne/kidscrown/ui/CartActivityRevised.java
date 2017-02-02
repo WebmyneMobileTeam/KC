@@ -108,7 +108,9 @@ public class CartActivityRevised extends AppCompatActivity {
         adapter = new CrownCartAdapter(this, crownProducts, new CrownCartAdapter.onRemoveProductListener() {
             @Override
             public void removeProduct(String productName) {
-                handler.deleteCrown(productName);
+                Log.e("productName", productName);
+                handler.deleteCrownProduct(productName);
+               // handler.deleteCrown(productName);
                 fetchCart();
             }
         });
@@ -136,7 +138,7 @@ public class CartActivityRevised extends AppCompatActivity {
 
         crownIds = new ArrayList<>();
 
-        showProgress();
+        //showProgress();
 
         final PlaceOrderRequest request = new PlaceOrderRequest();
         request.setBillingAddressDC(new PlaceOrderRequest.BillingAddressDCBean());
@@ -154,7 +156,7 @@ public class CartActivityRevised extends AppCompatActivity {
             if (cartProducts.get(i).isSingle() == Constants.SINGLE) {
                 bean = new PlaceOrderRequest.PlaceOrderProductDCBean();
                 bean.setProductID(cartProducts.get(i).getProductId());
-                bean.setQuntity(cartProducts.get(i).getQty());
+                bean.setQuantity(cartProducts.get(i).getQty());
                 placeOrderProductDC.add(bean);
 
             } else {
@@ -168,12 +170,12 @@ public class CartActivityRevised extends AppCompatActivity {
                         crownCount += crownProducts.get(j).getQty();
                         PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX beanX = new PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX();
                         beanX.setProductSpecID(crownProducts.get(j).getSpecificId());
-                        beanX.setQuntity(crownProducts.get(j).getQty());
+                        beanX.setQuantity(crownProducts.get(j).getQty());
                         beanX.setRiffleName(crownProducts.get(j).getProductName());
                         crownDC.add(beanX);
                     }
                 }
-                bean.setQuntity(crownCount);
+                bean.setQuantity(crownCount);
                 bean.setPlaceOrderRiffileDC(crownDC);
                 if (!crownIds.contains(bean.getProductID())) {
                     placeOrderProductDC.add(bean);
@@ -187,7 +189,7 @@ public class CartActivityRevised extends AppCompatActivity {
         new PlaceOrderApi(this, new CommonRetrofitResponseListener() {
             @Override
             public void onSuccess(Object responseBody) {
-                hideProgress();
+               // hideProgress();
 
                 PlaceOrderResponse placeOrderResponse = (PlaceOrderResponse) responseBody;
                 Log.e("res", Functions.jsonString(placeOrderResponse));
@@ -204,7 +206,7 @@ public class CartActivityRevised extends AppCompatActivity {
 
             @Override
             public void onFail() {
-                hideProgress();
+              //  hideProgress();
             }
         }, request);
     }

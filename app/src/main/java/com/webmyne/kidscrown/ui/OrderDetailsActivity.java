@@ -41,13 +41,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private TextView txtPayable;
     private DecimalFormat formatter;
     private OrderHistoryModel model;
+    private TextView txtCustomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
 
-        model = (OrderHistoryModel) getIntent().getSerializableExtra("order");
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, Constants.PREF_NAME, 0);
+        model = new OrderHistoryModel();
+        model = complexPreferences.getObject("order", OrderHistoryModel.class);
 
         init();
 
@@ -56,7 +59,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setOrderDetails();
+       // setOrderDetails();
     }
 
     private void setOrderDetails() {
@@ -125,6 +128,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
         txtPayable = (TextView) findViewById(R.id.txtPayable);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar!=null){
+            toolbar.setTitle("");
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText("Order : " + model.getInvoiceNumber());
+        }
+        setSupportActionBar(toolbar);
+
         imgCart = (ImageView) findViewById(R.id.imgCartMenu);
         imgCart.setVisibility(View.GONE);
 
@@ -133,9 +143,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         orderObject = complexPreferences.getObject("order", OrderProduct.class);
         orderNumber = orderObject.OrderNumber;
 
-        Log.e("orderNumber", orderNumber);
-        toolbar.setTitle("Order : " + orderNumber);
-        setSupportActionBar(toolbar);
+        Log.e("orderNumber", model.getInvoiceNumber());
+        //toolbar.setTitle("Order : " + model.getInvoiceNumber());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

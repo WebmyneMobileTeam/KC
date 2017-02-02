@@ -24,4 +24,5 @@ public class URLConstants {
 
     public static final String FORGOT_PASSWORD = "User.svc/json/ForgotPassword/{USERNAME}";
 
+    public static final String GET_STATE = "Product.svc/json/GetStateList";
 }

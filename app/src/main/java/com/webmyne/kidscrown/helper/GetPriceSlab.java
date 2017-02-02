@@ -5,7 +5,6 @@ import android.content.Context;
 import com.webmyne.kidscrown.model.PriceSlab;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +18,7 @@ public class GetPriceSlab {
     private List<Integer> maxies;
     private PriceSlab priceSlab;
     private boolean isPass = false;
+    private int tempPos;
 
     public GetPriceSlab(Context context) {
         DatabaseHandler handler = new DatabaseHandler(context);
@@ -40,6 +40,7 @@ public class GetPriceSlab {
             maxies.add(tempPrices.get(j).getMaxQty());
             if (qty >= tempPrices.get(j).getMinQty() && qty <= tempPrices.get(j).getMaxQty()) {
                 priceSlab = tempPrices.get(j);
+                tempPos = j;
                 isPass = true;
                 break;
             } else {
@@ -48,9 +49,8 @@ public class GetPriceSlab {
         }
 
         if (!isPass) {
-            int tempPos = 0;
-            int max = Collections.max(maxies);
-            tempPos = maxies.indexOf(Integer.valueOf(max));
+            priceSlab = tempPrices.get(0);
+        } else {
             priceSlab = tempPrices.get(tempPos);
         }
 

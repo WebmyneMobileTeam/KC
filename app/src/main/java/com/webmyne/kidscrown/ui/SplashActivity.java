@@ -34,7 +34,6 @@ public class SplashActivity extends ActionBarActivity {
 
 //        printKeyHash(SplashActivity.this);
 
-
     }
 
     @Override

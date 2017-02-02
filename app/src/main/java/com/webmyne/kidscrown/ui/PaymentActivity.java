@@ -70,6 +70,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     ComplexPreferences complexPreferences;
     PlaceOrderResponse.DataBean resBean;
+    private TextView txtCustomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,9 @@ public class PaymentActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("Order Confirmation");
+            toolbar.setTitle("");
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText("Order Placed");
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }

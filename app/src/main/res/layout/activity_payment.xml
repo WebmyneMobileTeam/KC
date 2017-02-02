@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.webmyne.kidscrown.ui.PaymentActivity">
 
-    <include layout="@layout/app_bar2"></include>
+    <include layout="@layout/app_bar2" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,13 +25,9 @@
 
     <Button
         android:id="@+id/viewOrders"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MyButtonStyle"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:background="@drawable/mybutton"
-        android:text="View Orders"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/M_TEXT_SIZE"
-        android:textStyle="bold" />
+        android:layout_marginTop="@dimen/m_8dp"
+        android:text="View Orders" />
+
 </RelativeLayout>

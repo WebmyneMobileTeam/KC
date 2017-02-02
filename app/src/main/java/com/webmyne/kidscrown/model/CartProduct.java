@@ -1,10 +1,12 @@
 package com.webmyne.kidscrown.model;
 
+import java.io.Serializable;
+
 /**
  * Created by sagartahelyani on 25-01-2017.
  */
 
-public class CartProduct {
+public class CartProduct implements Serializable{
 
     private int productId;
 

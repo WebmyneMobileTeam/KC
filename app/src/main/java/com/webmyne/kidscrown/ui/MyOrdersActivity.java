@@ -1,28 +1,21 @@
 package com.webmyne.kidscrown.ui;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.fragment.HomeFragment;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
-import com.webmyne.kidscrown.helper.Functions;
 
 public class MyOrdersActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private ImageView imgCart;
+    private TextView txtCustomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +32,16 @@ public class MyOrdersActivity extends AppCompatActivity {
     }
 
     private void init() {
-        imgCart = (ImageView) findViewById(R.id.imgCartMenu);
-        imgCart.setVisibility(View.GONE);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("My Orders");
+            toolbar.setTitle("");
+            txtCustomTitle = (TextView) toolbar.findViewById(R.id.txtCustomTitle);
+            txtCustomTitle.setText("My Orders");
             setSupportActionBar(toolbar);
         }
 
-        toolbar.setNavigationIcon(R.drawable.ic_home);
+        //toolbar.setNavigationIcon(R.drawable.ic_home);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

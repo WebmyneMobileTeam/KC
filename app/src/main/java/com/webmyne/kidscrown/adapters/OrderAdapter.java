@@ -2,7 +2,6 @@ package com.webmyne.kidscrown.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ProductHolde
     public OrderAdapter(Context context, ArrayList<OrderHistoryModel> data) {
         this.context = context;
         this.data = data;
-        formatter = new DecimalFormat("#,##,###");
+        formatter = new DecimalFormat("#,##,###.##");
     }
 
     @Override
@@ -75,20 +74,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ProductHolde
 
         private void setOrders(OrderHistoryModel oreder, int position) {
 
-            txtOrderId.setText("Order No. " + oreder.getOrderNumber());
+            txtOrderId.setText("Invoice Number " + oreder.getInvoiceNumber());
             txtOrderDate.setText(oreder.getOrderDate());
-            txtAmount.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(oreder.getPayableAmount()));
+            txtAmount.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(oreder.getTotalAmount()));
 
-            if (oreder.isPaymentComplete()) {
-                txtPaymentStatus.setText("Payment Done");
-            } else {
-                txtPaymentStatus.setText("Payment Pending");
-            }
+            txtPaymentStatus.setText(oreder.getStatus());
 
-            if (oreder.getTaxAmount() == 0) {
-                txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " 0");
+            if (oreder.getShippingCost() == 0) {
+                txtShipping.setText("Shipping Charge Free");
             } else {
-                txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " " + oreder.getTaxAmount());
+                txtShipping.setText("Shipping Charge " + context.getResources().getString(R.string.Rs) + " " + oreder.getShippingCost());
             }
 
         }

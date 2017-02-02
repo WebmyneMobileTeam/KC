@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -34,6 +36,7 @@ import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.BillingAndShippingAddress;
+import com.webmyne.kidscrown.model.CountryResponse;
 import com.webmyne.kidscrown.model.PlaceOrderRequest;
 import com.webmyne.kidscrown.model.PlaceOrderResponse;
 import com.webmyne.kidscrown.model.StateModel;
@@ -72,6 +75,9 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     private TextView txtCustomTitle;
     private RelativeLayout shippingLayout, billingLayout;
     private ComplexPreferences complexPreferences;
+    private AppCompatSpinner stateShippingSpinner, stateBillingSpinner;
+    private CountryResponse countryResponse;
+    private int billingState = 0, shippingState = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         complexPreferences = ComplexPreferences.getComplexPreferences(ShippingDetailsActivity.this, Constants.PREF_NAME, 0);
         resBean = complexPreferences.getObject("placeOrderRes", PlaceOrderResponse.DataBean.class);
         reqBean = complexPreferences.getObject("placeOrderReq", PlaceOrderRequest.class);
+        countryResponse = complexPreferences.getObject("state", CountryResponse.class);
 
         currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
 
@@ -119,6 +126,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     }
 
     private void displayAddress() {
+
         edtShippingAddress1.setText(resBean.getShippingAddressDC().getAddress1());
         edtShippingAddress2.setText(resBean.getShippingAddressDC().getAddress2());
         edtShippingCity.setText(resBean.getShippingAddressDC().getCity());
@@ -161,6 +169,40 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         shippingLayout = (RelativeLayout) findViewById(R.id.shippingLayout);
         billingLayout = (RelativeLayout) findViewById(R.id.billingLayout);
         shippingLayout.setVisibility(View.GONE);
+
+        stateShippingSpinner = (AppCompatSpinner) findViewById(R.id.stateShippingSpinner);
+        stateBillingSpinner = (AppCompatSpinner) findViewById(R.id.stateBillingSpinner);
+
+        stateShippingSpinner.setAdapter(new StateSpinnerAdapter(ShippingDetailsActivity.this, R.layout.spinner_layout_transperent, countryResponse.getData()));
+        stateBillingSpinner.setAdapter(new StateSpinnerAdapter(ShippingDetailsActivity.this, R.layout.spinner_layout_transperent, countryResponse.getData()));
+
+        stateBillingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                CountryResponse.DataBean selectedDataBean = countryResponse.getData().get(i);
+                billingStateId = selectedDataBean.getStateID();
+                Log.e("billingStateId", billingStateId + "$$");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        stateShippingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                CountryResponse.DataBean selectedDataBean = countryResponse.getData().get(i);
+                shippingStateId = selectedDataBean.getStateID();
+                Log.e("shippingStateId", shippingStateId + "$$");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         linearParent = (LinearLayout) findViewById(R.id.linearParent);
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
@@ -259,16 +301,39 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                     edtShippingPincode.setEnabled(false);
                     edtShippingPincode.setText(edtBillingPincode.getText().toString().trim());
 
+                    stateShippingSpinner.setEnabled(false);
+                    if (billingStateId != 0) {
+                        stateShippingSpinner.setSelection(getIndex(countryResponse.getData(), billingStateId));
+                        shippingStateId = billingStateId;
+                    } else {
+                        stateShippingSpinner.setSelection(0);
+                    }
+
+                    Log.e("billingStateId", billingStateId + "$$");
+                    Log.e("shippingStateId", shippingStateId + "$$");
+
+
                 } else {
                     sameAsBilling = false;
                     edtShippingAddress1.setEnabled(true);
                     edtShippingAddress2.setEnabled(true);
                     edtShippingCity.setEnabled(true);
                     edtShippingPincode.setEnabled(true);
+                    stateShippingSpinner.setEnabled(true);
                 }
             }
         });
 
+    }
+
+    private int getIndex(List<CountryResponse.DataBean> states, int stateId) {
+        int index = 0;
+        for (int i = 0; i < states.size(); i++) {
+            if (states.get(i).getStateID() == stateId) {
+                index = i;
+            }
+        }
+        return index;
     }
 
     @Override
@@ -339,6 +404,9 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         billingAddressDCBean.setIsUpdated(true);
         billingAddressDCBean.setMobileNo(PrefUtils.getUserProfile(this).getMobileNo());
         billingAddressDCBean.setPinCode(Functions.getStr(edtBillingPincode));
+
+        billingStateId = ((CountryResponse.DataBean)stateBillingSpinner.getSelectedItem()).getStateID();
+        billingAddressDCBean.setStateID(billingStateId);
         Log.e("billingAddressDCBean", Functions.jsonString(billingAddressDCBean));
 
         // set shipping address
@@ -350,6 +418,9 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         shippingAddressDCBean.setIsUpdated(true);
         shippingAddressDCBean.setMobileNo(PrefUtils.getUserProfile(this).getMobileNo());
         shippingAddressDCBean.setPinCode(Functions.getStr(edtShippingPincode));
+
+        shippingStateId = ((CountryResponse.DataBean)stateBillingSpinner.getSelectedItem()).getStateID();
+        shippingAddressDCBean.setStateID(shippingStateId);
         Log.e("shippingAddressDCBean", Functions.jsonString(shippingAddressDCBean));
 
         reqBean.setBillingAddressDC(billingAddressDCBean);
@@ -419,7 +490,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
     private void loadStateSpinner() {
         DatabaseHandler handler = new DatabaseHandler(ShippingDetailsActivity.this);
         states = handler.getStates();
-        StateSpinnerAdapter adapter = new StateSpinnerAdapter(ShippingDetailsActivity.this, states, R.layout.spinner_layout_transperent, R.layout.spinner_dropview_layout);
+        // StateSpinnerAdapter adapter = new StateSpinnerAdapter(ShippingDetailsActivity.this, states, R.layout.spinner_layout_transperent, R.layout.spinner_dropview_layout);
     }
 
     @Override

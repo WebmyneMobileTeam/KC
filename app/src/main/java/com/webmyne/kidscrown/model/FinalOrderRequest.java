@@ -13,8 +13,8 @@ public class FinalOrderRequest {
      * MobileOS : String content
      * UserID : 9223372036854775807
      * billingAddressDC : {"Address1":"String content","Address2":"String content","BillingAddressID":9223372036854775807,"City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content"}
-     * placeOrderCalculationDC : {"DeliveryCharge":1.2678967543233E7,"InvoiceDiscount":1.2678967543233E7,"InvoiceDiscountID":9223372036854775807,"PayableAmount":1.2678967543233E7,"ProductDiscount":1.2678967543233E7,"TotalAmount":1.2678967543233E7,"productCalculationDCs":[{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quntity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]}]}
-     * placeOrderProductDC : [{"ProductID":9223372036854775807,"Quntity":2147483647,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]}]
+     * placeOrderCalculationDC : {"DeliveryCharge":1.2678967543233E7,"InvoiceDiscount":1.2678967543233E7,"InvoiceDiscountID":9223372036854775807,"PayableAmount":1.2678967543233E7,"ProductDiscount":1.2678967543233E7,"TotalAmount":1.2678967543233E7,"productCalculationDCs":[{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quantity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]}]}
+     * placeOrderProductDC : [{"ProductID":9223372036854775807,"Quantity":2147483647,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]}]
      * shippingAddressDC : {"Address1":"String content","Address2":"String content","City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content","ShippingAddressID":9223372036854775807}
      */
 
@@ -202,7 +202,7 @@ public class FinalOrderRequest {
          * PayableAmount : 1.2678967543233E7
          * ProductDiscount : 1.2678967543233E7
          * TotalAmount : 1.2678967543233E7
-         * productCalculationDCs : [{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quntity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]}]
+         * productCalculationDCs : [{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quantity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]}]
          */
 
 
@@ -278,7 +278,7 @@ public class FinalOrderRequest {
                 PriceID = 0;
                 ProductID = 0;
                 ProductName = "";
-                Quntity = 0;
+                Quantity = 0;
                 TotalPrice = 0.0;
                 placeOrderRiffileDC = new ArrayList<>();
                 placeOrderRiffileDC.add(new PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean.PlaceOrderRiffileDCBean());
@@ -291,9 +291,9 @@ public class FinalOrderRequest {
              * PriceID : 9223372036854775807
              * ProductID : 9223372036854775807
              * ProductName : String content
-             * Quntity : 2147483647
+             * Quantity : 2147483647
              * TotalPrice : 1.2678967543233E7
-             * placeOrderRiffileDC : [{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]
+             * placeOrderRiffileDC : [{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]
              */
 
 
@@ -303,7 +303,7 @@ public class FinalOrderRequest {
             private long PriceID;
             private long ProductID;
             private String ProductName;
-            private int Quntity;
+            private int Quantity;
             private double TotalPrice;
             private List<PlaceOrderRequest.PlaceOrderCalculationDCBean.ProductCalculationDCsBean.PlaceOrderRiffileDCBean> placeOrderRiffileDC;
 
@@ -355,12 +355,12 @@ public class FinalOrderRequest {
                 this.ProductName = ProductName;
             }
 
-            public int getQuntity() {
-                return Quntity;
+            public int getQuantity() {
+                return Quantity;
             }
 
-            public void setQuntity(int Quntity) {
-                this.Quntity = Quntity;
+            public void setQuantity(int Quantity) {
+                this.Quantity = Quantity;
             }
 
             public double getTotalPrice() {
@@ -382,18 +382,18 @@ public class FinalOrderRequest {
             public static class PlaceOrderRiffileDCBean {
                 public PlaceOrderRiffileDCBean() {
                     ProductSpecID = 0;
-                    Quntity = 0;
+                    Quantity = 0;
                     RiffleName = "";
                 }
 
                 /**
                  * ProductSpecID : 9223372036854775807
-                 * Quntity : 2147483647
+                 * Quantity : 2147483647
                  * RiffleName : String content
                  */
 
                 private long ProductSpecID;
-                private int Quntity;
+                private int Quantity;
                 private String RiffleName;
 
                 public long getProductSpecID() {
@@ -404,12 +404,12 @@ public class FinalOrderRequest {
                     this.ProductSpecID = ProductSpecID;
                 }
 
-                public int getQuntity() {
-                    return Quntity;
+                public int getQuantity() {
+                    return Quantity;
                 }
 
-                public void setQuntity(int Quntity) {
-                    this.Quntity = Quntity;
+                public void setQuantity(int Quantity) {
+                    this.Quantity = Quantity;
                 }
 
                 public String getRiffleName() {
@@ -539,12 +539,12 @@ public class FinalOrderRequest {
     public static class PlaceOrderProductDCBean {
         /**
          * ProductID : 9223372036854775807
-         * Quntity : 2147483647
-         * placeOrderRiffileDC : [{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]
+         * Quantity : 2147483647
+         * placeOrderRiffileDC : [{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]
          */
 
         private int ProductID;
-        private int Quntity;
+        private int Quantity;
         private List<PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX> placeOrderRiffileDC;
 
         public int getProductID() {
@@ -555,12 +555,12 @@ public class FinalOrderRequest {
             this.ProductID = ProductID;
         }
 
-        public int getQuntity() {
-            return Quntity;
+        public int getQuantity() {
+            return Quantity;
         }
 
-        public void setQuntity(int Quntity) {
-            this.Quntity = Quntity;
+        public void setQuantity(int Quantity) {
+            this.Quantity = Quantity;
         }
 
         public List<PlaceOrderRequest.PlaceOrderProductDCBean.PlaceOrderRiffileDCBeanX> getPlaceOrderRiffileDC() {
@@ -574,12 +574,12 @@ public class FinalOrderRequest {
         public static class PlaceOrderRiffileDCBeanX {
             /**
              * ProductSpecID : 9223372036854775807
-             * Quntity : 2147483647
+             * Quantity : 2147483647
              * RiffleName : String content
              */
 
             private long ProductSpecID;
-            private int Quntity;
+            private int Quantity;
             private String RiffleName;
 
             public long getProductSpecID() {
@@ -590,12 +590,12 @@ public class FinalOrderRequest {
                 this.ProductSpecID = ProductSpecID;
             }
 
-            public int getQuntity() {
-                return Quntity;
+            public int getQuantity() {
+                return Quantity;
             }
 
-            public void setQuntity(int Quntity) {
-                this.Quntity = Quntity;
+            public void setQuantity(int Quantity) {
+                this.Quantity = Quantity;
             }
 
             public String getRiffleName() {

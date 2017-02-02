@@ -1,6 +1,7 @@
 package com.webmyne.kidscrown.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Constants;
@@ -50,13 +51,13 @@ public class PlaceOrderApi {
     }
 
     private void doCallPlaceOrder() {
-       // showProgress();
+        showProgress();
 
         Call<PlaceOrderResponse> call = appApi.placeOrder(placeOrderRequest);
         call.enqueue(new Callback<PlaceOrderResponse>() {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
-               // hideProgress();
+                hideProgress();
 
                 if (response.isSuccessful()) {
 
@@ -75,7 +76,7 @@ public class PlaceOrderApi {
 
             @Override
             public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
-              //  hideProgress();
+                hideProgress();
 
                 commonRetrofitResponseListener.onFail();
 
@@ -86,15 +87,17 @@ public class PlaceOrderApi {
     }
 
     private void doCallPlaceOrderFinal() {
-        // showProgress();
+        showProgress();
 
         Call<PlaceOrderResponse> call = appApi.placeOrderFinal(finalOrderRequest);
         call.enqueue(new Callback<PlaceOrderResponse>() {
             @Override
             public void onResponse(Call<PlaceOrderResponse> call, Response<PlaceOrderResponse> response) {
-                // hideProgress();
+                hideProgress();
 
                 if (response.isSuccessful()) {
+
+                    Log.e("main_res", Functions.jsonString(response.body()));
 
                     if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
 
@@ -111,7 +114,7 @@ public class PlaceOrderApi {
 
             @Override
             public void onFailure(Call<PlaceOrderResponse> call, Throwable t) {
-                //  hideProgress();
+                hideProgress();
 
                 commonRetrofitResponseListener.onFail();
 

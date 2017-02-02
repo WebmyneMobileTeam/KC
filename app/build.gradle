@@ -8,8 +8,8 @@ android {
         applicationId "com.webmyne.kidscrown"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 11
-        versionName "1.9.1"
+        versionCode 20
+        versionName "2.0"
         multiDexEnabled true
     }
     buildTypes {

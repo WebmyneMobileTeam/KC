@@ -147,7 +147,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 productName = bean.getProductName() + "\n" + sb.toString();
             }
 
-            summary.setDetails(productName, bean.getQuntity(), bean.getTotalPrice());
+            summary.setDetails(productName, bean.getQuantity(), bean.getTotalPrice());
             orderSummaryLayout.addView(summary, params);
         }
 
@@ -291,6 +291,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     }
 
     private void init() {
+        handler = new DatabaseHandler(ConfirmOrderActivity.this);
         formatter = new DecimalFormat("#,##,###");
 
         offerLayout = (LinearLayout) findViewById(R.id.offerLayout);
@@ -374,7 +375,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                showProgress();
+               // showProgress();
 
                 FinalOrderRequest orderRequest = new FinalOrderRequest();
                 orderRequest.setMobileOS("A");
@@ -391,13 +392,15 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 new PlaceOrderApi(ConfirmOrderActivity.this, new CommonRetrofitResponseListener() {
                     @Override
                     public void onSuccess(Object responseBody) {
-                        hideProgress();
+                     //   hideProgress();
 
                         PlaceOrderResponse placeOrderResponse = (PlaceOrderResponse) responseBody;
                         Log.e("final_res", Functions.jsonString(placeOrderResponse));
 
                         complexPreferences.putObject("placeOrderRes", placeOrderResponse.getData());
                         complexPreferences.commit();
+
+                        handler.deleteCart();
 
                         Intent i = new Intent(ConfirmOrderActivity.this, PaymentActivity.class);
                         startActivity(i);
@@ -406,7 +409,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
                     @Override
                     public void onFail() {
-                        hideProgress();
+                      //  hideProgress();
                     }
                 }, orderRequest);
             }

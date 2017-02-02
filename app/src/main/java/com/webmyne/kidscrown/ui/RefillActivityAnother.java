@@ -27,6 +27,7 @@ import com.webmyne.kidscrown.adapters.RefillOrderAdapterAnother;
 import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetPriceSlab;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.CartProduct;
@@ -195,7 +196,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     @Override
     protected void onResume() {
         super.onResume();
-
+        fetchCartCrowns();
     }
 
     private void fetchCartCrowns() {
@@ -324,8 +325,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         crownSetLayout.invalidate();
 
         fetchCrowns();
-
-        fetchCartCrowns();
     }
 
     private void fetchCrowns() {
@@ -347,16 +346,6 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
             crownSetLayout.addView(crownQuadrantAnother, params);
             crownQuadrantAnother.setupCrowns(values);
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        fetchDetails();
-        //fetchCrownPricing();
-        helper.displayBadge();
-        fetchCartCrowns();
     }
 
     private void fillNumberPad() {
@@ -393,10 +382,9 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 totalCrowns += item.itemQty;
             }
 
-            boolean isPass = false;
-            List<Integer> maxies = new ArrayList<>();
+            unitPrice = new GetPriceSlab(this).getRelevantPrice(product.getProductID(), totalCrowns).getPrice();
 
-            if (totalCrowns != 0) {
+           /* if (totalCrowns != 0) {
 
                 for (int k = 0; k < priceSlabs.size(); k++) {
 
@@ -417,7 +405,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 int max = Collections.max(maxies);
                 tempPos = maxies.indexOf(Integer.valueOf(max));
                 unitPrice = priceSlabs.get(tempPos).getPrice();
-            }
+            }*/
 
             Log.e("unit_price", unitPrice + " ---");
 
@@ -512,6 +500,8 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         }
 
         //helper.displayBadge();
+        if (badgeCart != null)
+            badgeCart.displayBadge(handler.getTotalProducts());
     }
 
     @Override
@@ -522,6 +512,18 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         badgeCart.displayBadge(handler.getTotalProducts());
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cart:
+                Functions.fireIntent(RefillActivityAnother.this, CartActivityRevised.class);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void addCart() {

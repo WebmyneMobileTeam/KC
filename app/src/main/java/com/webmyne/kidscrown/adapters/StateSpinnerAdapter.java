@@ -5,12 +5,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.SpinnerAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.model.StateModel;
+import com.webmyne.kidscrown.model.CountryResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,25 +17,26 @@ import java.util.List;
 /**
  * Created by Android on 14-07-2015.
  */
-public class StateSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-    LayoutInflater layoutInflator;
-    public List<StateModel> stateList = new ArrayList<StateModel>();
-    Context ctx;
-    int mainSpinnerView, dropSpinnerView;
+public class StateSpinnerAdapter extends ArrayAdapter<CountryResponse.DataBean> {
 
-    public StateSpinnerAdapter(Context context, List<StateModel> list, int mainView, int dropView) {
+    LayoutInflater inflater;
+    public List<CountryResponse.DataBean> stateList = new ArrayList<CountryResponse.DataBean>();
+    Context ctx;
+    int textViewResourceId;
+
+    public StateSpinnerAdapter(Context context, int textViewResourceId, List<CountryResponse.DataBean> list) {
+        super(context, textViewResourceId);
         this.stateList = list;
         ctx = context;
-        mainSpinnerView = mainView;
-        dropSpinnerView = dropView;
-
+        this.textViewResourceId = textViewResourceId;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
         return stateList.size();
     }
 
-    public Object getItem(int i) {
+    public CountryResponse.DataBean getItem(int i) {
         return stateList.get(i);
     }
 
@@ -47,36 +47,21 @@ public class StateSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return getCustomView(position, parent);
+    }
 
-        layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = convertView;
+    private View getCustomView(int position, ViewGroup parent) {
+        View convertView = inflater.inflate(textViewResourceId, parent, false);
 
-        view = layoutInflator.inflate(dropSpinnerView, parent, false);
+        TextView txtItem = (TextView) convertView.findViewById(R.id.spinnerItem);
+        txtItem.setText(stateList.get(position).getStateName());
 
-        TextView txt = (TextView) view.findViewById(R.id.spID);
-
-        txt.setPadding(6, 12, 12, 12);
-        txt.setTextSize(ctx.getResources().getDimension(R.dimen.SPINNER_TEXT));
-        txt.setGravity(Gravity.CENTER_VERTICAL);
-        txt.setText(stateList.get(position).state_name);
-
-        return view;
+        return convertView;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewgroup) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = convertView;
-
-        view = layoutInflator.inflate(mainSpinnerView, viewgroup, false);
-
-        TextView txt = (TextView) view.findViewById(R.id.spID);
-
-        txt.setGravity(Gravity.CENTER_VERTICAL);
-        txt.setPadding(2, 12, 12, 12);
-        txt.setTextSize(ctx.getResources().getDimension(R.dimen.SPINNER_TEXT));
-        txt.setText(stateList.get(position).state_name);
-        return view;
+        return getCustomView(position, parent);
     }
 }

@@ -15,6 +15,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.custom.QuantityView;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
+import com.webmyne.kidscrown.helper.GetPriceSlab;
 import com.webmyne.kidscrown.model.CartProduct;
 
 import java.util.Locale;
@@ -96,11 +97,11 @@ public class ItemCartView extends LinearLayout {
         quantityView.setOnQtyChangeListener(new QuantityView.OnQtyChangeListener() {
             @Override
             public void onChange(int qty) {
-                Log.e("qty", qty + "");
                 txtQTY.setText(String.format(Locale.US, "%s %d", " x ", qty));
-                int totalPrice = cartProduct.getUnitPrice() * qty;
+                int unitPrice = new GetPriceSlab(context).getRelevantPrice(cartProduct.getProductId(), qty).getPrice();
+                int totalPrice = unitPrice * qty;
                 txtPriceTotal.setText(String.format(Locale.US, " = %s %s", context.getString(R.string.Rs), Functions.priceFormat(totalPrice)));
-                handler.updateCart(qty, totalPrice, cartProduct.getProductId());
+                handler.updateCart(qty, unitPrice, cartProduct.getProductId());
                 if (onValueChangeListener != null) {
                     onValueChangeListener.onChange();
                 }

@@ -95,7 +95,7 @@ public class CrownCartAdapter extends RecyclerView.Adapter<CrownCartAdapter.Prod
                 context);
         alertDialogBuilder.setTitle("Remove product");
         alertDialogBuilder
-                .setMessage("Are yousure want to remove this product from cart?")
+                .setMessage("Are you sure want to remove this product from cart?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

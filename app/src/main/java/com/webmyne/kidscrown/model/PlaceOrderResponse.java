@@ -9,7 +9,7 @@ import java.util.List;
 public class PlaceOrderResponse {
 
     /**
-     * Data : {"UserID":9223372036854775807,"billingAddressDC":{"Address1":"String content","Address2":"String content","BillingAddressID":9223372036854775807,"City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content"},"placeOrderCalculationDC":{"DeliveryCharge":1.2678967543233E7,"InvoiceDiscount":1.2678967543233E7,"InvoiceDiscountID":9223372036854775807,"PayableAmount":1.2678967543233E7,"ProductDiscount":1.2678967543233E7,"TotalAmount":1.2678967543233E7,"productCalculationDCs":[{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quntity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]}]},"placeOrderSuccessDetailsDC":{"BankDetails":"String content","InvoiceNumber":"String content"},"shippingAddressDC":{"Address1":"String content","Address2":"String content","City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content","ShippingAddressID":9223372036854775807}}
+     * Data : {"UserID":9223372036854775807,"billingAddressDC":{"Address1":"String content","Address2":"String content","BillingAddressID":9223372036854775807,"City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content"},"placeOrderCalculationDC":{"DeliveryCharge":1.2678967543233E7,"InvoiceDiscount":1.2678967543233E7,"InvoiceDiscountID":9223372036854775807,"PayableAmount":1.2678967543233E7,"ProductDiscount":1.2678967543233E7,"TotalAmount":1.2678967543233E7,"productCalculationDCs":[{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quantity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]}]},"placeOrderSuccessDetailsDC":{"BankDetails":"String content","InvoiceNumber":"String content"},"shippingAddressDC":{"Address1":"String content","Address2":"String content","City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content","ShippingAddressID":9223372036854775807}}
      * Response : {"ResponseCode":2147483647,"ResponseMsg":"String content"}
      */
 
@@ -36,7 +36,7 @@ public class PlaceOrderResponse {
         /**
          * UserID : 9223372036854775807
          * billingAddressDC : {"Address1":"String content","Address2":"String content","BillingAddressID":9223372036854775807,"City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content"}
-         * placeOrderCalculationDC : {"DeliveryCharge":1.2678967543233E7,"InvoiceDiscount":1.2678967543233E7,"InvoiceDiscountID":9223372036854775807,"PayableAmount":1.2678967543233E7,"ProductDiscount":1.2678967543233E7,"TotalAmount":1.2678967543233E7,"productCalculationDCs":[{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quntity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]}]}
+         * placeOrderCalculationDC : {"DeliveryCharge":1.2678967543233E7,"InvoiceDiscount":1.2678967543233E7,"InvoiceDiscountID":9223372036854775807,"PayableAmount":1.2678967543233E7,"ProductDiscount":1.2678967543233E7,"TotalAmount":1.2678967543233E7,"productCalculationDCs":[{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quantity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]}]}
          * placeOrderSuccessDetailsDC : {"BankDetails":"String content","InvoiceNumber":"String content"}
          * shippingAddressDC : {"Address1":"String content","Address2":"String content","City":"String content","Country":"String content","Email":"String content","IsUpdated":true,"MobileNo":"String content","PinCode":"String content","ShippingAddressID":9223372036854775807}
          */
@@ -191,7 +191,7 @@ public class PlaceOrderResponse {
              * PayableAmount : 1.2678967543233E7
              * ProductDiscount : 1.2678967543233E7
              * TotalAmount : 1.2678967543233E7
-             * productCalculationDCs : [{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quntity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]}]
+             * productCalculationDCs : [{"Discount":1.2678967543233E7,"IsSingle":true,"Price":1.2678967543233E7,"PriceID":9223372036854775807,"ProductID":9223372036854775807,"ProductName":"String content","Quantity":2147483647,"TotalPrice":1.2678967543233E7,"placeOrderRiffileDC":[{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]}]
              */
 
             private double DeliveryCharge;
@@ -276,9 +276,9 @@ public class PlaceOrderResponse {
                  * PriceID : 9223372036854775807
                  * ProductID : 9223372036854775807
                  * ProductName : String content
-                 * Quntity : 2147483647
+                 * Quantity : 2147483647
                  * TotalPrice : 1.2678967543233E7
-                 * placeOrderRiffileDC : [{"ProductSpecID":9223372036854775807,"Quntity":2147483647,"RiffleName":"String content"}]
+                 * placeOrderRiffileDC : [{"ProductSpecID":9223372036854775807,"Quantity":2147483647,"RiffleName":"String content"}]
                  */
 
                 private double Discount;
@@ -287,7 +287,7 @@ public class PlaceOrderResponse {
                 private long PriceID;
                 private long ProductID;
                 private String ProductName;
-                private int Quntity;
+                private int Quantity;
                 private double TotalPrice;
                 private List<PlaceOrderRiffileDCBean> placeOrderRiffileDC;
 
@@ -339,12 +339,12 @@ public class PlaceOrderResponse {
                     this.ProductName = ProductName;
                 }
 
-                public int getQuntity() {
-                    return Quntity;
+                public int getQuantity() {
+                    return Quantity;
                 }
 
-                public void setQuntity(int Quntity) {
-                    this.Quntity = Quntity;
+                public void setQuantity(int Quantity) {
+                    this.Quantity = Quantity;
                 }
 
                 public double getTotalPrice() {
@@ -366,12 +366,12 @@ public class PlaceOrderResponse {
                 public static class PlaceOrderRiffileDCBean {
                     /**
                      * ProductSpecID : 9223372036854775807
-                     * Quntity : 2147483647
+                     * Quantity : 2147483647
                      * RiffleName : String content
                      */
 
                     private long ProductSpecID;
-                    private int Quntity;
+                    private int Quantity;
                     private String RiffleName;
 
                     public long getProductSpecID() {
@@ -382,12 +382,12 @@ public class PlaceOrderResponse {
                         this.ProductSpecID = ProductSpecID;
                     }
 
-                    public int getQuntity() {
-                        return Quntity;
+                    public int getQuantity() {
+                        return Quantity;
                     }
 
-                    public void setQuntity(int Quntity) {
-                        this.Quntity = Quntity;
+                    public void setQuantity(int Quantity) {
+                        this.Quantity = Quantity;
                     }
 
                     public String getRiffleName() {
