@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,10 +31,8 @@ import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetPriceSlab;
 import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.Product;
-import com.webmyne.kidscrown.ui.widgets.ComboSeekBar;
 import com.webmyne.kidscrown.ui.widgets.FlowLayout;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class ProductDetailActivity extends AppCompatActivity {
@@ -48,10 +45,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private TextView txtPriceIndividual;
     private TextView txtPriceQTY;
     private TextView txtPriceTotal;
-    private int price = 0;
-    ArrayList<String> values;
     private FlowLayout flowImages;
-    int qty;
 
     private Product product;
     private int position;
@@ -89,8 +83,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         position = getIntent().getIntExtra("position", 0);
         product = (Product) getIntent().getSerializableExtra("product");
 
-       // Log.e("json", Functions.jsonString(product));
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,6 +95,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
         imageProduct = (ImageView) findViewById(R.id.backdrop);
         fabShop = (FloatingActionButton) findViewById(R.id.fabShop);
         fabShop.setRippleColor(ContextCompat.getColor(this, R.color.quad_green));
@@ -123,13 +116,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         imageProduct.setBackgroundColor(Functions.getBgColor(ProductDetailActivity.this, position));
         collapsingToolbar.setContentScrimColor(Functions.getBgColor(ProductDetailActivity.this, position));
 
-        values = new ArrayList<>();
-        values.add("" + product.getOrderLimit());
-
         txtInfo.setText(product.getDescription());
 
         if (checkCart(product.getProductID())) {
-            myFabSrc = ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.ic_action_order);
+            myFabSrc = ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.ic_action_cart);
             userQty = handler.getQty(product.getProductID());
         } else {
             userQty = product.getPriceSlabDCs().get(0).getMinQty();
@@ -152,9 +142,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(product.getRootImage())) {
             Glide.with(ProductDetailActivity.this).load(product.getRootImage()).into(imageProduct);
         }
-
-        //unitPrice = product.getPriceSlabDCs().get(0).getPrice();
-        // unitPrice = new GetPriceSlab(this).getRelevantPrice(product.getProductID(),userQty).getPrice();
 
         setPrice(userQty);
 
@@ -214,7 +201,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     handler.addToCart(cartProduct);
                     Functions.showToast(ProductDetailActivity.this, "Added to Cart");
 
-                    Drawable myFabSrc = ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.ic_action_order);
+                    Drawable myFabSrc = ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.ic_action_cart);
                     Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
                     willBeWhite.mutate().setColorFilter(Functions.getBgColor(ProductDetailActivity.this, position), PorterDuff.Mode.MULTIPLY);
                     fabShop.setImageDrawable(willBeWhite);
@@ -275,41 +262,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     };
 
-    private void displayQTYandTotal(int position) {
-        txtPriceQTY.setText(String.format("x %s QTY", values.get(position)));
-        qty = Integer.parseInt(values.get(position));
-        int total = price * qty;
-        txtPriceTotal.setText(String.format("= Rs.%s", Functions.priceFormat(total)));
-    }
-
     private boolean checkCart(int productID) {
-        DatabaseHandler handler = new DatabaseHandler(ProductDetailActivity.this);
-        boolean available = handler.ifExists(productID);
-
-        /*Log.e("available in cart", available + "");
-
-        if (available) {
-            added = true;
-            Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_order);
-            Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
-            willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
-            fabShop.setImageDrawable(willBeWhite);
-
-            displayQTYandTotal(handler.getQty(productID) - 1);
-            combo.setSelection(handler.getQty(productID) - 1);
-
-        } else {
-            added = false;
-
-            displayQTYandTotal(0);
-            combo.setSelection(handler.getQty(productID));
-
-            Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_action_action_add_shopping_cart);
-            Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
-            willBeWhite.mutate().setColorFilter(cursorProduct.getInt(cursorProduct.getColumnIndexOrThrow("color")), PorterDuff.Mode.MULTIPLY);
-            fabShop.setImageDrawable(willBeWhite);
-        }*/
-
-        return available;
+        return handler.ifExists(productID);
     }
 }

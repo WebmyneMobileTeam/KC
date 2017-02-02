@@ -6,41 +6,10 @@
     android:orientation="vertical"
     tools:context="com.webmyne.kidscrown.fragment.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/offerLayout"
+    <ImageView
+        android:id="@+id/offerImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/offerImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/txtOffer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Offer text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="#fff"
-            android:textSize="@dimen/S_TEXT_SIZE"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/txtDiscount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="2"
-            android:text="Offer discount in %"
-            android:textColor="#fff"
-            android:textSize="@dimen/S_TEXT_SIZE"
-            android:visibility="gone" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <ImageView
         android:id="@+id/FDAicon"
@@ -55,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/FDAicon"
-        android:layout_below="@+id/offerLayout"
+        android:layout_below="@+id/offerImage"
         android:layout_marginLeft="@dimen/card_margin"
         android:layout_marginRight="@dimen/card_margin"
         android:layout_marginTop="8dp"

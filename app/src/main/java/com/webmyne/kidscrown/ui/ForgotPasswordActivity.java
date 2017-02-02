@@ -1,9 +1,9 @@
 package com.webmyne.kidscrown.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ForgotPasswordActivity extends ActionBarActivity {
+public class ForgotPasswordActivity extends AppCompatActivity {
 
     private EditText edtEmail;
     private Button btnForgotPassword;
@@ -61,23 +61,22 @@ public class ForgotPasswordActivity extends ActionBarActivity {
         btnForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtEmail.getText().toString().trim().length() == 0) {
-                    View view = findViewById(android.R.id.content);
-                    Functions.snack(view, "Please Enter Your User Name");
+                Functions.hideKeyPad(ForgotPasswordActivity.this, v);
+
+                if (!Functions.isConnected(ForgotPasswordActivity.this)) {
+                    Functions.showToast(ForgotPasswordActivity.this, getString(R.string.no_internet));
+                    return;
+                }
+
+                if (TextUtils.isEmpty(Functions.getStr(edtEmail))) {
+                    Functions.showToast(ForgotPasswordActivity.this, "Please Enter Your User Name");
+
                 } else {
                     callForgotPassword();
                 }
             }
         });
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-        return;
     }
 
     private void callForgotPassword() {
@@ -122,35 +121,6 @@ public class ForgotPasswordActivity extends ActionBarActivity {
 
             }
         });
-
-
-//        String url = Constants.FORGOT_PASSWORD_URL + edtEmail.getText().toString().trim();
-//
-//        pd = ProgressDialog.show(ForgotPasswordActivity.this, "Loading", "Please wait..", true);
-//        Functions.logE("forget request url", url);
-//
-//        new CallWebService(url, CallWebService.TYPE_GET, null) {
-//            @Override
-//            public void response(String response) {
-//                View view = findViewById(android.R.id.content);
-//                pd.dismiss();
-//
-//                if (response.equals("Success")) {
-//                    Functions.snack(view, "Reset Password Link sent to your Email Id");
-//                } else {
-//                    Functions.snack(view, response);
-//                }
-//
-//            }
-//
-//            @Override
-//            public void error(String error) {
-//                pd.dismiss();
-//                View view = findViewById(android.R.id.content);
-//                Functions.snack(view, error);
-//
-//            }
-//        }.call();
 
     }
 

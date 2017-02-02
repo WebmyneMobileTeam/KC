@@ -1,10 +1,8 @@
 package com.webmyne.kidscrown.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +12,13 @@ import android.widget.TextView;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchContactUsData;
-import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.ContactUsResponseModel;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
 public class ContactUsFragment extends Fragment {
 
-    //    private TextView tvContactUs, tvBankDetail;
     private LinearLayout parentView;
+    private LinearLayout.LayoutParams params;
 
     public static ContactUsFragment newInstance(String param1, String param2) {
         ContactUsFragment fragment = new ContactUsFragment();
@@ -53,10 +50,8 @@ public class ContactUsFragment extends Fragment {
 
     private void init(View view) {
 
-//        tvContactUs = (TextView) view.findViewById(R.id.tvContactUs);
-//        tvBankDetail = (TextView) view.findViewById(R.id.tvBankDetail);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         parentView = (LinearLayout) view.findViewById(R.id.parentView);
-
 
         fetchAboutUsData();
     }
@@ -68,8 +63,6 @@ public class ContactUsFragment extends Fragment {
             public void onSuccess(Object responseBody) {
 
                 ContactUsResponseModel responseModel = (ContactUsResponseModel) responseBody;
-
-                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
                 parentView.removeAllViews();
 
@@ -83,10 +76,8 @@ public class ContactUsFragment extends Fragment {
                     tvTitle.setText(responseModel.getData().get(i).getPageName());
                     tvDesc.setText(Html.fromHtml(responseModel.getData().get(i).getDescription()));
 
-                    parentView.addView(view);
+                    parentView.addView(view, params);
                 }
-
-
             }
 
             @Override
@@ -94,8 +85,5 @@ public class ContactUsFragment extends Fragment {
 
             }
         });
-
     }
-
-
 }

@@ -1,8 +1,6 @@
 package com.webmyne.kidscrown.api;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Constants;
@@ -50,8 +48,6 @@ public class FetchContactUsData {
 
                 if (response.isSuccessful()) {
 
-                    Log.e("response", MyApplication.getGson().toJson(response.body(), ContactUsResponseModel.class));
-
                     if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
 
                         commonRetrofitResponseListener.onSuccess(response.body());
@@ -87,7 +83,7 @@ public class FetchContactUsData {
 
     private void showProgress() {
         if (dialog == null) {
-            dialog = new SpotsDialog(context, "Loading products..", R.style.Custom);
+            dialog = new SpotsDialog(context, "Loading..", R.style.Custom);
         }
         dialog.setCancelable(false);
         dialog.show();

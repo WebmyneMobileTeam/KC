@@ -1,15 +1,12 @@
 package com.webmyne.kidscrown.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,7 +14,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchAboutUsData;
-import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
@@ -25,7 +21,6 @@ public class AboutUsFragment extends Fragment {
 
     private TextView tvAboutUs;
     private ImageView ivImage;
-    private LinearLayout parentView;
 
     public static AboutUsFragment newInstance(String param1, String param2) {
         AboutUsFragment fragment = new AboutUsFragment();
@@ -59,8 +54,6 @@ public class AboutUsFragment extends Fragment {
 
         tvAboutUs = (TextView) view.findViewById(R.id.tvAboutUs);
         ivImage = (ImageView) view.findViewById(R.id.ivImage);
-        parentView = (LinearLayout) view.findViewById(R.id.parentView);
-
 
         fetchAboutUsData();
     }
@@ -73,10 +66,7 @@ public class AboutUsFragment extends Fragment {
 
                 AboutUsResponseModel responseModel = (AboutUsResponseModel) responseBody;
 
-                Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
-
                 Glide.with(getActivity()).load(responseModel.getData().getHeaderImage())
-//                        .thumbnail(0.5f)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(ivImage);
 
@@ -89,8 +79,6 @@ public class AboutUsFragment extends Fragment {
 
             }
         });
-
     }
-
 
 }

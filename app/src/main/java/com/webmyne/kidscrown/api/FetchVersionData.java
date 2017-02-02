@@ -86,7 +86,7 @@ public class FetchVersionData {
 
     private void showProgress() {
         if (dialog == null) {
-            dialog = new SpotsDialog(context, "Loading products..", R.style.Custom);
+            dialog = new SpotsDialog(context, "Loading..", R.style.Custom);
         }
         dialog.setCancelable(false);
         dialog.show();

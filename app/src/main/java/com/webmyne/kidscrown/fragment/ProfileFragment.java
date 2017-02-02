@@ -1,15 +1,14 @@
 package com.webmyne.kidscrown.fragment;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
@@ -26,7 +25,6 @@ import com.webmyne.kidscrown.ui.MyDrawerActivity;
 public class ProfileFragment extends Fragment {
 
     EditText edtFirstname, edtLastName, edtMobile, edtEmail, edtPassword, edtConfirmPassword, edtRegNo, edtUserName, edtClinicName;
-    String firstName, lastName, mobile, emailId, password, registartionNo, username, salutation, userId, clinicName;
     Button btnUpdate;
     View parentView;
 
@@ -67,20 +65,17 @@ public class ProfileFragment extends Fragment {
         edtClinicName = (EditText) view.findViewById(R.id.edtClinicName);
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
-//        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
-//        UserProfile currentUserObj = new UserProfile();
-//        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
-//        userId = currentUserObj.UserID;
-
         edtUserName.setEnabled(false);
         edtEmail.setEnabled(false);
-
-        userId = String.valueOf(PrefUtils.getUserId(getActivity()));
-        Log.e("userId", userId);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Functions.hideKeyPad(getActivity(), v);
+                if (!Functions.isConnected(getActivity())) {
+                    Functions.showToast(getActivity(), getString(R.string.no_internet));
+                    return;
+                }
                 checkValidation();
             }
         });
@@ -133,36 +128,37 @@ public class ProfileFragment extends Fragment {
     }
 
     private void checkValidation() {
-        Snackbar snack = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG);
-        View view = snack.getView();
-        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-        tv.setSingleLine(false);
-        tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
 
-        if (edtFirstname.getText().toString().trim().length() == 0) {
-            snack.setText("First name is required");
-            snack.show();
-        } else if (edtLastName.getText().toString().trim().length() == 0) {
-            snack.setText("Last name is required");
-            snack.show();
+        if (TextUtils.isEmpty(Functions.getStr(edtFirstname))) {
+            Functions.showToast(getActivity(), "First name is required");
+
+        } else if (TextUtils.isEmpty(Functions.getStr(edtLastName))) {
+            Functions.showToast(getActivity(), "Last name is required");
+
         } else if (edtUserName.getText().toString().trim().length() == 0) {
-            snack.setText("Username is required");
-            snack.show();
+            Functions.showToast(getActivity(), "Username is required");
+
+        } else if (TextUtils.isEmpty(Functions.getStr(edtMobile))) {
+            Functions.showToast(getActivity(), "Mobile number is required");
+
         } else if (edtMobile.getText().toString().trim().length() != 10) {
-            snack.setText("Mobile number should contains 10 digits");
-            snack.show();
-        } else if (edtEmail.getText().toString().trim().length() == 0 || !(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
-            snack.setText("Email-id is not valid");
-            snack.show();
+            Functions.showToast(getActivity(), "Mobile number should contains 10 digits");
+
+        } else if (TextUtils.isEmpty(Functions.getStr(edtEmail))) {
+            Functions.showToast(getActivity(), "Email-id is required");
+
+        } else if (!(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
+            Functions.showToast(getActivity(), "Email-id is not valid");
+
         } else if (edtPassword.getText().toString().trim().length() < 6) {
-            snack.setText("Password must be of minimum 6 characters");
-            snack.show();
+            Functions.showToast(getActivity(), "Password must be of minimum 6 characters");
+
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
-            snack.setText("Password and confirm password does not match");
-            snack.show();
+            Functions.showToast(getActivity(), "Password and confirm password does not match");
+
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
-            snack.setText("Registration number is required");
-            snack.show();
+            Functions.showToast(getActivity(), "Registration number is required");
+
         } else {
             registerWebService();
         }
@@ -209,90 +205,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-
-//        username = edtUserName.getText().toString().trim();
-//        firstName = edtFirstname.getText().toString().trim();
-//        lastName = edtLastName.getText().toString().trim();
-//        mobile = edtMobile.getText().toString().trim();
-//        emailId = edtEmail.getText().toString().trim();
-//        password = edtPassword.getText().toString();
-//        registartionNo = edtRegNo.getText().toString().trim();
-//        clinicName = edtClinicName.getText().toString().trim();
-//
-//        JSONObject userObject = null;
-//        try {
-//            userObject = new JSONObject();
-//            userObject.put("ClinicName", clinicName);
-//            userObject.put("EmailID", emailId);
-//            userObject.put("FirstName", firstName);
-//            userObject.put("IsActive", true);
-//            userObject.put("IsDelete", true);
-//            userObject.put("LastName", lastName);
-//            userObject.put("MobileNo", mobile);
-//            userObject.put("MobileOS", "A");
-//            userObject.put("Password", password);
-//            userObject.put("RegistrationNumber", registartionNo);
-//            userObject.put("Salutation", 0);
-//            userObject.put("UserID", Integer.parseInt(userId));
-//            userObject.put("UserName", username);
-//            userObject.put("UserRoleID", 2);
-//            userObject.put("PriorityID", 5);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        pd = ProgressDialog.show(getActivity(), "Loading", "Please wait..", true);
-//        Functions.logE("update request", userObject.toString());
-//
-//        new CallWebService(Constants.UPDATE_URL, CallWebService.TYPE_POST, userObject) {
-//            @Override
-//            public void response(String response) {
-//                pd.dismiss();
-//                JSONArray data;
-//                Log.e("update response", response + "");
-//                try {
-//                    data = new JSONArray(response);
-//                    JSONObject description = data.getJSONObject(0);
-//
-//                    UserProfile profile = new GsonBuilder().create().fromJson(description.toString(), UserProfile.class);
-//
-//                    Snackbar snack = Snackbar.make(parentView, "Update Profile Successfully", Snackbar.LENGTH_LONG);
-//                    View view = snack.getView();
-//                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-//                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-//                    snack.show();
-//
-//                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
-//                    complexPreferences.putObject("current-user", profile);
-//                    complexPreferences.commit();
-//
-//                    Intent i = new Intent(getActivity(), MyDrawerActivity.class);
-//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    getActivity().startActivity(i);
-//
-//                } catch (Exception e) {
-//                    Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile", Snackbar.LENGTH_LONG);
-//                    View view = snack.getView();
-//                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-//                    tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-//                    snack.show();
-//                }
-//            }
-//
-//            @Override
-//            public void error(String error) {
-//                pd.dismiss();
-//                Snackbar snack = Snackbar.make(parentView, "Unable To Update Profile. " + error, Snackbar.LENGTH_LONG);
-//                View view = snack.getView();
-//                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-//                tv.setTextSize(Functions.convertPixelsToDp(getResources().getDimension(R.dimen.S_TEXT_SIZE), getActivity()));
-//                snack.show();
-//
-//                Log.e("error", error);
-//            }
-//        }.call();
-
     }
 
 }

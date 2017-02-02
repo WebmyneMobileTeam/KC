@@ -30,14 +30,12 @@ import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
-import com.webmyne.kidscrown.helper.GetPriceSlab;
 import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.MyApplication;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
 import com.webmyne.kidscrown.model.CountryResponse;
 import com.webmyne.kidscrown.model.DiscountModel;
-import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductResponse;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
@@ -50,17 +48,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class HomeFragment extends Fragment {
 
     private FamiliarRecyclerView productRV;
     private ProductAdapter adapter;
     private ImageView closeInfo;
     private Dialog dialog;
-    private LinearLayout offerLayout;
-    private TextView txtOffer, txtDiscount;
     private ImageView offerImage;
     private DatabaseHandler handler;
-    private GetSortedDiscount sortedDiscount;
     private View parentView;
     private EmptyLayout emptyLayout;
 
@@ -85,14 +80,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), Constants.PREF_NAME, 0);
 
         offerImage = (ImageView) parentView.findViewById(R.id.offerImage);
-        txtDiscount = (TextView) parentView.findViewById(R.id.txtDiscount);
-        txtOffer = (TextView) parentView.findViewById(R.id.txtOffer);
-        offerLayout = (LinearLayout) parentView.findViewById(R.id.offerLayout);
 
         ((MyDrawerActivity) getActivity()).setTitle("Products");
 
         handler = new DatabaseHandler(getActivity());
-        sortedDiscount = new GetSortedDiscount(getActivity());
 
         initRecyclerView();
     }
@@ -117,7 +108,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             public void onItemClick(FamiliarRecyclerView familiarRecyclerView, View view, int position) {
                 Product product = productList.get(position);
                 Intent intent = null;
-                if (product.getIsSingleInt() == 1) {
+                if (product.getIsSingleInt() == Constants.SINGLE) {
                     intent = new Intent(getActivity(), ProductDetailActivity.class);
                 } else {
                     intent = new Intent(getActivity(), RefillActivityAnother.class);
@@ -131,10 +122,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (Functions.isConnected(getActivity()))
             fetchProducts();
         else
-            Functions.showToast(getActivity(), "No Internet Connectivity");
-
-        /*PriceSlab priceSlab = new GetPriceSlab(getActivity()).getRelevantPrice(16, 43);
-        Log.e("priceSlab", Functions.jsonString(priceSlab));*/
+            Functions.showToast(getActivity(), getActivity().getString(R.string.no_internet));
 
     }
 
@@ -163,31 +151,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         dialog.setCancelable(true);
         dialog.show();
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("isFirstTimeLogin", false);
-        editor.apply();
+        PrefUtils.setFirstTime(getActivity(), false);
 
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //getOffers();
-
-    }
-
-    private void getOffers() {
-
-        DiscountModel model = sortedDiscount.getOffer("0");
-        if (model == null || model.DiscountPercentage.equals("0.00")) {
-            offerLayout.setVisibility(View.GONE);
-        } else {
-            offerLayout.setVisibility(View.VISIBLE);
-            txtOffer.setText(model.DiscountInitial);
-            Glide.with(getActivity()).load(model.DiscountImage).into(offerImage);
-            txtDiscount.setText("Offer " + model.DiscountPercentage + "%");
-        }
     }
 
     private void fetchProducts() {
@@ -202,10 +167,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 handler.savePriceSlab(productResponse.getData());
 
                 if (!TextUtils.isEmpty(productResponse.getRootImage().getImage())) {
-                    offerLayout.setVisibility(View.VISIBLE);
+                    offerImage.setVisibility(View.VISIBLE);
                     Glide.with(getActivity()).load(productResponse.getRootImage().getImage()).into(offerImage);
                 } else {
-                    offerLayout.setVisibility(View.GONE);
+                    offerImage.setVisibility(View.GONE);
                 }
 
                 fetchState();
@@ -246,35 +211,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 RetrofitErrorHelper.showErrorMsg(t, getActivity());
             }
         });
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-        processProductClick(cursor);
-
-    }
-
-    private void processProductClick(Cursor cursor) {
-
-        String productName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-        int productId = cursor.getInt(cursor.getColumnIndexOrThrow("product_id"));
-
-        if (productName.equalsIgnoreCase(Constants.CROWN_PRODUCT_NAME)) {
-
-            Intent iRefill = new Intent(getActivity(), RefillActivityAnother.class);
-            iRefill.putExtra("product_id", productId);
-            startActivity(iRefill);
-
-        } else {
-
-            Intent iDetail = new Intent(getActivity(), ProductDetailActivity.class);
-            iDetail.putExtra("product_id", productId);
-            startActivity(iDetail);
-            getActivity().overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-        }
-
     }
 
 }

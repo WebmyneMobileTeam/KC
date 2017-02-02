@@ -40,7 +40,10 @@ public class SplashActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        checkAppVersion();
+        if (Functions.isConnected(this))
+            checkAppVersion();
+        else
+            Functions.showToast(this, getString(R.string.no_internet));
 
     }
 
@@ -72,7 +75,6 @@ public class SplashActivity extends ActionBarActivity {
                                 } catch (android.content.ActivityNotFoundException anfe) {
                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                                 }
-//                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.webmyne.kidscrown&hl=en")));
 
                             }
                         });
@@ -91,7 +93,6 @@ public class SplashActivity extends ActionBarActivity {
             @Override
             public void onFail() {
 
-                Functions.showToast(SplashActivity.this, getString(R.string.try_again));
 
             }
         });

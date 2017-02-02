@@ -54,13 +54,11 @@ public class FetchOrderHistoryData {
 
                 hideProgress();
 
-                Log.e("response", MyApplication.getGson().toJson(response.body(), OrderHistoryModelResponse.class));
-
                 if (response.isSuccessful()) {
 
                     if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
 
-                        commonRetrofitResponseListener.onSuccess(response.body().getData());
+                        commonRetrofitResponseListener.onSuccess(response.body());
 
                     } else {
                         commonRetrofitResponseListener.onFail();
@@ -97,7 +95,7 @@ public class FetchOrderHistoryData {
 
     private void showProgress() {
         if (dialog == null) {
-            dialog = new SpotsDialog(context, "Loading products..", R.style.Custom);
+            dialog = new SpotsDialog(context, "Loading..", R.style.Custom);
         }
         dialog.setCancelable(false);
         dialog.show();

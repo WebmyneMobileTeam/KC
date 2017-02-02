@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -21,11 +22,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.droidbyme.toastlib.ToastEnum;
 import com.droidbyme.toastlib.ToastLib;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.webmyne.kidscrown.R;
 
 import java.text.DecimalFormat;
@@ -63,6 +67,12 @@ public class Functions {
 
         Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
 
+    }
+
+    public static void hideKeyPad(Context context, View view) {
+        InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(view.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public static void fireIntent(Activity activity, Class cls) {
@@ -254,4 +264,17 @@ public class Functions {
         else
             return ContextCompat.getColor(context, R.color.quad_violate);
     }
+
+    public static void setPermission(final Context context, @NonNull String[] permissions, PermissionListener permissionListener) {
+
+        if (permissions.length == 0 && permissionListener != null) {
+            return;
+        }
+        new TedPermission(context)
+                .setPermissionListener(permissionListener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(permissions)
+                .check();
+    }
 }
+

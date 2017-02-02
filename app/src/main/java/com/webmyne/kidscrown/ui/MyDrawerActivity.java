@@ -13,22 +13,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.plus.People;
-import com.google.android.gms.plus.Plus;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.fragment.AboutUsFragment;
@@ -37,33 +27,18 @@ import com.webmyne.kidscrown.fragment.HomeFragment;
 import com.webmyne.kidscrown.fragment.MyOrdersFragment;
 import com.webmyne.kidscrown.fragment.ProfileFragment;
 import com.webmyne.kidscrown.helper.BadgeHelper;
-import com.webmyne.kidscrown.helper.CallWebService;
-import com.webmyne.kidscrown.helper.ComplexPreferences;
-import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
-import com.webmyne.kidscrown.helper.ToolHelper;
-import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.LoginModelData;
-import com.webmyne.kidscrown.model.UserProfile;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-public class MyDrawerActivity extends AppCompatActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
+public class MyDrawerActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    ToolHelper helper;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     NavigationView view;
-    private CallbackManager callbackManager;
 
-    GoogleApiClient mGoogleApiClient;
-    boolean mSignInClicked;
     private DatabaseHandler handler;
 
     private TextView txtCustomTitle;
@@ -79,30 +54,21 @@ public class MyDrawerActivity extends AppCompatActivity implements
 
         init();
 
-        callbackManager = CallbackManager.Factory.create();
         initDrawer();
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         ft.replace(R.id.content, new HomeFragment());
-        // ft.addToBackStack(null);
         ft.commit();
 
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 setDrawerClick(menuItem, menuItem.getItemId());
-                // menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
             }
         });
-
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
     }
 
     @Override
@@ -112,29 +78,6 @@ public class MyDrawerActivity extends AppCompatActivity implements
         badgeCart = new BadgeHelper(this, cartItem, ActionItemBadge.BadgeStyles.YELLOW);
         badgeCart.displayBadge(handler.getTotalProducts());
         return true;
-    }
-
-    private void fetchDiscount() {
-
-        new CallWebService(Constants.GET_OFFERS, CallWebService.TYPE_GET) {
-            @Override
-            public void response(String response) {
-
-                Log.e("Response Products", response);
-                Type listType = new TypeToken<List<DiscountModel>>() {
-                }.getType();
-                ArrayList<DiscountModel> discountModels = new GsonBuilder().create().fromJson(response, listType);
-
-                handler.saveOffers(discountModels);
-
-            }
-
-            @Override
-            public void error(String error) {
-                Log.e("Error", error);
-
-            }
-        }.call();
     }
 
     public Toolbar getToolbar() {
@@ -187,7 +130,6 @@ public class MyDrawerActivity extends AppCompatActivity implements
 
                         PrefUtils.clearUserProfile(MyDrawerActivity.this, new LoginModelData());
 
-                        DatabaseHandler handler = new DatabaseHandler(MyDrawerActivity.this);
                         handler.deleteCart();
 
                         Intent intent = new Intent(MyDrawerActivity.this, LoginActivity.class);
@@ -202,6 +144,7 @@ public class MyDrawerActivity extends AppCompatActivity implements
                         dialog.dismiss();
                     }
                 });
+                dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
                 break;
 
@@ -274,44 +217,18 @@ public class MyDrawerActivity extends AppCompatActivity implements
             setSupportActionBar(toolbar);
         }
 
-        helper = new ToolHelper(MyDrawerActivity.this, toolbar);
-        ImageView imgCart = (ImageView) findViewById(R.id.imgCartMenu);
-        imgCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MyDrawerActivity.this, CartActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-            }
-        });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyDrawerActivity.this, "user_pref", 0);
-        UserProfile currentUserObj = new UserProfile();
-        currentUserObj = complexPreferences.getObject("current-user", UserProfile.class);
 
-    }
-
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        fetchDiscount();
         if (badgeCart != null)
             badgeCart.displayBadge(handler.getTotalProducts());
     }
@@ -329,28 +246,5 @@ public class MyDrawerActivity extends AppCompatActivity implements
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        mSignInClicked = false;
-        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
-                this);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onResult(People.LoadPeopleResult loadPeopleResult) {
-
     }
 }
