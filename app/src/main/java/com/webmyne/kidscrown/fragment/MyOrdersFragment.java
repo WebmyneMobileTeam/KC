@@ -18,6 +18,7 @@ import com.webmyne.kidscrown.custom.LineDividerItemDecoration;
 import com.webmyne.kidscrown.custom.familiarrecyclerview.FamiliarRecyclerView;
 import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.OrderHistoryModel;
 import com.webmyne.kidscrown.model.OrderHistoryModelResponse;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
@@ -104,11 +105,15 @@ public class MyOrdersFragment extends Fragment {
             myDrawerActivity.setTitle("My Orders");
         }
 
-        getOrders();
+        if (Functions.isConnected(getActivity()))
+            getOrders();
+        else
+            Functions.showToast(getActivity(), getActivity().getString(R.string.no_internet));
 
     }
 
     private void getOrders() {
+        data = new ArrayList<>();
 
         new FetchOrderHistoryData(getActivity(), new CommonRetrofitResponseListener() {
             @Override

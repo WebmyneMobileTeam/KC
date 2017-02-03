@@ -10,17 +10,11 @@ import android.util.Log;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.Address;
-import com.webmyne.kidscrown.model.AddressModel;
 import com.webmyne.kidscrown.model.CartProduct;
-import com.webmyne.kidscrown.model.CrownPricing;
 import com.webmyne.kidscrown.model.DiscountModel;
-import com.webmyne.kidscrown.model.OrderModel;
 import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
-import com.webmyne.kidscrown.model.ProductImage;
-import com.webmyne.kidscrown.model.ProductPrice;
-import com.webmyne.kidscrown.model.StateModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,9 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Created by jaydeeprana on 01-07-2015.
@@ -121,80 +113,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    /*public void saveProducts(ArrayList<Product> products) {
-        myDataBase = this.getWritableDatabase();
-        myDataBase.delete(TABLE_PRODUCT, null, null);
-
-        myDataBase = this.getWritableDatabase();
-        myDataBase.delete(TABLE_PRODUCT_PRICE, null, null);
-
-        myDataBase = this.getWritableDatabase();
-        myDataBase.delete(TABLE_PRODUCT_IMAGE, null, null);
-
-        ArrayList<Integer> colors;
-        colors = new ArrayList();
-        int pos = 0;
-        Resources res = context.getResources();
-        colors.add(res.getColor(R.color.quad_green));
-        colors.add(res.getColor(R.color.quad_violate));
-        colors.add(res.getColor(R.color.quad_orange));
-        colors.add(res.getColor(R.color.quad_blue));
-
-        for (Product product : products) {
-
-            myDataBase = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("description", product.Description);
-            values.put("price", product.price);
-            values.put("product_id", product.ProductID);
-            values.put("name", product.ProductName);
-            values.put("product_number", product.product_number);
-            values.put("color", colors.get(pos));
-            values.put("order_limit", product.OrderLimit);
-            myDataBase.insert(TABLE_PRODUCT, null, values);
-
-            if (pos >= colors.size() - 1) {
-                pos = 0;
-            } else {
-                pos = pos + 1;
-            }
-            saveProductImages(product.images);
-
-            saveProductPrices(product.prices);
-
-        }
-
-    }*/
-
-    public void saveOffers(ArrayList<DiscountModel> discountModels) {
-        myDataBase = this.getWritableDatabase();
-        myDataBase.delete(TABLE_DISCOUNT, null, null);
-
-        Cursor cursor = null;
-        try {
-            String selectQuery = "SELECT * FROM " + TABLE_DISCOUNT;
-            cursor = myDataBase.rawQuery(selectQuery, null);
-            if (cursor == null) {
-                Log.e("sql", "no table");
-            } else {
-                Log.e("sql", "table exist");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("sql", "no table");
-        }
-
-        for (DiscountModel model : discountModels) {
-            myDataBase = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("DiscountImage", model.DiscountImage);
-            values.put("DiscountInitial", model.DiscountInitial);
-            values.put("DiscountPercentage", model.DiscountPercentage);
-            values.put("ProductID", model.ProductID);
-            myDataBase.insert(TABLE_DISCOUNT, null, values);
-        }
-    }
-
     public ArrayList<DiscountModel> getOffers() {
         myDataBase = this.getWritableDatabase();
 
@@ -215,35 +133,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return discountModels;
-    }
-
-    public int getLimit(int productID) {
-        int qty = 0;
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor;
-        String selectQuery = "SELECT order_limit FROM " + TABLE_PRODUCT + " WHERE product_id =" + productID;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            qty = cursor.getInt(cursor.getColumnIndexOrThrow("order_limit"));
-        }
-        return qty;
-
-    }
-
-    private void saveProductPrices(ArrayList<ProductPrice> prices) {
-
-        for (ProductPrice price : prices) {
-            myDataBase = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("product_id", price.product_id);
-            values.put("price_id", price.price_id);
-            values.put("price", price.price);
-            values.put("min", price.min);
-            values.put("max", price.max);
-            myDataBase.insert(TABLE_PRODUCT_PRICE, null, values);
-        }
     }
 
     public boolean ifExists(int productID) {
@@ -315,20 +204,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public void addCartProduct(ArrayList<String> productDetails) {
-
-        myDataBase = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put("product_id", Integer.parseInt(productDetails.get(0)));
-        values.put("product_name", productDetails.get(1));
-        values.put("qty", Integer.parseInt(productDetails.get(2)));
-        values.put("unit_price", productDetails.get(3));
-        values.put("total_price", productDetails.get(4));
-        myDataBase.insert(TABLE_CART_ITEM, null, values);
-
-    }
-
     public String getShippingAddress() {
         myDataBase = this.getWritableDatabase();
         String shippingAddress = "";
@@ -347,39 +222,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return shippingAddress;
-
-    }
-
-    public void addOrderItem(ArrayList<OrderModel> orderDetails, String randomOrderId, String dateTime) {
-        myDataBase = this.getWritableDatabase();
-        String shippingAddress = "";
-        Cursor cursor = null;
-        String selectQuery = "SELECT  * FROM " + TABLE_ADDRESS;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        if (cursor.getCount() > 0) {
-            do {
-                if (cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")).equals("true")) {
-                    shippingAddress = cursor.getString(cursor.getColumnIndexOrThrow("address_1")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("address_2")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("city_name")) + " - " + cursor.getString(cursor.getColumnIndexOrThrow("pincode")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("state_name")) + ", " + cursor.getString((cursor.getColumnIndexOrThrow("country_name")));
-                    break;
-                }
-
-            } while (cursor.moveToNext());
-        }
-
-        for (int i = 0; i < orderDetails.size(); i++) {
-            ContentValues values = new ContentValues();
-            values.put("order_id", randomOrderId);
-            values.put("product_id", orderDetails.get(i).getProductId());
-            values.put("product_name", orderDetails.get(i).getProductName());
-            values.put("qty", orderDetails.get(i).getProductQty());
-            values.put("unit_price", orderDetails.get(i).getProductUnitPrice());
-            values.put("total_price", orderDetails.get(i).getProductTotalPrice());
-            values.put("address", getShippingAddress());
-            values.put("date", dateTime);
-            myDataBase.insert(TABLE_ORDERS, null, values);
-        }
 
     }
 
@@ -420,30 +262,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return products;
     }
 
-    // Total Products
-    public ArrayList<OrderModel> getProducts() {
-        ArrayList<OrderModel> orders = new ArrayList<>();
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price";
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            do {
-                OrderModel cart = new OrderModel();
-                cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
-                cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
-                cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
-                cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
-                // cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
-                cart.setPriceId(cursor.getInt(cursor.getColumnIndexOrThrow("price_id")));
-                orders.add(cart);
-            } while (cursor.moveToNext());
-        }
-        return orders;
-    }
-
     // Crowns Products
     public ArrayList<ProductCart> getCrownCartProduct(int productID) {
 
@@ -467,46 +285,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return products;
-    }
-
-    public ArrayList<CrownPricing> getCrownPricing(int productID) {
-        ArrayList<CrownPricing> crownPricing = new ArrayList<>();
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_PRICE + " WHERE product_id ='" + productID + "'";
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            do {
-                CrownPricing pricing = new CrownPricing();
-                pricing.setMinQty(cursor.getInt(cursor.getColumnIndexOrThrow("min")));
-                pricing.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
-                pricing.setPrice(cursor.getInt(cursor.getColumnIndexOrThrow("price")));
-                crownPricing.add(pricing);
-            } while (cursor.moveToNext());
-        }
-
-        return crownPricing;
-
-    }
-
-    public ArrayList<StateModel> getStates() {
-        ArrayList<StateModel> states = new ArrayList<>();
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_STATES;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        if (cursor.getCount() > 0) {
-            do {
-                StateModel state = new StateModel();
-                state.state_id = cursor.getInt(cursor.getColumnIndexOrThrow("state_id"));
-                state.state_name = cursor.getString(cursor.getColumnIndexOrThrow("state_name"));
-                states.add(state);
-            } while (cursor.moveToNext());
-        }
-        return states;
     }
 
     public void saveAddress(ArrayList<Address> addresses) {
@@ -555,29 +333,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    private void saveProductImages(ArrayList<ProductImage> images) {
-
-        for (ProductImage image : images) {
-            myDataBase = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("path", image.imagePath);
-            values.put("product_id", image.productId);
-            values.put("product_image_id", image.productImageid);
-            myDataBase.insert(TABLE_PRODUCT_IMAGE, null, values);
-        }
-
-    }
-
-    public Cursor getProductsCursor() {
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        return cursor;
-    }
-
     public Cursor getAddressCursor() {
         myDataBase = this.getWritableDatabase();
         Cursor cursor = null;
@@ -586,50 +341,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         return cursor;
-    }
-
-    public String getImagePath(String productID) {
-        myDataBase = this.getWritableDatabase();
-        String path = new String();
-        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_IMAGE + " WHERE product_id =" + "\"" + productID.toString().trim() + "\"";
-        Cursor cursor = myDataBase.rawQuery(selectQuery, null);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            path = cursor.getString(cursor.getColumnIndexOrThrow("path"));
-
-        }
-
-        return path;
-
-    }
-
-    public Cursor getProductCursor(String productID) {
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor;
-        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT + " WHERE product_id =" + "\"" + productID.toString().trim() + "\"";
-        cursor = myDataBase.rawQuery(selectQuery, null);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-        }
-
-        return cursor;
-
-    }
-
-    public Cursor getProductPriceCursor(String productID) {
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor;
-        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_PRICE + " WHERE product_id =" + "\"" + productID.toString().trim() + "\"";
-        cursor = myDataBase.rawQuery(selectQuery, null);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-        }
-
-        return cursor;
-
     }
 
     public Cursor getProductImageCursor(String productID) {
@@ -667,83 +378,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteCart() {
         myDataBase = this.getWritableDatabase();
         myDataBase.delete(TABLE_CART_ITEM, null, null);
-    }
-
-    public void saveAddressDetails(ArrayList<AddressModel> addressModels) {
-        myDataBase = this.getWritableDatabase();
-        myDataBase.delete(TABLE_ADDRESS, null, null);
-
-        ArrayList<Integer> colors;
-        colors = new ArrayList();
-        int pos = 0;
-        Resources res = context.getResources();
-        colors.add(res.getColor(R.color.quad_green));
-        colors.add(res.getColor(R.color.quad_violate));
-        colors.add(res.getColor(R.color.quad_orange));
-        colors.add(res.getColor(R.color.quad_blue));
-
-        for (AddressModel model : addressModels) {
-
-            myDataBase = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("is_shipping", model.getShipping());
-            values.put("pincode", model.getPincode());
-            values.put("state_name", model.getState());
-            values.put("country_name", model.getCountry());
-            values.put("city_name", model.getCity());
-            values.put("address_2", model.getAddress2());
-            values.put("address_1", model.getAddress1());
-            values.put("color", colors.get(pos));
-
-            myDataBase.insert(TABLE_ADDRESS, null, values);
-            if (pos >= colors.size() - 1) {
-                pos = 0;
-            } else {
-                pos = pos + 1;
-            }
-        }
-
-    }
-
-    public int getSpecificId(String crownName) {
-        myDataBase = this.getWritableDatabase();
-        int specifiicId = 0;
-        Cursor cursor = null;
-        String selectQuery = "SELECT  * FROM " + TABLE_CROWN_SPECIFICATION + " WHERE ModelNumber='" + crownName + "'";
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        if (cursor.getCount() > 0) {
-            do {
-                specifiicId = cursor.getInt(cursor.getColumnIndexOrThrow("ProductSpecID"));
-            } while (cursor.moveToNext());
-        }
-        return specifiicId;
-
-    }
-
-    public ArrayList<AddressModel> getAddressDetails() {
-        ArrayList<AddressModel> addressModels = new ArrayList<>();
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_ADDRESS;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        if (cursor.getCount() > 0) {
-            do {
-                AddressModel model = new AddressModel();
-                model.setShipping(cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")));
-                model.setPincode(cursor.getString(cursor.getColumnIndexOrThrow("pincode")));
-                model.setState(cursor.getString(cursor.getColumnIndexOrThrow("state_name")));
-                model.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country_name")));
-                model.setCity(cursor.getString(cursor.getColumnIndexOrThrow("city_name")));
-                model.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address_2")));
-                model.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address_1")));
-                addressModels.add(model);
-            } while (cursor.moveToNext());
-        }
-        return addressModels;
     }
 
     public void addToCart(CartProduct cartProduct) {

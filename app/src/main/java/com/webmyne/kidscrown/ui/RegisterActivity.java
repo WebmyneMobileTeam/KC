@@ -1,5 +1,6 @@
 package com.webmyne.kidscrown.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.gun0912.tedpermission.PermissionListener;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchLoginData;
@@ -21,6 +24,8 @@ import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.LoginModelRequest;
+
+import java.util.ArrayList;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -30,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private Toolbar toolbar;
     private TextView txtCustomTitle;
+    private String deviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (edtMobile.getText().toString().trim().length() == 0) {
             Functions.showToast(RegisterActivity.this, "Mobile number is required");
 
-        } else if (edtMobile.getText().toString().trim().length() != 10) {
+        } else if (edtMobile.getText().toString().trim().length() != getResources().getInteger(R.integer.mobile)) {
             Functions.showToast(RegisterActivity.this, "Mobile number should contains 10 digits");
 
         } else if (edtEmail.getText().toString().trim().length() == 0) {
@@ -63,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
             Functions.showToast(RegisterActivity.this, "Email-id is not valid");
 
-        } else if (edtPassword.getText().toString().trim().length() < 6) {
+        } else if (edtPassword.getText().toString().trim().length() < getResources().getInteger(R.integer.pwd_min)) {
             Functions.showToast(RegisterActivity.this, "Password must be of minimum 6 characters");
 
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
@@ -79,7 +85,20 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerWebService() {
 
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (TextUtils.isEmpty(deviceId)) {
+            Functions.setPermission(this, new String[]{Manifest.permission.READ_PHONE_STATE}, new PermissionListener() {
+                @Override
+                public void onPermissionGranted() {
+                    TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                    deviceId = telephonyManager.getDeviceId();
+                }
+
+                @Override
+                public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+
+                }
+            });
+        }
 
         LoginModelRequest model = new LoginModelRequest();
         model.setMobileOS("A");
@@ -90,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
         model.setMobileNo(edtMobile.getText().toString().trim());
         model.setEmailID(edtEmail.getText().toString().trim());
         model.setRegistrationNumber(edtRegNo.getText().toString().trim());
-        model.setDeviceID(telephonyManager.getDeviceId());
+        model.setDeviceID(deviceId);
         model.setGCMToken(PrefUtils.getFCMToken(this));
         model.setLoginVia("1");
         model.setClinicName(edtClinicName.getText().toString().trim());
@@ -104,6 +123,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
                 PrefUtils.setUserProfile(RegisterActivity.this, responseModel);
+
+                PrefUtils.setLoggedIn(RegisterActivity.this, true);
 
                 PrefUtils.setFirstTime(RegisterActivity.this, true);
 
@@ -155,6 +176,19 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         clickListener();
+
+        Functions.setPermission(this, new String[]{Manifest.permission.READ_PHONE_STATE}, new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                deviceId = telephonyManager.getDeviceId();
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+
+            }
+        });
     }
 
     private void clickListener() {

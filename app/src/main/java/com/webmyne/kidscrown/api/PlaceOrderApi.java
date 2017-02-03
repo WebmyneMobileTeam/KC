@@ -97,8 +97,6 @@ public class PlaceOrderApi {
 
                 if (response.isSuccessful()) {
 
-                    Log.e("main_res", Functions.jsonString(response.body()));
-
                     if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
 
                         commonRetrofitResponseListener.onSuccess(response.body());

@@ -42,11 +42,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ui.CrownActivity"
-            android:label="@string/title_activity_crown"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
             android:name=".ui.RefillActivityAnother"
             android:label="@string/title_activity_refill"
             android:screenOrientation="landscape" />

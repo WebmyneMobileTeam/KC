@@ -3,6 +3,7 @@ package com.webmyne.kidscrown.custom;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class CrownItemAnother extends LinearLayout {
     }
 
     private void init() {
+        Log.e("slab", slab.getModelName());
         parentView = inflate(context, R.layout.crown_item_another, this);
 
         viewCB = (LinearLayout) parentView.findViewById(R.id.viewCB);

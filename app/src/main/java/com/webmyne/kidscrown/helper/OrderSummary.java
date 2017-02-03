@@ -7,8 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
+import com.webmyne.kidscrown.model.OrderHistoryModel;
 import com.webmyne.kidscrown.model.OrderModel;
-import com.webmyne.kidscrown.model.OrderProductModel;
 
 import java.text.DecimalFormat;
 
@@ -55,5 +55,12 @@ public class OrderSummary extends LinearLayout {
         txtProductName.setText(productName);
         productQty.setText(quantity + "");
         productPrice.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(finalIntroPrice));
+    }
+
+    public void setDetails(OrderHistoryModel.LstOrderProductBean bean) {
+        txtProductName.setText(bean.getProductName() + "\n" + bean
+                .getProductSpecification().trim());
+        productQty.setText(bean.getQuantity() + "");
+        productPrice.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(bean.getProductPrice()));
     }
 }

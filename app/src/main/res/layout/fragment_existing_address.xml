@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/billingLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/card_margin"
@@ -8,8 +7,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/STD_MARGIN_SIZE"
-        android:layout_marginTop="10dp">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +22,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/m_8dp">
 
                 <EditText
                     android:id="@+id/edtBillingAddress1"
@@ -32,7 +31,8 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="Address 1"
                     android:inputType="text"
-                    android:maxLines="1"
+                    android:maxLength="@integer/address1"
+                    android:maxLines="4"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"
                     android:textSize="@dimen/M_TEXT" />
@@ -42,16 +42,17 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/m_8dp">
 
                 <EditText
                     android:id="@+id/edtBillingAddress2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLength="@integer/address2"
                     android:fontFamily="sans-serif-condensed"
                     android:hint="Address 2"
                     android:inputType="text"
-                    android:maxLines="1"
+                    android:maxLines="4"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"
                     android:textSize="@dimen/M_TEXT" />
@@ -62,7 +63,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/m_8dp">
 
                 <EditText
                     android:id="@+id/edtBillingCity"
@@ -70,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:hint="City"
+                    android:maxLength="@integer/city"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/black"
@@ -81,7 +83,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE"
+                android:layout_marginTop="@dimen/m_8dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="State"
                 android:textSize="@dimen/S_TEXT" />
@@ -95,7 +97,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/L_MARGIN_SIZE">
+                android:layout_marginTop="@dimen/m_8dp">
 
                 <EditText
                     android:id="@+id/edtBillingPincode"
@@ -104,7 +106,7 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="Pincode"
                     android:inputType="number"
-                    android:maxLength="6"
+                    android:maxLength="@integer/pincode"
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"

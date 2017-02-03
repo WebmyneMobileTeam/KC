@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
+        android:fontFamily="sans-serif-condensed"
         android:text="Intro Kit"
         android:textSize="@dimen/S_TEXT_SIZE" />
 
@@ -18,6 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:text="4"
         android:textSize="@dimen/S_TEXT_SIZE" />
@@ -27,6 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="right"
         android:paddingRight="@dimen/M_MARGIN_SIZE"
         android:text="26000"

@@ -44,8 +44,6 @@ public class FetchOrderHistoryData {
 
         showProgress();
 
-        Log.e("request", "userID: " + PrefUtils.getUserId(context));
-
         Call<OrderHistoryModelResponse> call = appApi.fetchOrderHistoryData(PrefUtils.getUserId(context));
 
         call.enqueue(new Callback<OrderHistoryModelResponse>() {

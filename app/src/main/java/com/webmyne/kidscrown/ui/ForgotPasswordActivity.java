@@ -83,8 +83,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         showProgress();
 
-        Log.e("request", "email: " + edtEmail.getText().toString().trim());
-
         Call<ForgetPasswordModelResponse> call = appApi.fetchForgotPasswordData(edtEmail.getText().toString().trim());
 
         call.enqueue(new Callback<ForgetPasswordModelResponse>() {

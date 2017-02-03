@@ -19,6 +19,7 @@ import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
 import com.webmyne.kidscrown.model.UserProfileModel;
+import com.webmyne.kidscrown.ui.LoginActivity;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
 
@@ -65,8 +66,9 @@ public class ProfileFragment extends Fragment {
         edtClinicName = (EditText) view.findViewById(R.id.edtClinicName);
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
-        edtUserName.setEnabled(false);
+       // edtUserName.setEnabled(false);
         edtEmail.setEnabled(false);
+        edtRegNo.setEnabled(false);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +110,11 @@ public class ProfileFragment extends Fragment {
 
                 edtFirstname.setText(responseModel.getFirstName());
                 edtLastName.setText(responseModel.getLastName());
+                if (TextUtils.isEmpty(responseModel.getUserName())) {
+                    edtUserName.setEnabled(true);
+                } else {
+                    edtUserName.setEnabled(false);
+                }
                 edtUserName.setText(responseModel.getUserName());
                 edtMobile.setText(responseModel.getMobileNo());
                 edtEmail.setText(responseModel.getEmailID());
@@ -117,6 +124,8 @@ public class ProfileFragment extends Fragment {
                 edtClinicName.setText(responseModel.getClinicName());
 
                 PrefUtils.setUserProfile(getActivity(), modelData);
+
+                PrefUtils.setLoggedIn(getActivity(), true);
             }
 
             @Override
@@ -196,6 +205,7 @@ public class ProfileFragment extends Fragment {
                 modelData.setUserName(responseModel.getUserName());
 
                 PrefUtils.setUserProfile(getActivity(), modelData);
+                PrefUtils.setLoggedIn(getActivity(), true);
 
                 Functions.showToast(getActivity(), getString(R.string.update_profile_success));
             }

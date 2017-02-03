@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/m_16dp">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/card_margin"
         android:layout_marginRight="@dimen/card_margin"
-        android:layout_marginTop="@dimen/L_MARGIN_SIZE"
-        android.support.design:hintTextAppearance="@style/FloatingLabelStyle">
+        android:layout_marginTop="@dimen/L_MARGIN_SIZE">
 
         <EditText
             android:id="@+id/edtRegNo"
@@ -22,11 +20,11 @@
             android:fontFamily="sans-serif-condensed"
             android:hint="Dentist Registration Number"
             android:inputType="text|textCapCharacters"
-            android:maxLength="12"
+            android:maxLength="@integer/registration"
             android:maxLines="1"
-            android:textColor="#ffffff"
-            android:textColorHint="@color/editText_hint_color"
-            android:textSize="@dimen/M_TEXT_SIZE" />
+            android:textColor="@color/half_black"
+            android:textColorHint="@color/half_black"
+            android:textSize="@dimen/M_TEXT" />
     </android.support.design.widget.TextInputLayout>
 
     <Button

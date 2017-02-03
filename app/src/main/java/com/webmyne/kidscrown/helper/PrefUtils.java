@@ -37,8 +37,6 @@ public class PrefUtils {
         setUserId(context, response.getUserID());
 
         Prefs.with(context).save(USER_PROFILE, toJson);
-
-        setLoggedIn(context, true);
     }
 
     public static void clearUserProfile(Context context, LoginModelData response) {

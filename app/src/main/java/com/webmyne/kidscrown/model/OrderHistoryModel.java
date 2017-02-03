@@ -7,7 +7,7 @@ import java.util.List;
  * Created by vatsaldesai on 25-01-2017.
  */
 
-public class OrderHistoryModel implements Serializable{
+public class OrderHistoryModel implements Serializable {
 
     /**
      * BillingAddressDC : {"Address1":"String content","Address2":"String content","City":"String content","EmailID":"String content","IsShipping":true,"MobileNo":"String content","PinCode":"String content","StateName":"String content"}
@@ -144,6 +144,11 @@ public class OrderHistoryModel implements Serializable{
     }
 
     public static class BillingAddressDCBean {
+        @Override
+        public String toString() {
+            return Address1 + ", " + Address2 + ", " + City + "-" + PinCode + "\n" + StateName;
+        }
+
         /**
          * Address1 : String content
          * Address2 : String content
@@ -154,6 +159,7 @@ public class OrderHistoryModel implements Serializable{
          * PinCode : String content
          * StateName : String content
          */
+
 
         private String Address1;
         private String Address2;
@@ -230,6 +236,11 @@ public class OrderHistoryModel implements Serializable{
     }
 
     public static class ShippingAddressDCBean {
+        @Override
+        public String toString() {
+            return Address1 + ", " + Address2 + ", " + City + "-" + PinCode + "\n" + StateName;
+        }
+
         /**
          * Address1 : String content
          * Address2 : String content
@@ -240,6 +251,7 @@ public class OrderHistoryModel implements Serializable{
          * PinCode : String content
          * StateName : String content
          */
+
 
         private String Address1;
         private String Address2;

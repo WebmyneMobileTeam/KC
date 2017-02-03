@@ -149,6 +149,7 @@ public class CrownQuadrantAnother extends LinearLayout {
                 viewCB.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
                 final String name = arr1.get(i).getModelNumber();
                 final int specificId = arr1.get(i).getProductSpecID();
+                txtCrown.setText(arr1.get(i).getModelName());
                 txtCrown.setPadding(8, 8, 8, 8);
 
                 view.setOnClickListener(new OnClickListener() {
@@ -175,6 +176,7 @@ public class CrownQuadrantAnother extends LinearLayout {
                 viewCB.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
                 final String name = arr2.get(i).getModelNumber();
                 final int specificId = arr2.get(i).getProductSpecID();
+                txtCrown.setText(arr2.get(i).getModelName());
                 txtCrown.setPadding(8, 8, 8, 8);
                 view.setOnClickListener(new OnClickListener() {
                     @Override
@@ -185,11 +187,8 @@ public class CrownQuadrantAnother extends LinearLayout {
 
                     }
                 });
-
             }
         }
-
-
     }
 
     public void insertAddedValue(String name) {
@@ -424,7 +423,7 @@ public class CrownQuadrantAnother extends LinearLayout {
 
     }
 
-    public void setUpperLeft() {
+   /* public void setUpperLeft() {
         setupRows(R.drawable.ul, getResources().getColor(R.color.quad_blue), sheet.getUl1(), sheet.getUl2());
     }
 
@@ -438,7 +437,7 @@ public class CrownQuadrantAnother extends LinearLayout {
 
     public void setLowerRight() {
         setupRows(R.drawable.lr, getResources().getColor(R.color.quad_violate), sheet.getLr1(), sheet.getLr2());
-    }
+    }*/
 
     public interface OnCrownClickListner {
 

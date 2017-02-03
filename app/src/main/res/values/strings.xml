@@ -65,6 +65,7 @@
     <!--fragment_contact_us.xml-->
     <string name="invalid_username">Username or Email is required</string>
     <string name="invalid_password">Password is required</string>
+    <string name="password_length">Password must be of minimum 6 characters</string>
     <string name="unable_to_login">Unable To Login</string>
     <string name="invalid_login">Invalid Login Credentials</string>
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,7 +22,10 @@ public class PaymentActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView imgCart;
     private Button viewOrders;
-    TextView txtConfirm;
+    private TextView txtConfirm;
+    private TextView txtTitle;
+
+    // Thanks For Your Order. Please Send Bank Transfer / RTGS / NFT On Below Details To Proceed Your Order.
     String strHtml = "<p align=\"center\">\n" +
             "    <strong>Order Confirmation</strong>\n" +
             "</p>\n" +
@@ -84,11 +88,20 @@ public class PaymentActivity extends AppCompatActivity {
 
         init();
 
-        txtConfirm.setText(Html.fromHtml(strHtml));
+        if (!TextUtils.isEmpty(strHtml))
+            txtConfirm.setText(Html.fromHtml(strHtml));
+
+        if (!TextUtils.isEmpty(resBean.getPlaceOrderSuccessDetailsDC().getInvoiceNumber())) {
+            txtTitle.setText("Thanks For Your Order.\nInvoice number for order is : "
+                    + resBean.getPlaceOrderSuccessDetailsDC().getInvoiceNumber()
+                    + "\nPlease Send Bank Transfer / RTGS / NFT On Below Details To Proceed Your Order.");
+        }
+
     }
 
     private void init() {
         txtConfirm = (TextView) findViewById(R.id.txtConfirm);
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
         viewOrders = (Button) findViewById(R.id.viewOrders);
 
         viewOrders.setOnClickListener(new View.OnClickListener() {

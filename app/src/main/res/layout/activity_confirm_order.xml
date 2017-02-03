@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.webmyne.kidscrown.ui.CartActivity">
+    android:orientation="vertical">
 
     <include layout="@layout/app_bar2" />
 
@@ -218,7 +217,7 @@
                         android:layout_alignParentLeft="true"
                         android:fontFamily="sans-serif-condensed"
                         android:text="SubTotal"
-                        android:textSize="@dimen/S_TEXT_SIZE"
+                        android:textSize="@dimen/N_TEXT"
                         android:textStyle="bold" />
 
                     <TextView
@@ -228,7 +227,7 @@
                         android:layout_alignParentRight="true"
                         android:fontFamily="sans-serif-condensed"
                         android:text="Subtotal"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
+                        android:textSize="@dimen/N_TEXT" />
 
                 </RelativeLayout>
 
@@ -246,7 +245,7 @@
                         android:layout_alignParentLeft="true"
                         android:fontFamily="sans-serif-condensed"
                         android:text="You Saved"
-                        android:textSize="@dimen/S_TEXT_SIZE"
+                        android:textSize="@dimen/N_TEXT"
                         android:textStyle="bold" />
 
                     <TextView
@@ -256,7 +255,7 @@
                         android:layout_alignParentRight="true"
                         android:fontFamily="sans-serif-condensed"
                         android:text="txtSavedPrice"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
+                        android:textSize="@dimen/N_TEXT" />
 
                 </RelativeLayout>
 
@@ -274,7 +273,7 @@
                         android:layout_alignParentLeft="true"
                         android:fontFamily="sans-serif-condensed"
                         android:text="Shipping Cost"
-                        android:textSize="@dimen/S_TEXT_SIZE"
+                        android:textSize="@dimen/N_TEXT"
                         android:textStyle="bold" />
 
                     <TextView
@@ -284,7 +283,7 @@
                         android:layout_alignParentRight="true"
                         android:fontFamily="sans-serif-condensed"
                         android:text="txtSavedPrice"
-                        android:textSize="@dimen/S_TEXT_SIZE" />
+                        android:textSize="@dimen/N_TEXT" />
 
                 </RelativeLayout>
 
@@ -303,7 +302,7 @@
                     android:layout_alignParentLeft="true"
                     android:fontFamily="sans-serif-condensed"
                     android:text="Payable Amount"
-                    android:textSize="@dimen/S_TEXT_SIZE"
+                    android:textSize="@dimen/N_TEXT"
                     android:textStyle="bold" />
 
                 <TextView
@@ -314,7 +313,7 @@
                     android:layout_marginRight="@dimen/M_MARGIN_SIZE"
                     android:fontFamily="sans-serif-condensed"
                     android:text="price"
-                    android:textSize="@dimen/S_TEXT_SIZE"
+                    android:textSize="@dimen/N_TEXT"
                     android:textStyle="bold" />
             </RelativeLayout>
 

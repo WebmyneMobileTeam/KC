@@ -62,20 +62,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     TextView txtRegister, txtForgot;
     EditText edtUsername, edtPassword;
-    String url;
 
     // Google Integration
     private static final int RC_SIGN_IN = 007;
 
     private GoogleApiClient mGoogleApiClient;
-    private boolean mIntentInProgress;
-    private boolean mSignInClicked;
-    private ConnectionResult mConnectionResult;
 
     private RelativeLayout linearFbLogin, linearGPLusLogin;
     private CallbackManager callbackManager;
     private String loginVia = "0";
-    private ProgressDialog pd;
     String regNo;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -110,6 +105,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 } else if (edtPassword.getText().toString().trim().length() == 0) {
                     Functions.showToast(LoginActivity.this, getString(R.string.invalid_password));
+
+                } else if (edtPassword.getText().toString().trim().length() < getResources().getInteger(R.integer.pwd_min)) {
+                    Functions.showToast(LoginActivity.this, getString(R.string.password_length));
 
                 } else {
                     loginVia = Constants.NORMAL;
@@ -231,6 +229,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.e("EXP LOGOUT", e1.toString());
         }
 
+        if (TextUtils.isEmpty(deviceId)) {
+            Functions.setPermission(this, new String[]{Manifest.permission.READ_PHONE_STATE}, new PermissionListener() {
+                @Override
+                public void onPermissionGranted() {
+                    TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                    deviceId = telephonyManager.getDeviceId();
+                }
+
+                @Override
+                public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+
+                }
+            });
+            return;
+        }
         LoginModelRequest model = new LoginModelRequest();
         model.setDeviceID(deviceId);
         model.setGCMToken(PrefUtils.getFCMToken(this));
@@ -252,18 +265,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 LoginModelData responseModel = (LoginModelData) responseBody;
 
+                PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
 
                 Log.e("tag", "responseModel.getRegistrationNumber(): " + responseModel.getRegistrationNumber());
                 if (TextUtils.isEmpty(responseModel.getRegistrationNumber())) {
-
-                    Log.e("tag", "Functions.jsonString(responseModel): " + Functions.jsonString(responseModel));
 
                     askRegistrationNo(responseModel);
 
                 } else {
 
                     PrefUtils.setUserProfile(LoginActivity.this, responseModel);
+
+                    PrefUtils.setLoggedIn(LoginActivity.this, true);
 
                     PrefUtils.setFirstTime(LoginActivity.this, true);
 
@@ -295,11 +310,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         final Button btnNext = (Button) promptView.findViewById(R.id.btnNext);
 
         final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Functions.hideKeyPad(LoginActivity.this, v);
                 if (!Functions.isConnected(LoginActivity.this)) {
                     Functions.snack(v, getString(R.string.no_internet));
                     return;
@@ -312,16 +329,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     regNo = edtRegNo.getText().toString().trim();
 
                     Log.e("tag", "Functions.jsonString(responseModel): " + Functions.jsonString(responseModel));
-                    registerWebService(responseModel);
+                    registerWebService(dialog, responseModel);
 
-                    dialog.dismiss();
+                    // dialog.dismiss();
                 }
 
             }
         });
     }
 
-    private void registerWebService(LoginModelData responseModel) {
+    private void registerWebService(final AlertDialog dialog, LoginModelData responseModel) {
 
         UpdateProfileModelRequest model = new UpdateProfileModelRequest();
         model.setClinicName(responseModel.getClinicName());
@@ -338,6 +355,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onSuccess(Object responseBody) {
 
+                dialog.dismiss();
+
                 UserProfileModel responseModel = (UserProfileModel) responseBody;
 
                 Log.e("tag", "responseModel: " + Functions.jsonString(responseModel));
@@ -353,6 +372,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 modelData.setUserName(responseModel.getUserName());
 
                 PrefUtils.setUserProfile(LoginActivity.this, modelData);
+
+                PrefUtils.setLoggedIn(LoginActivity.this, true);
 
                 Intent i = new Intent(LoginActivity.this, MyDrawerActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -435,15 +456,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     0).show();
             return;
         }
-
-        if (!mIntentInProgress) {
-            mConnectionResult = result;
-
-            if (mSignInClicked) {
-//                resolveSignInError();
-            }
-        }
-
     }
 
     private void handleSignInResult(GoogleSignInResult result) {

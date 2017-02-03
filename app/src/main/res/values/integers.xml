@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="first_name">70</integer>
+    <integer name="last_name">70</integer>
+    <integer name="user_name">20</integer>
+    <integer name="mobile">10</integer>
+    <integer name="email">50</integer>
+    <integer name="pwd_min">6</integer>
+    <integer name="pwd_max">50</integer>
+    <integer name="registration">12</integer>
+    <integer name="clinic">50</integer>
+    <integer name="city">50</integer>
+
+    <integer name="address1">140</integer>
+    <integer name="address2">140</integer>
+    <integer name="pincode">6</integer>
+
+</resources>

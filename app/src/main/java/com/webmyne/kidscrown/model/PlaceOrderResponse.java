@@ -110,6 +110,16 @@ public class PlaceOrderResponse {
             private String MobileNo;
             private String PinCode;
 
+            public int getStateID() {
+                return StateID;
+            }
+
+            public void setStateID(int stateID) {
+                StateID = stateID;
+            }
+
+            private int StateID;
+
             public String getAddress1() {
                 return Address1;
             }
@@ -449,6 +459,16 @@ public class PlaceOrderResponse {
             private String MobileNo;
             private String PinCode;
             private long ShippingAddressID;
+
+            public int getStateID() {
+                return StateID;
+            }
+
+            public void setStateID(int stateID) {
+                StateID = stateID;
+            }
+
+            private int StateID;
 
             public String getAddress1() {
                 return Address1;
