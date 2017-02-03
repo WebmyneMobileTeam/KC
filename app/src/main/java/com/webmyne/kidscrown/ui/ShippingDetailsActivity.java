@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +26,6 @@ import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.PrefUtils;
-import com.webmyne.kidscrown.model.BillingAndShippingAddress;
 import com.webmyne.kidscrown.model.CountryResponse;
 import com.webmyne.kidscrown.model.PlaceOrderRequest;
 import com.webmyne.kidscrown.model.PlaceOrderResponse;
@@ -44,7 +41,6 @@ public class ShippingDetailsActivity extends AppCompatActivity {
 
     SegmentedGroup segmented2;
     int shippingStateId = 0, billingStateId = 0;
-    BillingAndShippingAddress billingAndShippingAddress = new BillingAndShippingAddress();
     private EditText edtBillingAddress1, edtBillingAddress2, edtBillingCity, edtBillingPincode, edtShippingAddress1, edtShippingAddress2, edtShippingCity, edtShippingPincode;
     private AppCompatCheckBox isSameAsBilling;
     boolean sameAsBilling = false;
@@ -148,20 +144,10 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         edtBillingCity = (EditText) findViewById(R.id.edtBillingCity);
         edtBillingPincode = (EditText) findViewById(R.id.edtBillingPincode);
 
-        edtBillingAddress1.addTextChangedListener(new CustomTextWatcher(edtBillingAddress1));
-        edtBillingAddress2.addTextChangedListener(new CustomTextWatcher(edtBillingAddress2));
-        edtBillingCity.addTextChangedListener(new CustomTextWatcher(edtBillingCity));
-        edtBillingPincode.addTextChangedListener(new CustomTextWatcher(edtBillingPincode));
-
         edtShippingAddress1 = (EditText) findViewById(R.id.edtShippingAddress1);
         edtShippingAddress2 = (EditText) findViewById(R.id.edtShippingAddress2);
         edtShippingCity = (EditText) findViewById(R.id.edtShippingCity);
         edtShippingPincode = (EditText) findViewById(R.id.edtShippingPincode);
-
-        edtShippingAddress1.addTextChangedListener(new CustomTextWatcher(edtShippingAddress1));
-        edtShippingAddress2.addTextChangedListener(new CustomTextWatcher(edtShippingAddress2));
-        edtShippingCity.addTextChangedListener(new CustomTextWatcher(edtShippingCity));
-        edtShippingPincode.addTextChangedListener(new CustomTextWatcher(edtShippingPincode));
 
         isSameAsBilling = (AppCompatCheckBox) findViewById(R.id.checkbox);
 
@@ -372,88 +358,5 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
-    }
-
-    private class CustomTextWatcher implements TextWatcher {
-        private EditText mEditText;
-
-        public CustomTextWatcher(EditText e) {
-            mEditText = e;
-        }
-
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        public void afterTextChanged(Editable s) {
-            switch (mEditText.getId()) {
-                case R.id.edtBillingAddress1:
-                    billingAndShippingAddress.setBillingAddress1(s.toString());
-
-                    //set in shipping address too if same as billing
-                    if (isSameAsBilling.isChecked()) {
-                        billingAndShippingAddress.setShippingAddress1(s.toString());
-                    }
-                    break;
-
-                case R.id.edtBillingAddress2:
-                    billingAndShippingAddress.setBillingAddress2(s.toString());
-                    //set in shipping address too if same as billing
-                    if (isSameAsBilling.isChecked()) {
-                        billingAndShippingAddress.setShippingAddress2(s.toString());
-                    }
-                    break;
-
-                case R.id.edtBillingCity:
-                    billingAndShippingAddress.setBillingCity(s.toString());
-
-                    //set in shipping address too if same as billing
-                    if (isSameAsBilling.isChecked()) {
-                        billingAndShippingAddress.setShippingCity(s.toString());
-                    }
-                    break;
-
-                case R.id.edtBillingCountry:
-                    billingAndShippingAddress.setBillingCountry(s.toString());
-
-                    //set in shipping address too if same as billing
-                    if (isSameAsBilling.isChecked()) {
-                        billingAndShippingAddress.setShippingCountry(s.toString());
-                    }
-                    break;
-
-                case R.id.edtBillingPincode:
-                    billingAndShippingAddress.setBillingPincode(s.toString());
-
-                    //set in shipping address too if same as billing
-                    if (isSameAsBilling.isChecked()) {
-                        billingAndShippingAddress.setShippingPincode(s.toString());
-                    }
-                    break;
-
-                case R.id.edtShippingAddress1:
-                    billingAndShippingAddress.setShippingAddress1(s.toString());
-                    break;
-
-                case R.id.edtShippingAddress2:
-                    billingAndShippingAddress.setShippingAddress2(s.toString());
-                    break;
-
-                case R.id.edtShippingCity:
-                    billingAndShippingAddress.setShippingCity(s.toString());
-                    break;
-
-                case R.id.edtShippingCountry:
-                    billingAndShippingAddress.setShippingCountry(s.toString());
-                    break;
-
-                case R.id.edtShippingPincode:
-                    billingAndShippingAddress.setShippingPincode(s.toString());
-                    break;
-            }
-
-        }
     }
 }

@@ -22,7 +22,6 @@ import com.webmyne.kidscrown.helper.BadgeHelper;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.helper.GetPriceSlab;
-import com.webmyne.kidscrown.helper.ToolHelper;
 import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.model.PriceSlab;
@@ -40,7 +39,6 @@ import java.util.Map;
 public class RefillActivityAnother extends AppCompatActivity implements CrownQuadrantAnother.OnCrownClickListner, RefillOrderAdapterAnother.OnDeleteListner, RefillOrderAdapterAnother.onCartSelectListener, RefillOrderAdapterAnother.onTextChange, MyRecyclerAdapter.addQtyListener {
 
     private android.support.v7.widget.Toolbar toolbar;
-    ToolHelper helper;
     LinearLayout crownSetLayout, numPadButtonLayout;
     private ArrayList<CrownProductItem> orderArray;
     private ListView listRefill;

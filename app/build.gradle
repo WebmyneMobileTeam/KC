@@ -41,7 +41,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
-    compile files('libs/picasso-2.4.0.jar')
     compile files('libs/volley.jar')
     compile 'com.google.code.gson:gson:2.4'
     compile files('libs/android-viewbadger.jar')

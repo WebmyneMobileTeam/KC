@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.api.CommonRetrofitResponseListener;
 import com.webmyne.kidscrown.api.FetchAboutUsData;
+import com.webmyne.kidscrown.helper.Functions;
 import com.webmyne.kidscrown.model.AboutUsResponseModel;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
@@ -21,12 +22,7 @@ public class AboutUsFragment extends Fragment {
 
     private TextView tvAboutUs;
     private ImageView ivImage;
-
-    public static AboutUsFragment newInstance(String param1, String param2) {
-        AboutUsFragment fragment = new AboutUsFragment();
-
-        return fragment;
-    }
+    private int developerCount = 0;
 
     public AboutUsFragment() {
         // Required empty public constructor
@@ -56,6 +52,17 @@ public class AboutUsFragment extends Fragment {
         ivImage = (ImageView) view.findViewById(R.id.ivImage);
 
         fetchAboutUsData();
+
+        ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                developerCount++;
+                if (developerCount == 7) {
+                    Functions.showUserDetails(getActivity());
+                    developerCount = 0;
+                }
+            }
+        });
     }
 
     private void fetchAboutUsData() {

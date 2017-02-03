@@ -75,6 +75,7 @@ public class QuantityDialog extends Dialog {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Functions.hideKeyPad(context, view);
                 if (TextUtils.isEmpty(Functions.getStr(edtQty))) {
                     Functions.showToast(context, "Enter valid quantity");
 
@@ -94,6 +95,7 @@ public class QuantityDialog extends Dialog {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Functions.hideKeyPad(context, view);
                 dismiss();
             }
         });

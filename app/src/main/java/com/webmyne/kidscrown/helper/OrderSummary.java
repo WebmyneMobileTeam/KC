@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.model.OrderHistoryModel;
-import com.webmyne.kidscrown.model.OrderModel;
 
 import java.text.DecimalFormat;
 
@@ -39,16 +38,6 @@ public class OrderSummary extends LinearLayout {
         productQty = (TextView) parentView.findViewById(R.id.pdQty);
         productPrice = (TextView) parentView.findViewById(R.id.pdPrice);
         formatter = new DecimalFormat("#,##,###");
-    }
-
-    public void setDetails(OrderModel orderModel) {
-        txtProductName.setText(orderModel.getProductName());
-        productQty.setText(orderModel.getProductQty() + "");
-
-        int total = orderModel.getProductQty() * Integer.parseInt(orderModel.getProductUnitPrice());
-
-        productPrice.setText(context.getResources().getString(R.string.Rs) + " " + formatter.format(total));
-
     }
 
     public void setDetails(String productName, int quantity, double finalIntroPrice) {

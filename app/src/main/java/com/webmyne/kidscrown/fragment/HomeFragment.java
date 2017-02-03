@@ -1,10 +1,7 @@
 package com.webmyne.kidscrown.fragment;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.webmyne.kidscrown.R;
@@ -30,12 +24,10 @@ import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
-import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.MyApplication;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.helper.RetrofitErrorHelper;
 import com.webmyne.kidscrown.model.CountryResponse;
-import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductResponse;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;

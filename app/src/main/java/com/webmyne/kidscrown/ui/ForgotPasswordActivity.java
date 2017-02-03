@@ -69,7 +69,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
 
                 if (TextUtils.isEmpty(Functions.getStr(edtEmail))) {
-                    Functions.showToast(ForgotPasswordActivity.this, "Please Enter Your User Name");
+                    Functions.showToast(ForgotPasswordActivity.this, "Please Enter Your User Name/Email");
 
                 } else {
                     callForgotPassword();

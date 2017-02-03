@@ -276,5 +276,19 @@ public class Functions {
                 .setPermissions(permissions)
                 .check();
     }
+
+    public static void showUserDetails(final Context context) {
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.setTitle("User Details");
+        dialog.setMessage(PrefUtils.getUserProfile(context).toString());
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 }
 

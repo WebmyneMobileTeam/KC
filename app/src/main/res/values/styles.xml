@@ -10,60 +10,15 @@
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
     </style>
 
-    <style name="TextInputLayout" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">@dimen/L_MARGIN_SIZE</item>
-        <item name="colorAccent">@color/primaryColor</item>
-        <item name="android:textColor">#c0c0c0</item>
-    </style>
-
     <style name="CheckBoxCustom" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="colorControlActivated">@color/primaryColor</item>
         <item name="colorSwitchThumbNormal">@color/half_black</item>
     </style>
 
-    <style name="MyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryColorDark</item>
-        <item name="colorAccent">@color/primaryColor</item>
-        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
-        <item name="android:textColorSecondary">@color/colorTextSecondary</item>
-    </style>
-
-    <style name="both_match_parent">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-
-    <style name="match_wrap_parent">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="both_wrap_content">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="both_match_wrap_content">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="login_button" parent="both_match_wrap_content">
-        <item name="android:background">@drawable/mybutton</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:layout_height">@dimen/STD_HEIGHT_SIZE</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textStyle">normal</item>
-
-    </style>
-
     <style name="MyButtonStyle">
         <item name="android:background">@color/button_color</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/M_TEXT</item>
+        <item name="android:textSize">@dimen/L_TEXT</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:layout_width">match_parent</item>
@@ -72,50 +27,12 @@
         <item name="android:layout_height">@dimen/STD_HEIGHT_SIZE</item>
     </style>
 
-    <style name="login_button_fb" parent="both_match_wrap_content">
-        <item name="android:background">@drawable/mybutton_fb</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textStyle">normal</item>
-
-    </style>
-
-    <style name="login_button_gplus" parent="both_match_wrap_content">
-        <item name="android:background">@drawable/mybutton_gplus</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textStyle">normal</item>
-
-    </style>
-
-    <style name="Widget.CardContent" parent="android:Widget">
-        <item name="android:paddingLeft">@dimen/card_margin</item>
-        <item name="android:paddingRight">@dimen/card_margin</item>
-        <item name="android:paddingTop">@dimen/L_TEXT_SIZE</item>
-        <item name="android:paddingBottom">@dimen/L_TEXT_SIZE</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
     <style name="Widget.CardContent2" parent="android:Widget">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">24dp</item>
         <item name="android:paddingBottom">24dp</item>
         <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="WhiteHUGEText" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">40sp</item>
-        <item name="android:textColor">#fff</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-
-    <style name="FloatingLabelStyle" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">@dimen/S_TEXT_SIZE</item>
-        <item name="android:textColor">#fff</item>
     </style>
 
     <style name="ToolBarStyle" parent="ToolBarStyle.Base" />

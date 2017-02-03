@@ -55,7 +55,7 @@ public class GalleryActivity extends AppCompatActivity {
 
         int productID = getIntent().getIntExtra("id", 0);
         DatabaseHandler handler = new DatabaseHandler(GalleryActivity.this);
-        cursorProductImage = handler.getProductImageCursor("" + productID);
+       // cursorProductImage = handler.getProductImageCursor("" + productID);
         handler.close();
         displayAdapter(cursorProductImage);
 

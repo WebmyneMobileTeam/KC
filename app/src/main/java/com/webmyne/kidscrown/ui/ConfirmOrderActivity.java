@@ -19,7 +19,6 @@ import com.webmyne.kidscrown.helper.ComplexPreferences;
 import com.webmyne.kidscrown.helper.Constants;
 import com.webmyne.kidscrown.helper.DatabaseHandler;
 import com.webmyne.kidscrown.helper.Functions;
-import com.webmyne.kidscrown.helper.GetSortedDiscount;
 import com.webmyne.kidscrown.helper.OrderSummary;
 import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.FinalOrderRequest;
@@ -35,7 +34,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     LinearLayout totalLayout, offerLayout;
     private LinearLayout orderSummaryLayout;
     DatabaseHandler handler;
-    GetSortedDiscount getSortedDiscount;
     private TextView txtCharge;
     private LinearLayout.LayoutParams params;
     DecimalFormat formatter;
@@ -50,8 +48,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
-
-        getSortedDiscount = new GetSortedDiscount(this);
 
         init();
 

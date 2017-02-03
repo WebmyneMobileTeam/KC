@@ -45,13 +45,6 @@
             android:name=".ui.RefillActivityAnother"
             android:label="@string/title_activity_refill"
             android:screenOrientation="landscape" />
-        <!--
-        <activity
-            android:name=".ui.DemoCrownActivity"
-            android:label="@string/title_activity_demo_crown"
-            android:screenOrientation="landscape" >
-        </activity>
-        -->
         <activity
             android:name=".ui.ProductDetailActivity"
             android:label="@string/title_activity_product_detail"

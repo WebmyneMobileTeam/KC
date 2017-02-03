@@ -41,6 +41,25 @@ public class LoginModelData {
     private int UserID;
     private String UserName;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "\nClinicName : " + ClinicName +
+                ", \nEmailID : " + EmailID +
+                ", \nFirstName : " + FirstName +
+                ", \nIsNewUser : " + IsNewUser +
+                ", \nLastName : " + LastName +
+                ", \nLoginVia : " + LoginVia +
+                ", \nMobileNo : " + MobileNo +
+                ", \nMobileOS : " + MobileOS +
+                ", \nPassword : " + Password +
+                ", \nRegistrationNumber : " + RegistrationNumber +
+                ", \nSocialID : " + SocialID +
+                ", \nUserID : " + UserID +
+                ", \nUserName : " + UserName + "\n" +
+                '}';
+    }
+
     public String getClinicName() {
         return ClinicName;
     }

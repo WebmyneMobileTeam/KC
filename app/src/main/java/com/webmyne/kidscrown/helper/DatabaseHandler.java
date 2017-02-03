@@ -2,16 +2,12 @@ package com.webmyne.kidscrown.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.webmyne.kidscrown.R;
-import com.webmyne.kidscrown.model.Address;
 import com.webmyne.kidscrown.model.CartProduct;
-import com.webmyne.kidscrown.model.DiscountModel;
 import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
 import com.webmyne.kidscrown.model.ProductCart;
@@ -33,7 +29,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "kidscrown.db";
     private static final String TABLE_PRODUCT = "Product";
-    private static final String TABLE_PRODUCT_IMAGE = "ProductImage";
     private static final String TABLE_ADDRESS = "Address";
     private static final String TABLE_CROWN_SPECIFICATION = "CrownSpecification";
     private static final String TABLE_PRODUCT_PRICE = "ProductPrice";
@@ -113,28 +108,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<DiscountModel> getOffers() {
-        myDataBase = this.getWritableDatabase();
-
-        ArrayList<DiscountModel> discountModels = new ArrayList<>();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_DISCOUNT;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        if (cursor.getCount() > 0) {
-            do {
-                DiscountModel model = new DiscountModel();
-                model.DiscountImage = cursor.getString(cursor.getColumnIndexOrThrow("DiscountImage"));
-                model.DiscountInitial = cursor.getString(cursor.getColumnIndexOrThrow("DiscountInitial"));
-                model.DiscountPercentage = cursor.getString(cursor.getColumnIndexOrThrow("DiscountPercentage"));
-                model.ProductID = cursor.getString(cursor.getColumnIndexOrThrow("ProductID"));
-                discountModels.add(model);
-            } while (cursor.moveToNext());
-        }
-        return discountModels;
-    }
-
     public boolean ifExists(int productID) {
         boolean available = false;
         myDataBase = this.getWritableDatabase();
@@ -204,27 +177,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public String getShippingAddress() {
-        myDataBase = this.getWritableDatabase();
-        String shippingAddress = "";
-        Cursor cursor = null;
-        String selectQuery = "SELECT  * FROM " + TABLE_ADDRESS;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        if (cursor.getCount() > 0) {
-            do {
-                if (cursor.getString(cursor.getColumnIndexOrThrow("is_shipping")).equals("true")) {
-                    shippingAddress = cursor.getString(cursor.getColumnIndexOrThrow("address_1")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("address_2")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("city_name")) + " - " + cursor.getString(cursor.getColumnIndexOrThrow("pincode")) + ", " + cursor.getString(cursor.getColumnIndexOrThrow("state_name")) + ", " + cursor.getString((cursor.getColumnIndexOrThrow("country_name")));
-                    break;
-                }
-
-            } while (cursor.moveToNext());
-        }
-        return shippingAddress;
-
-    }
-
     public void updateCart(int qty, int unitPrice, int productID) {
         int totalPrice = unitPrice * qty;
         Log.e("updated value", qty + "--" + unitPrice + "--" + totalPrice + "--" + productID);
@@ -239,36 +191,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
-    // Kit Products
-    public ArrayList<ProductCart> getCartProduct(int productID) {
-        ArrayList<ProductCart> products = new ArrayList<>();
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price AND CartItem.product_id!=" + productID;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            do {
-                ProductCart cart = new ProductCart();
-                cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
-                cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
-                cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
-                cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
-                cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
-                products.add(cart);
-            } while (cursor.moveToNext());
-        }
-        return products;
-    }
-
     // Crowns Products
     public ArrayList<ProductCart> getCrownCartProduct(int productID) {
 
         ArrayList<ProductCart> products = new ArrayList<>();
         myDataBase = this.getWritableDatabase();
         Cursor cursor = null;
-        //String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + ", " + TABLE_PRODUCT_PRICE + " WHERE CartItem.unit_price = ProductPrice.price AND CartItem.product_id=" + productID;
         String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + " WHERE product_id ='" + productID + "'";
         cursor = myDataBase.rawQuery(selectQuery, null);
         cursor.moveToFirst();
@@ -285,76 +213,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return products;
-    }
-
-    public void saveAddress(ArrayList<Address> addresses) {
-        myDataBase = this.getWritableDatabase();
-        myDataBase.delete(TABLE_ADDRESS, null, null);
-
-        ArrayList<Integer> colors;
-        colors = new ArrayList();
-        int pos = 0;
-        Resources res = context.getResources();
-        colors.add(res.getColor(R.color.quad_green));
-        colors.add(res.getColor(R.color.quad_violate));
-        colors.add(res.getColor(R.color.quad_orange));
-        colors.add(res.getColor(R.color.quad_blue));
-
-        for (Address address : addresses) {
-
-            myDataBase = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("user_id", address.UserID);
-            values.put("pincode", address.PinCode);
-            values.put("mobile", address.MobileNo);
-            values.put("state_name", "");
-            values.put("state_id", address.StateID);
-            values.put("country_name", "");
-            values.put("country_id", address.Country);
-            values.put("city_name", "");
-            values.put("city_id", address.City);
-            values.put("address_id", address.AddressID);
-            values.put("address_2", address.Address2);
-            values.put("address_1", address.Address1);
-            values.put("is_shipping", address.IsShipping);
-            values.put("color", colors.get(pos));
-
-            myDataBase.insert(TABLE_ADDRESS, null, values);
-            if (pos >= colors.size() - 1) {
-                pos = 0;
-            } else {
-                pos = pos + 1;
-            }
-        }
-
-    }
-
-    public void deleteAddress(int addressID) {
-
-    }
-
-    public Cursor getAddressCursor() {
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT  * FROM " + TABLE_ADDRESS;
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        return cursor;
-    }
-
-    public Cursor getProductImageCursor(String productID) {
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor;
-        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT_IMAGE + " WHERE product_id =" + "\"" + productID.toString().trim() + "\"";
-        cursor = myDataBase.rawQuery(selectQuery, null);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-        }
-
-        return cursor;
-
     }
 
     @Override
@@ -414,7 +272,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return 0;
         }
     }
-
 
     public ArrayList<CartProduct> getCartProducts() {
         ArrayList<CartProduct> products = new ArrayList<>();

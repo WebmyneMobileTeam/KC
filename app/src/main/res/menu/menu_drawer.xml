@@ -20,16 +20,6 @@
             android:icon="@drawable/ic_action_order"
             android:title="My Orders" />
 
-        <!--  <item
-              android:id="@+id/drawer_address"
-              android:icon="@drawable/ic_action_address"
-              android:title="My Address" />
-  -->
-        <!--<item
-            android:id="@+id/drawer_settings"
-            android:icon="@drawable/ic_action_settings"
-            android:title="Settings" />
--->
         <item
             android:id="@+id/drawer_feedback"
             android:icon="@drawable/ic_action_feedback"

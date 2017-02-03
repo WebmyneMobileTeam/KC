@@ -26,7 +26,7 @@
     <dimen name="M_TEXT_SIZE">28sp</dimen>
     <dimen name="L_TEXT_SIZE">30sp</dimen>
     <dimen name="VL_TEXT_SIZE">32sp</dimen>
-    <dimen name="STD_HEIGHT_SIZE">64dp</dimen>
+    <dimen name="STD_HEIGHT_SIZE">56dp</dimen>
     <dimen name="STD_HEIGHT_SIZE1">64dp</dimen>
     <dimen name="S_MARGIN_SIZE">8dp</dimen>
     <dimen name="M_MARGIN_SIZE">10dp</dimen>

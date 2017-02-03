@@ -15,6 +15,9 @@
     <EditText
         android:id="@+id/edtQty"
         android:layout_width="match_parent"
+        android:fontFamily="sans-serif-condensed"
+        android:inputType="number"
+        android:digits="1234567890"
         android:layout_height="wrap_content" />
 
     <LinearLayout
