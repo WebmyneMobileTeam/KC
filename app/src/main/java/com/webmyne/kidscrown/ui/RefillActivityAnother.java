@@ -26,7 +26,6 @@ import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.CrownProductItem;
 import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
-import com.webmyne.kidscrown.model.ProductCart;
 import com.webmyne.kidscrown.model.ProductSlab;
 import com.webmyne.kidscrown.ui.widgets.CrownQuadrantAnother;
 
@@ -52,7 +51,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     private int selectedSpecificId = 0;
 
     private StringBuilder sb = new StringBuilder();
-    ArrayList<ProductCart> crowns = new ArrayList<>();
+    ArrayList<CartProduct> crowns = new ArrayList<>();
 
     private Product product;
     private TextView txtCustomTitle;
@@ -170,15 +169,18 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
         for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
             CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
-           // crownQuadrantAnother.setDefault();
+            crownQuadrantAnother.setDefault();
         }
 
-        crowns = handler.getCrownCartProduct(product.getProductID());
-        Log.e("crowns", crowns.size() + "##");
+        crowns = handler.getCrownCartProducts(product.getProductID());
 
-        for (ProductCart cart : crowns) {
+        if (badgeCart != null)
+            badgeCart.displayBadge(handler.getTotalProducts());
+
+
+        for (CartProduct cart : crowns) {
             String crown = cart.getProductName();
-            int qty = cart.getProductQty();
+            int qty = cart.getQty();
             int specificId = cart.getSpecificId();
 
             for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
@@ -186,6 +188,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 crownQuadrantAnother.setQuanity(crown, qty + "");
             }
             CrownProductItem item = new CrownProductItem(crown, qty, specificId);
+
             orderArray.add(item);
         }
         adapter.setCrowns(orderArray);
@@ -239,7 +242,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processContinue(v);
+                processContinue();
             }
         });
 
@@ -252,6 +255,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     }
 
     private void fetchCrowns() {
+
         LinkedHashMap<String, ArrayList<ProductSlab>> productsMap = product.getProducts();
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -296,9 +300,10 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
     }
 
-    private void processContinue(View v) {
+    private void processContinue() {
         if (orderArray.size() == 0) {
-            Functions.snack(v, "No crowns selected");
+            Functions.showToast(this, "No crowns selected");
+
         } else {
             int totalCrowns = 0;
             int unitPrice = 0;

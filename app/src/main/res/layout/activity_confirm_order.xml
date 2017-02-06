@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -290,6 +289,7 @@
                     android:layout_alignParentLeft="true"
                     android:fontFamily="sans-serif-condensed"
                     android:text="Payable Amount"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/N_TEXT"
                     android:textStyle="bold" />
 
@@ -301,6 +301,7 @@
                     android:layout_marginRight="@dimen/M_MARGIN_SIZE"
                     android:fontFamily="sans-serif-condensed"
                     android:text="price"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/N_TEXT"
                     android:textStyle="bold" />
             </RelativeLayout>

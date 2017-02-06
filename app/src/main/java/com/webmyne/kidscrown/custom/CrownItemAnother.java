@@ -35,7 +35,7 @@ public class CrownItemAnother extends LinearLayout {
     }
 
     private void init() {
-        Log.e("slab", slab.getModelName());
+       // Log.e("slab", slab.getModelName());
         parentView = inflate(context, R.layout.crown_item_another, this);
 
         viewCB = (LinearLayout) parentView.findViewById(R.id.viewCB);

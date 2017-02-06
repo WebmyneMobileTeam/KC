@@ -39,6 +39,7 @@ public class CrownQuadrantAnother extends LinearLayout {
     private TextView txtHeader;
     private String header;
     private int image, color;
+    ArrayList<ProductSlab> productSlabsMain;
 
     public CrownQuadrantAnother(Context context) {
         super(context);
@@ -62,7 +63,8 @@ public class CrownQuadrantAnother extends LinearLayout {
     }
 
     private void init(Context context) {
-        rowParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rowParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
 
         View.inflate(context, R.layout.crown_grid_another, this);
         tableLayout = (TableLayout) findViewById(R.id.tableLayout);
@@ -92,7 +94,8 @@ public class CrownQuadrantAnother extends LinearLayout {
             viewCB.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
             final String name = arr1[i];
             txtDetails.setText(name);
-            String string = String.format("%c%c", arr1[i].charAt(0), arr1[i].charAt(arr1[i].length() - 1));
+            String string = String
+                    .format("%c%c", arr1[i].charAt(0), arr1[i].charAt(arr1[i].length() - 1));
             txtCrown.setText(string);
             txtCrown.setPadding(8, 8, 8, 8);
 
@@ -115,7 +118,8 @@ public class CrownQuadrantAnother extends LinearLayout {
             viewCB.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
             final String name = arr2[i];
             txtDetails.setText(name);
-            String string = String.format("%c%c", arr2[i].charAt(0), arr2[i].charAt(arr2[i].length() - 1));
+            String string = String
+                    .format("%c%c", arr2[i].charAt(0), arr2[i].charAt(arr2[i].length() - 1));
             txtCrown.setText(string);
             txtCrown.setPadding(8, 8, 8, 8);
             view.setOnClickListener(new OnClickListener() {
@@ -132,10 +136,10 @@ public class CrownQuadrantAnother extends LinearLayout {
 
     }
 
-    public void setupRowsAnother(int res, int color, final ArrayList<ProductSlab> arr1, final ArrayList<ProductSlab> arr2) {
+    public void setupRowsAnother(int res, int color, final ArrayList<ProductSlab> arr1,
+                                 final ArrayList<ProductSlab> arr2) {
 
         if (arr1 == null || arr1.isEmpty()) {
-
 
         } else {
 
@@ -161,7 +165,6 @@ public class CrownQuadrantAnother extends LinearLayout {
                 });
             }
         }
-
 
         if (arr2 == null || arr2.isEmpty()) {
         } else {
@@ -197,7 +200,6 @@ public class CrownQuadrantAnother extends LinearLayout {
 
 
     public void setSelection(String crownName) {
-
 
         for (int i = 0; i < ((TableRow) tableLayout.getChildAt(0)).getChildCount(); i++) {
 
@@ -281,33 +283,40 @@ public class CrownQuadrantAnother extends LinearLayout {
     }
 
     public void setDefault() {
-        for (int i = 0; i < ((TableRow) tableLayout.getChildAt(0)).getChildCount(); i++) {
-            final View view = ((TableRow) tableLayout.getChildAt(0)).getChildAt(i);
-            final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
-            itemLinear.setBackgroundResource(R.drawable.crown_bg);
-            clearSelected(txtDetails.getText().toString());
-            removeSelected(txtDetails.getText().toString());
-            String string = String.format("%c%c", txtDetails.getText().toString().charAt(0), txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
-            txtCrown.setText(string);
-            txtCrown.setPadding(8, 8, 8, 8);
+
+        setupCrowns(productSlabsMain);
+        for (ProductSlab productSlab : productSlabsMain) {
+            clearSelected(productSlab.getModelNumber());
+            removeSelected(productSlab.getModelNumber());
         }
 
-        if (tableLayout.getChildCount() > 1) {
-            for (int i = 0; i < ((TableRow) tableLayout.getChildAt(1)).getChildCount(); i++) {
-                final View view = ((TableRow) tableLayout.getChildAt(1)).getChildAt(i);
-                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
-                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
-                TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
-                itemLinear.setBackgroundResource(R.drawable.crown_bg);
-                clearSelected(txtDetails.getText().toString());
-                removeSelected(txtDetails.getText().toString());
-                String string = String.format("%c%c", txtDetails.getText().toString().charAt(0), txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
-                txtCrown.setText(string);
-                txtCrown.setPadding(8, 8, 8, 8);
-            }
-        }
+//        for (int i = 0; i < ((TableRow) tableLayout.getChildAt(0)).getChildCount(); i++) {
+//            final View view = ((TableRow) tableLayout.getChildAt(0)).getChildAt(i);
+//            final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+//            TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+//            TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
+//            itemLinear.setBackgroundResource(R.drawable.crown_bg);
+//            clearSelected(txtDetails.getText().toString());
+//            removeSelected(txtDetails.getText().toString());
+//            String string = String.format("%c%c", txtDetails.getText().toString().charAt(0), txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
+//            txtCrown.setText(string);
+//            txtCrown.setPadding(8, 8, 8, 8);
+//        }
+//
+//        if (tableLayout.getChildCount() > 1) {
+//            for (int i = 0; i < ((TableRow) tableLayout.getChildAt(1)).getChildCount(); i++) {
+//                final View view = ((TableRow) tableLayout.getChildAt(1)).getChildAt(i);
+//                final LinearLayout itemLinear = (LinearLayout) view.findViewById(R.id.itemLinear);
+//                TextView txtDetails = (TextView) view.findViewById(R.id.txtDetails);
+//                TextView txtCrown = (TextView) view.findViewById(R.id.txtCrown);
+//                itemLinear.setBackgroundResource(R.drawable.crown_bg);
+//                clearSelected(txtDetails.getText().toString());
+//                removeSelected(txtDetails.getText().toString());
+//                String string = String.format("%c%c", txtDetails.getText().toString().charAt(0), txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
+//                txtCrown.setText(string);
+//                txtCrown.setPadding(8, 8, 8, 8);
+//            }
+//        }
     }
 
     public void setQuanity(final String crown, String value) {
@@ -358,7 +367,8 @@ public class CrownQuadrantAnother extends LinearLayout {
 
                 if (txtDetails.getText().toString().equalsIgnoreCase(value)) {
                     itemLinear.setBackgroundResource(R.drawable.crown_bg);
-                    String string = String.format("%c%c", txtDetails.getText().toString().charAt(0), txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
+                    String string = String.format("%c%c", txtDetails.getText().toString().charAt(0),
+                            txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
                     txtCrown.setText(string);
                     txtCrown.setPadding(8, 8, 8, 8);
                 }
@@ -373,7 +383,9 @@ public class CrownQuadrantAnother extends LinearLayout {
 
                     if (txtDetails.getText().toString().equalsIgnoreCase(value)) {
                         itemLinear.setBackgroundResource(R.drawable.crown_bg);
-                        String string = String.format("%c%c", txtDetails.getText().toString().charAt(0), txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
+                        String string = String.format("%c%c", txtDetails.getText().toString().charAt(0),
+                                txtDetails.getText().toString()
+                                        .charAt(txtDetails.getText().toString().length() - 1));
                         txtCrown.setText(string);
                         txtCrown.setPadding(8, 8, 8, 8);
                     }
@@ -391,8 +403,17 @@ public class CrownQuadrantAnother extends LinearLayout {
 
     public void setupCrowns(ArrayList<ProductSlab> productSlabs) {
 
+        productSlabsMain = new ArrayList<>();
+        productSlabsMain.addAll(productSlabs);
+
         ArrayList<ProductSlab> row1 = new ArrayList<>();
         ArrayList<ProductSlab> row2 = new ArrayList<>();
+
+        try {
+            tableLayout.removeAllViews();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         TableRow row = new TableRow(context);
         tableLayout.addView(row, rowParams);
@@ -408,7 +429,6 @@ public class CrownQuadrantAnother extends LinearLayout {
             CrownItemAnother itemAnother = new CrownItemAnother(context, slab, image, color);
             ((TableRow) tableLayout.getChildAt(slab.getRows() - 1)).addView(itemAnother, rowParams);
         }
-
 
         for (ProductSlab productSlab : productSlabs) {
             if (productSlab.getRows() == 1) {

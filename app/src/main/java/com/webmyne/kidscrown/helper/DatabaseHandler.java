@@ -10,7 +10,6 @@ import android.util.Log;
 import com.webmyne.kidscrown.model.CartProduct;
 import com.webmyne.kidscrown.model.PriceSlab;
 import com.webmyne.kidscrown.model.Product;
-import com.webmyne.kidscrown.model.ProductCart;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -183,36 +182,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase = this.getWritableDatabase();
         String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty=" + qty + ", total_price=" + totalPrice + ", unit_price=" + unitPrice + " WHERE product_id ='" + productID + "'";
         myDataBase.execSQL(selectQuery);
-    }
-
-    public void updateCrownCart(int qty, int totalPrice, String productName) {
-        myDataBase = this.getWritableDatabase();
-        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty=" + qty + ", total_price=" + totalPrice + " WHERE product_name ='" + productName + "'";
-        myDataBase.execSQL(selectQuery);
-    }
-
-    // Crowns Products
-    public ArrayList<ProductCart> getCrownCartProduct(int productID) {
-
-        ArrayList<ProductCart> products = new ArrayList<>();
-        myDataBase = this.getWritableDatabase();
-        Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + " WHERE product_id ='" + productID + "'";
-        cursor = myDataBase.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            do {
-                ProductCart cart = new ProductCart();
-                cart.setProductId(cursor.getInt(cursor.getColumnIndexOrThrow("product_id")));
-                cart.setProductName(cursor.getString(cursor.getColumnIndexOrThrow("product_name")));
-                cart.setProductQty(cursor.getInt(cursor.getColumnIndexOrThrow("qty")));
-                cart.setProductUnitPrice(cursor.getString(cursor.getColumnIndexOrThrow("unit_price")));
-                cart.setProductTotalPrice(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                cart.setMaxQty(cursor.getInt(cursor.getColumnIndexOrThrow("max")));
-                products.add(cart);
-            } while (cursor.moveToNext());
-        }
-        return products;
     }
 
     @Override
