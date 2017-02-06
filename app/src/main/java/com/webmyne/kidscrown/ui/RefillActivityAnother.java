@@ -170,7 +170,7 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
 
         for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
             CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
-            crownQuadrantAnother.setDefault();
+           // crownQuadrantAnother.setDefault();
         }
 
         crowns = handler.getCrownCartProduct(product.getProductID());

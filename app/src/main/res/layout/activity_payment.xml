@@ -23,6 +23,7 @@
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
                 android:text="Thanks For Your Order. Please Send Bank Transfer / RTGS / NFT On Below Details To Proceed Your Order."
                 android:textSize="@dimen/S_TEXT_SIZE"
                 android:textStyle="bold" />
@@ -31,6 +32,7 @@
                 android:id="@+id/txtConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_marginTop="@dimen/m_8dp"
                 android:text="Bank Details"
                 android:textSize="@dimen/S_TEXT_SIZE"

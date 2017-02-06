@@ -185,14 +185,14 @@ public class CartActivityRevised extends AppCompatActivity {
         }
         request.setPlaceOrderProductDC(placeOrderProductDC);
 
-        Log.e("req", Functions.jsonString(request));
+        Log.e("req1", Functions.jsonString(request));
         new PlaceOrderApi(this, new CommonRetrofitResponseListener() {
             @Override
             public void onSuccess(Object responseBody) {
                // hideProgress();
 
                 PlaceOrderResponse placeOrderResponse = (PlaceOrderResponse) responseBody;
-                Log.e("res", Functions.jsonString(placeOrderResponse));
+                Log.e("res1", Functions.jsonString(placeOrderResponse));
 
                 ComplexPreferences preferences = ComplexPreferences.getComplexPreferences(CartActivityRevised.this, Constants.PREF_NAME, 0);
                 preferences.putObject("placeOrderRes", placeOrderResponse.getData());
