@@ -37,6 +37,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e("FCM exc", "" + e.toString());
         }
 
+        //  KC server key = AIzaSyCpYHStYfBez9Ng5sPTB5hmqeUsCYOsG5s
+
         // Check if message contains a data payload.
        /* if (remoteMessage.getData().size() > 0) {
             Log.e("tag", "Message data payload: " + remoteMessage.getData());

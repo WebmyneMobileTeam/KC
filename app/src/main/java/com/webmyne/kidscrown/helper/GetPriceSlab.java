@@ -49,7 +49,8 @@ public class GetPriceSlab {
         }
 
         if (!isPass) {
-            priceSlab = tempPrices.get(0);
+
+            priceSlab = tempPrices.get(tempPrices.size()-1);
         } else {
             priceSlab = tempPrices.get(tempPos);
         }

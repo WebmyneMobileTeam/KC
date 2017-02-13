@@ -75,6 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             Functions.showToast(RegisterActivity.this, "Password and confirm password does not match");
 
+        } else if (edtClinicName.getText().toString().trim().length() == 0) {
+            Functions.showToast(RegisterActivity.this, "Clinic name is required");
+
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
             Functions.showToast(RegisterActivity.this, "Registration number is required");
 

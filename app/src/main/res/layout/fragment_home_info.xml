@@ -13,10 +13,13 @@
         <ImageView
             android:id="@+id/closeInfo"
             android:layout_width="wrap_content"
-            android:layout_margin="6dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/ic_close" />
+            android:layout_margin="6dp"
+            android:src="@drawable/ic_close"
+            android:tint="@color/primaryColor" />
+
     </RelativeLayout>
+
 </RelativeLayout>

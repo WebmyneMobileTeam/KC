@@ -43,6 +43,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.RefillActivityAnother"
+
             android:label="@string/title_activity_refill"
             android:screenOrientation="landscape" />
         <activity

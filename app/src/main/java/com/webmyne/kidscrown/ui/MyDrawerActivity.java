@@ -180,12 +180,14 @@ public class MyDrawerActivity extends AppCompatActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                Functions.hideKeyPad(MyDrawerActivity.this, drawerView);
 
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                Functions.hideKeyPad(MyDrawerActivity.this, drawerView);
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);

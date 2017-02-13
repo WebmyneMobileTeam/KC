@@ -4,7 +4,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 
-import com.facebook.stetho.Stetho;
+
 import com.google.gson.Gson;
 
 import retrofit2.Retrofit;
@@ -68,9 +68,9 @@ public class MyApplication extends MultiDexApplication {
     }
 
     private void initStetho() {
-        Stetho.initialize(Stetho.newInitializerBuilder(this)
+        /*Stetho.initialize(Stetho.newInitializerBuilder(this)
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                .build());
+                .build());*/
     }
 
     public static Retrofit getRetrofit() {

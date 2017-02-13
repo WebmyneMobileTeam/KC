@@ -104,5 +104,5 @@
     <!--ForgotPassword.java.xml-->
     <string name="forgot_pass">Forgot Password</string>
 
-
+    <string name="saving_text">Effective Discount</string>
 </resources>

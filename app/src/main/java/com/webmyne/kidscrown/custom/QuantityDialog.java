@@ -2,6 +2,8 @@ package com.webmyne.kidscrown.custom;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import com.webmyne.kidscrown.R;
 import com.webmyne.kidscrown.helper.Functions;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Created by sagartahelyani on 25-01-2017.
@@ -64,11 +67,27 @@ public class QuantityDialog extends Dialog {
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
 
+        String maxLength = String.valueOf(maxLimit);
+        edtQty.setFilters(new InputFilter[]{filter, new InputFilter.LengthFilter(maxLength.length())});
+
         actionListener();
 
         setCancelable(false);
         setCanceledOnTouchOutside(true);
     }
+
+    InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            for (int i = start; i < end; ++i) {
+                if (!Pattern.compile("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890]*").matcher(String.valueOf(source.charAt(i))).matches()) {
+                    return "";
+                }
+            }
+
+            return null;
+        }
+    };
 
     private void actionListener() {
 
@@ -80,7 +99,11 @@ public class QuantityDialog extends Dialog {
                     Functions.showToast(context, "Enter valid quantity");
 
                 } else if (Integer.parseInt(Functions.getStr(edtQty)) > maxLimit) {
-                    Functions.showToast(context, "Quantity cannot greater than max limit.");
+                    String msg = "Maximum limit for this product is " + maxLimit + ". Please enter quantity between 1 to " + maxLimit;
+                    Functions.showToast(context, msg);
+
+                } else if (Integer.parseInt(Functions.getStr(edtQty)) < 1) {
+                    Functions.showToast(context, "Quantity should be atleast 1");
 
                 } else {
                     if (onSubmitListener != null) {
@@ -88,7 +111,6 @@ public class QuantityDialog extends Dialog {
                     }
                     dismiss();
                 }
-
             }
         });
 

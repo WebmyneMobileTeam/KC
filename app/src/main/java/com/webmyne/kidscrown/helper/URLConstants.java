@@ -6,7 +6,11 @@ package com.webmyne.kidscrown.helper;
 
 public class URLConstants {
 
-    public static final String BASE_URL_V03 = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown_V03/WCF/Services/";
+    // Development
+  //  public static final String BASE_URL_V03 = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown_V03/WCF/Services/";
+
+    // Testing
+    public static final String BASE_URL_V03 = "http://ws-srv-net.in.webmyne.com/Applications/KidsCrown_V03_Testing/wcf/Services/";
 
     public static final String GET_PRODUCTS = "Product.svc/json/GetProducts";
 

@@ -86,6 +86,7 @@ public class FetchProducts {
             dialog = new SpotsDialog(context, "Loading products..", R.style.Custom);
         }
         dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 

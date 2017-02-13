@@ -25,7 +25,7 @@ import java.util.HashSet;
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_ROWID = "_id";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "kidscrown.db";
     private static final String TABLE_PRODUCT = "Product";
     private static final String TABLE_ADDRESS = "Address";
@@ -191,14 +191,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            String createDiscount = "CREATE TABLE `Discount` (\n" +
-                    "\t`DiscountImage`\tTEXT,\n" +
-                    "\t`DiscountInitial`\tTEXT,\n" +
-                    "\t`DiscountPercentage`\tTEXT,\n" +
-                    "\t`ProductID`\tTEXT\n" +
+
+        //Log.e("onUp", "onUpgrade");
+
+        if (oldVersion < 3) {
+
+           // Log.e("onUp", "call");
+
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART_ITEM);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_PRICE);
+
+            String cartTable = "CREATE TABLE `CartItem` (\n" +
+                    "\t`_id`\tINTEGER,\n" +
+                    "\t`product_id`\tNUMERIC,\n" +
+                    "\t`product_name`\tTEXT,\n" +
+                    "\t`qty`\tNUMERIC,\n" +
+                    "\t`unit_price`\tTEXT,\n" +
+                    "\t`total_price`\tTEXT,\n" +
+                    "\t`is_single`\tINTEGER,\n" +
+                    "\t`max`\tINTEGER,\n" +
+                    "\t`specific_id`\tINTEGER,\n" +
+                    "\tPRIMARY KEY(_id)\n" +
                     ");";
-            db.execSQL(createDiscount);
+
+            String cartProductPrice = "CREATE TABLE `ProductPrice` (\n" +
+                    "\t`_id`\tINTEGER,\n" +
+                    "\t`product_id`\tNUMERIC,\n" +
+                    "\t`price_id`\tNUMERIC,\n" +
+                    "\t`price`\tNUMERIC,\n" +
+                    "\t`min`\tNUMERIC,\n" +
+                    "\t`max`\tNUMERIC,\n" +
+                    "\tPRIMARY KEY(_id)\n" +
+                    ");";
+
+            db.execSQL(cartTable);
+            db.execSQL(cartProductPrice);
         }
     }
 

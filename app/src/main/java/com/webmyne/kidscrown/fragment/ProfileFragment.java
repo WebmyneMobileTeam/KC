@@ -19,7 +19,6 @@ import com.webmyne.kidscrown.helper.PrefUtils;
 import com.webmyne.kidscrown.model.LoginModelData;
 import com.webmyne.kidscrown.model.UpdateProfileModelRequest;
 import com.webmyne.kidscrown.model.UserProfileModel;
-import com.webmyne.kidscrown.ui.LoginActivity;
 import com.webmyne.kidscrown.ui.MyDrawerActivity;
 
 
@@ -66,7 +65,7 @@ public class ProfileFragment extends Fragment {
         edtClinicName = (EditText) view.findViewById(R.id.edtClinicName);
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
-       // edtUserName.setEnabled(false);
+        // edtUserName.setEnabled(false);
         edtEmail.setEnabled(false);
         edtRegNo.setEnabled(false);
 
@@ -150,7 +149,7 @@ public class ProfileFragment extends Fragment {
         } else if (TextUtils.isEmpty(Functions.getStr(edtMobile))) {
             Functions.showToast(getActivity(), "Mobile number is required");
 
-        } else if (edtMobile.getText().toString().trim().length() != 10) {
+        } else if (edtMobile.getText().toString().trim().length() != getActivity().getResources().getInteger(R.integer.mobile)) {
             Functions.showToast(getActivity(), "Mobile number should contains 10 digits");
 
         } else if (TextUtils.isEmpty(Functions.getStr(edtEmail))) {
@@ -159,11 +158,14 @@ public class ProfileFragment extends Fragment {
         } else if (!(Functions.emailValidation(edtEmail.getText().toString().trim()))) {
             Functions.showToast(getActivity(), "Email-id is not valid");
 
-        } else if (edtPassword.getText().toString().trim().length() < 6) {
+        } else if (edtPassword.getText().toString().trim().length() < getActivity().getResources().getInteger(R.integer.pwd_min)) {
             Functions.showToast(getActivity(), "Password must be of minimum 6 characters");
 
         } else if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
             Functions.showToast(getActivity(), "Password and confirm password does not match");
+
+        } else if (edtClinicName.getText().toString().trim().length() == 0) {
+            Functions.showToast(getActivity(), "Clinic name is required");
 
         } else if (edtRegNo.getText().toString().trim().length() == 0) {
             Functions.showToast(getActivity(), "Registration number is required");

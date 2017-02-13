@@ -339,7 +339,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         shippingAddressDCBean.setMobileNo(PrefUtils.getUserProfile(this).getMobileNo());
         shippingAddressDCBean.setPinCode(Functions.getStr(edtShippingPincode));
 
-        shippingStateId = ((CountryResponse.DataBean) stateBillingSpinner.getSelectedItem()).getStateID();
+        shippingStateId = ((CountryResponse.DataBean) stateShippingSpinner.getSelectedItem()).getStateID();
         shippingAddressDCBean.setStateID(shippingStateId);
         Log.e("shippingAddressDCBean", Functions.jsonString(shippingAddressDCBean));
 

@@ -159,6 +159,8 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     @Override
     protected void onResume() {
         super.onResume();
+        // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        // <!-- android:configChanges="keyboardHidden|orientation|screenSize" -->
         fetchCartCrowns();
     }
 
@@ -311,31 +313,37 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
                 totalCrowns += item.itemQty;
             }
 
-            unitPrice = new GetPriceSlab(this).getRelevantPrice(product.getProductID(), totalCrowns).getPrice();
+            if (totalCrowns > product.getOrderLimit()) {
+                String msg = "Maximum limit for this product is " + product.getOrderLimit() + ". Please enter quantity between 1 to " + product.getOrderLimit();
+                Functions.showToast(RefillActivityAnother.this, msg);
 
-            Log.e("unit_price", unitPrice + " ---");
+            } else {
+                unitPrice = new GetPriceSlab(this).getRelevantPrice(product.getProductID(), totalCrowns).getPrice();
 
-            handler.deleteCartProduct(product.getProductID());
+                Log.e("unit_price", unitPrice + " ---");
 
-            for (CrownProductItem item : orderArray) {
-                CartProduct cartProduct = new CartProduct();
-                cartProduct.setProductName(item.itemName);
-                cartProduct.setProductId(product.getProductID());
-                cartProduct.setQty(item.itemQty);
-                cartProduct.setUnitPrice(unitPrice);
-                unitTotalPrice = unitPrice * item.itemQty;
-                cartProduct.setTotalPrice(unitTotalPrice);
-                cartProduct.setSingle(product.getIsSingleInt());
-                cartProduct.setMax(product.getOrderLimit());
-                cartProduct.setSpecificId(item.specificId);
+                handler.deleteCartProduct(product.getProductID());
 
-                Log.e("cart_insert", Functions.jsonString(cartProduct));
+                for (CrownProductItem item : orderArray) {
+                    CartProduct cartProduct = new CartProduct();
+                    cartProduct.setProductName(item.itemName);
+                    cartProduct.setProductId(product.getProductID());
+                    cartProduct.setQty(item.itemQty);
+                    cartProduct.setUnitPrice(unitPrice);
+                    unitTotalPrice = unitPrice * item.itemQty;
+                    cartProduct.setTotalPrice(unitTotalPrice);
+                    cartProduct.setSingle(product.getIsSingleInt());
+                    cartProduct.setMax(product.getOrderLimit());
+                    cartProduct.setSpecificId(item.specificId);
 
-                handler.addToCart(cartProduct);
+                    Log.e("cart_insert", Functions.jsonString(cartProduct));
+
+                    handler.addToCart(cartProduct);
+                }
+
+                Functions.showToast(RefillActivityAnother.this, "Added to Cart");
+                badgeCart.displayBadge(handler.getTotalProducts());
             }
-
-            Functions.showToast(RefillActivityAnother.this, "Added to Cart");
-            badgeCart.displayBadge(handler.getTotalProducts());
         }
 
     }
@@ -368,13 +376,14 @@ public class RefillActivityAnother extends AppCompatActivity implements CrownQua
     public void onDelete(int position) {
 
         String toDelete = orderArray.get(position).itemName;
+        int toDeleteSpecificId = orderArray.get(position).specificId;
 
         orderArray.remove(position);
         adapter.notifyDataSetChanged();
 
         for (int i = 0; i < crownSetLayout.getChildCount(); i++) {
             CrownQuadrantAnother crownQuadrantAnother = (CrownQuadrantAnother) crownSetLayout.getChildAt(i);
-            crownQuadrantAnother.removeSelected(toDelete);
+            crownQuadrantAnother.removeSelected(toDelete, toDeleteSpecificId);
             crownQuadrantAnother.clearSelected(toDelete);
         }
 

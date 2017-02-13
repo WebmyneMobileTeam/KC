@@ -183,7 +183,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkCart(product.getProductID())) {
-                    Functions.showToast(ProductDetailActivity.this, "Product already added to Cart");
+                    Functions.fireIntent(ProductDetailActivity.this, CartActivityRevised.class);
+                    overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
 
                 } else {
                     CartProduct cartProduct = new CartProduct();

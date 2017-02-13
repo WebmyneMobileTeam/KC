@@ -287,7 +287,7 @@ public class CrownQuadrantAnother extends LinearLayout {
         setupCrowns(productSlabsMain);
         for (ProductSlab productSlab : productSlabsMain) {
             clearSelected(productSlab.getModelNumber());
-            removeSelected(productSlab.getModelNumber());
+            removeSelected(productSlab.getModelNumber(), productSlab.getProductSpecID());
         }
 
 //        for (int i = 0; i < ((TableRow) tableLayout.getChildAt(0)).getChildCount(); i++) {
@@ -354,7 +354,15 @@ public class CrownQuadrantAnother extends LinearLayout {
 
     }
 
-    public void removeSelected(String value) {
+    public void removeSelected(String value, int specificId) {
+
+        ProductSlab selectedSlab = null;
+        for (ProductSlab productSlab : productSlabsMain) {
+            if (productSlab.getProductSpecID() == specificId) {
+                selectedSlab = productSlab;
+                break;
+            }
+        }
 
         if (addedValues.contains(value)) {
             addedValues.remove(value);
@@ -369,7 +377,7 @@ public class CrownQuadrantAnother extends LinearLayout {
                     itemLinear.setBackgroundResource(R.drawable.crown_bg);
                     String string = String.format("%c%c", txtDetails.getText().toString().charAt(0),
                             txtDetails.getText().toString().charAt(txtDetails.getText().toString().length() - 1));
-                    txtCrown.setText(string);
+                    txtCrown.setText(selectedSlab.getModelName());
                     txtCrown.setPadding(8, 8, 8, 8);
                 }
             }
@@ -386,7 +394,7 @@ public class CrownQuadrantAnother extends LinearLayout {
                         String string = String.format("%c%c", txtDetails.getText().toString().charAt(0),
                                 txtDetails.getText().toString()
                                         .charAt(txtDetails.getText().toString().length() - 1));
-                        txtCrown.setText(string);
+                        txtCrown.setText(selectedSlab.getModelName());
                         txtCrown.setPadding(8, 8, 8, 8);
                     }
                 }

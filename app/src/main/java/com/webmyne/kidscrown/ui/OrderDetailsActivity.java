@@ -103,7 +103,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         subtotalPrice.setText(getResources().getString(R.string.Rs) + " " + formatter.format(model.getSubTotal()));
         txtSavedPrice.setText(getResources().getString(R.string.Rs) + " " + formatter.format(model.getYouSaved()));
         txtCharge.setText(getResources().getString(R.string.Rs) + " " + formatter.format(model.getShippingCost()));
-        totalPrice.setText(getResources().getString(R.string.Rs) + " " + formatter.format(model.getTotalAmount()));
+        totalPrice.setText(getResources().getString(R.string.Rs) + " " + model.getTotalAmount());
 
     }
 }

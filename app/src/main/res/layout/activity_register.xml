@@ -89,6 +89,7 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="Mobile"
                     android:inputType="phone"
+                    android:digits="1234567890"
                     android:maxLength="@integer/mobile"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -38,7 +39,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/card_margin"
                     android:layout_marginRight="@dimen/card_margin"
-                    android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT">
+                    android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
+                    app:cardBackgroundColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -102,7 +104,8 @@
                     android:layout_marginBottom="@dimen/m_8dp"
                     android:layout_marginLeft="@dimen/card_margin"
                     android:layout_marginRight="@dimen/card_margin"
-                    android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT">
+                    android:layout_marginTop="@dimen/CARD_DIVIDER_HEIGHT"
+                    app:cardBackgroundColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -202,8 +205,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+                android:layout_marginLeft="@dimen/card_margin"
+                android:layout_marginRight="@dimen/card_margin"
                 android:padding="@dimen/M_MARGIN_SIZE">
 
                 <TextView
@@ -229,8 +232,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+                android:layout_marginLeft="@dimen/card_margin"
+                android:layout_marginRight="@dimen/card_margin"
                 android:padding="@dimen/M_MARGIN_SIZE">
 
                 <TextView
@@ -239,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="You Saved"
+                    android:text="@string/saving_text"
                     android:textSize="@dimen/N_TEXT"
                     android:textStyle="bold" />
 
@@ -258,8 +261,8 @@
                 android:id="@+id/chargeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-                android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+                android:layout_marginLeft="@dimen/card_margin"
+                android:layout_marginRight="@dimen/card_margin"
                 android:padding="@dimen/M_MARGIN_SIZE">
 
                 <TextView
@@ -287,8 +290,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/VS_TEXT_SIZE"
-            android:layout_marginRight="@dimen/VS_TEXT_SIZE"
+            android:layout_marginLeft="@dimen/card_margin"
+            android:layout_marginRight="@dimen/card_margin"
             android:padding="@dimen/M_MARGIN_SIZE">
 
             <TextView

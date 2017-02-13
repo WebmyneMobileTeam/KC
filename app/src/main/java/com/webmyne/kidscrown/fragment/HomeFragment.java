@@ -36,6 +36,7 @@ import com.webmyne.kidscrown.ui.RefillActivityAnother;
 
 import java.util.ArrayList;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment {
     private DatabaseHandler handler;
     private View parentView;
     private EmptyLayout emptyLayout;
+    private SpotsDialog progressDialog;
 
     private ArrayList<Product> productList;
 
@@ -177,10 +179,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchState() {
+        showProgress();
+
         Call<CountryResponse> call = appApi.fetchState();
         call.enqueue(new Callback<CountryResponse>() {
             @Override
             public void onResponse(Call<CountryResponse> call, Response<CountryResponse> response) {
+                hideProgress();
+
                 if (response.isSuccessful()) {
 
                     if (response.body().getResponse().getResponseCode() == Constants.SUCCESS) {
@@ -200,9 +206,24 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CountryResponse> call, Throwable t) {
+                hideProgress();
                 RetrofitErrorHelper.showErrorMsg(t, getActivity());
             }
         });
     }
 
+    private void hideProgress() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    private void showProgress() {
+        if (progressDialog == null) {
+            progressDialog = new SpotsDialog(getActivity(), "Loading..", R.style.Custom);
+        }
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
 }

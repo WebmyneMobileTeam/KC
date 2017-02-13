@@ -100,6 +100,7 @@ public class FetchLoginData {
             dialog = new SpotsDialog(context, "Loading..", R.style.Custom);
         }
         dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 

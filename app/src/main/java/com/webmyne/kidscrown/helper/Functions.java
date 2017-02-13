@@ -185,6 +185,12 @@ public class Functions {
         return formatter.format(amount);
     }
 
+    public static String priceFormat2(double amount) {
+        DecimalFormat formatter;
+        formatter = new DecimalFormat("#,##,###");
+        return formatter.format(amount);
+    }
+
     public static String getBuildVersion(Context context) {
         String version = null;
 
