@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.webmyne.kidscrown.R;
 
-
 /**
  * Created by sagartahelyani on 20-06-2016.
  */
