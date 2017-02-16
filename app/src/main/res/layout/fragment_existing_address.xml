@@ -114,6 +114,27 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m_8dp">
+
+                <EditText
+                    android:id="@+id/edtBillingMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:hint="Mobile"
+                    android:inputType="phone"
+                    android:digits="1234567890"
+                    android:maxLength="@integer/mobile"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
+
+            </android.support.design.widget.TextInputLayout>
+
         </LinearLayout>
 
     </ScrollView>

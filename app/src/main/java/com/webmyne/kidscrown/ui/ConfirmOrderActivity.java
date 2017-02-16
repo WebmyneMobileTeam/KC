@@ -142,7 +142,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 FinalOrderRequest orderRequest = new FinalOrderRequest();
                 orderRequest.setMobileOS("A");
                 orderRequest.setUserID(PrefUtils.getUserId(ConfirmOrderActivity.this));

@@ -64,8 +64,8 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="Address 2"
                     android:inputType="text"
-                    android:maxLines="4"
                     android:maxLength="@integer/address2"
+                    android:maxLines="4"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"
                     android:textSize="@dimen/M_TEXT" />
@@ -83,8 +83,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:hint="City"
-                    android:maxLength="@integer/city"
                     android:inputType="text"
+                    android:maxLength="@integer/city"
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"
@@ -119,6 +119,27 @@
                     android:hint="Pincode"
                     android:inputType="number"
                     android:maxLength="@integer/pincode"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/half_black"
+                    android:textSize="@dimen/M_TEXT" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m_8dp">
+
+                <EditText
+                    android:id="@+id/edtShippingMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:hint="Mobile"
+                    android:inputType="phone"
+                    android:digits="1234567890"
+                    android:maxLength="@integer/mobile"
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textColorHint="@color/half_black"

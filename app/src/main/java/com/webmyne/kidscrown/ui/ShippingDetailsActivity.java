@@ -41,7 +41,8 @@ public class ShippingDetailsActivity extends AppCompatActivity {
 
     SegmentedGroup segmented2;
     int shippingStateId = 0, billingStateId = 0;
-    private EditText edtBillingAddress1, edtBillingAddress2, edtBillingCity, edtBillingPincode, edtShippingAddress1, edtShippingAddress2, edtShippingCity, edtShippingPincode;
+    private EditText edtBillingAddress1, edtBillingAddress2, edtBillingCity, edtBillingPincode, edtBillingMobile,
+            edtShippingAddress1, edtShippingAddress2, edtShippingCity, edtShippingPincode, edtShippingMobile;
     private AppCompatCheckBox isSameAsBilling;
     boolean sameAsBilling = false;
 
@@ -76,6 +77,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         edtShippingAddress2.setText(resBean.getShippingAddressDC().getAddress2());
         edtShippingCity.setText(resBean.getShippingAddressDC().getCity());
         edtShippingPincode.setText(resBean.getShippingAddressDC().getPinCode());
+        edtShippingMobile.setText(resBean.getShippingAddressDC().getMobileNo());
 
         if (resBean.getShippingAddressDC().getStateID() != 0) {
             stateShippingSpinner.setSelection(getIndex(countryResponse.getData(), resBean.getShippingAddressDC().getStateID()));
@@ -91,6 +93,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         edtBillingAddress2.setText(resBean.getBillingAddressDC().getAddress2());
         edtBillingCity.setText(resBean.getBillingAddressDC().getCity());
         edtBillingPincode.setText(resBean.getBillingAddressDC().getPinCode());
+        edtBillingMobile.setText(resBean.getBillingAddressDC().getMobileNo());
 
     }
 
@@ -143,11 +146,13 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         edtBillingAddress2 = (EditText) findViewById(R.id.edtBillingAddress2);
         edtBillingCity = (EditText) findViewById(R.id.edtBillingCity);
         edtBillingPincode = (EditText) findViewById(R.id.edtBillingPincode);
+        edtBillingMobile = (EditText) findViewById(R.id.edtBillingMobile);
 
         edtShippingAddress1 = (EditText) findViewById(R.id.edtShippingAddress1);
         edtShippingAddress2 = (EditText) findViewById(R.id.edtShippingAddress2);
         edtShippingCity = (EditText) findViewById(R.id.edtShippingCity);
         edtShippingPincode = (EditText) findViewById(R.id.edtShippingPincode);
+        edtShippingMobile = (EditText) findViewById(R.id.edtShippingMobile);
 
         isSameAsBilling = (AppCompatCheckBox) findViewById(R.id.checkbox);
 
@@ -220,7 +225,10 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                     edtShippingCity.setText(edtBillingCity.getText().toString().trim());
 
                     edtShippingPincode.setEnabled(false);
+                    edtShippingMobile.setEnabled(false);
                     edtShippingPincode.setText(edtBillingPincode.getText().toString().trim());
+
+                    edtShippingMobile.setText(edtBillingMobile.getText().toString().trim());
 
                     stateShippingSpinner.setEnabled(false);
                     if (billingStateId != 0) {
@@ -239,6 +247,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                     edtShippingAddress2.setEnabled(true);
                     edtShippingCity.setEnabled(true);
                     edtShippingPincode.setEnabled(true);
+                    edtShippingMobile.setEnabled(true);
                     stateShippingSpinner.setEnabled(true);
                 }
             }
@@ -280,6 +289,14 @@ public class ShippingDetailsActivity extends AppCompatActivity {
             Functions.showToast(this, "Enter Billing Address Pincode");
             isValid = false;
 
+        } else if (edtBillingMobile.getText().toString().length() == 0) {
+            Functions.showToast(this, "Enter Billing Address Mobile No");
+            isValid = false;
+
+        } else if (edtBillingMobile.getText().toString().trim().length() != getResources().getInteger(R.integer.mobile)) {
+            Functions.showToast(this, "Mobile number should contains 10 digits");
+            isValid = false;
+
         } else if (edtBillingPincode.getText().toString().length() != getResources().getInteger(R.integer.pincode)) {
             Functions.showToast(this, "Enter Billing Address Pincode with exactly 6 digits");
             isValid = false;
@@ -304,6 +321,14 @@ public class ShippingDetailsActivity extends AppCompatActivity {
                 Functions.showToast(this, "Enter Shipping Address Pincode");
                 isValid = false;
 
+            } else if (edtShippingMobile.getText().toString().trim().length() == 0) {
+                Functions.showToast(this, "Enter Shipping Address Mobile No");
+                isValid = false;
+
+            } else if (edtShippingMobile.getText().toString().trim().length() != getResources().getInteger(R.integer.mobile)) {
+                Functions.showToast(this, "Mobile number should contains 10 digits");
+                isValid = false;
+
             } else if (edtShippingPincode.getText().toString().length() != getResources().getInteger(R.integer.pincode)) {
                 Functions.showToast(this, "Enter Shipping Address Pincode with exactly 6 digits");
                 isValid = false;
@@ -324,6 +349,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         billingAddressDCBean.setIsUpdated(true);
         billingAddressDCBean.setMobileNo(PrefUtils.getUserProfile(this).getMobileNo());
         billingAddressDCBean.setPinCode(Functions.getStr(edtBillingPincode));
+        billingAddressDCBean.setMobileNo(Functions.getStr(edtBillingMobile));
 
         billingStateId = ((CountryResponse.DataBean) stateBillingSpinner.getSelectedItem()).getStateID();
         billingAddressDCBean.setStateID(billingStateId);
@@ -338,6 +364,7 @@ public class ShippingDetailsActivity extends AppCompatActivity {
         shippingAddressDCBean.setIsUpdated(true);
         shippingAddressDCBean.setMobileNo(PrefUtils.getUserProfile(this).getMobileNo());
         shippingAddressDCBean.setPinCode(Functions.getStr(edtShippingPincode));
+        shippingAddressDCBean.setMobileNo(Functions.getStr(edtShippingMobile));
 
         shippingStateId = ((CountryResponse.DataBean) stateShippingSpinner.getSelectedItem()).getStateID();
         shippingAddressDCBean.setStateID(shippingStateId);

@@ -17,6 +17,7 @@
         android:id="@+id/segmentToolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnConfirm"
         android:layout_below="@+id/toolbarLayout"
         android:orientation="vertical">
 
